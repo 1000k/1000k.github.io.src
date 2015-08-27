@@ -13,7 +13,7 @@ tags:
 ---
 MySQL にて BOOLEAN 型のフィールドを作りたいと思ったのですが、Googleで調べると「MySQL の BOOLEAN 型は実質 tinyint(1) と同じ」といったことが書いてありました。
 
-また、「MySQL で厳密な BOOLEAN 型を表現したければ、ENUM(&#8216;TRUE&#8217;, &#8216;FALSE&#8217;) を使った方がいい」とも書いてありました。
+また、「MySQL で厳密な BOOLEAN 型を表現したければ、ENUM('TRUE', 'FALSE') を使った方がいい」とも書いてありました。
 
 個人的には SQL 文に「WHERE flag IS TRUE」と書いて SELECT できれば文句ありません。そういった挙動ができるのか確認しました。
 
@@ -122,7 +122,7 @@ SELECT * FROM boolean_test WHERE flag IS FALSE; -- id:2, 4 がヒット
 
 SQL-99 の定義によると、「BOOLEAN 型は TRUE/FALSE/UNKNOWN の3値で表現される」ようです。
 
-ref: <a href="http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html', '新しい業界標準「SQL99」詳細解説']);" >新しい業界標準「SQL99」詳細解説</a>
+ref: [新しい業界標準「SQL99」詳細解説](http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html)
 
 > SQL99では本来の意味であるTRUE（真）とFALSE（偽）およびUNKNOWN（不明）を値として持つ真理値型が提供される。
 
@@ -159,7 +159,7 @@ MySQL で Boolean 型を表したければ、少し気持ち悪いですが tiny
 
 ## 参考
 
-  * <a href="http://slashdot.jp/comments.pl?threshold=0&mode=thread&commentsort=1&sid=446159" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://slashdot.jp/comments.pl?threshold=0&mode=thread&commentsort=1&sid=446159', 'コメント: mySQLには、boolean型が無いなんて・・ &#8211; スラッシュドット・ジャパン']);" title="コメント: mySQLには、boolean型が無いなんて・・ - スラッシュドット・ジャパン">コメント: mySQLには、boolean型が無いなんて・・ &#8211; スラッシュドット・ジャパン</a>
-  * <a href="http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html', '新しい業界標準「SQL99」詳細解説']);" title="新しい業界標準「SQL99」詳細解説">新しい業界標準「SQL99」詳細解説</a>
-  * <a href="http://www.geocities.jp/ky_webid/c/010.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.geocities.jp/ky_webid/c/010.html', 'Ｃ言語編　第１０章　変数のサイズ']);" title="Ｃ言語編　第１０章　変数のサイズ">Ｃ言語編　第１０章　変数のサイズ</a>
-  * <a href="http://www.nslabs.jp/book2-sql-types.rhtml" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.nslabs.jp/book2-sql-types.rhtml', '追補: SQLデータ型の一覧 | Netsphere Laboratories']);" >追補: SQLデータ型の一覧 | Netsphere Laboratories</a>
+  * [コメント: mySQLには、boolean型が無いなんて・・ - スラッシュドット・ジャパン](http://slashdot.jp/comments.pl?threshold=0&mode=thread&commentsort=1&sid=446159)
+  * [新しい業界標準「SQL99」詳細解説](http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html)
+  * [Ｃ言語編　第１０章　変数のサイズ](http://www.geocities.jp/ky_webid/c/010.html)
+  * [追補: SQLデータ型の一覧 | Netsphere Laboratories](http://www.nslabs.jp/book2-sql-types.rhtml)

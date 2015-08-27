@@ -30,4 +30,4 @@ public function varExportToLog($var, $path) {
 
 # 参考
 
-  * <a href="http://plaza.rakuten.co.jp/hknopage/diary/201109060000/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://plaza.rakuten.co.jp/hknopage/diary/201109060000/', 'PHPメモ：var_export() &#8211; まんじうこわい@楽 &#8211; 楽天ブログ（Blog）']);" >PHPメモ：var_export() &#8211; まんじうこわい@楽 &#8211; 楽天ブログ（Blog）</a>
+  * [PHPメモ：var_export() - まんじうこわい@楽 - 楽天ブログ（Blog）](http://plaza.rakuten.co.jp/hknopage/diary/201109060000/)

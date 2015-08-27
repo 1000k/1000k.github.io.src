@@ -37,7 +37,7 @@ output from attempting to unpackage (if any):
 
 GitHub の issue レポートにワークアラウンドが見つかりました。
 
-<a href="https://github.com/mitchellh/vagrant/issues/3674" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/mitchellh/vagrant/issues/3674', 'The executable &#8216;bsdtar&#8217; Vagrant is trying to run was not found in the %PATH% variable · Issue #3674 · mitchellh/vagrant']);" >The executable &#8216;bsdtar&#8217; Vagrant is trying to run was not found in the %PATH% variable · Issue #3674 · mitchellh/vagrant</a>
+[The executable 'bsdtar' Vagrant is trying to run was not found in the %PATH% variable · Issue #3674 · mitchellh/vagrant](https://github.com/mitchellh/vagrant/issues/3674)
 
 これによると、古いバージョンが入った Windows に 1.6.x をインストールすると、bsdtar (Vagrant Box を解凍するツール？) がなぜかインストールされないそうです。実際に `C:\HashiCorp\Vagrant\embedded\gnuwin32\bin` を見てみたところ、`bsdtar.exe` は見つからず、`libarchive.dll` というファイル1つしかありませんでした。
 

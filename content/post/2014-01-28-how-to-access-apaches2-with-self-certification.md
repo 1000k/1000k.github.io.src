@@ -33,24 +33,24 @@ $ sudo mkdir ssl.key
 $ sudo sh -c "openssl genrsa 2048 > ssl.key/server.key"
 $ sudo sh -c "openssl req -new -key ssl.key/server.key > server.csr"
 (質問は全てデフォルトのまま Enter)
-$ sudo sh -c "openssl x509 -days 3650 -req -signkey ssl.key/server.key &lt; server.csr > ssl.crt/server.crt"
+$ sudo sh -c "openssl x509 -days 3650 -req -signkey ssl.key/server.key < server.csr > ssl.crt/server.crt"
 ```
 
 
 https アクセスを有効にする。
 
 ```
-$ sudo sh -c "cat &lt;&lt;EOT > /usr/local/apache2/conf.d/ssl.conf
+$ sudo sh -c "cat <<EOT > /usr/local/apache2/conf.d/ssl.conf
 NameVirtualHost *:443
 Listen 443
 
-&lt;VirtualHost *:443>
+<VirtualHost *:443>
     DocumentRoot /var/www
 
     SSLEngine on
     SSLCertificateFile conf/ssl.crt/server.crt
     SSLCertificateKeyFile conf/ssl.key/server.key
-&lt;/VirtualHost>
+</VirtualHost>
 EOT"
 ```
 
@@ -66,5 +66,5 @@ $ sudo service httpd restart
 
 ## 参考
 
-  * <a href="http://smokycat.info/ubuntu/440" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://smokycat.info/ubuntu/440', 'ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info']);" >ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info</a>
-  * <a href="http://d.hatena.ne.jp/ozuma/20130511/1368284304" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/ozuma/20130511/1368284304', 'オレオレ証明書をopensslで作る（詳細版） &#8211; ろば電子が詰まっている']);" >オレオレ証明書をopensslで作る（詳細版） &#8211; ろば電子が詰まっている</a>
+  * [ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info](http://smokycat.info/ubuntu/440)
+  * [オレオレ証明書をopensslで作る（詳細版） - ろば電子が詰まっている](http://d.hatena.ne.jp/ozuma/20130511/1368284304)

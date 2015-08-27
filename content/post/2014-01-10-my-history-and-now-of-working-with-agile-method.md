@@ -38,7 +38,7 @@ tags:
 
 ## XP との出会い
 
-2010年の初頭に <a href="http://www.amazon.co.jp/gp/product/4873113954/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4873113954&#038;linkCode=as2&#038;tag=1000k-22" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.amazon.co.jp/gp/product/4873113954/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4873113954&#038;linkCode=as2&#038;tag=1000k-22', '『アート・オブ・アジャイル デベロップメント ―組織を成功に導くエクストリームプログラミング』']);" >『アート・オブ・アジャイル デベロップメント ―組織を成功に導くエクストリームプログラミング』</a> に出会い、初めてアジャイルプロセスを学びました。この本を読んだ時の感動は今も覚えています。プロジェクトを改善するための具体的な手法がいくつも提示され、そのアイディアに希望を見出しました。
+2010年の初頭に [『アート・オブ・アジャイル デベロップメント ―組織を成功に導くエクストリームプログラミング』](http://www.amazon.co.jp/gp/product/4873113954/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4873113954&linkCode=as2&tag=1000k-22) に出会い、初めてアジャイルプロセスを学びました。この本を読んだ時の感動は今も覚えています。プロジェクトを改善するための具体的な手法がいくつも提示され、そのアイディアに希望を見出しました。
 
 しかしこの頃はまだ、技術的にも社会人的にも未熟で、周囲にこのアイディアの素晴らしさをうまく伝えることができませんでした。そのため、まずは個人でできることを実践し、その効果を実証することにしました。
 
@@ -81,12 +81,12 @@ tags:
   * 不具合修正の際には必ず自動テストケースを導入し、手動テストを行わないようにする。
 
 この方法はうまくいきました。修正した部分は自動テストで保護され、確実に品質が改善できるようになりました。
-  
+
 この時私の支えになっていた書籍を2冊紹介します。
 
-  * <a href="http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4798116831&#038;linkCode=as2&#038;tag=1000k-22" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4798116831&#038;linkCode=as2&#038;tag=1000k-22', 'レガシーコード改善ガイド']);" >レガシーコード改善ガイド</a> 
+  * [レガシーコード改善ガイド](http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4798116831&linkCode=as2&tag=1000k-22)
       * 自動テストの無いシステムを、いかに安全に自動テスト可能にするかを学びました。
-  * <a href="http://www.amazon.co.jp/gp/product/4274066983/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4274066983&#038;linkCode=as2&#038;tag=1000k-22" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.amazon.co.jp/gp/product/4274066983/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4274066983&#038;linkCode=as2&#038;tag=1000k-22', 'アジャイルレトロスペクティブズ　強いチームを育てる「ふりかえり」の手引き']);" >アジャイルレトロスペクティブズ　強いチームを育てる「ふりかえり」の手引き</a> 
+  * [アジャイルレトロスペクティブズ　強いチームを育てる「ふりかえり」の手引き](http://www.amazon.co.jp/gp/product/4274066983/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4274066983&linkCode=as2&tag=1000k-22)
       * 2週間毎のふりかえりの効果を最大化するのに非常に役立ちました。
 
 ## 認定スクラムマスターの取得
@@ -111,14 +111,14 @@ EC システムの内製化には心を病む寸前まで追い詰められま�
 
 ## そして現在
 
-現在は定期的に <a href="https://sites.google.com/site/spostudy/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://sites.google.com/site/spostudy/', 'POStudy (プロダクトオーナーシップ勉強会)']);" >POStudy (プロダクトオーナーシップ勉強会)</a> などの勉強会に参加しつつ、より良いやり方の学習と検証を続けています。
+現在は定期的に [POStudy (プロダクトオーナーシップ勉強会)](https://sites.google.com/site/spostudy/) などの勉強会に参加しつつ、より良いやり方の学習と検証を続けています。
 
 まだ十分に管理職クラスを巻き込めておらず、会社全体では依然として古いやり方が続いています。それでも、徐々にカンバンを社内で見るようになったり、アジャイルプラクティスが実践されている様子を見かけるようになってきました。
 
 ## まとめ
 
 長々と書きましたが、私がアジャイルプラクティスの啓蒙活動を初めてまだ半年しか経っていません。
-  
+
 今後も活動を続け、多くの人がハッピーになる仕事ができる環境を作っていくつもりです。
 
 今年からはノウハウをアウトプットしつつ、外部の人々と頻繁に情報交換できるようにしたいと考えています。

@@ -18,7 +18,7 @@ tags:
 
   * Oracle VirtualBox で CentOS 6.3 VM を起動
   * ホストOSは Windows 7
-  * ホストOS側の &#8220;c:\www\app&#8221; を VM 側の &#8220;/www&#8221; に共有フォルダとしてマウント
+  * ホストOS側の "c:\www\app" を VM 側の "/www" に共有フォルダとしてマウント
   * VM上は Apache 2.2 を稼働させ、PHP アプリサーバーとして利用
 
 この状態でホストOS側で JavaScript などの静的コンテンツを編集し、ブラウザからアプリにアクセスすると、以下のようなエラーが出ました。
@@ -49,7 +49,7 @@ SyntaxError: unterminated string literal
 
 ## 原因
 
-<a href="http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile', 'EnableSendfile ディレクティブ']);" >EnableSendfile ディレクティブ</a> の説明には以下のように書いてあります。
+[EnableSendfile ディレクティブ](http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile) の説明には以下のように書いてあります。
 
 > このディレクティブはクライアントにファイルの内容を送るときに httpd がカーネルの sendfile サポートを使うかどうかを制御します。デフォルトでは、 例えば静的なファイルの配送のように、リクエストの処理にファイルの 途中のデータのアクセスを必要としないときには、Apache は OS が サポートしていればファイルを読み込むことなく sendfile を使って ファイルの内容を送ります。
 >
@@ -72,7 +72,7 @@ Vagrant + Chef で環境構築が楽にできるようになったから喜ん�
 
 ## 補足: EnableMMAP ディレクティブ
 
-私はまだ遭遇していないのですが、<a href="http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap', 'EnableMMAP ディレクティブ']);" ><em>EnableMMAP</em> ディレクティブ</a>も Apache をクラッシュさせる危険があるので、Offにしておいた方が良いそうです。
+私はまだ遭遇していないのですが、[<em>EnableMMAP</em> ディレクティブ](http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap)も Apache をクラッシュさせる危険があるので、Offにしておいた方が良いそうです。
 
 > NFS マウントされた DocumentRoot では、httpd がメモリマップしている間にファイルが削除されたり 短くなったりしたときに起こるセグメンテーションフォールトのために httpd がクラッシュする可能性があります。
 
@@ -86,6 +86,6 @@ EnableMMAP Off
 
 ## 参考
 
-  * <a href="http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/', 'DocumentRootに共有フォルダを使った場合の問題 &#8211; フリップフラップ']);" >DocumentRootに共有フォルダを使った場合の問題 &#8211; フリップフラップ</a>
-  * <a href="http://tipshare.info/view/4f3481ee4b21227814000001" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://tipshare.info/view/4f3481ee4b21227814000001', 'Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info']);" >Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info</a>
-  * <a href="http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap', 'core &#8211; Apache HTTP サーバ']);" >core &#8211; Apache HTTP サーバ</a>
+  * [DocumentRootに共有フォルダを使った場合の問題 - フリップフラップ](http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/)
+  * [Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info](http://tipshare.info/view/4f3481ee4b21227814000001)
+  * [core - Apache HTTP サーバ](http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap)

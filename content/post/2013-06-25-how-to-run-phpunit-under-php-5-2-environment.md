@@ -13,7 +13,7 @@ tags:
   - PHPUnit
   - チュートリアル
 ---
-業務で使っているアプリが PHP 5.2 でしか動かず、仕方なく PHP 5.2 でも動く PHPUnit 3.6.11 を使っています。(<a href="http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/', 'PHPUnit >= 3.6.12 は PHP 5.3 が必要。']);" title="PHPUnitをアップグレードしたら動作しなくなった | 1000g">PHPUnit >= 3.6.12 は PHP 5.3 が必要。</a>)
+業務で使っているアプリが PHP 5.2 でしか動かず、仕方なく PHP 5.2 でも動く PHPUnit 3.6.11 を使っています。([= 3.6.12 は PHP 5.3 が必要。']);" title="PHPUnitをアップグレードしたら動作しなくなった | 1000g">PHPUnit >= 3.6.12 は PHP 5.3 が必要。](http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/))
 
 最近になってサーバーのリプレースの時期になり、新しいビルドマシンに PHPUnit をインストールする羽目になったのですが、うまくバージョンが揃わず苦労しました。
 
@@ -31,7 +31,7 @@ CentOS 6.3 63bit
 
 そもそも5.2系はとっくに Deprecated なので使うべきではないのですが、業務で使うから仕方ない。
 
-<a href="http://www.php.net/releases/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.php.net/releases/', 'PHP: Releases']);" >PHP: Releases</a> から 5.2.17 をダウンロードして、ソースからインストールします。
+[PHP: Releases](http://www.php.net/releases/) から 5.2.17 をダウンロードして、ソースからインストールします。
 
 ```
 # wget http://museum.php.net/php5/php-5.2.17.tar.gz
@@ -43,7 +43,7 @@ CentOS 6.3 63bit
 ```
 
 
-configure オプションは <a href="http://www.php.net/manual/ja/configure.about.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.php.net/manual/ja/configure.about.php', 'PHP: 中心となる configure オプションのリスト &#8211; Manual']);" >PHP: 中心となる configure オプションのリスト &#8211; Manual</a> を参考に。
+configure オプションは [PHP: 中心となる configure オプションのリスト - Manual](http://www.php.net/manual/ja/configure.about.php) を参考に。
 
 ## PEAR をアップグレードする
 
@@ -92,7 +92,7 @@ PHPUnit 3.6.11 by Sebastian Bergmann.
 
 ## ついでに関連ツールも入れる
 
-<a href="http://jenkins-php.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jenkins-php.org/', 'Template for Jenkins Jobs for PHP Projects']);" >Template for Jenkins Jobs for PHP Projects</a> で紹介されているツールは下記のコマンドでインストールできます。
+[Template for Jenkins Jobs for PHP Projects](http://jenkins-php.org/) で紹介されているツールは下記のコマンドでインストールできます。
 
 ```
 # pear channel-add pear.pdepend.org
@@ -111,7 +111,7 @@ PHPUnit 3.6.11 by Sebastian Bergmann.
 
 ## 愚痴
 
-  * <a href="https://github.com/composer/composer" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/composer/composer', 'Composer']);" >Composer</a> を使えれば圧倒的に楽なのですが、PHP >= 5.3.2 でしか動かないので諦めました。
+  * [Composer](https://github.com/composer/composer) を使えれば圧倒的に楽なのですが、PHP >= 5.3.2 でしか動かないので諦めました。
   * PEAR 遅い。
   * 自動テストがあれば PHP をバージョンアップできるか検証できるのですが、ほとんどテストケースが無いのでそれも無理。コード総数は10万行。死にたい。
 

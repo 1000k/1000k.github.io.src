@@ -42,7 +42,7 @@ enable-auto-props = yes    ←コメントアウトを外す
 
 キーワードは「**$Id$**」のように、「$」で囲みます。
 
-使用可能なキーワードは <a href="http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB', 'Subversion キーワードの展開 &#8211; とみぞーノート']);" title="Subversion キーワードの展開 - とみぞーノート">Subversion キーワードの展開 &#8211; とみぞーノート</a> あたりを参考にしてください。
+使用可能なキーワードは [Subversion キーワードの展開 - とみぞーノート](http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB) あたりを参考にしてください。
 
 ```
 /**
@@ -91,6 +91,6 @@ class Uso
 
 ## 参考
 
-  * <a href="http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB', 'Subversion キーワードの展開 &#8211; とみぞーノート']);" title="Subversion キーワードの展開 - とみぞーノート">Subversion キーワードの展開 &#8211; とみぞーノート</a>
-  * <a href="http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html', '僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）']);" title="僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）">僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）</a>
-  * <a href="http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html', 'ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする']);" title="ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする">ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする</a>
+  * [Subversion キーワードの展開 - とみぞーノート](http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB)
+  * [僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）](http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html)
+  * [ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする](http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html)

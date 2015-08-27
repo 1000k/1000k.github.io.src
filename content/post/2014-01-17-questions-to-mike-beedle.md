@@ -15,8 +15,8 @@ tags:
   - カンファレンス
   - レポート
 ---
-<a href="http://blog.1000k.net/?p=1736" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/?p=1736', 'Mike Beedle の基調講演']);" >Mike Beedle の基調講演</a>の後の質疑応答では、非常に興味深いディスカッションが行われました。
-  
+[Mike Beedle の基調講演](http://blog.1000k.net/?p=1736)の後の質疑応答では、非常に興味深いディスカッションが行われました。
+
 幾つかのやりとりをメモします。
 
 <!--more-->
@@ -37,7 +37,7 @@ A: 中間管理職。現場の人間ならスクラムをやるべきだとい�
 
 A: 前もってスクラムを隠しプロジェクト (カバープロジェクト) で実践していた。そういうところで成功して実績を立てておき、良い噂を流した。
 
-今は時代が変わったから、そんなことする必要は無い。<a href="https://secure.standishgroup.com/reports/reports.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://secure.standishgroup.com/reports/reports.php', 'Standish Group のレポート']);" >Standish Group のレポート</a>を買えば、マネジメントレベルの成功例がたくさん書いてある。あらゆるケーススタディや実績例を学べる。
+今は時代が変わったから、そんなことする必要は無い。[Standish Group のレポート](https://secure.standishgroup.com/reports/reports.php)を買えば、マネジメントレベルの成功例がたくさん書いてある。あらゆるケーススタディや実績例を学べる。
 
 ## Q: エンタープライズスクラムのスプリントの長さはどれくらい？
 

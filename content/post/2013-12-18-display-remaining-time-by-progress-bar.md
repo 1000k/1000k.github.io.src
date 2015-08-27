@@ -14,13 +14,13 @@ tags:
   - jQuery
   - チュートリアル
 ---
-<a href="http://e.ggtimer.com/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://e.ggtimer.com/', 'E.gg Timer']);" >E.gg Timer</a> のようなタイマーアプリを作りたかったので、プログレスバーの作り方を調べました。タイマーそのものより、progress タグのスタイルシートをクロスブラウザ対応させるのに苦労しました。
+[E.gg Timer](http://e.ggtimer.com/) のようなタイマーアプリを作りたかったので、プログレスバーの作り方を調べました。タイマーそのものより、progress タグのスタイルシートをクロスブラウザ対応させるのに苦労しました。
 
 今回作ったのは下の画像のような簡単なタイマーです。経過時間に合わせてプログレスバーが赤くなります。
 
 <img src="http://blog.1000k.net/wp-content/uploads/timer.png" alt="timer" width="585" height="81" />
 
-<a href="http://jsfiddle.net/tcxx9/3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jsfiddle.net/tcxx9/3/', 'デモはこちら。']);" >デモはこちら。</a>
+[デモはこちら。](http://jsfiddle.net/tcxx9/3/)
 
 なお、IE11, Firefox26, Chrome31 で動作を確認しています。
 
@@ -34,7 +34,7 @@ tags:
 
 ```
 <div class="progressWrapper">
-  &lt;progress id="bar" value="0" max="1000" min="0">&lt;/progress>
+  <progress id="bar" value="0" max="1000" min="0"></progress>
 
 </div>
 
@@ -69,7 +69,7 @@ var countdown = function() {
 
   $('#bar').attr('value', restBarLength);
 
-  if (restMs &lt; 0) {
+  if (restMs < 0) {
     resetTimer();
     alert('time expired');
   }
@@ -140,9 +140,9 @@ progress::-moz-progress-bar {
 
 ## 参考
 
-  * <a href="http://www.hongkiat.com/blog/html5-progress-bar/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.hongkiat.com/blog/html5-progress-bar/', 'Creating & Styling Progress Bar With HTML5']);" >Creating & Styling Progress Bar With HTML5</a>
-  * <a href="http://www.pori2.net/js/timer/6.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.pori2.net/js/timer/6.html', 'カウントダウンタイマー－JavaScript入門']);" >カウントダウンタイマー－JavaScript入門</a>
-  * <a href="http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/', 'Cross Browser HTML5 Progress Bars In Depth']);" >Cross Browser HTML5 Progress Bars In Depth</a>
+  * [Creating & Styling Progress Bar With HTML5](http://www.hongkiat.com/blog/html5-progress-bar/)
+  * [カウントダウンタイマー－JavaScript入門](http://www.pori2.net/js/timer/6.html)
+  * [Cross Browser HTML5 Progress Bars In Depth](http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/)
       * カウントダウンに合わせて動くサルのアニメや、スピードメーターの書き方など。
-  * <a href="http://css-tricks.com/html5-progress-element/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://css-tricks.com/html5-progress-element/', 'The HTML5 progress Element | CSS-Tricks']);" >The HTML5 progress Element | CSS-Tricks</a>
-  * <a href="https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar', '::-moz-progress-bar - CSS | MDN']);" >::-moz-progress-bar - CSS | MDN</a>
+  * [The HTML5 progress Element | CSS-Tricks](http://css-tricks.com/html5-progress-element/)
+  * [::-moz-progress-bar - CSS | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar)

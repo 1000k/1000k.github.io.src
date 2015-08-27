@@ -21,7 +21,7 @@ tags:
 
 単体テストの際には必ず必要になる知識なので、解説しておきます。
 
-以下のサンプルでは <a href="http://www.phpunit.de/manual/3.8/ja/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.8/ja/index.html', 'PHPUnit']);" >PHPUnit</a> を利用しています。
+以下のサンプルでは [PHPUnit](http://www.phpunit.de/manual/3.8/ja/index.html) を利用しています。
 
 <!--more-->
 
@@ -229,20 +229,20 @@ public function testPlay() {
 
 ## 補足1: runkitで強引にメソッドの挙動を変える方法
 
-PHPにおいては <a href="http://php.net/manual/ja/book.runkit.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://php.net/manual/ja/book.runkit.php', 'runkit']);" >runkit</a> を使うことで、モック化をしなくてもメソッドの挙動を強引に変えることが可能です。ただし破壊的な手段であり、これが必要な時点でオブジェクト指向的な設計ができていない疑いが非常に強いです。
+PHPにおいては [runkit](http://php.net/manual/ja/book.runkit.php) を使うことで、モック化をしなくてもメソッドの挙動を強引に変えることが可能です。ただし破壊的な手段であり、これが必要な時点でオブジェクト指向的な設計ができていない疑いが非常に強いです。
 
 できるだけ Constructor Injection 等の方法を用い、テスト可能になるようリファクタリングをしましょう。リファクタリング中はコードが醜くなるかもしれませんが、最終的に設計が改善できるならば結果OKです。美しさよりも安全性が何より重要です。
 
 ## 補足2: Constructor Injection vs Setter Injection
 
-<a href="http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/', '抄訳: Constructor Injection vs. Setter Injection | 1000g']);" >抄訳: Constructor Injection vs. Setter Injection | 1000g</a> にて、コンストラクター・インジェクションとセッター・インジェクションのどちらが良いかを考察しています。結論としてはコンストラクター・インジェクションがベターです。
+[抄訳: Constructor Injection vs. Setter Injection | 1000g](http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/) にて、コンストラクター・インジェクションとセッター・インジェクションのどちらが良いかを考察しています。結論としてはコンストラクター・インジェクションがベターです。
 
 ## 参考
 
-  * <a href="http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5', '依存性の注入 &#8211; Wikipedia']);" >依存性の注入 &#8211; Wikipedia</a>
-  * <a href="http://d.hatena.ne.jp/m-hiyama/20060926/1159253903" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/m-hiyama/20060926/1159253903', 'DI（依存性注入）を白紙から説明してみる &#8211; 檜山正幸のキマイラ飼育記']);" >DI（依存性注入）を白紙から説明してみる &#8211; 檜山正幸のキマイラ飼育記</a>
-  * <a href="http://martinfowler.com/articles/injection.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://martinfowler.com/articles/injection.html', 'Inversion of Control Containers and the Dependency Injection pattern']);" >Inversion of Control Containers and the Dependency Injection pattern</a>
+  * [依存性の注入 - Wikipedia](http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5)
+  * [DI（依存性注入）を白紙から説明してみる - 檜山正幸のキマイラ飼育記](http://d.hatena.ne.jp/m-hiyama/20060926/1159253903)
+  * [Inversion of Control Containers and the Dependency Injection pattern](http://martinfowler.com/articles/injection.html)
       * リファクタリング界の大御所、Martin Fowler氏の考察。
-  * <a href="http://www.techscore.com/tech/Java/Others/Spring/1-3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.techscore.com/tech/Java/Others/Spring/1-3/', 'Dependency Injection のタイプ | TECHSCORE(テックスコア)']);" >Dependency Injection のタイプ | TECHSCORE(テックスコア)</a>
-  * <a href="http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects', '第10章 テストダブル']);" >第10章 テストダブル</a>
+  * [Dependency Injection のタイプ | TECHSCORE(テックスコア)](http://www.techscore.com/tech/Java/Others/Spring/1-3/)
+  * [第10章 テストダブル](http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects)
       * PHPUnit 公式マニュアルによるモックの使い方。

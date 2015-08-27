@@ -38,5 +38,5 @@ class User extends AppModel {
 
 ## 参考
 
-  * <a href="http://yohrk.hp2.jp/archives/18" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://yohrk.hp2.jp/archives/18', 'virtualFields使ってみた | Web関係のメモ書き']);" title="virtualFields使ってみた | Web関係のメモ書き">virtualFields使ってみた | Web関係のメモ書き</a>
-  * <a href="http://book.cakephp.org/ja/view/1608/Virtual-fields" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1608/Virtual-fields', 'バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook">バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook</a>
+  * [virtualFields使ってみた | Web関係のメモ書き](http://yohrk.hp2.jp/archives/18)
+  * [バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook](http://book.cakephp.org/ja/view/1608/Virtual-fields)

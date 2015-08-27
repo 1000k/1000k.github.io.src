@@ -14,7 +14,7 @@ tags:
   * すべてのブラウザで画像オリジナルのwidth/heightを取得しようとしても、ブラウザ毎にパラメータやメソッドが異なる
   * jQueryを利用すると、下記コードで画像の実際のサイズを取得できる
 
-```
+```javascript
 /*
  * 画像の実際のサイズを取得する
  *
@@ -28,7 +28,7 @@ function getActualDimension(image) {
         return {width: image.naturalWidth, height: image.naturalHeight};
     }
     if ("src" in image) { // HTMLImageElement
-        if (image[key] &#038;&#038; image[key].src === image.src) {return  image[key];}
+        if (image[key] && image[key].src === image.src) {return  image[key];}
 
         if (document.uniqueID) { // for IE
             w = $(image).css("width");

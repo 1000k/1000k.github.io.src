@@ -21,7 +21,7 @@ rpmが無いアプリの管理が楽になるのでおすすめです。
 
 ## インストール手順
 
-最新のソースは <a href="http://paco.sourceforge.net/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://paco.sourceforge.net/', 'paco &#8211; a source code pacKAGE oRGANIZER for Unix/Linux']);" >paco &#8211; a source code pacKAGE oRGANIZER for Unix/Linux</a> で確認してください。
+最新のソースは [paco - a source code pacKAGE oRGANIZER for Unix/Linux](http://paco.sourceforge.net/) で確認してください。
 
 ```
 # wget http://sourceforge.net/projects/paco/files/paco/2.0.9/paco-2.0.9.tar.bz2/download
@@ -34,9 +34,9 @@ rpmが無いアプリの管理が楽になるのでおすすめです。
 ```
 
 
-今回はGUIを使わないので、configureオプションに「&#8211;disable-gpaco」を付けています。
+今回はGUIを使わないので、configureオプションに「-disable-gpaco」を付けています。
 
-これを付けないと「No package &#8216;gtkmm-2.4&#8217; found」というエラーが出ます。
+これを付けないと「No package 'gtkmm-2.4' found」というエラーが出ます。
 
 最後の「make logme」でpaco自身のインストール内容を記録しています。
 
@@ -103,6 +103,6 @@ paco-2.0.9:
 
 ## 参考
 
-  * <a href="http://d.hatena.ne.jp/kasei_san/20100220/p1" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/kasei_san/20100220/p1', 'さくらのユーザディレクトリにPACOをインストールしたときの手順 &#8211; かせいさんとこ']);" >さくらのユーザディレクトリにPACOをインストールしたときの手順 &#8211; かせいさんとこ</a>
-  * <a href="http://paco.sourceforge.net/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://paco.sourceforge.net/', 'paco &#8211; a source code pacKAGE oRGANIZER for Unix/Linux']);" >paco &#8211; a source code pacKAGE oRGANIZER for Unix/Linux</a>
-  * <a href="http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html', 'ソースからインストールしたアプリを管理するには － ＠IT']);" >ソースからインストールしたアプリを管理するには － ＠IT</a>
+  * [さくらのユーザディレクトリにPACOをインストールしたときの手順 - かせいさんとこ](http://d.hatena.ne.jp/kasei_san/20100220/p1)
+  * [paco - a source code pacKAGE oRGANIZER for Unix/Linux](http://paco.sourceforge.net/)
+  * [ソースからインストールしたアプリを管理するには － ＠IT](http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html)

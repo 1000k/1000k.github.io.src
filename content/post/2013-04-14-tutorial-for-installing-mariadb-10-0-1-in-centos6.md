@@ -25,7 +25,7 @@ $ sudo rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
 
 ## リポジトリを追加する
 
-バージョンによって異なります。<a href="https://downloads.mariadb.org/mariadb/repositories/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://downloads.mariadb.org/mariadb/repositories/', 'MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB']);" >MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB</a> からバージョン＆環境毎のリポジトリが選択できるので、10.0 以外をインストールする場合はそちらを参考にしてください。
+バージョンによって異なります。[MariaDB - Setting up MariaDB Repositories - MariaDB](https://downloads.mariadb.org/mariadb/repositories/) からバージョン＆環境毎のリポジトリが選択できるので、10.0 以外をインストールする場合はそちらを参考にしてください。
 
 今回は CentOS 6.3 64bit です。
 
@@ -76,7 +76,7 @@ package 'MariaDB-server'
 
 ## 参考
 
-  * <a href="https://downloads.mariadb.org/mariadb/repositories/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://downloads.mariadb.org/mariadb/repositories/', 'MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB']);" >MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB</a>
-  * <a href="https://kb.askmonty.org/en/installing-mariadb-with-yum/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://kb.askmonty.org/en/installing-mariadb-with-yum/', 'Installing MariaDB with yum &#8211; AskMonty KnowledgeBase']);" >Installing MariaDB with yum &#8211; AskMonty KnowledgeBase</a>
-  * <a href="http://www.e-agency.co.jp/column/20130208.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.e-agency.co.jp/column/20130208.html', 'MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー']);" >MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー</a>
-  * <a href="https://github.com/opscode-cookbooks/yum/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/opscode-cookbooks/yum/', 'opscode-cookbooks/yum · GitHub']);" >opscode-cookbooks/yum · GitHub</a>
+  * [MariaDB - Setting up MariaDB Repositories - MariaDB](https://downloads.mariadb.org/mariadb/repositories/)
+  * [Installing MariaDB with yum - AskMonty KnowledgeBase](https://kb.askmonty.org/en/installing-mariadb-with-yum/)
+  * [MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー](http://www.e-agency.co.jp/column/20130208.html)
+  * [opscode-cookbooks/yum · GitHub](https://github.com/opscode-cookbooks/yum/)

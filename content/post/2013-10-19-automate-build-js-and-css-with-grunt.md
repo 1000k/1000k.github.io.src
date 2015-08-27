@@ -25,7 +25,7 @@ JS のユニットテスト、ファイルの結合＆難読化＆最小化な�
 
 やり方は以下の記事あたりを参考に。
 
-  * <a href="http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html', 'node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ']);" >node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ</a>
+  * [node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ](http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html)
 
 次に grunt-cli をグローバルにインストールします。
 
@@ -92,11 +92,11 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '/*! &lt;%= pkg.name %> &lt;%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
       },
       dist: {
         files: {
-          'app/webroot/js/merged.min.js': ['&lt;%= concat.dist.dest %>']
+          'app/webroot/js/merged.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
@@ -113,7 +113,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['&lt;%= jshint.files %>'],
+      files: ['<%= jshint.files %>'],
       tasks: ['concat', 'uglify']
     }
   });
@@ -134,8 +134,8 @@ module.exports = function(grunt) {
 
 詳しい記述方法は公式のガイドを参考に。
 
-  * <a href="http://gruntjs.com/configuring-tasks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/configuring-tasks', 'Configuring tasks &#8211; Grunt: The JavaScript Task Runner']);" >Configuring tasks &#8211; Grunt: The JavaScript Task Runner</a>
-  * <a href="http://gruntjs.com/creating-tasks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/creating-tasks', 'Creating tasks &#8211; Grunt: The JavaScript Task Runner']);" >Creating tasks &#8211; Grunt: The JavaScript Task Runner</a>
+  * [Configuring tasks - Grunt: The JavaScript Task Runner](http://gruntjs.com/configuring-tasks)
+  * [Creating tasks - Grunt: The JavaScript Task Runner](http://gruntjs.com/creating-tasks)
 
 あとは `grunt {タスク名}` と叩くだけで、指定したタスクが動きます。
 
@@ -147,12 +147,12 @@ module.exports = function(grunt) {
 
 ## 参考
 
-  * <a href="http://hamalog.tumblr.com/post/18137176043/grunt-js-css" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://hamalog.tumblr.com/post/18137176043/grunt-js-css', 'gruntで快適JS/CSSビルド生活 &#8211; Takazudo hamalog']);" >gruntで快適JS/CSSビルド生活 &#8211; Takazudo hamalog</a>
-  * <a href="http://gruntjs.com/getting-started" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/getting-started', 'Getting started &#8211; Grunt: The JavaScript Task Runner']);" >Getting started &#8211; Grunt: The JavaScript Task Runner</a>
-  * <a href="https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile', 'Sample Gruntfile · gruntjs/grunt Wiki']);" >Sample Gruntfile · gruntjs/grunt Wiki</a>
+  * [gruntで快適JS/CSSビルド生活 - Takazudo hamalog](http://hamalog.tumblr.com/post/18137176043/grunt-js-css)
+  * [Getting started - Grunt: The JavaScript Task Runner](http://gruntjs.com/getting-started)
+  * [Sample Gruntfile · gruntjs/grunt Wiki](https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile)
       * Gruntfile のサンプル。
-  * <a href="http://gruntjs.com/plugins/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/plugins/', 'Plugins &#8211; Grunt: The JavaScript Task Runner']);" >Plugins &#8211; Grunt: The JavaScript Task Runner</a>
+  * [Plugins - Grunt: The JavaScript Task Runner](http://gruntjs.com/plugins/)
       * grunt プラグインの一覧。
-      * 公式のものは &#8216;Show contrib plugins first&#8217; にチェックを入れれば出てくる。
-  * <a href="http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/', 'npm / package.json | Public Draft | Outlining and Researching for the Presentation']);" >npm / package.json | Public Draft | Outlining and Researching for the Presentation</a>
+      * 公式のものは 'Show contrib plugins first' にチェックを入れれば出てくる。
+  * [npm / package.json | Public Draft | Outlining and Researching for the Presentation](http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/)
       * package.json の基本。

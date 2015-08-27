@@ -11,7 +11,7 @@ tags:
   - SketchUp
   - プラグイン
 ---
-DL先: <a href="http://www.cad-addict.com/2009/08/sketchup-plugins-create-custom-windows.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.cad-addict.com/2009/08/sketchup-plugins-create-custom-windows.html', 'CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls']);" >CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls</a>
+DL先: [CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls](http://www.cad-addict.com/2009/08/sketchup-plugins-create-custom-windows.html)
 
   * 自由な形の窓を作成するプラグイン
   * 上の動画の通り、使い方は超簡単

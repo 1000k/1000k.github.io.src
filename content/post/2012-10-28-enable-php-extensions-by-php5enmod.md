@@ -77,7 +77,7 @@ $ sudo service apache2 restart
 
 ## 参考
 
-  * <a href="https://bugs.launchpad.net/ubuntu/+source/php-apc/+bug/994882" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://bugs.launchpad.net/ubuntu/+source/php-apc/+bug/994882', 'Bug #994882 “php5{en/dis}mod not available in php 5.3.10” : Bugs : “php-apc” package : Ubuntu']);" >Bug #994882 “php5{en/dis}mod not available in php 5.3.10” : Bugs : “php-apc” package : Ubuntu</a>
+  * [Bug #994882 “php5{en/dis}mod not available in php 5.3.10” : Bugs : “php-apc” package : Ubuntu](https://bugs.launchpad.net/ubuntu/+source/php-apc/+bug/994882)
 
 日頃CentOSばかり触っているとUbuntuルールにつまづきます。
 

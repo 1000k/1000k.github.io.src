@@ -45,5 +45,5 @@ svn diff -r {before}[:{after}] -x -b {path} | grep -E '^[+\-][[:blank:]]' | wc -
 
 # 参考
 
-  * <a href="http://openlab.dino.co.jp/2007/10/23/184825129.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://openlab.dino.co.jp/2007/10/23/184825129.html', 'svn diffで-wオプションを使う — ディノオープンラボラトリ']);" title="svn diffで-wオプションを使う — ディノオープンラボラトリ">svn diffで-wオプションを使う — ディノオープンラボラトリ</a>
-  * <a href="http://blog.enjoitech.jp/article/71" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.enjoitech.jp/article/71', 'Linux である文字を含む行を削除したい &#8211; Enjoi Blog']);" title="Linux である文字を含む行を削除したい - Enjoi Blog">Linux である文字を含む行を削除したい &#8211; Enjoi Blog</a>
+  * [svn diffで-wオプションを使う — ディノオープンラボラトリ](http://openlab.dino.co.jp/2007/10/23/184825129.html)
+  * [Linux である文字を含む行を削除したい - Enjoi Blog](http://blog.enjoitech.jp/article/71)

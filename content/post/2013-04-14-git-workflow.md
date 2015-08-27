@@ -127,9 +127,9 @@ $ git checkout -b 0.2.0 origin/0.2.0
 
 ここは git の内部構造を理解していないと飲み込めないかもしれません。
 
-<a href="http://www.slideshare.net/matsukaz/git-17499005" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.slideshare.net/matsukaz/git-17499005', 'いつやるの？Git入門']);" >いつやるの？Git入門</a> が簡潔に内部構造を説明しているので、目を通すことをオススメします。
+[いつやるの？Git入門](http://www.slideshare.net/matsukaz/git-17499005) が簡潔に内部構造を説明しているので、目を通すことをオススメします。
 
-### commit &#8211;amend
+### commit -amend
 
 後から前回のコミットに追加して変更をするやり方です。
 
@@ -172,10 +172,10 @@ git reset --hard HEAD^
 
 ## 参考
 
-  * <a href="http://d.hatena.ne.jp/nayutaya/20090519/1242701594" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/nayutaya/20090519/1242701594', 'gitのリモートブランチを使って作業を行う流れのメモ &#8211; 那由多屋 開発日誌']);" >gitのリモートブランチを使って作業を行う流れのメモ &#8211; 那由多屋 開発日誌</a>
-  * <a href="http://stackoverflow.com/questions/948354/git-push-current-branch" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/948354/git-push-current-branch', 'git push current branch &#8211; Stack Overflow']);" >git push current branch &#8211; Stack Overflow</a>
-  * <a href="http://transitive.info/article/git/command/tag/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://transitive.info/article/git/command/tag/', 'transitive.info &#8211; git tag 使い方']);" >transitive.info &#8211; git tag 使い方</a>
-  * <a href="http://qiita.com/items/e082d64f3f8b424e9b7d" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/items/e082d64f3f8b424e9b7d', 'fetch と pullの違い #git &#8211; Qiita']);" >fetch と pullの違い #git &#8211; Qiita</a>
-  * <a href="http://dqn.sakusakutto.jp/2012/11/git_pull.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dqn.sakusakutto.jp/2012/11/git_pull.html', 'Git pullを使うべきでない３つの理由 &#8211; DQNEO起業日記']);" >Git pullを使うべきでない３つの理由 &#8211; DQNEO起業日記</a>
-  * <a href="http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468', 'git commitをやり直しする＆取り消しする(「get commit &#8211;amend」と「git reset」) &#8211; hogehoge foobar Blog Style5']);" >git commitをやり直しする＆取り消しする(「get commit &#8211;amend」と「git reset」) &#8211; hogehoge foobar Blog Style5</a>
-  * <a href="http://www.slideshare.net/matsukaz/git-17499005" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.slideshare.net/matsukaz/git-17499005', 'いつやるの？Git入門']);" >いつやるの？Git入門</a>
+  * [gitのリモートブランチを使って作業を行う流れのメモ - 那由多屋 開発日誌](http://d.hatena.ne.jp/nayutaya/20090519/1242701594)
+  * [git push current branch - Stack Overflow](http://stackoverflow.com/questions/948354/git-push-current-branch)
+  * [transitive.info - git tag 使い方](http://transitive.info/article/git/command/tag/)
+  * [fetch と pullの違い #git - Qiita](http://qiita.com/items/e082d64f3f8b424e9b7d)
+  * [Git pullを使うべきでない３つの理由 - DQNEO起業日記](http://dqn.sakusakutto.jp/2012/11/git_pull.html)
+  * [git commitをやり直しする＆取り消しする(「get commit -amend」と「git reset」) - hogehoge foobar Blog Style5](http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468)
+  * [いつやるの？Git入門](http://www.slideshare.net/matsukaz/git-17499005)

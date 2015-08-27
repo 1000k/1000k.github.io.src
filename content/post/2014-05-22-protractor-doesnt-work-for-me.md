@@ -14,7 +14,7 @@ tags:
   - テスト
   - トラブルシューティング
 ---
-<a href="https://github.com/angular/angular-seed" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/angular/angular-seed', 'angular-seed']);" >angular-seed</a> を使って Angular.js の開発環境を作成していたのですが、どうにもこうにも e2e テストが動かなくてハマりました。
+[angular-seed](https://github.com/angular/angular-seed) を使って Angular.js の開発環境を作成していたのですが、どうにもこうにも e2e テストが動かなくてハマりました。
 
 エラーメッセージは以下のとおり。
 
@@ -96,4 +96,4 @@ Node.js はデバッグメッセージが雑なことが多いので苦手です
 
 ## 参考
 
-  * <a href="http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014', 'angularjs &#8211; How to run protractor? &#8211; Stack Overflow']);" >angularjs &#8211; How to run protractor? &#8211; Stack Overflow</a>
+  * [angularjs - How to run protractor? - Stack Overflow](http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014)

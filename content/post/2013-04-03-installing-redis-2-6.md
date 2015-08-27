@@ -10,13 +10,13 @@ tags:
   - Redis
   - チュートリアル
 ---
-なぜか<a href="http://redis.io/download" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://redis.io/download', '公式サイトのインストール手順']);" >公式サイトのインストール手順</a>はコンパイルまでで終わっているので、完全な手順をメモしておきます。
+なぜか[公式サイトのインストール手順](http://redis.io/download)はコンパイルまでで終わっているので、完全な手順をメモしておきます。
 
 <!--more-->
 
 ## ダウンロード
 
-最新のソースを <a href="http://redis.io/download" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://redis.io/download', 'Download – Redis']);" >Download – Redis</a> からダウンロードします。
+最新のソースを [Download – Redis](http://redis.io/download) からダウンロードします。
 
 以下、執筆時のバージョン (2.6.12) で話を進めます。
 
@@ -43,7 +43,7 @@ $ make
 ```
 
 
-参考: <a href="http://www.eschrade.com/page/undefined-reference-to-__sync_add_and_fetch_4/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.eschrade.com/page/undefined-reference-to-__sync_add_and_fetch_4/', 'undefined reference to `__sync_add_and_fetch_4′ when compiling Redis | ESchrade']);" >undefined reference to `__sync_add_and_fetch_4′ when compiling Redis | ESchrade</a>
+参考: [undefined reference to `__sync_add_and_fetch_4′ when compiling Redis | ESchrade](http://www.eschrade.com/page/undefined-reference-to-__sync_add_and_fetch_4/)
 
 ## インストール
 

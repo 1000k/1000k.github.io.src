@@ -13,7 +13,7 @@ tags:
   - UnitTest
   - トラブルシューティング
 ---
-<a href="http://phactory.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phactory.org/', 'Phactory']);" title="Phactory - A Database Factory for PHP Unit Tests">Phactory</a>はRoRライクな設計思想のため、テーブル名を勝手に複数形に変換（pluralize）します。
+[Phactory](http://phactory.org/)はRoRライクな設計思想のため、テーブル名を勝手に複数形に変換（pluralize）します。
 
 このせいで単数形のテーブル名がテストできない場合、下記のようにdefine()の前に**setInflector()**を使えば直ります。
 
@@ -33,4 +33,4 @@ tags:
 ```
 
 
-参考: <a href="https://github.com/chriskite/phactory/issues/3" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/chriskite/phactory/issues/3', 'Issue #3: Can&#8217;t create singular tables · chriskite/phactory · GitHub']);" title="Issue #3: Can't create singular tables · chriskite/phactory · GitHub">Issue #3: Can&#8217;t create singular tables · chriskite/phactory · GitHub</a>
+参考: [Issue #3: Can't create singular tables · chriskite/phactory · GitHub](https://github.com/chriskite/phactory/issues/3)

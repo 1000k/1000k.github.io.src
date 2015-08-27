@@ -13,7 +13,7 @@ tags:
 ---
 Rails 4 アプリを作ろうとして `rails new` コマンドを叩いたら、`bundle install` のフェーズが永遠に終わらず老人になりそうでした。
 
-どうやら gem リポジトリの <a href="http://rubygems.org" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://rubygems.org', 'http://rubygems.org']);" >http://rubygems.org</a> のレスポンスが遅すぎるようです。
+どうやら gem リポジトリの [http://rubygems.org](http://rubygems.org) のレスポンスが遅すぎるようです。
 
 そこで、Rails アプリの作成時は `bundler install` を省略し、Gemfile をいじってもっと早いリポジトリを参照するように変更したら、無事インストールできました。
 
@@ -52,5 +52,5 @@ options single-request-reopen
 
 ## 参考
 
-  * <a href="http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb', 'Ruby &#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &#8211; Qiita [キータ]']);" >Ruby &#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &#8211; Qiita [キータ]</a>
-  * <a href="http://www.ideaxidea.com/archives/2013/08/resolv.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.ideaxidea.com/archives/2013/08/resolv.html', 'Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA']);" >Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA</a>
+  * [Ruby - bundlerが遅い(Error Bundler::HTTPError)のを解決 - Qiita [キータ]](http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb)
+  * [Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA](http://www.ideaxidea.com/archives/2013/08/resolv.html)

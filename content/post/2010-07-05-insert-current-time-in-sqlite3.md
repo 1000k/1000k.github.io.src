@@ -11,9 +11,9 @@ tags:
   - SQLite3
   - お役立ち
 ---
-**datetime(&#8216;now&#8217;, &#8216;localtime&#8217;)**を使う。
+**datetime('now', 'localtime')**を使う。
 
-```
+```sql
 INSERT INTO posts (body, created, modified)
 VALUES ('ウソ文章', datetime('now', 'localtime'), datetime('now', 'localtime'));
 ```
@@ -23,4 +23,4 @@ VALUES ('ウソ文章', datetime('now', 'localtime'), datetime('now', 'localtime
 
 ### 参考
 
-<a href="http://www.tamandua-webtools.net/sqlite3-date.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.tamandua-webtools.net/sqlite3-date.html', 'SQLite3 での日付処理']);" title="SQLite3 での日付処理">SQLite3 での日付処理</a>
+[SQLite3 での日付処理](http://www.tamandua-webtools.net/sqlite3-date.html)

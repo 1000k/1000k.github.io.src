@@ -28,4 +28,4 @@ skip-character-set-client-handshake
 
 ## 参考
 
-  * <a href="http://ozamasa.naganoblog.jp/e1194854.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ozamasa.naganoblog.jp/e1194854.html', '(・∀・) ozamasa:MacのMySQLを5.5から5.6にバージョンアップしたときのメモ。']);" >(・∀・) ozamasa:MacのMySQLを5.5から5.6にバージョンアップしたときのメモ。</a>
+  * [(・∀・) ozamasa:MacのMySQLを5.5から5.6にバージョンアップしたときのメモ。](http://ozamasa.naganoblog.jp/e1194854.html)

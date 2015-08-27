@@ -37,4 +37,4 @@ htpasswd.exe -bc {パスワード生成先のパス} {ID} {パスワード}
 
 ## 参考
 
-<a href="http://d.hatena.ne.jp/ise_daisuke/20080412/1207978885" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/ise_daisuke/20080412/1207978885', 'xamppでローカルでBasic認証 &#8211; 絶対に読んではいけない日記']);" >xamppでローカルでBasic認証 &#8211; 絶対に読んではいけない日記</a>
+[xamppでローカルでBasic認証 - 絶対に読んではいけない日記](http://d.hatena.ne.jp/ise_daisuke/20080412/1207978885)

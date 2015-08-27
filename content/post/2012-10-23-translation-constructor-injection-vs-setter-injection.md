@@ -10,7 +10,7 @@ tags:
   - テスト
   - 訳
 ---
-<a href="http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/', 'Constructor Injection vs. Setter Injection']);" >Constructor Injection vs. Setter Injection</a>
+[Constructor Injection vs. Setter Injection](http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/)
 
 3年前の記事ですが、かなり役立つ知識だったので、一部補足しながら訳しました。コードを単体テスト可能にする（＝「接合点を作る」）ために知っておくべき内容です。
 
@@ -49,7 +49,7 @@ CreditCardProcessor processor = new CreditCardProcessor(?queue?, ?db?);
 
 ## どちらが良いか？
 
-一見すると、コンストラクタにごちゃごちゃ引数を渡さなくて済むぶん Setter Injection の方が楽に書けて良いように思えます。しかし Contructor Injection の方が優れている部分があるため、私は後者を選びます。それは、Constructor Injection はパラメータの順序を指定でき、<a href="http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/', 'Circular Dependency']);" title="Circular Dependency in constructors and Dependency Injection">Circular Dependency</a>（循環参照）に陥る危険が無いという点です。
+一見すると、コンストラクタにごちゃごちゃ引数を渡さなくて済むぶん Setter Injection の方が楽に書けて良いように思えます。しかし Contructor Injection の方が優れている部分があるため、私は後者を選びます。それは、Constructor Injection はパラメータの順序を指定でき、[Circular Dependency](http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/)（循環参照）に陥る危険が無いという点です。
 
 一般的なアプリは多くのクラスと連携します。そこに Setter Injection を採用すると、何度も setter の呼び出しを行う事になってしまいます。これだと連携するクラスの数が増えるたびに setter をコールする行を追加しなくてはいけません。面倒ですし、コールし忘れの危険性も増えます。さらに set する順番が決まっている場合は最悪です。
 

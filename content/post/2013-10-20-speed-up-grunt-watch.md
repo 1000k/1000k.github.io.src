@@ -13,7 +13,7 @@ tags:
   - TIPS
   - トラブルシューティング
 ---
-Grunt を使うからには <a href="https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn', 'grunt-contrib-watch']);" >grunt-contrib-watch</a> でファイルの変更を監視して自動ビルドしたいのですが、どうも遅い。
+Grunt を使うからには [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn) でファイルの変更を監視して自動ビルドしたいのですが、どうも遅い。
 
 ```
 $ grunt watch
@@ -100,5 +100,5 @@ OK
 
 ## 参考
 
-  * <a href="https://github.com/gruntjs/grunt-contrib-watch/issues/69" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/gruntjs/grunt-contrib-watch/issues/69', 'Why Watch is so slow compared to Regarde · Issue #69 · gruntjs/grunt-contrib-watch']);" >Why Watch is so slow compared to Regarde · Issue #69 · gruntjs/grunt-contrib-watch</a>
-  * <a href="https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn', 'gruntjs/grunt-contrib-watch#optionsnospawn']);" >gruntjs/grunt-contrib-watch#optionsnospawn</a>
+  * [Why Watch is so slow compared to Regarde · Issue #69 · gruntjs/grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch/issues/69)
+  * [gruntjs/grunt-contrib-watch#optionsnospawn](https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn)

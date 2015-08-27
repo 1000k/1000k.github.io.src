@@ -13,7 +13,7 @@ tags:
   - チュートリアル
   - テスト
 ---
-PHPUnit でファイルシステムのテストを行うとき便利な <a href="http://vfs.bovigo.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://vfs.bovigo.org/', 'vfsStream']);" >vfsStream</a> ですが、簡単なサンプルがあまり無かったので書いてみました。
+PHPUnit でファイルシステムのテストを行うとき便利な [vfsStream](http://vfs.bovigo.org/) ですが、簡単なサンプルがあまり無かったので書いてみました。
 
 <!--more-->
 
@@ -21,14 +21,14 @@ PHPUnit でファイルシステムのテストを行うとき便利な <a href=
 
   * ファイルの読み書きをテストする時に使うフレームワーク。
   * 仮想ファイルシステムを作成し、その中でディレクトリやファイルを操作できる。
-      * 実ファイルシステム: _file://&#8230;_
-      * 仮想ファイルシステム: _vfs://&#8230;_
+      * 実ファイルシステム: _file://…_
+      * 仮想ファイルシステム: _vfs://…_
   * 実ファイルを作成せずにテストできるので、テストファイルが散らばる可能性が無く、前回のテストのゴミを意識せずに済む。
   * ディレクトリやファイルの権限/ユーザー/オーナーも再現可能。
 
 ## インストール方法
 
-詳しくは以前書いた <a href="http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/', 'vfsStreamをインストールする | 1000g']);" >vfsStreamをインストールする | 1000g</a> を参照。
+詳しくは以前書いた [vfsStreamをインストールする | 1000g](http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/) を参照。
 
 ### PHP < 5.3 の場合
 
@@ -47,7 +47,7 @@ composer.json に以下のように書く。
 ```
 
 
-利用可能なバージョンは <a href="https://packagist.org/packages/mikey179/vfsStream" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://packagist.org/packages/mikey179/vfsStream', 'mikey179/vfsStream &#8211; Packagist']);" >mikey179/vfsStream &#8211; Packagist</a> を参照。
+利用可能なバージョンは [mikey179/vfsStream - Packagist](https://packagist.org/packages/mikey179/vfsStream) を参照。
 
 ## サンプルコード
 
@@ -103,9 +103,9 @@ class LoggerTest extends PHPUnit_Framework_Test {
 
 ## 参考
 
-  * <a href="http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/', 'Mocking the file system using PHPUnit and vfsStream – VG Tech']);" >Mocking the file system using PHPUnit and vfsStream – VG Tech</a>
+  * [Mocking the file system using PHPUnit and vfsStream – VG Tech](http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/)
       * vfsStream を使った様々なテストのサンプルがあります。
-  * <a href="https://github.com/mikey179/vfsStream/wiki" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/mikey179/vfsStream/wiki', 'Home · mikey179/vfsStream Wiki']);" >Home · mikey179/vfsStream Wiki</a>
+  * [Home · mikey179/vfsStream Wiki](https://github.com/mikey179/vfsStream/wiki)
       * 作成元の GitHub ページ。
-  * <a href="http://www.phpunit.de/manual/current/ja/test-doubles.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/current/ja/test-doubles.html', '第10章 テストダブル']);" >第10章 テストダブル</a>
+  * [第10章 テストダブル](http://www.phpunit.de/manual/current/ja/test-doubles.html)
       * PHPUnit のドキュメント内にある解説。

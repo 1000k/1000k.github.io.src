@@ -14,12 +14,12 @@ tags:
 ---
 jQuery Mobile 1.2 を使ってリストビューを動的に挿入する手順を紹介します。
 
-<a href="http://jquerymobile.com/test/docs/pages/page-dynamic.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/pages/page-dynamic.html', '公式マニュアル']);" title="jQuery Mobile Docs - Dynamically Injecting Pages">公式マニュアル</a>にもやり方は書いてあるのですが、本題と関係ない部分（リンクをクリックしたらその取得先を正規表現で取得するなど）が長く読みづらいので、もっと簡単なバージョンを書きました。
+[公式マニュアル](http://jquerymobile.com/test/docs/pages/page-dynamic.html)にもやり方は書いてあるのですが、本題と関係ない部分（リンクをクリックしたらその取得先を正規表現で取得するなど）が長く読みづらいので、もっと簡単なバージョンを書きました。
 
 ## やりたいこと
 
   1. 「Inject!」ボタンを押す
-  2. 「data-role=&#8221;content&#8221;」内にリストビューを挿入する
+  2. 「data-role="content"」内にリストビューを挿入する
   3. 画面遷移せずに表示する
 
 画面イメージはこんな感じです。↓
@@ -91,11 +91,11 @@ var $page = $("#page1"),
 
 ちなみにこの「:jqmData()」はjQuery Mobile 用のカスタムセレクタです。
 
-意味は「$page.childern(&#8220;[data-role=header]&#8221;)」と同じなのですが、jQM独自の「data-*」という要素をセレクトしたい場合はこちらを使う方が良いそうです。
+意味は「$page.childern("[data-role=header]")」と同じなのですが、jQM独自の「data-*」という要素をセレクトしたい場合はこちらを使う方が良いそうです。
 
 詳しくは下記のマニュアルを参照してください。
 
-<a href="http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/', 'jqmData | jQuery Mobile 1.1.0 日本語リファレンス']);" >jqmData | jQuery Mobile 1.1.0 日本語リファレンス</a>
+[jqmData | jQuery Mobile 1.1.0 日本語リファレンス](http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/)
 
 ### リストビューを生成する
 
@@ -160,7 +160,7 @@ var $listview = $("
 
 
       <p>
-        <a href="http://jquerymobile.com/test/docs/lists/lists-inset.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/lists/lists-inset.html', 'jQuery Mobile Docs &#8211; Lists with Form Controls']);" >jQuery Mobile Docs &#8211; Lists with Form Controls</a>
+        [jQuery Mobile Docs - Lists with Form Controls](http://jquerymobile.com/test/docs/lists/lists-inset.html)
       </p>
 
 
@@ -187,7 +187,7 @@ var $listview = $("
 
       <p>
         「$page.page()」は、遅延してページ要素を編集した後には必ず呼び出さねばならないようです。<br />
-        その後、「$content.find(&#8220;:jqmData(role=listview)&#8221;).listview();」でリストビューをスタイリングしています。
+        その後、「$content.find(":jqmData(role=listview)").listview();」でリストビューをスタイリングしています。
       </p>
 
 
@@ -215,7 +215,7 @@ var $listview = $("
 
 
       <p>
-        <a href="http://jquerymobile.com/test/docs/pages/page-dynamic.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/pages/page-dynamic.html', '公式ドキュメントのチュートリアル']);" title="jQuery Mobile Docs - Dynamically Injecting Pages">公式ドキュメントのチュートリアル</a>ではここで紹介した内容にプラスして、「クリックしたボタンのhref属性を解析してデータ取得先を分ける」手順が説明されています。むしろその部分が長すぎて理解しづらくなっている気がします。
+        [公式ドキュメントのチュートリアル](http://jquerymobile.com/test/docs/pages/page-dynamic.html)ではここで紹介した内容にプラスして、「クリックしたボタンのhref属性を解析してデータ取得先を分ける」手順が説明されています。むしろその部分が長すぎて理解しづらくなっている気がします。
       </p>
 
 
@@ -226,7 +226,7 @@ var $listview = $("
 
       <ul>
         <li>
-          <a href="http://jquerymobile.com/test/docs/pages/page-dynamic.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/pages/page-dynamic.html', 'jQuery Mobile Docs &#8211; Dynamically Injecting Pages']);" >jQuery Mobile Docs &#8211; Dynamically Injecting Pages</a>
+          [jQuery Mobile Docs - Dynamically Injecting Pages](http://jquerymobile.com/test/docs/pages/page-dynamic.html)
           <ul>
             <li>
               公式のチュートリアル。長い。
@@ -238,7 +238,7 @@ var $listview = $("
 
 
         <li>
-          <a href="http://jquerymobile.com/test/docs/api/methods.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/api/methods.html', 'jQuery Mobile Docs &#8211; Methods']);" >jQuery Mobile Docs &#8211; Methods</a>
+          [jQuery Mobile Docs - Methods](http://jquerymobile.com/test/docs/api/methods.html)
           <ul>
             <li>
               $.mobile.changePage() のリファレンス。
@@ -250,7 +250,7 @@ var $listview = $("
 
 
         <li>
-          <a href="http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/', 'jqmData | jQuery Mobile 1.1.0 日本語リファレンス']);" >jqmData | jQuery Mobile 1.1.0 日本語リファレンス</a>
+          [jqmData | jQuery Mobile 1.1.0 日本語リファレンス](http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/)
           <ul>
             <li>
               カスタムセレクタ「jqmData」の説明。
@@ -262,12 +262,12 @@ var $listview = $("
 
 
         <li>
-          <a href="http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/', 'リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス']);" >リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス</a>
+          [リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス](http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/)
         </li>
 
 
         <li>
-          <a href="http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views', 'jQuery Mobile: Organizing Information with List Views | Packt Publishing']);" >jQuery Mobile: Organizing Information with List Views | Packt Publishing</a>
+          [jQuery Mobile: Organizing Information with List Views | Packt Publishing](http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views)
           <ul>
             <li>
               公式ドキュメントのリストビューの解説ではコードが書いてありませんが、このページには書いています。
@@ -279,7 +279,7 @@ var $listview = $("
 
 
         <li>
-          <a href="http://stackoverflow.com/questions/805159/building-html-dom-using-jquery" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/805159/building-html-dom-using-jquery', 'Building HTML (~= DOM) using jQuery &#8211; Stack Overflow']);" >Building HTML (~= DOM) using jQuery &#8211; Stack Overflow</a>
+          [Building HTML (~= DOM) using jQuery - Stack Overflow](http://stackoverflow.com/questions/805159/building-html-dom-using-jquery)
           <ul>
             <li>
               jQueryのメソッドチェーンを使ってDOMを組み立てる方法。

@@ -23,9 +23,9 @@ $ git submodule update
 
 これで実ファイルがローカルにダウンロードされます。
 
-&#8230;らしいですが、うまくいきませんでした。
+…らしいですが、うまくいきませんでした。
 
-私の場合、&#8221;git submodule init&#8221; を叩いたら以下のエラーが出ました。
+私の場合、"git submodule init" を叩いたら以下のエラーが出ました。
 
 ```
 No submodule mapping found in .gitmodules for path 'chef-repo/cookbooks/ant'
@@ -34,7 +34,7 @@ No submodule mapping found in .gitmodules for path 'chef-repo/cookbooks/ant'
 
 原因はプロジェクト内の .gitmodules にありました。
 
-Windows で &#8220;git submodule add&#8221; した時に一部の path が &#8220;&#92;&#8221; という表記になっており、これを git がうまく解釈できなかった模様。
+Windows で "git submodule add" した時に一部の path が "&#92;" という表記になっており、これを git がうまく解釈できなかった模様。
 
 ```
 [submodule "chef-repo\\cookbooks\\java"]
@@ -43,12 +43,12 @@ Windows で &#8220;git submodule add&#8221; した時に一部の path が &#822
 ```
 
 
-&#8220;&#92;&#8221; を &#8220;/&#8221; に置換してやればOKです。```
+"&#92;" を "/" に置換してやればOKです。```
  [submodule "chef-repo/cookbooks/ava"] path = chef-repo/cookbooks/java url = git://github.com/opscode-cookbooks/java.git ```
 
 
-これで &#8220;git sudmoule init&#8221; が成功するようになりました。
+これで "git sudmoule init" が成功するようになりました。
 
 ## 参考
 
-  * <a href="http://edspencer.net/2008/04/git-clone-vs-git-submodule.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://edspencer.net/2008/04/git-clone-vs-git-submodule.html', 'Git clone vs Git submodule : Ed Spencer']);" >Git clone vs Git submodule : Ed Spencer</a>
+  * [Git clone vs Git submodule : Ed Spencer](http://edspencer.net/2008/04/git-clone-vs-git-submodule.html)

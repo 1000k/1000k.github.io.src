@@ -10,7 +10,7 @@ tags:
   - Jenkins
 ---
 Jenkinsは元々Javaのビルドを自動化するツールだったため、Javaの知識が無いと理解しづらい部分があります。
-  
+
 以下、必要になる知識を簡単にまとめておきます。
 
 <!--more-->
@@ -32,8 +32,8 @@ PHP等のスクリプト言語ではコンパイルは不要ですが、コン�
 
 参考:
 
-  * <a href="http://www.nitoyon.com/vc/tutorial/project/build_detail.htm" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.nitoyon.com/vc/tutorial/project/build_detail.htm', 'ビルドは何をしている？ [VC++の使い方]']);" >ビルドは何をしている？ [VC++の使い方]</a>
-  * <a href="http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)', 'ビルド (ソフトウェア) &#8211; Wikipedia']);" >ビルド (ソフトウェア) &#8211; Wikipedia</a>
+  * [ビルドは何をしている？ [VC++の使い方]](http://www.nitoyon.com/vc/tutorial/project/build_detail.htm)
+  * [ビルド (ソフトウェア) - Wikipedia](http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2))
 
 ## デプロイ
 
@@ -46,12 +46,12 @@ PHP や Ruby などのスクリプト言語なら、動作中のWebサーバー�
 ## Ant
 
   * ビルドツール。
-  * <a href="http://ja.wikipedia.org/wiki/Make" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/Make', 'GNU make']);" title="make - Wikipedia">GNU make</a> の代替。
+  * [GNU make](http://ja.wikipedia.org/wiki/Make) の代替。
   * ビルドファイル（build.xml）にビルドルールを書くことで、ビルドを自動化できます。
 
 参考:
 
-  * <a href="http://ja.wikipedia.org/wiki/Apache_Ant" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/Apache_Ant', 'Apache Ant &#8211; Wikipedia']);" >Apache Ant &#8211; Wikipedia</a>
+  * [Apache Ant - Wikipedia](http://ja.wikipedia.org/wiki/Apache_Ant)
 
 ## Maven
 
@@ -63,6 +63,6 @@ PHP や Ruby などのスクリプト言語なら、動作中のWebサーバー�
 
 参考:
 
-  * <a href="http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/', '2. Maven 入門 | TECHSCORE(テックスコア)']);" >2. Maven 入門 | TECHSCORE(テックスコア)</a>
-  * <a href="http://ja.wikipedia.org/wiki/Apache_Maven" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/Apache_Maven', 'Apache Maven &#8211; Wikipedia']);" >Apache Maven &#8211; Wikipedia</a>
-  * <a href="http://d.hatena.ne.jp/nsas454/20101013/1287328377" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/nsas454/20101013/1287328377', 'Apache MavenとAntの違いについて調べてみた &#8211; Shuichi’Tec']);" >Apache MavenとAntの違いについて調べてみた &#8211; Shuichi’Tec</a>
+  * [2. Maven 入門 | TECHSCORE(テックスコア)](http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/)
+  * [Apache Maven - Wikipedia](http://ja.wikipedia.org/wiki/Apache_Maven)
+  * [Apache MavenとAntの違いについて調べてみた - Shuichi’Tec](http://d.hatena.ne.jp/nsas454/20101013/1287328377)

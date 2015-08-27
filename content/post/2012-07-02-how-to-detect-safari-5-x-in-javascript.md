@@ -23,10 +23,10 @@ JavaScriptでSafari 5.x系のユーザーを判別する。
 ```
 window.onload = function() {
     var ua = navigator.userAgent.toLowerCase();
-    var is_safari = ua.indexOf('safari') > -1 &#038;&#038; ua.indexOf('version') > -1;
+    var is_safari = ua.indexOf('safari') > -1 && ua.indexOf('version') > -1;
     var version = is_safari ? ua.match(/version\/([\d\.]+)/i)[1].substr(0,1) : null;
 
-    if (is_safari &#038;&#038; version == '5') {
+    if (is_safari && version == '5') {
         // Safari 5.xユーザー向けの処理
         alert('You use Safari 5.x');
     } else {
@@ -38,7 +38,7 @@ window.onload = function() {
 
 ## 参考
 
-  * <a href="http://www.useragentstring.com/pages/useragentstring.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentstring.com/pages/useragentstring.php', 'UserAgentString.com &#8211; List of User Agent Strings']);" title="UserAgentString.com - List of User Agent Strings">UserAgentString.com &#8211; List of User Agent Strings</a>
+  * [UserAgentString.com - List of User Agent Strings](http://www.useragentstring.com/pages/useragentstring.php)
       * 各ブラウザのUserAgent文字列の一覧。
-      * <a href="http://www.useragentstring.com/pages/Safari/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentstring.com/pages/Safari/', 'Safari']);" title="UserAgentString.com - List of Safari User Agent Strings">Safari</a>
-      * <a href="http://www.useragentstring.com/pages/Chrome/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentstring.com/pages/Chrome/', 'Chrome']);" title="UserAgentString.com - List of Chrome User Agent Strings">Chrome</a>
+      * [Safari](http://www.useragentstring.com/pages/Safari/)
+      * [Chrome](http://www.useragentstring.com/pages/Chrome/)

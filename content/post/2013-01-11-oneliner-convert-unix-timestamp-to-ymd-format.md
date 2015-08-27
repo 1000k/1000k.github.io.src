@@ -34,7 +34,7 @@ Fri, 11 Jan 2013 11:48:03 +090
 
 date()関数の第1引数でフォーマットを変更できます。
 
-詳しくは <a href="http://php.net/manual/ja/function.date.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://php.net/manual/ja/function.date.php', 'PHP: date &#8211; Manual']);" title="PHP: date - Manual">PHP: date &#8211; Manual</a> を参照。
+詳しくは [PHP: date - Manual](http://php.net/manual/ja/function.date.php) を参照。
 
 ## Ruby
 
@@ -46,5 +46,5 @@ Fri Jan 11 11:48:03 +0900 2013
 
 ## 参考
 
-  * <a href="http://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash', 'How to convert timestamps to dates in bash? &#8211; Stack Overflow']);" title="How to convert timestamps to dates in bash? - Stack Overflow">How to convert timestamps to dates in bash? &#8211; Stack Overflow</a>
-  * <a href="http://open-groove.net/linux/change-unix-timestamp/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://open-groove.net/linux/change-unix-timestamp/', 'UNIX timestampを通常時刻に変換したい時 &#8211; OpenGroove']);" title="UNIX timestampを通常時刻に変換したい時 - OpenGroove">UNIX timestampを通常時刻に変換したい時 &#8211; OpenGroove</a>
+  * [How to convert timestamps to dates in bash? - Stack Overflow](http://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash)
+  * [UNIX timestampを通常時刻に変換したい時 - OpenGroove](http://open-groove.net/linux/change-unix-timestamp/)

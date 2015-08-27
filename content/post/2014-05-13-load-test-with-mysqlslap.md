@@ -75,5 +75,5 @@ Benchmark
 
 ## 参考
 
-  * <a href="http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション']);" >MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション</a>
-  * <a href="http://d.hatena.ne.jp/tetsuyai/20110209/1297253834" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/tetsuyai/20110209/1297253834', 'MySQL標準 負荷測定ツール mysqlslap &#8211; 祈れ、そして働け ～ Ora et labora']);" >MySQL標準 負荷測定ツール mysqlslap &#8211; 祈れ、そして働け ～ Ora et labora</a>
+  * [MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション](http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html)
+  * [MySQL標準 負荷測定ツール mysqlslap - 祈れ、そして働け ～ Ora et labora](http://d.hatena.ne.jp/tetsuyai/20110209/1297253834)

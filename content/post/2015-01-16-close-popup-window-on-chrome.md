@@ -19,7 +19,7 @@ tags:
   2. 子ウィンドウにある `<a onClick="window.open('about:blank','_self').close()">` リンクを叩く。
   3. 親・子ウィンドウ両方が固まってしまう。
 
-ウィンドウを閉じる時に単純な `window.close()` ではなく `window.open('about:blank','_self').close()` を使っているのは、IE/FF/Chrome いずれのブラウザーでも綺麗に閉じるための有名な Hack だったからです。詳細は <a href="http://kojikoji75.hatenablog.com/entry/2013/12/15/223839" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://kojikoji75.hatenablog.com/entry/2013/12/15/223839', 'JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote']);" >JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote</a> がわかりやすいです。
+ウィンドウを閉じる時に単純な `window.close()` ではなく `window.open('about:blank','_self').close()` を使っているのは、IE/FF/Chrome いずれのブラウザーでも綺麗に閉じるための有名な Hack だったからです。詳細は [JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote](http://kojikoji75.hatenablog.com/entry/2013/12/15/223839) がわかりやすいです。
 
 どうやらブラウザーのバージョンアップに伴い、このあたりの事情が変わってきてたようです。
 
@@ -88,6 +88,6 @@ Chrome だけハック版がうまく動かないという結果になりまし�
 
 ## 参考
 
-  * <a href="http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome', 'javascript - window.close and self.close do not close the window in Chrome - Stack Overflow']);" >javascript - window.close and self.close do not close the window in Chrome - Stack Overflow</a>
-  * <a href="http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit', 'javascript - How to detect chrome and safari browser (webkit) - Stack Overflow']);" >javascript - How to detect chrome and safari browser (webkit) - Stack Overflow</a>
-  * <a href="http://kojikoji75.hatenablog.com/entry/2013/12/15/223839" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://kojikoji75.hatenablog.com/entry/2013/12/15/223839', 'JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote']);" >JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote</a>
+  * [javascript - window.close and self.close do not close the window in Chrome - Stack Overflow](http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome)
+  * [javascript - How to detect chrome and safari browser (webkit) - Stack Overflow](http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit)
+  * [JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote](http://kojikoji75.hatenablog.com/entry/2013/12/15/223839)

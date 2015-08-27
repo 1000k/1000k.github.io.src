@@ -71,7 +71,7 @@ Google Maps と統合するサービスには致命的になりかねない不�
 
 
 <div data-role="dialog" data-theme="a" id="page2">
-  &lt;/form>
+  </form>
 
           <a href="gmap1.html" data-role="button" data-rel="back">back to gmap1.html</a>
 
@@ -118,7 +118,7 @@ $(document).bind("pageinit", function() {
 
 ## 参考
 
-  * <a href="http://jquerymobile.com/test/docs/api/globalconfig.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/api/globalconfig.html', 'jQuery Mobile Docs &#8211; Configuring default settings']);" >jQuery Mobile Docs &#8211; Configuring default settings</a>
+  * [jQuery Mobile Docs - Configuring default settings](http://jquerymobile.com/test/docs/api/globalconfig.html)
       * $.mobile.ajaxEnabled のリファレンス。
-  * <a href="http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial', 'jquery_ui_map_v_3_tutorial &#8211; jquery-ui-map &#8211; Google map v3 plugin for jQuery and jQuery Mobile &#8211; Google Project Hosting']);" >jquery_ui_map_v_3_tutorial &#8211; jquery-ui-map &#8211; Google map v3 plugin for jQuery and jQuery Mobile &#8211; Google Project Hosting</a>
+  * [jquery_ui_map_v_3_tutorial - jquery-ui-map - Google map v3 plugin for jQuery and jQuery Mobile - Google Project Hosting](http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial)
       * 「Help, my map is rendered incorrectly! (jQM)」に同じ不具合の対処法が書いてありました。

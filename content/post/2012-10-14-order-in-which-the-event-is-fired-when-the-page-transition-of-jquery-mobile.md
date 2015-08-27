@@ -15,13 +15,13 @@ tags:
 
 単純なページ間の遷移で発生するイベントの順番を確認しておきます。
 
-なお、イベント一覧は <a href="http://jquerymobile.com/demos/1.2.0/docs/api/events.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/demos/1.2.0/docs/api/events.html', 'jQuery Mobile Docs &#8211; Events']);" >jQuery Mobile Docs &#8211; Events</a> に記されています。
+なお、イベント一覧は [jQuery Mobile Docs - Events](http://jquerymobile.com/demos/1.2.0/docs/api/events.html) に記されています。
 
 <!--more-->
 
 ## 検証コード
 
-コードはgistにも公開してあります。→<a href="https://gist.github.com/3886193" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://gist.github.com/3886193', 'Verify the event firing timings of jQuery Mobile — Gist']);" >Verify the event firing timings of jQuery Mobile — Gist</a>
+コードはgistにも公開してあります。→[Verify the event firing timings of jQuery Mobile — Gist](https://gist.github.com/3886193)
 
 ### page1.html
 
@@ -46,7 +46,7 @@ tags:
 
 ### page2.html
 
-page1 とほぼ同じなので、[data-role=&#8221;page&#8221;]ブロック内だけ。
+page1 とほぼ同じなので、[data-role="page"]ブロック内だけ。
 
 ```
 <div data-role="page" data-theme="e" id="page2">
@@ -158,6 +158,6 @@ pagechange
 
 ## 参考
 
-  * <a href="http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html', 'jQuery Mobile Docs &#8211; Scripting pages']);" >jQuery Mobile Docs &#8211; Scripting pages</a>
-  * <a href="http://jquerymobile.com/demos/1.2.0/docs/api/events.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/demos/1.2.0/docs/api/events.html', 'jQuery Mobile Docs &#8211; Events']);" >jQuery Mobile Docs &#8211; Events</a>
-  * <a href="http://d.hatena.ne.jp/Naotsugu/20120103/1325568080" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/Naotsugu/20120103/1325568080', 'はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &#8211; etc9']);" >はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &#8211; etc9</a>
+  * [jQuery Mobile Docs - Scripting pages](http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html)
+  * [jQuery Mobile Docs - Events](http://jquerymobile.com/demos/1.2.0/docs/api/events.html)
+  * [はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ - etc9](http://d.hatena.ne.jp/Naotsugu/20120103/1325568080)

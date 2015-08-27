@@ -14,13 +14,13 @@ tags:
 
 実行サンプルは下記 URL で確認できます。
 
-<a href="http://jsfiddle.net/SWMME/1/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jsfiddle.net/SWMME/1/', 'Fixed Gradient Background &#8211; jsFiddle']);" >Fixed Gradient Background &#8211; jsFiddle</a>
+[Fixed Gradient Background - jsFiddle](http://jsfiddle.net/SWMME/1/)
 
 <!--more-->
 
 ## HTML
 
-```
+```html
 <div id="container">
   <h1>
     Fixed Gradient Background
@@ -32,7 +32,7 @@ tags:
 
 ## CSS
 
-```
+```css
 h1 { color: #fff; }
 
 #container {
@@ -57,4 +57,4 @@ h1 { color: #fff; }
 
 ## 参考
 
-  * <a href="http://stackoverflow.com/questions/5024143/filter-gradient-and-background-fixed" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/5024143/filter-gradient-and-background-fixed', 'css &#8211; filter: gradient and background: fixed &#8211; Stack Overflow']);" >css &#8211; filter: gradient and background: fixed &#8211; Stack Overflow</a>
+  * [css - filter: gradient and background: fixed - Stack Overflow](http://stackoverflow.com/questions/5024143/filter-gradient-and-background-fixed)

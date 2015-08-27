@@ -13,7 +13,7 @@ tags:
 ---
 CodeIgniterのSQLite3に対する迫害と、引き続き奮闘しています。
 
-CIでSQLite3を使えるようにする方法は <a href="http://blog.1000k.net/2010/05/26/codeigniter-codeigniter1-7-2-%E3%81%A7-sqlite3-%E3%81%AEdb%E3%82%92%E4%BD%BF%E3%81%86/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2010/05/26/codeigniter-codeigniter1-7-2-%E3%81%A7-sqlite3-%E3%81%AEdb%E3%82%92%E4%BD%BF%E3%81%86/', '先日']);" title="CodeIgniter1.7.2 で SQLite3 のDBを使う">先日</a> 紹介しました。
+CIでSQLite3を使えるようにする方法は [先日](http://blog.1000k.net/2010/05/26/codeigniter-codeigniter1-7-2-%E3%81%A7-sqlite3-%E3%81%AEdb%E3%82%92%E4%BD%BF%E3%81%86/) 紹介しました。
 
 CIにはテーブルのカラム名を取得する「$this->db->list\_fields()」というメソッドがありますが、上の方法で導入したPDOドライバでは使えません。どうやら list\_fields() メソッドから呼び出されるローカル関数が定義されていないようです。
 
@@ -23,7 +23,7 @@ CIにはテーブルのカラム名を取得する「$this->db->list\_fields()�
 
   1. /system/database/drivers/pdo/pdo_driver.php 内に、下記メソッドを追加する。（このメソッドはMySQLドライバ内の同一メソッドをSQLite用に修正したものです）
 
-```
+```php
 /**
  * Show column query
  *

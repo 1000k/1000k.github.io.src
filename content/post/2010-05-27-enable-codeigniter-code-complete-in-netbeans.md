@@ -35,7 +35,7 @@ index.php
 
 この「/nbproject」ディレクトリ内に、以下の「netbeans\_ci\_code_completion.php」というファイルを配置するだけです。
 
-```
+```php
 <?
 /**
 * @property CI_Loader $load
@@ -61,4 +61,4 @@ Class Controller {
 
 ### 参考
 
-<a href="http://www.mybelovedphp.com/2009/01/27/netbeans-revisited-code-completion-for-code-igniter-ii/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.mybelovedphp.com/2009/01/27/netbeans-revisited-code-completion-for-code-igniter-ii/', 'My Beloved PHP » Blog Archive » Netbeans revisited: Code Completion for Code-igniter II']);" title="My Beloved PHP » Blog Archive » Netbeans revisited: Code Completion for Code-igniter II">My Beloved PHP » Blog Archive » Netbeans revisited: Code Completion for Code-igniter II</a>
+[My Beloved PHP » Blog Archive » Netbeans revisited: Code Completion for Code-igniter II](http://www.mybelovedphp.com/2009/01/27/netbeans-revisited-code-completion-for-code-igniter-ii/)

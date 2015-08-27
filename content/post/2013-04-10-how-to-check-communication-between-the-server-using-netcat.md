@@ -16,14 +16,14 @@ tags:
 
 ## 使うコマンド
 
-受信側では &#8220;-l&#8221; (Listen mode) オプションを使い、待受状態にします。
+受信側では "-l" (Listen mode) オプションを使い、待受状態にします。
 
 ```
 $ nc -l {listenするポート番号}
 ```
 
 
-送信側は &#8220;-z&#8221; (Zero-I/O mode) オプションを使い、指定したポートに接続できるかテストします。
+送信側は "-z" (Zero-I/O mode) オプションを使い、指定したポートに接続できるかテストします。
 
 ```
 $ nc -v -z {受信側のIP} {受信側のポート番号}
@@ -41,7 +41,7 @@ host001 のポート 4949 に、host002 から疎通できるかどうかテス�
 ```
 
 
-&#8220;-v&#8221; でより多くのメッセージを出力し、&#8221;-k&#8221; でコネクションを永続化することができます。（&#8221;-k&#8221; を指定しないと1回受信するたびに nc が終了します）
+"-v" でより多くのメッセージを出力し、"-k" でコネクションを永続化することができます。（"-k" を指定しないと1回受信するたびに nc が終了します）
 
 ### 2. 送信側から接続できるか確かめる
 
@@ -68,5 +68,5 @@ Connection from host002 port 4949 [tcp/munin] accepted
 
 ## 参考
 
-  * <a href="http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982', 'Learn the many uses of netcat | TechRepublic']);" >Learn the many uses of netcat | TechRepublic</a>
-  * <a href="http://www.usupi.org/sysad/190.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.usupi.org/sysad/190.html', 'Netcat でネットワークをもう少し活用する &#8211; いますぐ実践! Linuxシステム管理 / Vol.190']);" >Netcat でネットワークをもう少し活用する &#8211; いますぐ実践! Linuxシステム管理 / Vol.190</a>
+  * [Learn the many uses of netcat | TechRepublic](http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982)
+  * [Netcat でネットワークをもう少し活用する - いますぐ実践! Linuxシステム管理 / Vol.190](http://www.usupi.org/sysad/190.html)

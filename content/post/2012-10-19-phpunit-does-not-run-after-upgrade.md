@@ -40,8 +40,8 @@ PHPUnit は PHP >= 5.3 での利用を強く推奨しており、PHP <= 5.2 の�
 
 私の環境は PHP 5.2.x だったため、今回のエラーに出くわしました。原因は phpunit/PHP_Timer がバージョンアップしたせいでした。
 
-  * <a href="https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php', 'phpunit/PHP_Timer-1.0.4']);" title="php-timer/PHP/Timer/Autoload.php at 1.0.4 · sebastianbergmann/php-timer">phpunit/PHP_Timer-1.0.4</a>
-  * <a href="https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php', 'phpunit/PHP_Timer-1.0.3']);" title="php-timer/PHP/Timer/Autoload.php at 1.0.3 · sebastianbergmann/php-timer">phpunit/PHP_Timer-1.0.3</a>
+  * [phpunit/PHP_Timer-1.0.4](https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php)
+  * [phpunit/PHP_Timer-1.0.3](https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php)
 
 上記のソースからおわかりのように、1.0.4 から匿名関数を使っています。これは PHP >= 5.3 でしか動きません。5.2系ではパースエラーになります。
 
@@ -55,7 +55,7 @@ PHP_Timer を再インストールすることで修正可能です。
 # pear uninstall -n phpunit/PHP_Timer
 "phpunit/PHP_Timer" can be optionally used by installed package pear/PHP_CodeSniffer
 warning: phpunit/PHP_Timer (version >= 1.0.2) is required by installed package "phpunit/phpcpd"
-warning: phpunit/PHP_Timer (version >= 1.0.1, version &lt;= 1.0.3) is required by installed package "phpunit/PHPUnit"
+warning: phpunit/PHP_Timer (version >= 1.0.1, version <= 1.0.3) is required by installed package "phpunit/PHPUnit"
 warning: phpunit/PHP_Timer should not be uninstalled, other installed packages depend on this package
 uninstall ok: channel://pear.phpunit.de/PHP_Timer-1.0.4
 
@@ -75,5 +75,5 @@ PHP 5.2系の人はうかつに 「pear upgrade phpunit/phpunit」なんてコ�
 
 ## 参考
 
-  * <a href="http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/', 'How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan']);" >How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan</a>
+  * [How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan](http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/)
       * pear パッケージのダウングレード方法はこちらを参考にしました。

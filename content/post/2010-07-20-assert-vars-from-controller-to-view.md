@@ -13,7 +13,7 @@ tags:
   - PHP
   - UnitTest
 ---
-公式マニュアルの「<a href="http://book.cakephp.org/ja/view/366/Testing-controllers" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/366/Testing-controllers', 'コントローラのテスト']);" title="コントローラのテスト :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.2コレクション :: The Cookbook">コントローラのテスト</a>」では、ただ単に変数をdebugして吐いてるだけで一切アサーションをしていません。これってテストと言えるのでしょうか？
+公式マニュアルの「[コントローラのテスト](http://book.cakephp.org/ja/view/366/Testing-controllers)」では、ただ単に変数をdebugして吐いてるだけで一切アサーションをしていません。これってテストと言えるのでしょうか？
 
 コントローラのメソッドが実行された後、仕様通りに値が入っているかチェックするにはどうすればいいでしょうか？
 
@@ -63,7 +63,7 @@ class UsosControllerTestCase extends CakeTestCase {
     var $fixtures = array('app.uso');
 
     function startTest() {
-        $this->Usos =&#038; new TestUsosController();
+        $this->Usos =& new TestUsosController();
         $this->Usos->constructClasses();
     }
 
@@ -109,6 +109,6 @@ array(1) {
 
 ### 参考
 
-  * <a href="http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case', 'Anatomy of a CakePHP Test Case | Mark Story']);" title="Anatomy of a CakePHP Test Case | Mark Story">Anatomy of a CakePHP Test Case | Mark Story</a>
-  * <a href="http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way', 'Testing CakePHP Controllers the hard way | Mark Story']);" title="Testing CakePHP Controllers the hard way | Mark Story">Testing CakePHP Controllers the hard way | Mark Story</a>
-  * <a href="http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031', 'Nabble &#8211; CakePHP &#8211; Getting viewVars set in a controller when using Mock objects during testing']);" title="Nabble - CakePHP - Getting viewVars set in a controller when using Mock objects during testing">Nabble &#8211; CakePHP &#8211; Getting viewVars set in a controller when using Mock objects during testing</a>
+  * [Anatomy of a CakePHP Test Case | Mark Story](http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case)
+  * [Testing CakePHP Controllers the hard way | Mark Story](http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way)
+  * [Nabble - CakePHP - Getting viewVars set in a controller when using Mock objects during testing](http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031)

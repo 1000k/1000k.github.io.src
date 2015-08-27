@@ -78,7 +78,7 @@ tags:
   * 環境構築を自動化する
   * 不要なコンポーネントを削除してスリム化する
 
-これについては私自身も経験があるので、別の記事で詳しく書く予定です。また、『<a href="http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4798116831&linkCode=as2&tag=1000k-22" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4798116831&linkCode=as2&tag=1000k-22', 'レガシーコード改善ガイド']);" >レガシーコード改善ガイド</a>』が素晴らしいアイディアを与えてくれるでしょう。
+これについては私自身も経験があるので、別の記事で詳しく書く予定です。また、『[レガシーコード改善ガイド](http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4798116831&linkCode=as2&tag=1000k-22)』が素晴らしいアイディアを与えてくれるでしょう。
 
 ### 逃げる
 

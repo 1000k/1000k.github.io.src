@@ -20,4 +20,4 @@ tags:
 
 ## 参考
 
-<a href="http://japanism.info/keyboard1.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://japanism.info/keyboard1.html', 'Caps Lock Key (キャプス ロック キー) 解除 パソコン関連のお悩み &#8211; カフィネット']);" >Caps Lock Key (キャプス ロック キー) 解除 パソコン関連のお悩み &#8211; カフィネット</a>
+[Caps Lock Key (キャプス ロック キー) 解除 パソコン関連のお悩み - カフィネット](http://japanism.info/keyboard1.html)

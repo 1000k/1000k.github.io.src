@@ -16,8 +16,8 @@ displayFieldというのは、CakePHPが自動で「これは画面に表示す�
 
 今bakeしようとしているテーブルにそうした名前のフィールドが見つからない場合、自分で指定しなければならない、ということのようです。
 
-自動で認識されるフィールド名と、それがどう利用されるかの関係は<a href="http://book.cakephp.org/ja/view/1014/Titles" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1014/Titles', 'Cookbook']);" title="タイトル :: データベースのテーブルを作成する :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook">Cookbook</a>に書いてありました。
+自動で認識されるフィールド名と、それがどう利用されるかの関係は[Cookbook](http://book.cakephp.org/ja/view/1014/Titles)に書いてありました。
 
 ### 参考
 
-<a href="http://cakephp.19694.n2.nabble.com/Cake-Console-Baking-Model-displayField-td4976131.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://cakephp.19694.n2.nabble.com/Cake-Console-Baking-Model-displayField-td4976131.html', 'Nabble &#8211; CakePHP &#8211; Cake Console Baking Model displayField?']);" title="Nabble - CakePHP - Cake Console Baking Model displayField?">Nabble &#8211; CakePHP &#8211; Cake Console Baking Model displayField?</a>
+[Nabble - CakePHP - Cake Console Baking Model displayField?](http://cakephp.19694.n2.nabble.com/Cake-Console-Baking-Model-displayField-td4976131.html)

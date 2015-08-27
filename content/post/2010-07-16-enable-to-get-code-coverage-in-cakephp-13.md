@@ -16,9 +16,9 @@ CakePHPでは「http://{アプリURL}/test.php」で単体テスト用ページ�
 
 どうやらXAMPP 1.7.3に含まれているxDebugのバージョンが原因のようでした(v2.0.6 rc)。そこで最新のxDebug 2.1.0 を入れたところ、無事取得できるようになりました。
 
-xDebugの入れ替え方ですが、<a href="http://www.xdebug.org/find-binary.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.xdebug.org/find-binary.php', 'Xdebug: Support; Tailored Installation Instructions']);" title="Xdebug: Support; Tailored Installation Instructions">Xdebug: Support; Tailored Installation Instructions</a>にしたがってやるのが一番わかりやすいです。ここのフォームにphpinfoの結果をまるごとコピペするだけで、DLするファイルからphp.iniの設定まですべてやり方を出してくれます。
+xDebugの入れ替え方ですが、[Xdebug: Support; Tailored Installation Instructions](http://www.xdebug.org/find-binary.php)にしたがってやるのが一番わかりやすいです。ここのフォームにphpinfoの結果をまるごとコピペするだけで、DLするファイルからphp.iniの設定まですべてやり方を出してくれます。
 
 ### 参考
 
-  * <a href="http://www.ryuzee.com/contents/blog/2430" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.ryuzee.com/contents/blog/2430', '[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com']);" title="[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com">[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com</a>
-  * <a href="http://www.xdebug.org/find-binary.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.xdebug.org/find-binary.php', 'Xdebug: Support; Tailored Installation Instructions']);" title="Xdebug: Support; Tailored Installation Instructions">Xdebug: Support; Tailored Installation Instructions</a>
+  * [[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com](http://www.ryuzee.com/contents/blog/2430)
+  * [Xdebug: Support; Tailored Installation Instructions](http://www.xdebug.org/find-binary.php)

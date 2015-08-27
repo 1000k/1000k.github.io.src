@@ -10,9 +10,9 @@ tags:
   - PHP
   - バグ
 ---
-# 現象
+## 現象
 
-```
+```php
 <?php
 
 // ... 処理 ...
@@ -29,6 +29,6 @@ tags:
 
 閉じタグは書かなくてもいい。というか、書くと余計なエラーの原因になるので、**PHPの閉じタグ書くべきではない。**
 
-# 参考
+## 参考
 
-<a href="http://d.hatena.ne.jp/fbis/20090716/1247714151" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/fbis/20090716/1247714151', 'PHPの閉じタグは心の臓に悪いから使わないで &#8211; Unknown::Programming']);" title="PHPの閉じタグは心の臓に悪いから使わないで - Unknown::Programming">PHPの閉じタグは心の臓に悪いから使わないで &#8211; Unknown::Programming</a>
+[PHPの閉じタグは心の臓に悪いから使わないで - Unknown::Programming](http://d.hatena.ne.jp/fbis/20090716/1247714151)

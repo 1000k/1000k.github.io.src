@@ -98,6 +98,6 @@ header() 関数を使ったメソッドのテストをする際には覚えて�
 
 ## 参考
 
-  * <a href="http://www.phpunit.de/manual/3.7/ja/appendixes.annotations.html#appendixes.annotations.runInSeparateProcess" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.7/ja/appendixes.annotations.html#appendixes.annotations.runInSeparateProcess', '付録B アノテーション']);" >付録B アノテーション</a>
-  * <a href="http://www.php.net/manual/ja/function.header.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.php.net/manual/ja/function.header.php', 'PHP: header &#8211; Manual']);" >PHP: header &#8211; Manual</a>
-  * <a href="http://stackoverflow.com/questions/9745080/test-php-headers-with-phpunit" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/9745080/test-php-headers-with-phpunit', 'unit testing &#8211; Test PHP headers with PHPunit &#8211; Stack Overflow']);" >unit testing &#8211; Test PHP headers with PHPunit &#8211; Stack Overflow</a>
+  * [付録B アノテーション](http://www.phpunit.de/manual/3.7/ja/appendixes.annotations.html#appendixes.annotations.runInSeparateProcess)
+  * [PHP: header - Manual](http://www.php.net/manual/ja/function.header.php)
+  * [unit testing - Test PHP headers with PHPunit - Stack Overflow](http://stackoverflow.com/questions/9745080/test-php-headers-with-phpunit)

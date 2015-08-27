@@ -59,13 +59,13 @@ _page3.php_
 
 
 <p>
-  <a href="http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5', 'What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow']);" title="What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow">What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow</a>
+  [What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow](http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5)
 </p>
 
 
 <blockquote>
   <p>
-    Safari is filling in the form field using autofill behaviour. You probably have the &#8220;Other forms&#8221; option enabled in your preferences. Even Apple recommend you turn this feature off since it can be used for stealing private information.
+    Safari is filling in the form field using autofill behaviour. You probably have the "Other forms" option enabled in your preferences. Even Apple recommend you turn this feature off since it can be used for stealing private information.
 
   </p>
 </blockquote>
@@ -77,7 +77,7 @@ _page3.php_
 
 
 <p>
-  上記のベストアンサーでは、<strong>formタグにautocomplete=&#8221;off&#8221;を指定してやれば直る</strong>とアドバイスされています。<br />
+  上記のベストアンサーでは、<strong>formタグにautocomplete="off"を指定してやれば直る</strong>とアドバイスされています。<br />
   実際に試してみたところ、正しくPOSTできるようになりました。
 </p>
 
@@ -110,12 +110,12 @@ _page3.php_
 
 <ul>
   <li>
-    <a href="http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5', 'What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow']);" title="What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow">What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow</a>
+    [What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow](http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5)
   </li>
 
 
   <li>
-    <a href="http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html', 'Safari 5.1.7 &#8211; Changelog &#8211; Softpedia']);" title="Safari 5.1.7 - Changelog - Softpedia">Safari 5.1.7 &#8211; Changelog &#8211; Softpedia</a>
+    [Safari 5.1.7 - Changelog - Softpedia](http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html)
     <ul>
       <li>
         Safariの更新履歴一覧。

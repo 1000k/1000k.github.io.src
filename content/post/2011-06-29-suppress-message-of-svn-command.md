@@ -17,7 +17,7 @@ Subversion 1.6にアップグレードしてからというもの、何かsvnコ
 -----------------------------------------------------------------------
 ATTENTION!  Your password for authentication realm:
 
-&lt;http://localhost:80> TEST SVN repository
+<http://localhost:80> TEST SVN repository
 
 can only be stored to disk unencrypted!  You are advised to configure
 your system so that Subversion can store passwords encrypted, if
@@ -50,5 +50,5 @@ store-plaintext-passwords = no
 
 # 参考
 
-  * <a href="http://www.linuxforu.com/previews/subversion-16-security-improvements-illustrated/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.linuxforu.com/previews/subversion-16-security-improvements-illustrated/', 'Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine']);" title="Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine">Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine</a>
-  * <a href="http://d.hatena.ne.jp/fumokmm/20070820/1187575030" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/fumokmm/20070820/1187575030', 'Subversionのユーザ名とパスワードの記録場所 &#8211; No Programming, No Life']);" title="Subversionのユーザ名とパスワードの記録場所 - No Programming, No Life">Subversionのユーザ名とパスワードの記録場所 &#8211; No Programming, No Life</a>
+  * [Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine](http://www.linuxforu.com/previews/subversion-16-security-improvements-illustrated/)
+  * [Subversionのユーザ名とパスワードの記録場所 - No Programming, No Life](http://d.hatena.ne.jp/fumokmm/20070820/1187575030)

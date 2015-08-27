@@ -83,13 +83,13 @@ mysql> SHOW WARNINGS;
 ```
 
 
-「不正なDOUBLE型の値&#8217;uhouho&#8217;を切り捨てました」と書いてあります。どうやら、MySQLの_暗黙の型変換_が悪さをしているようです。
+「不正なDOUBLE型の値'uhouho'を切り捨てました」と書いてあります。どうやら、MySQLの_暗黙の型変換_が悪さをしているようです。
 
-<a href="http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換']);" title="MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換">MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換</a> に淡々と箇条書きされていることを引用します。
+[MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換](http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html) に淡々と箇条書きされていることを引用します。
 
 >   * 比較の演算の両方の引数がストリングの場合、それらはストリングとして比較されます。
 >   * 両方の引数が整数の場合、それらは整数として比較されます。
->   * &#8230; 中略 &#8230;
+>   * … 中略 …
 >   * 他のすべてのケースでは、引数は浮動少数点 ( 実 ) 数として比較されます。
 
 ```
@@ -110,10 +110,10 @@ mysql> SELECT 0 = 'x6';
 
 ## 参考
 
-  * <a href="http://d.hatena.ne.jp/hnw/20120405" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/hnw/20120405', 'MySQLの文字列型から数値型への自動型変換が意味不明すぎる &#8211; hnwの日記']);" title="MySQLの文字列型から数値型への自動型変換が意味不明すぎる - hnwの日記">MySQLの文字列型から数値型への自動型変換が意味不明すぎる &#8211; hnwの日記</a>
+  * [MySQLの文字列型から数値型への自動型変換が意味不明すぎる - hnwの日記](http://d.hatena.ne.jp/hnw/20120405)
       * 文字列が浮動小数点に切り替えられる問題を詳しく解説。
-  * <a href="http://www.tokumaru.org/d/20090924.html#p01" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.tokumaru.org/d/20090924.html#p01', 'undefined &#8211; 徳丸浩の日記(2009-09-24)']);" title="undefined - 徳丸浩の日記(2009-09-24)">undefined &#8211; 徳丸浩の日記(2009-09-24)</a>
+  * [undefined - 徳丸浩の日記(2009-09-24)](http://www.tokumaru.org/d/20090924.html#p01)
       * SQLインジェクション対策時にはまりやすいことの説明。値を文字列にキャストしているときに遭遇しうる不具合について解説。
-  * <a href="http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード']);" title="MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード">MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード</a>
+  * [MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード](http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html)
       * 値チェックのモード。不正な日付や0除算などのチェックを厳格にできる。
-  * <a href="http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換']);" title="MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換">MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換</a>
+  * [MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換](http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html)

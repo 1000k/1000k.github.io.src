@@ -16,9 +16,9 @@ defineで定義するパターンと、連想配列で定義するパターン�
 
 ### defineで定義する方法
 
-1&#46; **/app/config/bootstrap.php** に下記を追加する
+1. **/app/config/bootstrap.php** に下記を追加する
 
-```
+```php
 // /app/config/bootstrap.php
 <?php
 config(‘const’);
@@ -26,9 +26,9 @@ config(‘const’);
 ```
 
 
-2&#46; **/app/config/const.php** に定義したい定数を追加する
+2. **/app/config/const.php** に定義したい定数を追加する
 
-```
+```php
 // /app/config/const.php
 define(’USO’,'800’);
 ```
@@ -38,9 +38,9 @@ define(’USO’,'800’);
 
 ### 連想配列で定義する方法
 
-1&#46; app/config/ 配下に、任意のコンフィグファイルを作成します。ここでは **hige.php** とします。
+1. app/config/ 配下に、任意のコンフィグファイルを作成します。ここでは **hige.php** とします。
 
-```
+```php
 // app/config/hige.php
 <?php
 $config["Band1"] = array(
@@ -64,14 +64,14 @@ $config["Band2"] = array(
 ```
 
 
-2&#46; **app/config/bootstrap.php** に下の行を追加します。
+2. **app/config/bootstrap.php** に下の行を追加します。
 
-```
+```php
 Configure::load("hige");
 ```
 
 
-3&#46; これで任意のスクリプトから設定した値を読み込めるようになりました。例えばコンソールに出力する場合、下記のようになります。
+3. これで任意のスクリプトから設定した値を読み込めるようになりました。例えばコンソールに出力する場合、下記のようになります。
 
 ```
 // app/vendors/shells/moja.php
@@ -113,6 +113,6 @@ Miles Davis Quintet
 
 ### 参考
 
-  * <a href="http://php.sunvisor.net/2008/01/configure.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://php.sunvisor.net/2008/01/configure.html', 'アプリケーション独自の設定情報(Configureクラス) &#8211; PHP学習日記']);" title="アプリケーション独自の設定情報(Configureクラス) - PHP学習日記">アプリケーション独自の設定情報(Configureクラス) &#8211; PHP学習日記</a>
-  * <a href="http://blog.ne2ma2.com/archives/154" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.ne2ma2.com/archives/154', '【CakePHP】独自の定数の書き方 | ねねとまつの小部屋']);" title="【CakePHP】独自の定数の書き方 | ねねとまつの小部屋">【CakePHP】独自の定数の書き方 | ねねとまつの小部屋</a>
-  * <a href="http://book.cakephp.org/ja/view/1565/Library-Classes" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1565/Library-Classes', 'ライブラリクラス :: 1.2から1.3への移行ガイド :: 付録 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="ライブラリクラス :: 1.2から1.3への移行ガイド :: 付録 :: マニュアル :: 1.3コレクション :: The Cookbook">ライブラリクラス :: 1.2から1.3への移行ガイド :: 付録 :: マニュアル :: 1.3コレクション :: The Cookbook</a>
+  * [アプリケーション独自の設定情報(Configureクラス) - PHP学習日記](http://php.sunvisor.net/2008/01/configure.html)
+  * [【CakePHP】独自の定数の書き方 | ねねとまつの小部屋](http://blog.ne2ma2.com/archives/154)
+  * [ライブラリクラス :: 1.2から1.3への移行ガイド :: 付録 :: マニュアル :: 1.3コレクション :: The Cookbook](http://book.cakephp.org/ja/view/1565/Library-Classes)

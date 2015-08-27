@@ -152,7 +152,7 @@ sshデーモンを再起動して変更を反映します。
 
 初期状態では4つのデーモンしか自動起動設定になっておらず、特に停止するようなデーモンはありません。
 
-参考: <a href="http://www.cloudcore.jp/vps/spec/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.cloudcore.jp/vps/spec/', 'スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ']);" >スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ</a>
+参考: [スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ](http://www.cloudcore.jp/vps/spec/)
 
 # ファイアーウォールの構築
 
@@ -251,13 +251,13 @@ FTPクライアントで10022番ポートにSFTP接続可能になっている�
 
 # 参考
 
-  * <a href="http://tanaka.sakura.ad.jp/archives/001065.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://tanaka.sakura.ad.jp/archives/001065.html', 'CentOSをサーバーとして活用するための基本的な設定 &#8211; さくらインターネット創業日記']);" >CentOSをサーバーとして活用するための基本的な設定 &#8211; さくらインターネット創業日記</a>
+  * [CentOSをサーバーとして活用するための基本的な設定 - さくらインターネット創業日記](http://tanaka.sakura.ad.jp/archives/001065.html)
       * さくらの社長による、自社のVPSの初期設定方法
-  * <a href="http://d.hatena.ne.jp/a__z/20071011" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/a__z/20071011', 'CentOS:sudo を設定する &#8211; 日々のメモ']);" >CentOS:sudo を設定する &#8211; 日々のメモ</a>
-  * <a href="http://weble.org/2011/05/16/sakura-vps-and-centos" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://weble.org/2011/05/16/sakura-vps-and-centos', 'はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル']);" >はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル</a>
+  * [CentOS:sudo を設定する - 日々のメモ](http://d.hatena.ne.jp/a__z/20071011)
+  * [はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル](http://weble.org/2011/05/16/sakura-vps-and-centos)
       * LAMP環境の構築手順も
-  * <a href="http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/', 'さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ']);" >さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ</a>
-  * <a href="http://www.searchman.info/linux/1070.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.searchman.info/linux/1070.html', 'クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。']);" >クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。</a>
+  * [さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ](http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/)
+  * [クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。](http://www.searchman.info/linux/1070.html)
       * vsftpdの設定方法
-  * <a href="http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html', '評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント']);" >評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント</a>
-  * <a href="http://www.cloudcore.jp/vps/spec/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.cloudcore.jp/vps/spec/', 'スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ']);" >スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ</a>
+  * [評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント](http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html)
+  * [スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ](http://www.cloudcore.jp/vps/spec/)

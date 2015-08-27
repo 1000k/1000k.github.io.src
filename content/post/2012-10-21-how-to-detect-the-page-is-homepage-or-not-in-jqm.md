@@ -65,4 +65,4 @@ jQuery Mobile では data-* 属性を取得する時にはカスタムセレク�
 
 ## 参考
 
-<a href="http://jquerymobile.com/test/docs/api/methods.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/api/methods.html', 'jQuery Mobile Docs &#8211; Methods']);" >jQuery Mobile Docs &#8211; Methods</a>
+[jQuery Mobile Docs - Methods](http://jquerymobile.com/test/docs/api/methods.html)

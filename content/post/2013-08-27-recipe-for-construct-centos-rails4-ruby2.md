@@ -16,7 +16,7 @@ tags:
   - Ruby on Rails
   - Vagrant
 ---
-<a href="https://github.com/1000k/rails_sandbox" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/1000k/rails_sandbox', '1000k/rails_sandbox']);" >1000k/rails_sandbox</a>
+[1000k/rails_sandbox](https://github.com/1000k/rails_sandbox)
 
 Vagrant を使って以下の環境を速攻で構築するレシピを作りました。
 
@@ -24,6 +24,6 @@ Vagrant を使って以下の環境を速攻で構築するレシピを作りま
   * Ruby 2.0.0
   * Ruby on Rails 4.0.0
 
-使い方は <a href="https://github.com/1000k/rails_sandbox/blob/master/README.md" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/1000k/rails_sandbox/blob/master/README.md', 'README']);" >README</a> に書いてある通り、vagrant-berkshelf プラグインをインストールして `vagrant up` するだけです。
+使い方は [README](https://github.com/1000k/rails_sandbox/blob/master/README.md) に書いてある通り、vagrant-berkshelf プラグインをインストールして `vagrant up` するだけです。
 
 最近ようやく第2言語として Ruby が使えるようになってきたので、ここいらで Rails を使いこなせるようになりたいです。

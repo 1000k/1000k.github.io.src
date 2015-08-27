@@ -16,7 +16,7 @@ tags:
 ---
 2009年6月12日の記事でだいぶ古いのですが、CakePHP のコードを改善する TIPS があったので訳してみました。
 
-<a href="http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions', 'Simplifying Controller logic with Exceptions | Mark Story']);" title="Simplifying Controller logic with Exceptions | Mark Story">Simplifying Controller logic with Exceptions | Mark Story</a>
+[Simplifying Controller logic with Exceptions | Mark Story](http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions)
 
 要約すると、**「モデル内で例外を吐くようにすると、エラーコードが読みやすくなり、コントローラのテストもしやすくなるよ」**ということです。
 

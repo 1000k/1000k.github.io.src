@@ -10,7 +10,8 @@ tags:
   - WordPress
   - プラグイン
 ---
-# きっかけ
+きっかけ
+----
 
 WordPressデフォルトのテキストエディタは以下の理由で使いづらいです。
 
@@ -20,11 +21,13 @@ WordPressデフォルトのテキストエディタは以下の理由で使い�
 
 wiki記法なら多少は楽になるだろうと思い、「WP MarkItUp! WordPress plugin」プラグインを導入してみました。
 
-# 導入環境
+導入環境
+----
 
   * WordPress 2.9.2
 
-# 手順
+手順
+----
 
 WordPress内のプラグインインストーラーだけで完結します。
 
@@ -38,22 +41,8 @@ WordPress内のプラグインインストーラーだけで完結します。
 
 あとはいつもの編集画面がMarkDown用に変わっているので、好きに書けばいいでしょう。
 
-初めてMarkDown記法を使ってみましたが、悪くないです。記法の詳細は <a href="http://bono.s206.xrea.com/2007/01/312-markdown_syntax/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://bono.s206.xrea.com/2007/01/312-markdown_syntax/', 'power source* » WP: PHP Markdown 記法早見表（的なもの）']);" title="power source* » WP: PHP Markdown 記法早見表（的なもの）">power source* » WP: PHP Markdown 記法早見表（的なもの）</a> あたりを見れば十分です。
+初めてMarkDown記法を使ってみましたが、悪くないです。記法の詳細は [power source* » WP: PHP Markdown 記法早見表（的なもの）](http://bono.s206.xrea.com/2007/01/312-markdown_syntax/) あたりを見れば十分です。
 
-# トラブルシューティング
-
-## 「Syntax Highlighter」と競合する場合
-
-このブログでは「Syntax Highlighter for WordPress」を入れていますが、&#91;code]～[/code]ブロック内までMarkDown記法と解釈され、おかしな表示になることがあります。
-
-そんなときは、&#91;code]～[/code] をdivブロックで囲ってやると、MarkDownが無視して正常に表示されます。
-
-```
-```
- ... ```
-
-
-
-<p>
-  参考: <a href="http://wordpress.org/support/topic/293458" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://wordpress.org/support/topic/293458', 'WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin']);" title="WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin">WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin</a>
-</p>
+参考
+----
+- [WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin](http://wordpress.org/support/topic/293458)

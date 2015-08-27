@@ -18,7 +18,7 @@ tags:
 vmstatの値をファイルに出力したいとき、次のコマンドが使えます。
 
 ```
-nohup vmstat -n -S M 1 | awk '{ print strftime("%Y/%m/%d %H:%M:%S"), $0 } { system(":") }' >> /path/to/log &#038;
+nohup vmstat -n -S M 1 | awk '{ print strftime("%Y/%m/%d %H:%M:%S"), $0 } { system(":") }' >> /path/to/log &
 ```
 
 
@@ -45,6 +45,6 @@ $ kill {上で出てきたpid}
 
 # 参考
 
-  * <a href="http://babyp.blog55.fc2.com/blog-entry-446.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://babyp.blog55.fc2.com/blog-entry-446.html', 'サーバのリソースを定期的に出力しとく方法：なんとなしの日記']);" >サーバのリソースを定期的に出力しとく方法：なんとなしの日記</a>
-  * <a href="http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919', '（今さら） vmstat の結果に時間をつけてファイルに出力する &#8211; あしのあしあと']);" >（今さら） vmstat の結果に時間をつけてファイルに出力する &#8211; あしのあしあと</a>
-  * <a href="http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/', '【 nohup 】 ログアウトした後もコマンドを実行し続ける &#8211; Linuxコマンド集：ITpro']);" >【 nohup 】 ログアウトした後もコマンドを実行し続ける &#8211; Linuxコマンド集：ITpro</a>
+  * [サーバのリソースを定期的に出力しとく方法：なんとなしの日記](http://babyp.blog55.fc2.com/blog-entry-446.html)
+  * [（今さら） vmstat の結果に時間をつけてファイルに出力する - あしのあしあと](http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919)
+  * [【 nohup 】 ログアウトした後もコマンドを実行し続ける - Linuxコマンド集：ITpro](http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/)

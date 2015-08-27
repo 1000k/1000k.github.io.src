@@ -11,7 +11,7 @@ tags:
   - PHPMD
   - トラブルシューティング
 ---
-<a href="http://phpmd.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpmd.org/', 'PHPMD (PHP Mess Detector)']);" >PHPMD (PHP Mess Detector)</a> は、PHP のコードを静的解析して、潜在的なバグや無意味なブロックを発見してくれるツールです。
+[PHPMD (PHP Mess Detector)](http://phpmd.org/) は、PHP のコードを静的解析して、潜在的なバグや無意味なブロックを発見してくれるツールです。
 
 が、しばしば問題ないブロックにもケチをつけてきます。
 
@@ -35,7 +35,7 @@ public function setUp() {
 
 ```
 public function step() {
-    if ($this->find('count') &lt; 1) {
+    if ($this->find('count') < 1) {
         $this->foo();
     } else {
         // 警告: The method step uses an else expression. Else is never necessary and you can simplify the code to work without else.
@@ -52,5 +52,5 @@ PHPMD はヒステリー気味なので、レポート結果をあまり深刻�
 
 ## 参考
 
-  * <a href="http://phpmd.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpmd.org/', 'PHPMD &#8211; PHP Mess Detector']);" >PHPMD &#8211; PHP Mess Detector</a>
-  * <a href="http://stackoverflow.com/questions/18604179/phpmd-avoid-static-access-to-parent" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/18604179/phpmd-avoid-static-access-to-parent', 'php &#8211; PHPMD avoid static access to parent &#8211; Stack Overflow']);" >php &#8211; PHPMD avoid static access to parent &#8211; Stack Overflow</a>
+  * [PHPMD - PHP Mess Detector](http://phpmd.org/)
+  * [php - PHPMD avoid static access to parent - Stack Overflow](http://stackoverflow.com/questions/18604179/phpmd-avoid-static-access-to-parent)

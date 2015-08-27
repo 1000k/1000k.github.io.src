@@ -16,7 +16,7 @@ tags:
 
 基本的な構造
 
-```
+```php
 // /app/vendors/shell/uso.php
 <?php
 class UsoShell extends Shell {
@@ -76,5 +76,5 @@ Error: 異常発見
 
 ### 参考
 
-  * <a href="http://d.hatena.ne.jp/brtRiver/20090427/1240802118" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/brtRiver/20090427/1240802118', 'CakePHPコンソールのシェルを作るときのメモ &#8211; ぷぎがぽぎ']);" title="CakePHPコンソールのシェルを作るときのメモ - ぷぎがぽぎ">CakePHPコンソールのシェルを作るときのメモ &#8211; ぷぎがぽぎ</a>
-  * <a href="http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks', 'シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook']);" title="シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook">シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook</a>
+  * [CakePHPコンソールのシェルを作るときのメモ - ぷぎがぽぎ](http://d.hatena.ne.jp/brtRiver/20090427/1240802118)
+  * [シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook](http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks)

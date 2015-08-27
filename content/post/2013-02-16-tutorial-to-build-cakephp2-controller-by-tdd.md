@@ -133,7 +133,7 @@ class ApisControllerTest extends ControllerTestCase {
 
 $this->testAction($action, $options) は、Controller を叩いた時の挙動をシミュレートするメソッドです。今回は uso=800 という値を POST している状況を再現しています。
 
-第2引数の $options には様々なオプションを指定できます。「&#8217;return&#8217; => &#8216;vars&#8217;」を指定することで、testAction() 実行時に Controller から View に渡った値を、$this->vars に格納することができます。
+第2引数の $options には様々なオプションを指定できます。「'return' => 'vars'」を指定することで、testAction() 実行時に Controller から View に渡った値を、$this->vars に格納することができます。
 
 この時点でテストを叩くと、当然まだ ApisController::index() が実装できていないので、エラーが出て終了します。
 
@@ -248,7 +248,7 @@ TDD は以下のような流れで、Red->Green をリズミカルに行いま�
 
 ## 補足
 
-<a href="http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers', '公式チュートリアル']);" >公式チュートリアル</a> はそこそこ学べますが、なぜか結果を debug() でコンソールに表示してるだけで、アサーション（期待される値と実際の結果の照合）をやってません。これはダメです。
+[公式チュートリアル](http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers) はそこそこ学べますが、なぜか結果を debug() でコンソールに表示してるだけで、アサーション（期待される値と実際の結果の照合）をやってません。これはダメです。
 
 戻り値はちゃんと assert しましょう。モックを使って挙動を確かめるなら expectation を使いましょう。
 
@@ -256,9 +256,9 @@ TDD は以下のような流れで、Red->Green をリズミカルに行いま�
 
 ## 参考になるサイト
 
-  * <a href="http://api21.cakephp.org" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api21.cakephp.org', 'CakePHP API']);" >CakePHP API</a>
+  * [CakePHP API](http://api21.cakephp.org)
       * CakeBook は CakePHP の機能の概要を知るのに向いていますが、メソッドの使い方を調べるだけならこっちの方が早いです。
-  * <a href="http://www.phpunit.de/manual/3.6/ja/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.6/ja/index.html', 'PHPUnit 公式マニュアル']);" >PHPUnit 公式マニュアル</a>
+  * [PHPUnit 公式マニュアル](http://www.phpunit.de/manual/3.6/ja/index.html)
       * CakePHP2 の CakeTestCase クラスは、PHPUnit の簡単なラッパーなので、全ての機能が使えます。こちらのドキュメントも読んでおくといいです。
-  * <a href="http://www.phpunit.de/manual/3.6/ja/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.6/ja/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions', 'PHPUnit のアサーション一覧']);" >PHPUnit のアサーション一覧</a>
+  * [PHPUnit のアサーション一覧](http://www.phpunit.de/manual/3.6/ja/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions)
       * ほとんどの場合は assertEquals() でカバーできますが、知っておくと便利なものも多いです。

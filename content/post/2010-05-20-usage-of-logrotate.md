@@ -13,7 +13,7 @@ tags:
 ---
 # 設定チュートリアル
 
-  * &#8220;/etc/logrotate.d/&#8221; 配下に設定ファイルを作成する
+  * "/etc/logrotate.d/" 配下に設定ファイルを作成する
   * 「logrotate -d 作成したファイル名」でデバッグする
   * 翌日午前4時にローテーションが成功していることを確認する
       * 実行ログ: /var/lib/logrotate.status
@@ -58,7 +58,7 @@ tags:
 
 基本的には毎朝4:00に自動実行されるが、デバッグと即時ログローテートを行うこともできる。
 
-参考: <a href="http://www.atmarkit.co.jp/flinux/rensai/linuxtips/749rotatetest.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.atmarkit.co.jp/flinux/rensai/linuxtips/749rotatetest.html', '＠IT：logrotateのテストを行うには']);" title="＠IT：logrotateのテストを行うには">＠IT：logrotateのテストを行うには</a>
+参考: [＠IT：logrotateのテストを行うには](http://www.atmarkit.co.jp/flinux/rensai/linuxtips/749rotatetest.html)
 
   * デバッグ
 
@@ -85,7 +85,7 @@ logrotate -f 対象ファイル
 
 # オプション一覧
 
-参考: <a href="http://www.asahi-net.or.jp/~aa4t-nngk/logrotate.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.asahi-net.or.jp/~aa4t-nngk/logrotate.html', 'Stray Penguin &#8211; Linux Memo (logrotate)']);" title="Stray Penguin - Linux Memo (logrotate)">Stray Penguin &#8211; Linux Memo (logrotate)</a>
+参考: [Stray Penguin - Linux Memo (logrotate)](http://www.asahi-net.or.jp/~aa4t-nngk/logrotate.html)
 
 | 設定値                               | 説明                                                                                                                                                          |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -94,12 +94,12 @@ logrotate -f 対象ファイル
 | copy/nocopy                       | 元のログファイルはそのままにして、そのコピーを保存する。ログファイルをリロードする術のないプログラムへの対処法のひとつ                                                                                                 |
 | copytruncate/nocopytruncate       | copy の動作を行った後、元のログファイルの内容 を消去する。見かけ的には create と同じ結果となる                                                                                                      |
 | rotate _num_                      | 世代ローテーションのステップ数。例えば元のログファイルが a.log だとして、 num を 2 にしておくと a.log => a.log.1 => a.log.2 => 廃棄 となる。0 だと a.log => 廃棄                                              |
-| start _num_                       | 初代ローテーションファイルの末尾に付加するナンバー。デフォルトは 1。 nuｍ を例えば 5 にすると、a.log => a.log.5 => a.log.6 => &#8230; と推移                                                              |
-| extension _ext_                   | ローテーションした旧ログファイルに拡張子 ext を付ける。ドットも必要。例えば some.log を &#8220;extension .bak&#8221; の設定でローテーションすると、初代ローテーションログは some.log.1.bak となる。圧縮も行う場合、圧縮による拡張子はさらにその後ろに付く |
+| start _num_                       | 初代ローテーションファイルの末尾に付加するナンバー。デフォルトは 1。 nuｍ を例えば 5 にすると、a.log => a.log.5 => a.log.6 => … と推移                                                              |
+| extension _ext_                   | ローテーションした旧ログファイルに拡張子 ext を付ける。ドットも必要。例えば some.log を "extension .bak" の設定でローテーションすると、初代ローテーションログは some.log.1.bak となる。圧縮も行う場合、圧縮による拡張子はさらにその後ろに付く |
 | compress/nocompress               | ローテーションした後の旧ファイルに圧縮を掛ける。デフォルトは nocompress                                                                                                                   |
 | compresscmd _cmd_                 | ログファイルの圧縮に使用するプログラムを指定。デフォルトは gzip                                                                                                                          |
 | uncompresscmd _cmd_               | ログファイルの解凍に使用するプログラムを指定。デフォルトは gunzip                                                                                                                        |
-| compressoptions _opt_             | 圧縮プログラムへ渡すオプション。デフォルトは gzip に渡す &#8220;-9&#8221; (圧縮率最大)。現在のところ &#8220;-9 -s&#8221; のようにスペース入りで複数のオプションを指定することは不可能                                          |
+| compressoptions _opt_             | 圧縮プログラムへ渡すオプション。デフォルトは gzip に渡す "-9" (圧縮率最大)。現在のところ "-9 -s" のようにスペース入りで複数のオプションを指定することは不可能                                          |
 | compressext _ext_                 | 圧縮後のファイルに付ける拡張子 (ドットも必要)。デフォルトでは、使用する圧縮コマンドに応じたものが付くとされているが、bzip2 を使っても gz になってしまうなど、あまり当てにならない                                                             |
 | delaycompress/nodelaycompress     | 圧縮処理を、その次のローテーションの時まで遅らせる。compress も指定しないと無意味                                                                                                               |
 | olddir _dir_                      | ローテーションした旧ログを dir に移動する。移動先は元と同じデバイス上でなければならない。元のログに対する相対指定も有効                                                                                              |
@@ -121,11 +121,11 @@ logrotate -f 対象ファイル
 | nosharedscripts                   | ローテーションの条件に合致するログが複数あった場合に、prerotate, postrotate のスクリプトを各ログファイル毎に実行する (デフォルト)                                                                               |
 | sharedscripts                     | ローテーションの条件に合致するログが複数あった場合に、prerotate, postrotate のスクリプトを一度だけ実行する                                                                                            |
 | include file\_or\_dir             | 設定ファイル内でこの記述のある位置に別の設定ファイルを読み込む。ディレクトリを指定した場合、その dir 内から、ディレクトリおよび名前付きパイプ以外のレギュラーファイルがアルファベット順に読み込まれる                                                       |
-| tabooext _[+] ext[,ext,&#8230;]_  | include でディレクトリを指定した場合に読み込みから除外するファイルの拡張子を指定。デフォルトで .rpmorig, .rpmsave, .rpmnew, .v, .swp, ~ が設定されている。+ を挟むと追加指定、挟まないと根こそぎ置き換えとなる                           |
+| tabooext _[+] ext[,ext,…]_  | include でディレクトリを指定した場合に読み込みから除外するファイルの拡張子を指定。デフォルトで .rpmorig, .rpmsave, .rpmnew, .v, .swp, ~ が設定されている。+ を挟むと追加指定、挟まないと根こそぎ置き換えとなる                           |
 
 # copytruncate方式の欠点
 
-参考: <a href="http://kamoland.com/wiki/wiki.cgi?logrotate%A4%CE%C0%DF%C4%EA" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://kamoland.com/wiki/wiki.cgi?logrotate%A4%CE%C0%DF%C4%EA', 'logrotateの設定 &#8211; KamoLand']);" title="logrotateの設定 - KamoLand">logrotateの設定 &#8211; KamoLand</a>
+参考: [logrotateの設定 - KamoLand](http://kamoland.com/wiki/wiki.cgi?logrotate%A4%CE%C0%DF%C4%EA)
 
 > 今回の方式ではcopytruncateを使っているため，ローテーション時には
 >

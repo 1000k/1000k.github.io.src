@@ -94,11 +94,11 @@ class AppController extends Controller {
 
 ## 余談
 
-本当は CakePHP 2.1 から採用された <a href="http://book.cakephp.org/2.0/en/core-libraries/events.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/core-libraries/events.html', 'Events System']);" >Events System</a> を使って `beforeFilter()` 以降のアクションを実行されないようにしたかったのですが、やり方がわかりませんでした。アクションを detach する方法をご存知の方がいたら教えて下さい。
+本当は CakePHP 2.1 から採用された [Events System](http://book.cakephp.org/2.0/en/core-libraries/events.html) を使って `beforeFilter()` 以降のアクションを実行されないようにしたかったのですが、やり方がわかりませんでした。アクションを detach する方法をご存知の方がいたら教えて下さい。
 
 ## 参考
 
-  * <a href="http://book.cakephp.org/2.0/en/views/json-and-xml-views.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/views/json-and-xml-views.html', 'JSON and XML views — CakePHP Cookbook v2.x documentation']);" >JSON and XML views — CakePHP Cookbook v2.x documentation</a>
+  * [JSON and XML views — CakePHP Cookbook v2.x documentation](http://book.cakephp.org/2.0/en/views/json-and-xml-views.html)
       * ビューを使わず JSON で出力を行う方法が書かれています。
-  * <a href="http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks', 'Controllers — CakePHP Cookbook v2.x documentation']);" >Controllers — CakePHP Cookbook v2.x documentation</a>
-  * <a href="http://api.cakephp.org/2.4/class-Controller.html#_invokeAction" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api.cakephp.org/2.4/class-Controller.html#_invokeAction', 'CakeAPI > invokeAction']);" >CakeAPI > invokeAction</a>
+  * [Controllers — CakePHP Cookbook v2.x documentation](http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks)
+  * [ invokeAction']);" >CakeAPI > invokeAction](http://api.cakephp.org/2.4/class-Controller.html#_invokeAction)

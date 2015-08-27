@@ -11,11 +11,11 @@ tags:
   - Google Maps
   - TIPS
 ---
-<a href="http://jsfiddle.net/893s2/2/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jsfiddle.net/893s2/2/', 'このデモ']);" >このデモ</a>を見れば、何をやりたいかすぐ把握できると思います。
+[このデモ](http://jsfiddle.net/893s2/2/)を見れば、何をやりたいかすぐ把握できると思います。
 
-<a href="http://blog.1000k.net/wp-content/uploads/map_1.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/map_1.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/map_1-300x225.png" alt="map_1" width="300" height="225" class="alignnone size-medium wp-image-1683" /></a>
+[<img src="http://blog.1000k.net/wp-content/uploads/map_1-300x225.png" alt="map_1" width="300" height="225" class="alignnone size-medium wp-image-1683" />](http://blog.1000k.net/wp-content/uploads/map_1.png)
 
-<a href="http://blog.1000k.net/wp-content/uploads/map_2.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/map_2.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/map_2-190x300.png" alt="map_2" width="190" height="300" class="alignnone size-medium wp-image-1684" /></a>
+[<img src="http://blog.1000k.net/wp-content/uploads/map_2-190x300.png" alt="map_2" width="190" height="300" class="alignnone size-medium wp-image-1684" />](http://blog.1000k.net/wp-content/uploads/map_2.png)
 
 ウィンドウの幅や高さを変えても、ヘッダーとフッターは常に同じ高さのままで、マップの部分はウィンドウサイズに合うように伸縮しています。
 
@@ -36,7 +36,7 @@ tags:
 
 
 <div id="container">
-  &lt;header>header&lt;/header>
+  <header>header</header>
 
 
 
@@ -47,7 +47,7 @@ tags:
 
   </div>
 
-      &lt;footer>This footer is absolutely positioned&lt;/footer>
+      <footer>This footer is absolutely positioned</footer>
 
 </div>
 
@@ -122,5 +122,5 @@ footer {
 
 ## 参考
 
-  * <a href="http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map', 'html &#8211; 100% height with fixed footer and embedded Google Map &#8211; Stack Overflow']);" >html &#8211; 100% height with fixed footer and embedded Google Map &#8211; Stack Overflow</a>
+  * [html - 100% height with fixed footer and embedded Google Map - Stack Overflow](http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map)
       * 今回のデモは、この Q&A に書かれているコードをシンプルにしただけです。

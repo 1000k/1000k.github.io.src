@@ -21,7 +21,7 @@ tags:
 
 下記は「Usersテーブルのデータを取得したり件数をカウントしたりするクラス」の例。 **/system/application/models/users_model.php**とする。
 
-```
+```php
 <?php
 class Users_model extends Model {
 
@@ -58,13 +58,13 @@ class Users_model extends Model {
 ```
 
 
-データベースクラスの細かい実装は <a href="http://codeigniter.jp/user_guide_ja/database/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.jp/user_guide_ja/database/index.html', 'データベースクラス : CodeIgniter ユーザガイド 日本語版']);" title="データベースクラス : CodeIgniter ユーザガイド 日本語版">データベースクラス : CodeIgniter ユーザガイド 日本語版</a> を参照。以下に挙げるものはよく使うので覚えておいた方が良い。
+データベースクラスの細かい実装は [データベースクラス : CodeIgniter ユーザガイド 日本語版](http://codeigniter.jp/user_guide_ja/database/index.html) を参照。以下に挙げるものはよく使うので覚えておいた方が良い。
 
 | クエリ                                              | 意味                                           |
 | ------------------------------------------------ | -------------------------------------------- |
-| $this->db->get(&#8216;table_name&#8217;)         | table_nameテーブル内の全行を取得する                      |
+| $this->db->get('table_name')         | table_nameテーブル内の全行を取得する                      |
 | $this->db->where($field,$param)                  | SQLのWHERE句の要領で行を取得する (WHERE $field = $param) |
-| $this->db->count\_all(&#8216;table\_name&#8217;) | table_nameテーブルの行数を取得する                       |
+| $this->db->count\_all('table\_name') | table_nameテーブルの行数を取得する                       |
 | $query->result_array()                           | 結果セット(result set)を連想配列として返す                  |
 | $query->num_rows()                               | 結果セットの行数を返す                                  |
 
@@ -74,7 +74,7 @@ class Users_model extends Model {
 
 **/system/application/controllers/Users.php** を下記のようにすることで、上述のモデルで作成したAPIをロードできる。
 
-```
+```php
 <?php
 class Users extends Controller {
 
@@ -99,6 +99,6 @@ class Users extends Controller {
 
 # 参考
 
-<a href="http://www.devshed.com/c/a/PHP/Building-a-DatabaseDriven-Application-with-the-Code-Igniter-PHP-Framework/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.devshed.com/c/a/PHP/Building-a-DatabaseDriven-Application-with-the-Code-Igniter-PHP-Framework/', 'Building a Database-Driven Application with the Code Igniter PHP Framework']);" title="Building a Database-Driven Application with the Code Igniter PHP Framework">Building a Database-Driven Application with the Code Igniter PHP Framework</a>
+[Building a Database-Driven Application with the Code Igniter PHP Framework](http://www.devshed.com/c/a/PHP/Building-a-DatabaseDriven-Application-with-the-Code-Igniter-PHP-Framework/)
 
 （文字がクレイジーなほど小さくて読みづらいので、「PDF Version Of Article」を見るのがおすすめ）

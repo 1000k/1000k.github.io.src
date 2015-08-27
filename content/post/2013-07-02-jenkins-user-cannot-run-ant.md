@@ -17,7 +17,7 @@ tags:
   - PHPUnit
   - トラブルシューティング
 ---
-CentOS 6.3 にて、<a href="http://jenkins-php.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jenkins-php.org/', 'Template for Jenkins Jobs for PHP Projects']);" >Template for Jenkins Jobs for PHP Projects</a> にある ant タスク (build.xml) 通りに PHPUnit タスクを実行しようとしたら、エラーが出てしまいました。
+CentOS 6.3 にて、[Template for Jenkins Jobs for PHP Projects](http://jenkins-php.org/) にある ant タスク (build.xml) 通りに PHPUnit タスクを実行しようとしたら、エラーが出てしまいました。
 
 かなり長時間ハマったのでメモを残しておきます。
 
@@ -25,7 +25,7 @@ CentOS 6.3 にて、<a href="http://jenkins-php.org/" onclick="_gaq.push(['_trac
 
 ## 症状
 
-CentOS 6.3 にて、<a href="http://jenkins-php.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jenkins-php.org/', 'Template for Jenkins Jobs for PHP Projects']);" >Template for Jenkins Jobs for PHP Projects</a> にある以下のタスクを実行するとエラーが出ました。```
+CentOS 6.3 にて、[Template for Jenkins Jobs for PHP Projects](http://jenkins-php.org/) にある以下のタスクを実行するとエラーが出ました。```
  <target name="phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml"> <exec executable="phpunit" failonerror="true"/> </target> ```
 
 
@@ -50,13 +50,13 @@ export PATH=$PATH:/usr/local/bin
 
 <p>また、下記のように ant タスク内で PATH を変更するシェルを走らせてもダメでした。</p>
 ```
-&lt;target name="setenv">
-   &lt;exec executable="/bin/sh">
-     &lt;arg line="./setenv.sh"/>
-   &lt;/exec>
- &lt;/target>
+<target name="setenv">
+   <exec executable="/bin/sh">
+     <arg line="./setenv.sh"/>
+   </exec>
+ </target>
 
- &lt;target name="env">&lt;exec executable="env" />&lt;/target>
+ <target name="env"><exec executable="env" /></target>
 ```
 
 
@@ -84,7 +84,7 @@ env:
      [exec] HISTSIZE=1000
      [exec] USER=jenkins
      ...
-     [exec] PATH=/sbin:/bin:/usr/sbin:/usr/bin      &lt;- /usr/local/bin が追加されていない
+     [exec] PATH=/sbin:/bin:/usr/sbin:/usr/bin      <- /usr/local/bin が追加されていない
 ```
 
 
@@ -98,7 +98,7 @@ Jenkins から環境変数を上書きすることで、PATH を追加するこ�
 
 `Jenkinsの管理 > システムの設定 > グローバルプロパティ > 環境変数` にて、以下のように設定します。
 
-<a href="http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_global_property-300x191.png" alt="Jenkins グローバルプロパティ" width="300" height="191" class="alignnone size-medium wp-image-1507" /></a>
+[<img src="http://blog.1000k.net/wp-content/uploads/jenkins_global_property-300x191.png" alt="Jenkins グローバルプロパティ" width="300" height="191" class="alignnone size-medium wp-image-1507" />](http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png)
 
   * キー: `PATH`
   * 値: `${PATH}:/usr/local/bin`
@@ -121,6 +121,6 @@ sudoers の環境変数は \`sudo -l\` で確認できます。```
 
 ## 参考
 
-  * <a href="http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/', '[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163\'s Blog']);" >[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163's Blog</a>
-  * <a href="http://fishrimper.blogspot.jp/2012/12/sudo-path.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://fishrimper.blogspot.jp/2012/12/sudo-path.html', 'IT とかその他もろもろ: sudo した時の PATH']);" >IT とかその他もろもろ: sudo した時の PATH</a>
-  * <a href="http://superuser.com/questions/98686/passing-path-through-sudo" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://superuser.com/questions/98686/passing-path-through-sudo', 'linux - Passing PATH through sudo - Super User']);" >linux - Passing PATH through sudo - Super User</a>
+  * [[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163's Blog](http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/)
+  * [IT とかその他もろもろ: sudo した時の PATH](http://fishrimper.blogspot.jp/2012/12/sudo-path.html)
+  * [linux - Passing PATH through sudo - Super User](http://superuser.com/questions/98686/passing-path-through-sudo)

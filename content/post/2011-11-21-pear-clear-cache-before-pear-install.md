@@ -72,4 +72,4 @@ Noticeが出ていますが、パッケージは問題無く利用できまし�
 
 ## 参考
 
-  * <a href="http://stackoverflow.com/questions/6442187/security-error-while-installing-phing-using-pear" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/6442187/security-error-while-installing-phing-using-pear', 'Security Error while installing phing using pear &#8211; Stack Overflow']);" >Security Error while installing phing using pear &#8211; Stack Overflow</a>
+  * [Security Error while installing phing using pear - Stack Overflow](http://stackoverflow.com/questions/6442187/security-error-while-installing-phing-using-pear)

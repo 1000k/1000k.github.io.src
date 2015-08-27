@@ -45,7 +45,7 @@ CakeTestCase を拡張した MyCakeTestCase を作成し、その中で _loadFix
 
 **/app/libs/my\_cake\_test_case.php**
 
-```
+```php
 <?php
 /**
  * Extension of CakeTestCase Class
@@ -130,7 +130,7 @@ class MyCakeTestCase extends CakeTestCase {
             if (isset($fixtureFile)) {
                 require_once($fixtureFile);
                 $fixtureClass = Inflector::camelize($fixture) . 'Fixture';
-                $this->_fixtures[$this->fixtures[$index]] =&#038; new $fixtureClass($this->db);
+                $this->_fixtures[$this->fixtures[$index]] =& new $fixtureClass($this->db);
                 $this->_fixtureClassMap[Inflector::camelize($fixture)] = $this->fixtures[$index];
             }
         }
@@ -147,7 +147,7 @@ class MyCakeTestCase extends CakeTestCase {
 
 \*\*/app/tests/cases/controllers/higes_controller.test.php\*\*
 
-```
+```php
 <?php
 App::import('Model', 'Uso');
 App::import('Lib', 'MyCakeTestCase');
@@ -162,11 +162,11 @@ class HigesControllerTestCase extends MyCakeTestCase {
 
 ## 副作用
 
-テストケースで「App::import(&#8216;Lib&#8217;, &#8216;MyCakeTestCase&#8217;);」すると、なぜかMyCakeTestCaseもテスト対象になるらしく、テスト結果の「n/n test cases complete」の値が1増えます。
+テストケースで「App::import('Lib', 'MyCakeTestCase');」すると、なぜかMyCakeTestCaseもテスト対象になるらしく、テスト結果の「n/n test cases complete」の値が1増えます。
 
 テスト結果のGreen/Redには影響しないので、無視してください。
 
 ## 参考
 
-  * <a href="http://d.hatena.ne.jp/hiromi2424/20101215/1292379625" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/hiromi2424/20101215/1292379625', 'App::import() は凄い &#8211; 24時間CakePHP']);" title="App::import() は凄い - 24時間CakePHP">App::import() は凄い &#8211; 24時間CakePHP</a>
+  * [App::import() は凄い - 24時間CakePHP](http://d.hatena.ne.jp/hiromi2424/20101215/1292379625)
       * 本当はApp::importだけでできれば一番いいんですけどね。

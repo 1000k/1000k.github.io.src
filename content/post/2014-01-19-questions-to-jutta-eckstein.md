@@ -15,7 +15,7 @@ tags:
   - カンファレンス
   - レポート
 ---
-Jutta Eckstein 氏の基調講演<a href="http://blog.1000k.net/2014/01/18/sgt2014-%e5%9f%ba%e8%aa%bf%e8%ac%9b%e6%bc%942/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2014/01/18/sgt2014-%e5%9f%ba%e8%aa%bf%e8%ac%9b%e6%bc%942/', '「組織にアジリティを取り入れる – どうすればアジャイルになれる？」']);" >「組織にアジリティを取り入れる – どうすればアジャイルになれる？」</a> の後に行われた質疑応答です。
+Jutta Eckstein 氏の基調講演[「組織にアジリティを取り入れる – どうすればアジャイルになれる？」](http://blog.1000k.net/2014/01/18/sgt2014-%e5%9f%ba%e8%aa%bf%e8%ac%9b%e6%bc%942/) の後に行われた質疑応答です。
 
 <!--more-->
 

@@ -10,7 +10,7 @@ tags:
   - MySQL
   - ベンチマーク
 ---
-<a href="http://blog.1000k.net/?p=1837" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/?p=1837', '前の記事']);" >前の記事</a> で McAfee MySQL Audit Plugin を使うと簡単に監査ログが取れることを紹介しましたが、性能劣化はどれくらいあるのか心配になったので検証してみました。
+[前の記事](http://blog.1000k.net/?p=1837) で McAfee MySQL Audit Plugin を使うと簡単に監査ログが取れることを紹介しましたが、性能劣化はどれくらいあるのか心配になったので検証してみました。
 
 <!--more-->
 
@@ -26,7 +26,7 @@ mysql> SHOW VARIABLES LIKE 'audit_%';
 | audit_checksum                  |                            |
 | audit_delay_cmds                |                            |
 | audit_delay_ms                  | 0                          |
-| audit_json_file                 | OFF                        | &lt;- Audit 有効時は ON にする
+| audit_json_file                 | OFF                        | <- Audit 有効時は ON にする
 | audit_json_file_flush           | OFF                        |
 | audit_json_file_sync            | 0                          |
 | audit_json_log_file             | mysql-audit.json           |
@@ -46,7 +46,7 @@ mysql> SHOW VARIABLES LIKE 'audit_%';
 
 ## ベンチマークの条件
 
-mysqlslap なら簡単にベンチマークが取れます。詳しい使い方は <a href="http://blog.1000k.net/?p=1847" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/?p=1847', 'mysqlslap で MySQL の負荷テストをする方法']);" >mysqlslap で MySQL の負荷テストをする方法</a> をご覧ください。
+mysqlslap なら簡単にベンチマークが取れます。詳しい使い方は [mysqlslap で MySQL の負荷テストをする方法](http://blog.1000k.net/?p=1847) をご覧ください。
 
 ```
 mysqlslap \

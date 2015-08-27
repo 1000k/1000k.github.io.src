@@ -19,7 +19,7 @@ tags:
 
 ### 導入手順
 
-  1. <a href="http://code.google.com/p/zen-coding/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://code.google.com/p/zen-coding/', 'zen-coding &#8211; Project Hosting on Google Code']);" title="zen-coding - Project Hosting on Google Code">zen-coding &#8211; Project Hosting on Google Code</a> からNetBeans用プラグインをダウンロードする
+  1. [zen-coding - Project Hosting on Google Code](http://code.google.com/p/zen-coding/) からNetBeans用プラグインをダウンロードする
       * 執筆時のバージョンは「NetBeans.Zen.HTML.1.2.zip」
       * ZIPファイルのまま取り込むので、解凍する必要は無いです
   2. NetBeansのメニューバーから、 **ツール > オプション** を選択
@@ -38,7 +38,7 @@ HTMLへのPHP出力として「＜?php ?＞」ブロックを頻繁に使うの�
   2. 「新規」ボタンをクリック
   3. 下記項目を登録
 
-```
+```php
 省略名「php」、展開されるテキスト「<?php ${cursor} ?>」
 省略名「phpe」、展開されるテキスト「
 
@@ -50,4 +50,4 @@ HTMLへのPHP出力として「＜?php ?＞」ブロックを頻繁に使うの�
 
 ### 参考
 
-<a href="http://blog.mizoshiri.com/archives/863" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.mizoshiri.com/archives/863', 'Netbeans(windows環境)にZen-Codingを導入']);" title="Netbeans(windows環境)にZen-Codingを導入">Netbeans(windows環境)にZen-Codingを導入</a>
+[Netbeans(windows環境)にZen-Codingを導入](http://blog.mizoshiri.com/archives/863)

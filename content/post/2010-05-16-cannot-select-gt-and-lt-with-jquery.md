@@ -26,4 +26,4 @@ JavaScriptにおいて、「<」「>」は基本的にダメ文字（使用不�
 
 # 参考
 
-<a href="http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010', '\nSelector problem: $(\'#&#092;<foo\') and $(\'#bar&#092;>\') works, but $(\'#&#092;<buz&#092;>\') doesn\'t. &#8211; jQuery Forum']);" ><br /> Selector problem: $('#&#92;<foo') and $('#bar&#92;>') works, but $('#&#92;<buz&#92;>') doesn't. &#8211; jQuery Forum</a>
+[\') works, but $(\'#\<buz\>\') doesn\'t. - jQuery Forum']);" ><br /> Selector problem: $('#&#92;<foo') and $('#bar&#92;>') works, but $('#&#92;<buz&#92;>') doesn't. - jQuery Forum](http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010)

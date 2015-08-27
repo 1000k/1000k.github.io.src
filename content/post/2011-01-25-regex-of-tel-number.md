@@ -28,7 +28,7 @@ tags:
  *
  * @param  string $tel  電話番号
  * @return bool   判定結果 (true:正しい電話番号)
- * @see <a href="http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html', '電話番号に関するＱ＆Ａ']);" >電話番号に関するＱ＆Ａ</a>
+ * @see [電話番号に関するＱ＆Ａ](http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html)
  */
 function is_valid_tel_number($tel = "") {
     return preg_match("/^0\d{9,10}$/", str_replace("-", "", $tel));
@@ -50,7 +50,7 @@ function is_valid_tel_number($tel = "") {
  *
  * @param  string $tel  電話番号
  * @return bool   判定結果 (true:正しい電話番号)
- * @see <a href="http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html', '電話番号に関するＱ＆Ａ']);" >電話番号に関するＱ＆Ａ&lt;/a>
+ * @see <a href="http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html', '電話番号に関するＱ＆Ａ']);" >電話番号に関するＱ＆Ａ</a>
  */
 function is_valid_tel_number($tel = "") {
     return preg_match("/^0\d{9,10}$/", str_replace("-", "", $tel));
@@ -108,4 +108,4 @@ $ php tel_check.php
 
 ## 参考
 
-  * <a href="http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html', '電話番号に関するＱ＆Ａ']);" title="電話番号に関するＱ＆Ａ">電話番号に関するＱ＆Ａ</a>
+  * [電話番号に関するＱ＆Ａ](http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html)

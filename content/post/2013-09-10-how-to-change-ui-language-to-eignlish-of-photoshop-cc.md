@@ -21,13 +21,13 @@ Photoshop を英語版で動かすようにしたら使えるようになった�
 まず、Photoshop を開いている場合は終了します。
 
 次に、`{Photoshop のインストールディレクトリ}/Locales/ja_JP/Support Files` の中にある `tw10428.dat` というファイルを、`tw10428.dat.bak` にリネームします。
-  
+
 Windows 7 のデフォルトでは `C:\Program Files\Adobe\Adobe Photoshop CC (64 Bit)\Locales\ja_JP\Support Files` の中にありました。
 
 これで Photoshop を再起動すれば、UI が英語になっています。
 
-高いアドビ税払ってるんだから、このへんのローカリゼーションはちゃんとやってほしいですね。せめて UI の言語ぐらいオプションから設定させてほしいです。（一応 &#8220;編集 > 環境設定 > インターフェース&#8221;）の中に言語を選ぶセレクトボックスはありますが、日本語しか選べません。じゃあ置くなよ。）
+高いアドビ税払ってるんだから、このへんのローカリゼーションはちゃんとやってほしいですね。せめて UI の言語ぐらいオプションから設定させてほしいです。（一応 "編集 > 環境設定 > インターフェース"）の中に言語を選ぶセレクトボックスはありますが、日本語しか選べません。じゃあ置くなよ。）
 
 ## 参考
 
-<a href="http://www.youtube.com/watch?v=3I8B8QH5uRE" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.youtube.com/watch?v=3I8B8QH5uRE', 'HOW TO CHANGE LANGUAGE IN PHOTOSHOP [Works with (CC, Win, Mac)] &#8211; YouTube']);" >HOW TO CHANGE LANGUAGE IN PHOTOSHOP [Works with (CC, Win, Mac)] &#8211; YouTube</a>
+[HOW TO CHANGE LANGUAGE IN PHOTOSHOP [Works with (CC, Win, Mac)] - YouTube](http://www.youtube.com/watch?v=3I8B8QH5uRE)

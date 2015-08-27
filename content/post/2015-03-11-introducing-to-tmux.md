@@ -18,7 +18,7 @@ tags:
 
   * ターミナルマルチプレクサ (端末多重化ソフトウェア, 仮想端末マネージャー) のひとつ
       * ほかには GNU screen が有名
-  * 読み方は &#8220;ティーマックス&#8221;
+  * 読み方は "ティーマックス"
 
 ### できること
 
@@ -126,8 +126,8 @@ yum でインストールした場合は `/usr/share/doc/tmux-1.6/examples/` 配
 
   * [OpenBSD manual pages](http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&sec=1)
       * 公式マニュアル。英語。
-  * [tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &#8211; 完熟トマト](http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html)
+  * [tmuxを使い始めたので基本的な機能の使い方とかを整理してみた - 完熟トマト](http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html)
       * 概念図やスクリーンショット満載でわかりやすいです。
-  * [tmux基本のコマンド — nato&#8217;s memo 1.0 documentation](http://room6933.com/mymemo/tmux/tmux-basic.html)
-  * [Vim &#8211; ターミナルマルチプレクサ tmux をカスタマイズする &#8211; Qiita](http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc)
+  * [tmux基本のコマンド — nato's memo 1.0 documentation](http://room6933.com/mymemo/tmux/tmux-basic.html)
+  * [Vim - ターミナルマルチプレクサ tmux をカスタマイズする - Qiita](http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc)
       * 使えるカスタマイズの例。zsh と連携して、ログイン時にいきなり tmux セッションにアタッチする方法など。

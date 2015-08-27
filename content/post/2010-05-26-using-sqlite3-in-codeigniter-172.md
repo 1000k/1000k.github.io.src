@@ -20,13 +20,13 @@ CodeIgniterはPHP4との下位互換性を保っているせいか、標準で�
 
 ### 手順
 
-※CodeIgniter 1.7.2 用です。それより前のバージョンだと導入するドライバが違うかもしれないので、<a href="http://codeigniter.com/wiki/PDO_SQLite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.com/wiki/PDO_SQLite3/', 'Wiki | CodeIgniter']);" title="Wiki | CodeIgniter">Wiki | CodeIgniter</a>あたりを読んでください。
+※CodeIgniter 1.7.2 用です。それより前のバージョンだと導入するドライバが違うかもしれないので、[Wiki | CodeIgniter](http://codeigniter.com/wiki/PDO_SQLite3/)あたりを読んでください。
 
-  1. <a href="http://codeigniter.com/wiki/PDO_SQLite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.com/wiki/PDO_SQLite3/', 'Wiki | CodeIgniter']);" title="Wiki | CodeIgniter">Wiki | CodeIgniter</a> から、「pdo driver 0 02 by xi.zip」をダウンロード
+  1. [Wiki | CodeIgniter](http://codeigniter.com/wiki/PDO_SQLite3/) から、「pdo driver 0 02 by xi.zip」をダウンロード
   2. CodeIgniter/system/database/drivers/pdo というディレクトリを作成し、その中に解凍する
   3. CodeIgniter/system/application/config/database.php を下記のように編集する
 
-```
+```php
 // DBファイルが /system/appilication/db/hige.sqlite3 にある場合
 $db['default']['hostname'] = "";
 $db['default']['username'] = "";
@@ -41,7 +41,7 @@ $db['default']['dbprefix'] = "";
 
 ちゃんとロードできているか確かめたい場合は、適当なviewファイルに
 
-```
+```php
 <?php echo $this->db->platform() . " ". $this->db->version(); ?>
 ```
 
@@ -50,5 +50,5 @@ $db['default']['dbprefix'] = "";
 
 ### 参考
 
-  * <a href="http://codeigniter.com/wiki/PDO_SQLite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.com/wiki/PDO_SQLite3/', 'Wiki | CodeIgniter']);" title="Wiki | CodeIgniter">Wiki | CodeIgniter</a>
-  * <a href="http://blog.trevorbramble.com/past/2009/9/20/codeigniter_sqlite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.trevorbramble.com/past/2009/9/20/codeigniter_sqlite3/', 'CodeIgniter & SQLite3']);" title="CodeIgniter & SQLite3">CodeIgniter & SQLite3</a>
+  * [Wiki | CodeIgniter](http://codeigniter.com/wiki/PDO_SQLite3/)
+  * [CodeIgniter & SQLite3](http://blog.trevorbramble.com/past/2009/9/20/codeigniter_sqlite3/)

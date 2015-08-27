@@ -61,7 +61,7 @@ svn, version 1.7.10 (r1485443)
 // `--with-ssl` を忘れずに！
 # cd neon/
 # ./configure --with-ssl
-# make &#038;&#038; make install
+# make && make install
 
 // Subversion をインストールする。
 # cd ../
@@ -70,7 +70,7 @@ svn, version 1.7.10 (r1485443)
   --without-berkeley-db \
   --with-neon \
   --with-ssl
-# make &#038;&#038; make install
+# make && make install
 ```
 
 
@@ -95,7 +95,7 @@ svn, version 1.7.10 (r1485443)
 
 今回とは逆で、「neon だとエラーになるが serf なら大丈夫だった」という事例もありました。
 
-<a href="http://masutaka.net/chalow/2009-06-15-1.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://masutaka.net/chalow/2009-06-15-1.html', 'Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ']);" >Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ</a>
+[Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ](http://masutaka.net/chalow/2009-06-15-1.html)
 
 バージョンアップのたびに不具合が入れ替わるんでしょうか。
 
@@ -103,6 +103,6 @@ svn, version 1.7.10 (r1485443)
 
 ## 参考
 
-  * <a href="http://blog.iss.ms/2009/04/12/141537" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.iss.ms/2009/04/12/141537', '[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）']);" >[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）</a>
-  * <a href="http://blog.r-unit.co.jp/archives/726" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.r-unit.co.jp/archives/726', 'はだかの隊長日記 » Subversionコンパイル方法']);" >はだかの隊長日記 » Subversionコンパイル方法</a>
-  * <a href="http://masutaka.net/chalow/2009-06-15-1.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://masutaka.net/chalow/2009-06-15-1.html', 'Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ']);" >Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ</a>
+  * [[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）](http://blog.iss.ms/2009/04/12/141537)
+  * [はだかの隊長日記 » Subversionコンパイル方法](http://blog.r-unit.co.jp/archives/726)
+  * [Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ](http://masutaka.net/chalow/2009-06-15-1.html)

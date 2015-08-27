@@ -15,7 +15,7 @@ tags:
 ---
 ## Bower とは？
 
-<a href="http://bower.io/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://bower.io/', 'BOWER: A package manager for the web']);" >BOWER: A package manager for the web</a>
+[BOWER: A package manager for the web](http://bower.io/)
 
 Twitter 製の JavaScript パッケージ管理ライブラリ。Ruby の Gem, PHP の Composer みたいなもの。
 
@@ -43,10 +43,10 @@ CentOS 6 でインストールする手順です。
 bower install
 
 # パッケージを指定してインストールする
-bower install &lt;package>
+bower install <package>
 
 # git にタグ付けされたバージョンを元にインストールする
-bower install &lt;package>#&lt;version>
+bower install <package>#<version>
 ```
 
 
@@ -64,7 +64,7 @@ bower.json のサンプルは下記の通り。
   , "dependencies": {
     "backbone": "1.0.0"
     , "underscore": "1.4.4"
-    , "jquery": "&lt; 2.0.0"
+    , "jquery": "< 2.0.0"
     , "jquery-mousewheel": "latest"
     , "snap": "git://github.com/jakiestfu/Snap.js.git"
   }
@@ -91,9 +91,9 @@ bower.json のサンプルは下記の通り。
 
 ## 参考
 
-  * <a href="http://bower.io/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://bower.io/', 'BOWER: A package manager for the web']);" >BOWER: A package manager for the web</a>
-  * <a href="https://github.com/bower/bower" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/bower/bower', 'bower/bower · GitHub']);" >bower/bower · GitHub</a>
-  * <a href="http://uzulla.hateblo.jp/entry/2013/04/28/143507" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://uzulla.hateblo.jp/entry/2013/04/28/143507', 'bowerでつまづいた事のメモなど - uzullaがブログ']);" >bowerでつまづいた事のメモなど - uzullaがブログ</a>
-  * <a href="http://blog.mach3.jp/2013/01/bower.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.mach3.jp/2013/01/bower.html', 'パッケージマネージャー「Bower」が大変便利で捗りそうです | Mach3.laBlog']);" >パッケージマネージャー「Bower」が大変便利で捗りそうです | Mach3.laBlog</a>
-  * <a href="http://qiita.com/items/ba952bdade627af99e93" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/items/ba952bdade627af99e93', 'なにはともあれ入れてみるぜ。バウワー。(bower) #Node.js #JavaScript #twitter - Qiita [キータ]']);" >なにはともあれ入れてみるぜ。バウワー。(bower) #Node.js #JavaScript #twitter - Qiita [キータ]</a>
-  * <a href="http://net.tutsplus.com/tutorials/tools-and-tips/meet-bower-a-package-manager-for-the-web/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://net.tutsplus.com/tutorials/tools-and-tips/meet-bower-a-package-manager-for-the-web/', 'Meet Bower: A Package Manager For The Web | Nettuts+']);" >Meet Bower: A Package Manager For The Web | Nettuts+</a>
+  * [BOWER: A package manager for the web](http://bower.io/)
+  * [bower/bower · GitHub](https://github.com/bower/bower)
+  * [bowerでつまづいた事のメモなど - uzullaがブログ](http://uzulla.hateblo.jp/entry/2013/04/28/143507)
+  * [パッケージマネージャー「Bower」が大変便利で捗りそうです | Mach3.laBlog](http://blog.mach3.jp/2013/01/bower.html)
+  * [なにはともあれ入れてみるぜ。バウワー。(bower) #Node.js #JavaScript #twitter - Qiita [キータ]](http://qiita.com/items/ba952bdade627af99e93)
+  * [Meet Bower: A Package Manager For The Web | Nettuts+](http://net.tutsplus.com/tutorials/tools-and-tips/meet-bower-a-package-manager-for-the-web/)

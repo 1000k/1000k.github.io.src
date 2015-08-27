@@ -47,4 +47,4 @@ CentOSの最小構成でインストールされているようで、ごく普�
 
 # 参考
 
-  * <a href="http://d.hatena.ne.jp/hiroponz/20070205" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/hiroponz/20070205', '2007-02-05 &#8211; プチ技術メモ']);" >2007-02-05 &#8211; プチ技術メモ</a>
+  * [2007-02-05 - プチ技術メモ](http://d.hatena.ne.jp/hiroponz/20070205)

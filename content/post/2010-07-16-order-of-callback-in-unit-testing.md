@@ -36,7 +36,7 @@ class UsosControllerTestCase extends CakeTestCase {
 
     function startTest() {
         echo("startTest\n");
-        $this->Usos =&#038; new TestUsosController();
+        $this->Usos =& new TestUsosController();
         $this->Usos->constructClasses();
     }
 
@@ -104,4 +104,4 @@ end after
 
 ### 参考
 
-  * <a href="http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods', 'CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook">CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook</a>
+  * [CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook](http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods)

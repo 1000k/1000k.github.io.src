@@ -114,22 +114,22 @@ class MyConnections
 
 <ul>
   <li>
-    <a href="http://jp.php.net/manual/ja/language.variables.variable.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jp.php.net/manual/ja/language.variables.variable.php', 'PHP: 可変変数 - Manual']);" title="PHP: 可変変数 - Manual">PHP: 可変変数 - Manual</a>
+    [PHP: 可変変数 - Manual](http://jp.php.net/manual/ja/language.variables.variable.php)
   </li>
 
 
   <li>
-    <a href="http://php.net/manual/ja/function.constant.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://php.net/manual/ja/function.constant.php', 'PHP: constant - Manual']);" title="PHP: constant - Manual">PHP: constant - Manual</a>
+    [PHP: constant - Manual](http://php.net/manual/ja/function.constant.php)
   </li>
 
 
   <li>
-    <a href="http://www.shigeweb.jp/php/project_p/?page=static&section=php5oop" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.shigeweb.jp/php/project_p/?page=static&section=php5oop', '【 ほでなすPHP 】 PHP5の基本 -> スタティックメンバ／クラス定数']);" title="【 ほでなすPHP 】 PHP5の基本 -> スタティックメンバ／クラス定数">【 ほでなすPHP 】 PHP5の基本 -> スタティックメンバ／クラス定数</a>
+    [ スタティックメンバ／クラス定数']);" title="【 ほでなすPHP 】 PHP5の基本 -> スタティックメンバ／クラス定数">【 ほでなすPHP 】 PHP5の基本 -> スタティックメンバ／クラス定数](http://www.shigeweb.jp/php/project_p/?page=static&section=php5oop)
   </li>
 
 
   <li>
-    <a href="http://masha.maakikaku.jp/2008/03/php.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://masha.maakikaku.jp/2008/03/php.php', '[PHP][可変変数] 変数名や関数名を動的に指定する (masha.webTechLog)']);" title="[PHP][可変変数] 変数名や関数名を動的に指定する (masha.webTechLog)">[PHP][可変変数] 変数名や関数名を動的に指定する (masha.webTechLog)</a>
+    [[PHP][可変変数] 変数名や関数名を動的に指定する (masha.webTechLog)](http://masha.maakikaku.jp/2008/03/php.php)
   </li>
 
 </ul>

@@ -27,7 +27,7 @@ Unknown errorというのが一番タチが悪い。エラーが追えません�
 
 # 原因
 
-どうやら HTTP_Request::setConfig() で正しい接続設定を行えていない場合、&#8221;Malformed response&#8221; というエラーが出るようです。
+どうやら HTTP_Request::setConfig() で正しい接続設定を行えていない場合、"Malformed response" というエラーが出るようです。
 
 私の場合、オレオレ証明書の許可と社内プロキシの設定を行っていなかったためにはまってしまったようです。
 
@@ -54,11 +54,11 @@ print_r($response);     // HTTPレスポンスが出力される
 ```
 
 
-ほかにも設定項目はあるので、<a href="http://pear.php.net/manual/en/package.http.http-request2.config.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://pear.php.net/manual/en/package.http.http-request2.config.php', 'マニュアル']);" >マニュアル</a>を参考に設定を疑ってみてはどうでしょうか。
+ほかにも設定項目はあるので、[マニュアル](http://pear.php.net/manual/en/package.http.http-request2.config.php)を参考に設定を疑ってみてはどうでしょうか。
 
 # 参考
 
-  * <a href="http://pear.php.net/manual/en/package.http.http-request2.config.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://pear.php.net/manual/en/package.http.http-request2.config.php', 'Manual :: Configuration parameters for HTTP_Request2']);" >Manual :: Configuration parameters for HTTP_Request2</a>
+  * [Manual :: Configuration parameters for HTTP_Request2](http://pear.php.net/manual/en/package.http.http-request2.config.php)
       * setConfigで設定できる項目一覧
-  * <a href="http://d.hatena.ne.jp/vivid_skid/20110822/1314013148" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/vivid_skid/20110822/1314013148', 'HTTP_Request2 でのSSL通信でのPOST送信 &#8211; クマーのえんじにありんぐ']);" >HTTP_Request2 でのSSL通信でのPOST送信 &#8211; クマーのえんじにありんぐ</a>
+  * [HTTP_Request2 でのSSL通信でのPOST送信 - クマーのえんじにありんぐ](http://d.hatena.ne.jp/vivid_skid/20110822/1314013148)
       * オレオレ証明書の許可ではまってしまった方はこちら

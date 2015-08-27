@@ -43,5 +43,5 @@ Usage: /etc/init.d/mysql_master {start|stop|restart|status}
 
 ## 参考
 
-  * <a href="http://www.linuxquestions.org/questions/red-hat-31/init-d-script-error-bad-interpreter-204902/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.linuxquestions.org/questions/red-hat-31/init-d-script-error-bad-interpreter-204902/', 'init.d script error bad interpreter']);" >init.d script error bad interpreter</a>
-  * <a href="http://stackoverflow.com/questions/82726/convert-dos-line-endings-to-linux-line-endings-in-vim" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/82726/convert-dos-line-endings-to-linux-line-endings-in-vim', 'Convert DOS line endings to Linux line endings in vim &#8211; Stack Overflow']);" >Convert DOS line endings to Linux line endings in vim &#8211; Stack Overflow</a>
+  * [init.d script error bad interpreter](http://www.linuxquestions.org/questions/red-hat-31/init-d-script-error-bad-interpreter-204902/)
+  * [Convert DOS line endings to Linux line endings in vim - Stack Overflow](http://stackoverflow.com/questions/82726/convert-dos-line-endings-to-linux-line-endings-in-vim)

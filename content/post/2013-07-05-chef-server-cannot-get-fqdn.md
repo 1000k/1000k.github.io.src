@@ -94,7 +94,7 @@ Tags:
 
 ## 参考
 
-  * <a href="http://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name', 'Setting the hostname: FQDN or short name? &#8211; Server Fault']);" >Setting the hostname: FQDN or short name? &#8211; Server Fault</a>
-  * <a href="http://sharadchhetri.com/2012/12/23/change-hostname-fqdn-centos-redhat/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://sharadchhetri.com/2012/12/23/change-hostname-fqdn-centos-redhat/', 'How to change hostname or FQDN in CentOS and Redhat']);" >How to change hostname or FQDN in CentOS and Redhat</a>
+  * [Setting the hostname: FQDN or short name? - Server Fault](http://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name)
+  * [How to change hostname or FQDN in CentOS and Redhat](http://sharadchhetri.com/2012/12/23/change-hostname-fqdn-centos-redhat/)
 
-photo by: <a href="http://www.flickr.com/photos/manoelpetry/5334219183/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.flickr.com/photos/manoelpetry/5334219183/', 'Chef Mauro Sousa e Sous Chef Valdir Ramos by manoel petry, on Flickr']);" >Chef Mauro Sousa e Sous Chef Valdir Ramos by manoel petry, on Flickr</a>
+photo by: [Chef Mauro Sousa e Sous Chef Valdir Ramos by manoel petry, on Flickr](http://www.flickr.com/photos/manoelpetry/5334219183/)

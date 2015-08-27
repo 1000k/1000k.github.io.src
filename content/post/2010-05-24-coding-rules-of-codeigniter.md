@@ -13,7 +13,7 @@ tags:
 ---
 CodeIgniterのルールの中には、「じゃあそんなオプション消しとけよ」と思うようなこともあるので、メモしておきます。
 
-すべての根拠は <a href="http://codeigniter.jp/user_guide_ja/general/styleguide.html#class_and_method_naming" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.jp/user_guide_ja/general/styleguide.html#class_and_method_naming', 'PHPコーディングスタイル : CodeIgniter ユーザガイド 日本語版']);" title="PHPコーディングスタイル : CodeIgniter ユーザガイド 日本語版">PHPコーディングスタイル : CodeIgniter ユーザガイド 日本語版</a> から。
+すべての根拠は [PHPコーディングスタイル : CodeIgniter ユーザガイド 日本語版](http://codeigniter.jp/user_guide_ja/general/styleguide.html#class_and_method_naming) から。
 
 ## ★short\_open\_tag は使わない
 

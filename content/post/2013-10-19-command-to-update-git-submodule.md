@@ -18,4 +18,4 @@ submodule を最新の状態にするコマンドは `git submodule foreach git 
 
 ## 参考
 
-<a href="http://stackoverflow.com/questions/5828324/update-git-submodule" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/5828324/update-git-submodule', 'Update git submodule &#8211; Stack Overflow']);" >Update git submodule &#8211; Stack Overflow</a>
+[Update git submodule - Stack Overflow](http://stackoverflow.com/questions/5828324/update-git-submodule)

@@ -22,5 +22,5 @@ SELECT文をよく使うわりに、内部でどういう順で処理されて�
 
 ### 参考
 
-  * <a href="http://java-etc.cocolog-nifty.com/blog/2007/02/post_a311.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://java-etc.cocolog-nifty.com/blog/2007/02/post_a311.html', 'ＳＱＬの魔術: Javaの日々']);" title="ＳＱＬの魔術: Javaの日々">ＳＱＬの魔術: Javaの日々</a>
-  * <a href="http://www.postgresql.jp/document/pg814doc/html/sql-select.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.postgresql.jp/document/pg814doc/html/sql-select.html', 'SELECT']);" title="SELECT">SELECT</a>
+  * [ＳＱＬの魔術: Javaの日々](http://java-etc.cocolog-nifty.com/blog/2007/02/post_a311.html)
+  * [SELECT](http://www.postgresql.jp/document/pg814doc/html/sql-select.html)

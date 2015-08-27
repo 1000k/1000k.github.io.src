@@ -19,8 +19,8 @@ yum公式リポジトリ内の古いApacheやphpではなく、最新版をrpm�
 
 下記に記す非公式リポジトリを参照することで、最新のパッケージをyumでインストールできます。
 
-  * <a href="http://blog.famillecollet.com/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.famillecollet.com/', 'Remi']);" >Remi</a>
-  * <a href="http://www.jasonlitka.com/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.jasonlitka.com/', 'Utter Ramblings']);" >Utter Ramblings</a>
+  * [Remi](http://blog.famillecollet.com/)
+  * [Utter Ramblings](http://www.jasonlitka.com/)
 
 なお、これらのサイトで配布されているパッケージの信頼性は公式のリポジトリのものより劣るので、利用の際には注意が必要です。
 
@@ -34,7 +34,7 @@ RemiリポジトリはEPELリポジトリに依存しているため、両方追
 
 最新のダウンロード先は下記から確認してください。
 
-  * Remi: <a href="http://rpms.famillecollet.com/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://rpms.famillecollet.com/', 'RepoView: Les RPM de Remi']);" >RepoView: Les RPM de Remi</a>
+  * Remi: [RepoView: Les RPM de Remi](http://rpms.famillecollet.com/)
   * EPEL: http://download.fedora.redhat.com/pub/epel/5/i386/
 
 ```
@@ -73,7 +73,7 @@ gpgkey=http://www.jasonlitka.com/media/RPM-GPG-KEY-jlitka
 
 ## 最新パッケージのインストール
 
-yumコマンドに「&#8211;enablerepo={リポジトリ名}」オプションを付けることで、それぞれのリポジトリを参照できます。
+yumコマンドに「-enablerepo={リポジトリ名}」オプションを付けることで、それぞれのリポジトリを参照できます。
 
 PHPの場合
 
@@ -128,8 +128,8 @@ Is this ok [y/N]:
 
 # 参考
 
-  * <a href="http://hoge001.exblog.jp/13982612/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://hoge001.exblog.jp/13982612/', 'hoge001 : CentOS5.5 Apache 2.2.15 インストール']);" >hoge001 : CentOS5.5 Apache 2.2.15 インストール</a>
-  * <a href="https://fedoraproject.org/wiki/About_EPEL/ja" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://fedoraproject.org/wiki/About_EPEL/ja', 'About EPEL/ja &#8211; FedoraProject']);" >About EPEL/ja &#8211; FedoraProject</a>
+  * [hoge001 : CentOS5.5 Apache 2.2.15 インストール](http://hoge001.exblog.jp/13982612/)
+  * [About EPEL/ja - FedoraProject](https://fedoraproject.org/wiki/About_EPEL/ja)
       * EPELとは？EPELの目的など
-  * <a href="http://www.goofoo.jp/2011/03/556" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.goofoo.jp/2011/03/556', 'yumでremiリポジトリを使えるようにする | グーフー WordPressのためのLinuxノート']);" >yumでremiリポジトリを使えるようにする | グーフー WordPressのためのLinuxノート</a>
-  * <a href="http://pentan.info/server/linux/yum_new.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://pentan.info/server/linux/yum_new.html', 'yumで、より新しいパッケージをインストールする方法(CentOS) &#8211; [yum/Linux [Red Hatなど]] ぺんたん info']);" >yumで、より新しいパッケージをインストールする方法(CentOS) &#8211; [yum/Linux [Red Hatなど]] ぺんたん info</a>
+  * [yumでremiリポジトリを使えるようにする | グーフー WordPressのためのLinuxノート](http://www.goofoo.jp/2011/03/556)
+  * [yumで、より新しいパッケージをインストールする方法(CentOS) - [yum/Linux [Red Hatなど]] ぺんたん info](http://pentan.info/server/linux/yum_new.html)

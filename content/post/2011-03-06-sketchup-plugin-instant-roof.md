@@ -22,7 +22,7 @@ tags:
 
 ## DL先
 
-<a href="http://www.valiarchitects.com/system/files/programs/suscripts/InstantRoof.rbs?download=1" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.valiarchitects.com/system/files/programs/suscripts/InstantRoof.rbs?download=1', 'Instant Roof | Vali Architects | Instant Scripts']);" >Instant Roof | Vali Architects | Instant Scripts</a>
+[Instant Roof | Vali Architects | Instant Scripts](http://www.valiarchitects.com/system/files/programs/suscripts/InstantRoof.rbs?download=1)
 
 上記サイトからFree版をダウンロードしましょう。
 
@@ -32,43 +32,43 @@ tags:
 
 公式サイトに3種類のムービーが用意されており、見ているだけでだいたいの機能は把握できると思います。
 
-  * <a href="http://www.valiarchitects.com/tutorials/model-8-min" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.valiarchitects.com/tutorials/model-8-min', 'Model this in 8 min | Vali Architects | Instant Scripts']);" >Model this in 8 min | Vali Architects | Instant Scripts</a> 
+  * [Model this in 8 min | Vali Architects | Instant Scripts](http://www.valiarchitects.com/tutorials/model-8-min)
       * 3分程度で機能概要を紹介
       * 選択範囲によって屋根の向きが変わることが確認できます
       * ムービー2:15あたりで使っている窓などのコンポーネントを配置するテクニックも勉強になります
-  * <a href="http://www.valiarchitects.com/tutorials/introducing-instant-roof-primitives" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.valiarchitects.com/tutorials/introducing-instant-roof-primitives', 'Introducing Instant Roof-Primitives | Vali Architects | Instant Scripts']);" >Introducing Instant Roof-Primitives | Vali Architects | Instant Scripts</a> 
+  * [Introducing Instant Roof-Primitives | Vali Architects | Instant Scripts](http://www.valiarchitects.com/tutorials/introducing-instant-roof-primitives)
       * 基本的な屋根の作り方
       * 武家屋敷のような入り母屋屋根の使い方も出てきます (2:45-)
-  * <a href="http://www.valiarchitects.com/tutorials/some-simple-roofs" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.valiarchitects.com/tutorials/some-simple-roofs', 'Some Simple Roofs | Vali Architects | Instant Scripts']);" >Some Simple Roofs | Vali Architects | Instant Scripts</a> 
+  * [Some Simple Roofs | Vali Architects | Instant Scripts](http://www.valiarchitects.com/tutorials/some-simple-roofs)
       * より詳しい屋根の作成方法
       * 選択する線によってどう屋根の向きが変わるのかを1個ずつ紹介しています
 
 ## 単語解説
 
 Instant Roofは設定パラメーターが豊富で、専門用語も満載なので、素人(私)にはわかりづらいです。
-  
+
 和訳などを書いておきます。
 
-ビジュアルで把握したければ、<a href="http://www.valiarchitects.com/sites/default/files/tutorials/pdf/Roof-parameters.pdf" onclick="_gaq.push(['_trackEvent','download','http://www.valiarchitects.com/sites/default/files/tutorials/pdf/Roof-parameters.pdf']);" >Roof Parameters</a>がわかりやすいです。
+ビジュアルで把握したければ、[Roof Parameters](http://www.valiarchitects.com/sites/default/files/tutorials/pdf/Roof-parameters.pdf)がわかりやすいです。
 
 eave
 :   軒、ひさし。
-  
+
     屋根の外壁から外側に出ている部分。
-  
+
     なんと言えばいいのか・・・雨宿りするとき避難するところ。
 
 fascia
 :   鼻隠し (軒先の垂木先端の木口を隠すための板)。
-  
-    参考: <a href="http://ja.wikipedia.org/wiki/%E9%BC%BB%E9%9A%A0" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/%E9%BC%BB%E9%9A%A0', '鼻隠 &#8211; Wikipedia']);" >鼻隠 &#8211; Wikipedia</a>
+
+    参考: [鼻隠 - Wikipedia](http://ja.wikipedia.org/wiki/%E9%BC%BB%E9%9A%A0)
 
 gable
 :   切妻 (きりづま)、破風 (はふ)。
-  
+
     「へ」の字型の屋根のこと。
-  
-    参考: <a href="http://ja.wikipedia.org/wiki/%E5%88%87%E5%A6%BB%E9%80%A0" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/%E5%88%87%E5%A6%BB%E9%80%A0', '切妻造 &#8211; Wikipedia']);" >切妻造 &#8211; Wikipedia</a>
+
+    参考: [切妻造 - Wikipedia](http://ja.wikipedia.org/wiki/%E5%88%87%E5%A6%BB%E9%80%A0)
 
 hips
 :   隅棟 (寄せ棟などの屋根同士が接合する隅の部分)。
@@ -86,4 +86,4 @@ shed
 
 公式マニュアルが充実しているので、これだけ見れば十分だと思います。
 
-<a href="http://www.valiarchitects.com/sketchup_scripts/instant-roof" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.valiarchitects.com/sketchup_scripts/instant-roof', 'Instant Roof | Vali Architects | Instant Scripts']);" >Instant Roof | Vali Architects | Instant Scripts</a>
+[Instant Roof | Vali Architects | Instant Scripts](http://www.valiarchitects.com/sketchup_scripts/instant-roof)

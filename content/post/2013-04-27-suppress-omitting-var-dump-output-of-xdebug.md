@@ -44,6 +44,6 @@ xdebug.var_display_max_depth = -1
 
 ## 参考
 
-  * <a href="http://xdebug.org/docs/all_settings#var_display_max_depth" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://xdebug.org/docs/all_settings#var_display_max_depth', 'Xdebug: Documentation']);" >Xdebug: Documentation</a>
-  * <a href="http://www.kantenna.com/info/2012/02/xdebug_vardump.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.kantenna.com/info/2012/02/xdebug_vardump.php', '[PHP]Xdebugでvar_dump()の出力が省略されて困る場合の対応 | 情報備忘録']);" >[PHP]Xdebugでvar_dump()の出力が省略されて困る場合の対応 | 情報備忘録</a>
-  * <a href="http://www.crossl.net/blog/php_xdebug_vardump_size/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.crossl.net/blog/php_xdebug_vardump_size/', 'PHPでvar_dump時に数が多いと省略されてしまう現象']);" >PHPでvar_dump時に数が多いと省略されてしまう現象</a>
+  * [Xdebug: Documentation](http://xdebug.org/docs/all_settings#var_display_max_depth)
+  * [[PHP]Xdebugでvar_dump()の出力が省略されて困る場合の対応 | 情報備忘録](http://www.kantenna.com/info/2012/02/xdebug_vardump.php)
+  * [PHPでvar_dump時に数が多いと省略されてしまう現象](http://www.crossl.net/blog/php_xdebug_vardump_size/)

@@ -15,4 +15,4 @@ Markdown記法では、行頭に「1.」「2.」などと書くと、勝手に�
 
 ### 参考
 
-<a href="http://daringfireball.net/projects/markdown/syntax" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://daringfireball.net/projects/markdown/syntax', 'Daring Fireball: Markdown Syntax Documentation']);" title="Daring Fireball: Markdown Syntax Documentation">Daring Fireball: Markdown Syntax Documentation</a>
+[Daring Fireball: Markdown Syntax Documentation](http://daringfireball.net/projects/markdown/syntax)

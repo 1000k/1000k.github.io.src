@@ -79,7 +79,7 @@ class MyTestCase extends PHPUnit_Framework_TestCase {
 ```
 
 
-また、PHPUnit の Expectation はメソッドチェーンで連続して指定できます (&#8220;->&#8221; 演算子で繋げて書ける) が、そもそも記述量が多いです。いちいち this this 書くのも煩わしい。
+また、PHPUnit の Expectation はメソッドチェーンで連続して指定できます ("->" 演算子で繋げて書ける) が、そもそも記述量が多いです。いちいち this this 書くのも煩わしい。
 
 そこで、Expectation をセットするためのメソッドを作ってやると楽になります。
 
@@ -88,12 +88,12 @@ class MyTestCase extends PHPUnit_Framework_TestCase {
     /**
      * モックオブジェクトに Expectation を設定する。
      *
-     * @param Object &#038;$mock モックオブジェクト
+     * @param Object &$mock モックオブジェクト
      * @param string $matcher マッチャー ([any|once|never|...])
      * @param string $method メソッド名
      * @param mixed $return_value 期待する戻り値
      */
-    protected function _setExpectation(&#038;$mock, $matcher, $method, $return_value = null) {
+    protected function _setExpectation(&$mock, $matcher, $method, $return_value = null) {
         $mock->expects($this->$matcher())
             ->method($method)
             ->will($this->returnValue($return_value));
@@ -129,9 +129,9 @@ class FooClassTest extends MyTestCase {
 
 また、PHPDoc 部分に `@test` アノテーションを付けると、メソッド名を `test` で始めなくてもテストケースとして認識されるようになります。私はこの方が読みやすいので、最近はこう書くことが多いです。
 
-こういう改善をしても、Ruby に慣れているとまだ長く感じます。「$」「&#8217;」「>」などの記号を打つのも煩わしいです。Ruby 使いてえなあ。
+こういう改善をしても、Ruby に慣れているとまだ長く感じます。「$」「'」「>」などの記号を打つのも煩わしいです。Ruby 使いてえなあ。
 
 ## 参考
 
-  * <a href="http://phpunit.de/manual/3.8/ja/test-doubles.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpunit.de/manual/3.8/ja/test-doubles.html', 'PHPUnit 公式マニュアル > 第10章 テストダブル']);" >PHPUnit 公式マニュアル > 第10章 テストダブル</a>
-  * <a href="http://phpunit.de/manual/3.8/ja/appendixes.annotations.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpunit.de/manual/3.8/ja/appendixes.annotations.html', '付録B アノテーション']);" >付録B アノテーション</a>
+  * [ 第10章 テストダブル']);" >PHPUnit 公式マニュアル > 第10章 テストダブル](http://phpunit.de/manual/3.8/ja/test-doubles.html)
+  * [付録B アノテーション](http://phpunit.de/manual/3.8/ja/appendixes.annotations.html)
