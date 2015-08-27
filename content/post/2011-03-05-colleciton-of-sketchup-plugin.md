@@ -26,7 +26,7 @@ DL先: [Smustard(TM) - the Companion to Sketchup(TM) - CenterPoint](http://www.s
 
 ## Hole Punching Tool
 
-[<img src="http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg" alt="" title="hall_panching_tool_5" width="400" height="221" class="alignnone size-full wp-image-598" />](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg)
+[{{< img src="/img/hall_panching_tool_5.jpg" title="" >}}](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg)
 
 DL先: [Hole Punching Tool (SU Plugin) - Ruby Library Depot](http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=726)
 
@@ -58,7 +58,7 @@ DL先: [CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls](htt
 
 ## line2walls
 
-[<img src="http://blog.1000k.net/wp-content/uploads/line2walls.png" alt="" title="line2walls" width="600" height="212" class="alignnone size-full wp-image-700" />](http://blog.1000k.net/wp-content/uploads/line2walls.png)
+[{{< img src="/img/line2walls.png" title="" >}}](http://blog.1000k.net/wp-content/uploads/line2walls.png)
 
 DL先: [lines2walls 13 (SU Plugin) - Ruby Library Depot](http://modelisation.nancy.archi.fr/rld/plugin_details.php?id=227)
 
@@ -67,7 +67,7 @@ DL先: [lines2walls 13 (SU Plugin) - Ruby Library Depot](http://modelisation.nan
 
 ## Remove Materials
 
-[<img src="http://blog.1000k.net/wp-content/uploads/remove_all_materials.png" alt="" title="Remove Materials" width="400" height="338" class="alignnone size-full wp-image-697" />](http://blog.1000k.net/wp-content/uploads/remove_all_materials.png)
+[{{< img src="/img/remove_all_materials.png" title="" >}}](http://blog.1000k.net/wp-content/uploads/remove_all_materials.png)
 
 DL先: [Smustard(TM) - the Companion to Sketchup(TM) - RemoveMaterials](http://www.smustard.com/script/RemoveMaterials)
 

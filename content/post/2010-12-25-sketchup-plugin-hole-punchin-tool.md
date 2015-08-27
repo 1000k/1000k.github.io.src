@@ -37,25 +37,25 @@ tags:
 
 たとえば以下のような窓を壁に配置し、窓の形に壁面に穴を開ける（パンチする）場合を考えます。
 
-[<img src="http://blog.1000k.net/wp-content/uploads/cutting_windows_1.jpg" alt="" title="hall_panching_tool_1" width="400" height="221" class="alignnone size-full wp-image-594" />](http://blog.1000k.net/wp-content/uploads/cutting_windows_1.jpg)
+[{{< img src="/img/cutting_windows_1.jpg" title="" >}}](http://blog.1000k.net/wp-content/uploads/cutting_windows_1.jpg)
 
 壁面にコンポーネントを配置します。
 
-[<img src="http://blog.1000k.net/wp-content/uploads/hall_panching_tool_2.jpg" alt="" title="hall_panching_tool_2" width="400" height="221" class="alignnone size-full wp-image-595" />](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_2.jpg)
+[{{< img src="/img/hall_panching_tool_2.jpg" title="" >}}](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_2.jpg)
 
 この時点ではもちろん穴は開いていません。
 
-[<img src="http://blog.1000k.net/wp-content/uploads/hall_panching_tool_3.jpg" alt="" title="hall_panching_tool_3" width="400" height="221" class="alignnone size-full wp-image-596" />](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_3.jpg)
+[{{< img src="/img/hall_panching_tool_3.jpg" title="" >}}](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_3.jpg)
 
 窓を右クリックし、[Hole Punching…] > [Punch]を選択します。これで、壁に穴が開きました。
 
-[<img src="http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg" alt="" title="hall_panching_tool_5" width="400" height="221" class="alignnone size-full wp-image-598" />](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg)
+[{{< img src="/img/hall_panching_tool_5.jpg" title="" >}}](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg)
 
-[<img src="http://blog.1000k.net/wp-content/uploads/hall_panching_tool_4.jpg" alt="" title="hall_panching_tool_4" width="400" height="221" class="alignnone size-full wp-image-597" />](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_4.jpg)
+[{{< img src="/img/hall_panching_tool_4.jpg" title="" >}}](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_4.jpg)
 
 移動ツールを使うと、穴ごと移動するのがわかります。
 
-[<img src="http://blog.1000k.net/wp-content/uploads/hall_panching_tool_6.jpg" alt="" title="hall_panching_tool_6" width="400" height="221" class="alignnone size-full wp-image-599" />](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_6.jpg)
+[{{< img src="/img/hall_panching_tool_6.jpg" title="" >}}](http://blog.1000k.net/wp-content/uploads/hall_panching_tool_6.jpg)
 
 ## 注意
 

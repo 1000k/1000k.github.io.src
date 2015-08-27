@@ -18,7 +18,7 @@ tags:
 
 今回作ったのは下の画像のような簡単なタイマーです。経過時間に合わせてプログレスバーが赤くなります。
 
-<img src="http://blog.1000k.net/wp-content/uploads/timer.png" alt="timer" width="585" height="81" />
+{{< img src="/img/timer.png" title="timer" >}}
 
 [デモはこちら。](http://jsfiddle.net/tcxx9/3/)
 

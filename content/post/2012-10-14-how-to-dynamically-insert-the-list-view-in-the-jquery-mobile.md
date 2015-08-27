@@ -24,11 +24,11 @@ jQuery Mobile 1.2 を使ってリストビューを動的に挿入する手順�
 
 画面イメージはこんな感じです。↓
 
-<img src="http://blog.1000k.net/wp-content/uploads/dynamic_injection1.png" alt="" title="before" width="444" height="296" class="alignnone size-full wp-image-1173" />
+{{< img src="/img/dynamic_injection1.png" title="" >}}
 
 「Inject!」をクリックすると、ヘッダとコンテンツが書き換えられます。
 
-<img src="http://blog.1000k.net/wp-content/uploads/dynamic_injection2.png" alt="" title="after" width="444" height="248" class="alignnone size-full wp-image-1174" />
+{{< img src="/img/dynamic_injection2.png" title="" >}}
 
 <!--more-->
 

@@ -13,9 +13,9 @@ tags:
 ---
 [このデモ](http://jsfiddle.net/893s2/2/)を見れば、何をやりたいかすぐ把握できると思います。
 
-[<img src="http://blog.1000k.net/wp-content/uploads/map_1-300x225.png" alt="map_1" width="300" height="225" class="alignnone size-medium wp-image-1683" />](http://blog.1000k.net/wp-content/uploads/map_1.png)
+[{{< img src="/img/map_1-300x225.png" title="map_1" >}}](http://blog.1000k.net/wp-content/uploads/map_1.png)
 
-[<img src="http://blog.1000k.net/wp-content/uploads/map_2-190x300.png" alt="map_2" width="190" height="300" class="alignnone size-medium wp-image-1684" />](http://blog.1000k.net/wp-content/uploads/map_2.png)
+[{{< img src="/img/map_2-190x300.png" title="map_2" >}}](http://blog.1000k.net/wp-content/uploads/map_2.png)
 
 ウィンドウの幅や高さを変えても、ヘッダーとフッターは常に同じ高さのままで、マップの部分はウィンドウサイズに合うように伸縮しています。
 

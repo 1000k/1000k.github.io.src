@@ -17,7 +17,7 @@ tags:
 
 ## 時間と複雑性の関係
 
-<img src="http://blog.1000k.net/wp-content/uploads/complexity_by_time.png" alt="複雑性と時間" width="640" height="480" />
+{{< img src="/img/complexity_by_time.png" title="複雑性と時間" >}}
 
 上はよく見かける時間と複雑性のモデルです。初回リリース時点では低かった複雑性も、その後の度重なる変更を経て、指数関数的に複雑性が上昇します。下げる努力をしなければ、1回の変更に要する労力は増え続け、最終的には変更不能に陥ります。
 

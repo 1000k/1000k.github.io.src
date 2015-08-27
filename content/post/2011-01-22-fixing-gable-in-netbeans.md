@@ -35,7 +35,7 @@ netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:
 
 結果
 
-[<img src="http://blog.1000k.net/wp-content/uploads/LerningRuby-N_2059-e1295677532145-300x138.png" alt="" title="NetBeansで日本語出力" width="300" height="138" class="alignnone size-medium wp-image-638" />](http://blog.1000k.net/wp-content/uploads/LerningRuby-N_2059-e1295677532145.png)
+[{{< img src="/img/LerningRuby-N_2059-e1295677532145-300x138.png" title="" >}}](http://blog.1000k.net/wp-content/uploads/LerningRuby-N_2059-e1295677532145.png)
 
 ### 日本語フォントを指定する (2011/07/07追記)
 

@@ -102,7 +102,7 @@ Windows 7 64bitの場合、下記アプリをダウンロードしました。
   8. [Project:]に"SampleApp"を指定して[Run]
   9. エミュレーター上に"Hello there, you Activity!"と表示されれば成功
 
-[<img src="http://blog.1000k.net/wp-content/uploads/android_tutorial-300x293.png" alt="" title="ビルド完了" width="300" height="293" class="alignnone size-medium wp-image-937" />](http://blog.1000k.net/wp-content/uploads/android_tutorial.png)
+[{{< img src="/img/android_tutorial-300x293.png" title="" >}}](http://blog.1000k.net/wp-content/uploads/android_tutorial.png)
 
 なお、ビルドされたアプリはbinディレクトリの下に「SampleApp.apk」という名前で入っています。これをAndroidに転送すれば実機で実行できます。
 

@@ -98,7 +98,7 @@ Jenkins から環境変数を上書きすることで、PATH を追加するこ�
 
 `Jenkinsの管理 > システムの設定 > グローバルプロパティ > 環境変数` にて、以下のように設定します。
 
-[<img src="http://blog.1000k.net/wp-content/uploads/jenkins_global_property-300x191.png" alt="Jenkins グローバルプロパティ" width="300" height="191" class="alignnone size-medium wp-image-1507" />](http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png)
+[{{< img src="/img/jenkins_global_property-300x191.png" title="Jenkins グローバルプロパティ" >}}](http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png)
 
   * キー: `PATH`
   * 値: `${PATH}:/usr/local/bin`
