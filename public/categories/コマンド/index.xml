@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>コマンド on 1000g</title>
+    <link>http://1000k.github.io/categories/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89/</link>
+    <description>Recent content in コマンド on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 11 Mar 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>tmuxはじめました</title>
+      <link>http://1000k.github.io/2015/03/11/introducing-to-tmux/</link>
+      <pubDate>Wed, 11 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/03/11/introducing-to-tmux/</guid>
+      <description>
+
+&lt;p&gt;とあるきっかけで開発効率強化ウィークに入りました。まずはターミナルをもっと効率的にすべく、tmux を習得することにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;tumxとは:a506571e48bbc5459d921757c1950894&#34;&gt;tumxとは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ターミナルマルチプレクサ (端末多重化ソフトウェア, 仮想端末マネージャー) のひとつ
+
+&lt;ul&gt;
+&lt;li&gt;ほかには GNU screen が有名&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;読み方は &amp;#8220;ティーマックス&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;できること:a506571e48bbc5459d921757c1950894&#34;&gt;できること&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1つの端末で複数の仮想端末を起動できる&lt;/li&gt;
+&lt;li&gt;仮想端末の画面を自由に分割・統合できる&lt;/li&gt;
+&lt;li&gt;マウスを使わずキーボードだけでコピペできる&lt;/li&gt;
+&lt;li&gt;デタッチ(切り離し)とアタッチ(接続)により、ネットワークが切れても同じセッションを再開できる&lt;/li&gt;
+&lt;li&gt;ステータスバーなどでターミナルの情報をリッチにできる
+
+&lt;ul&gt;
+&lt;li&gt;現在時刻、Wi-Fi接続強度、バッテリー残量なども表示できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;設定ファイルで高度にカスタマイズできる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;tmuxの構成:a506571e48bbc5459d921757c1950894&#34;&gt;tmuxの構成&lt;/h3&gt;
+
+&lt;p&gt;tmuxはサーバー/クライアント構成を取る。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tmuxサーバー(セッション)
+
+&lt;ul&gt;
+&lt;li&gt;tmux起動時に生成される&lt;/li&gt;
+&lt;li&gt;セッションを管理するプロセス&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;tmuxクライアント(pty; 仮想端末)
+
+&lt;ul&gt;
+&lt;li&gt;tmuxセッションへ接続(アタッチ)しているプロセス(pty)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;画面の内包関係:a506571e48bbc5459d921757c1950894&#34;&gt;画面の内包関係&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;セッション &amp;gt; ウィンドウ &amp;gt; ペイン&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;セッション: ウィンドウの集まり。&lt;/li&gt;
+&lt;li&gt;ウィンドウ: ペインを管理する領域。タブのイメージ。&lt;/li&gt;
+&lt;li&gt;ペイン: ウィンドウを分割した領域。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール:a506571e48bbc5459d921757c1950894&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;yum ユーザーは EPEL リポジトリからインストールが可能。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo yum install -y tmux
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;チュートリアル:a506571e48bbc5459d921757c1950894&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;h3 id=&#34;起動:a506571e48bbc5459d921757c1950894&#34;&gt;起動&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;tmux&lt;/code&gt; または &lt;code&gt;tmux new-session&lt;/code&gt; で新規セッションを起動すると、新しい仮想端末が開く。&lt;/p&gt;
+
+&lt;h3 id=&#34;ペインの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;C-b %&lt;/code&gt; でペインを分割し、&lt;code&gt;C-b n&lt;/code&gt; で次のウィンドウに移動します。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;C-b ?&lt;/code&gt; でヘルプが開くので、片方のペインにヘルプを表示した状態で、もう片方でいろいろ実験してみると理解が進みます。&lt;/p&gt;
+
+&lt;h3 id=&#34;デタッチ:a506571e48bbc5459d921757c1950894&#34;&gt;デタッチ&lt;/h3&gt;
+
+&lt;p&gt;仮想端末上で &lt;code&gt;C-b d&lt;/code&gt; で、端末がセッションからデタッチされます。&lt;/p&gt;
+
+&lt;p&gt;デタッチ状態ではセッションは残っているので、再度 &lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; と入力すれば、最後の画面から再開できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本操作:a506571e48bbc5459d921757c1950894&#34;&gt;基本操作&lt;/h2&gt;
+
+&lt;h3 id=&#34;セッションの操作:a506571e48bbc5459d921757c1950894&#34;&gt;セッションの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;セッションの作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux&lt;/code&gt; or &lt;code&gt;tmux new-session&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-sessions&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;接続されているクライアントの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-client&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションのアタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; or &lt;code&gt;tmux a&lt;/code&gt; (&lt;code&gt;-d&lt;/code&gt; を指定すると、そのセッションに接続しているほかのクライアントはデタッチされる)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-session [-t セッション番号]&lt;/code&gt; (引数を指定しなければ直近のセッションが削除される)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;全セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-server&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ウィンドウの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ウィンドウの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ヘルプ表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ?&lt;/code&gt; (閉じるには &lt;code&gt;q&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b c&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;amp;&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ名変更&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ,&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ一覧表示/移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b w&lt;/code&gt; (カーソルキーで選択、[Enter] で表示)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;前のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b p&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;次のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b n&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b l&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ウィンドウ番号&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;デタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b d&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ペインの操作-1:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ペイン番号表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q&lt;/code&gt; or &lt;code&gt;C-b :display-panes&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q ペイン番号&lt;/code&gt; (インジケーターが表示されている間に番号を入力する)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (水平方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;quot;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (垂直方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b %&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割解除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b !&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン強制終了&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b x&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン間移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b o&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン入れ替え&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b {&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;カスタマイズ:a506571e48bbc5459d921757c1950894&#34;&gt;カスタマイズ&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;~/.tmux.conf&lt;/code&gt; にカスタマイズ設定を書き込むことができます。&lt;/p&gt;
+
+&lt;p&gt;yum でインストールした場合は &lt;code&gt;/usr/share/doc/tmux-1.6/examples/&lt;/code&gt; 配下にサンプルファイルがあります。vimmer は &lt;a href=&#34;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#39;, &#39;vim-keys.conf&#39;]);&#34; &gt;vim-keys.conf&lt;/a&gt; を設定するとペイン操作が楽になるかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:a506571e48bbc5459d921757c1950894&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#39;, &#39;OpenBSD manual pages&#39;]);&#34; &gt;OpenBSD manual pages&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;公式マニュアル。英語。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#39;, &#39;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&#39;]);&#34; &gt;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;概念図やスクリーンショット満載でわかりやすいです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://room6933.com/mymemo/tmux/tmux-basic.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://room6933.com/mymemo/tmux/tmux-basic.html&#39;, &#39;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&#39;]);&#34; &gt;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#39;, &#39;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&#39;]);&#34; &gt;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使えるカスタマイズの例。zsh と連携して、ログイン時にいきなり tmux セッションにアタッチする方法など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>UnixタイムスタンプをYMD形式に変換するワンライナー</title>
+      <link>http://1000k.github.io/2013/01/11/oneliner-convert-unix-timestamp-to-ymd-format/</link>
+      <pubDate>Fri, 11 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/01/11/oneliner-convert-unix-timestamp-to-ymd-format/</guid>
+      <description>
+
+&lt;p&gt;Unixタイムスタンプを読みやすい形式に変更するワンライナーを、いくつかの言語で紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;シェル:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;シェル&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ date -d @1357872483
+2013年  1月 11日 金曜日 11:48:03 JST
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;php:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;PHP&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ php -r &#39;echo date(&amp;quot;r&amp;quot;, 1357872483);&#39;
+Fri, 11 Jan 2013 11:48:03 +090
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;date()関数の第1引数でフォーマットを変更できます。&lt;/p&gt;
+
+&lt;p&gt;詳しくは &lt;a href=&#34;http://php.net/manual/ja/function.date.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://php.net/manual/ja/function.date.php&#39;, &#39;PHP: date &amp;#8211; Manual&#39;]);&#34; title=&#34;PHP: date - Manual&#34;&gt;PHP: date &amp;#8211; Manual&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h2 id=&#34;ruby:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;Ruby&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ruby -e &#39;p Time.at(1357872483)&#39;
+Fri Jan 11 11:48:03 +0900 2013
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash&#39;, &#39;How to convert timestamps to dates in bash? &amp;#8211; Stack Overflow&#39;]);&#34; title=&#34;How to convert timestamps to dates in bash? - Stack Overflow&#34;&gt;How to convert timestamps to dates in bash? &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://open-groove.net/linux/change-unix-timestamp/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://open-groove.net/linux/change-unix-timestamp/&#39;, &#39;UNIX timestampを通常時刻に変換したい時 &amp;#8211; OpenGroove&#39;]);&#34; title=&#34;UNIX timestampを通常時刻に変換したい時 - OpenGroove&#34;&gt;UNIX timestampを通常時刻に変換したい時 &amp;#8211; OpenGroove&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOSでbzip2が解凍できないエラー</title>
+      <link>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</guid>
+      <description>
+
+&lt;p&gt;bzip2ファイルを解凍しようと思ったら、見慣れないエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# tar xvf paco-2.0.9.tar.bz2
+tar: bzip2: exec 不能: そのようなファイルやディレクトリはありません
+tar: エラーを回復できません: 直ちに終了します
+tar: Child returned status 2
+tar: 処理中にエラーが起きましたが、最後まで処理してからエラー終了させました
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただ単にbzip2がインストールされていなかったのが原因でした。yumで入れて即解決です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install bzip2
+...
+Installed:
+  bzip2.x86_64 0:1.0.3-6.el5_5
+
+Complete!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CloudCore VPSでこのエラーに遭遇しました。&lt;/p&gt;
+
+&lt;p&gt;CentOSの最小構成でインストールされているようで、ごく普通のコマンドが使えないことが多いです。&lt;/p&gt;
+
+&lt;p&gt;パッケージが不足していないか注意が必要ですね。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:b209194a963523f744e005b58f948c6d&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiroponz/20070205&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiroponz/20070205&#39;, &#39;2007-02-05 &amp;#8211; プチ技術メモ&#39;]);&#34; &gt;2007-02-05 &amp;#8211; プチ技術メモ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>pacoでソースからインストールしたアプリを管理する</title>
+      <link>http://1000k.github.io/2012/01/15/managing-source-installed-packages-using-paco/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/managing-source-installed-packages-using-paco/</guid>
+      <description>
+
+&lt;p&gt;pacoは、自分でソースからインストールしたアプリでもrpmのようにパッケージ管理できるようになるツールです。&lt;/p&gt;
+
+&lt;p&gt;rpmが無いアプリの管理が楽になるのでおすすめです。&lt;/p&gt;
+
+&lt;p&gt;以下、インストール方法と使い方を簡単に記します。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール手順:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストール手順&lt;/h2&gt;
+
+&lt;p&gt;最新のソースは &lt;a href=&#34;http://paco.sourceforge.net/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://paco.sourceforge.net/&#39;, &#39;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&#39;]);&#34; &gt;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&lt;/a&gt; で確認してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# wget http://sourceforge.net/projects/paco/files/paco/2.0.9/paco-2.0.9.tar.bz2/download
+# tar xvf paco-2.0.9.tar.bz2
+# cd paco-2.0.9
+# ./configure --disable-gpaco
+# make
+# make install
+# make logme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今回はGUIを使わないので、configureオプションに「&amp;#8211;disable-gpaco」を付けています。&lt;/p&gt;
+
+&lt;p&gt;これを付けないと「No package &amp;#8216;gtkmm-2.4&amp;#8217; found」というエラーが出ます。&lt;/p&gt;
+
+&lt;p&gt;最後の「make logme」でpaco自身のインストール内容を記録しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:2e9f7bf7118303b30947563102a07bb4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;h3 id=&#34;インストールを記録する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストールを記録する&lt;/h3&gt;
+
+&lt;p&gt;今後、何らかのアプリをmake installする際には、「paco -D」を付けることでpacoに記録できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cd {インストールしたいパッケージ}
+# paco -D make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;インストール済みパッケージを確認する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストール済みパッケージを確認する&lt;/h3&gt;
+
+&lt;p&gt;「-a」オプションを使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# paco -a
+paco-2.0.9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;パッケージでインストールされたファイルを確認する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;パッケージでインストールされたファイルを確認する&lt;/h3&gt;
+
+&lt;p&gt;「-f」オプションを使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ paco -f paco-2.0.9
+paco-2.0.9:
+/usr/local/share/paco/README
+/usr/local/lib/libpaco-log.a
+/usr/local/lib/libpaco-log.la
+/usr/local/lib/libpaco-log.so
+/usr/local/lib/libpaco-log.so.0
+/usr/local/lib/libpaco-log.so.0.0.0
+/usr/local/bin/paco
+/usr/local/etc/pacorc
+/usr/local/lib/pkgconfig/paco.pc
+/usr/local/share/man/man5/pacorc.5
+/usr/local/share/man/man8/paco.8
+/usr/local/share/man/man8/pacoball.8
+/usr/local/share/man/man8/rpm2paco.8
+/usr/local/share/man/man8/superpaco.8
+/usr/local/share/paco/faq.txt
+/usr/local/share/paco/pacorc
+/usr/local/bin/ocap
+/usr/local/bin/pacoball
+/usr/local/bin/rpm2paco
+/usr/local/bin/superpaco
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;パッケージをアンインストールする:2e9f7bf7118303b30947563102a07bb4&#34;&gt;パッケージをアンインストールする&lt;/h3&gt;
+
+&lt;p&gt;「-r」オプションです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# paco -r {アンインストールしたいパッケージ名}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:2e9f7bf7118303b30947563102a07bb4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/kasei_san/20100220/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/kasei_san/20100220/p1&#39;, &#39;さくらのユーザディレクトリにPACOをインストールしたときの手順 &amp;#8211; かせいさんとこ&#39;]);&#34; &gt;さくらのユーザディレクトリにPACOをインストールしたときの手順 &amp;#8211; かせいさんとこ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://paco.sourceforge.net/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://paco.sourceforge.net/&#39;, &#39;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&#39;]);&#34; &gt;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html&#39;, &#39;ソースからインストールしたアプリを管理するには － ＠IT&#39;]);&#34; &gt;ソースからインストールしたアプリを管理するには － ＠IT&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>vmstatの値をロギングする</title>
+      <link>http://1000k.github.io/2011/09/28/logging-vmstat-values/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/09/28/logging-vmstat-values/</guid>
+      <description>
+
+&lt;p&gt;vmstatの値をファイルに出力したいとき、次のコマンドが使えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nohup vmstat -n -S M 1 | awk &#39;{ print strftime(&amp;quot;%Y/%m/%d %H:%M:%S&amp;quot;), $0 } { system(&amp;quot;:&amp;quot;) }&#39; &amp;gt;&amp;gt; /path/to/log &amp;amp;#038;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2011/09/28 15:51:07 procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------
+2011/09/28 15:51:07  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+2011/09/28 15:51:07  1  0      0    251    153    358    0    0     0     9    1    0  0  0 99  0  0
+2011/09/28 15:51:08  0  0      0    251    153    358    0    0     0     0 1012   40  0  1 99  0  0
+2011/09/28 15:51:09  0  0      0    251    153    358    0    0     0     0 1004   37  0  0 100  0  0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このプロセスを終了したい場合は、下記のようにkillしてやればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pgrep vmstat      # vmstatのprocess idを取得する
+29248
+
+$ kill {上で出てきたpid}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;参考:981194324cf5b426a797d33ec4db9e80&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://babyp.blog55.fc2.com/blog-entry-446.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://babyp.blog55.fc2.com/blog-entry-446.html&#39;, &#39;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&#39;]);&#34; &gt;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#39;, &#39;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&#39;]);&#34; &gt;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#39;, &#39;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&#39;]);&#34; &gt;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>svnでdiffの行数を取得する</title>
+      <link>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</link>
+      <pubDate>Wed, 03 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</guid>
+      <description>
+
+&lt;p&gt;どれだけコーディングしたかチェックするため、svnのdiffの行数を取得するコマンドを考えました。&lt;/p&gt;
+
+&lt;p&gt;下のコマンドを叩くと、変更された行の総数が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(2011-08-17修正) 以前のコードはdiffのヘッダ行まで取得してしまっていたので、正しい数値が得られるよう修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;svn diff -r {before}[:{after}] -x -b {path} | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば「チェンジセット301～310で uso.php に発生した差分の総行数」は、下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn diff -r 301:310 -x -b ./uso.php | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ロジックは、&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;空白文字の差分（インデントや空行の削除）を無視してdiffを取る&lt;/li&gt;
+&lt;li&gt;差分行だけ(「+ 」「- 」どちらかから始まっている行)を取得する&lt;/li&gt;
+&lt;li&gt;行数をカウントする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;となっています。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8ae62bd64dbb38a5a9b5b7de400f164f&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://openlab.dino.co.jp/2007/10/23/184825129.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://openlab.dino.co.jp/2007/10/23/184825129.html&#39;, &#39;svn diffで-wオプションを使う — ディノオープンラボラトリ&#39;]);&#34; title=&#34;svn diffで-wオプションを使う — ディノオープンラボラトリ&#34;&gt;svn diffで-wオプションを使う — ディノオープンラボラトリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.enjoitech.jp/article/71&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.enjoitech.jp/article/71&#39;, &#39;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&#39;]);&#34; title=&#34;Linux である文字を含む行を削除したい - Enjoi Blog&#34;&gt;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

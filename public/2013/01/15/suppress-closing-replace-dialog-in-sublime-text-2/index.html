@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Sublime Text 2 の置換ダイアログを閉じないようにする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/01/15/suppress-closing-replace-dialog-in-sublime-text-2/">Sublime Text 2 の置換ダイアログを閉じないようにする</a></h2>
+        <div class="post-content">
+          
+
+<p>最近は <a href="http://www.sublimetext.com/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.sublimetext.com/', 'Sublime Text 2']);" title="Sublime Text: The text editor you'll fall in love with">Sublime Text 2</a> をメインのエディタに使っています。しかし、ところどころ「何で？」と思うような不便な点があります。</p>
+
+<p>「Replace All」をクリックするたびに閉じる置換ダイアログも主な不満の一つです。正規表現を連続で試したい時などはいちいち開き直さねばならず、面倒極まりないです。</p>
+
+<p>というわけで、「Replace All」 を実行しても閉じないようにカスタマイズする方法をメモします。</p>
+
+<h2 id="やり方:de3f7e5a79123635b90b973ac5e3402b">やり方</h2>
+
+<p><em>Preferences -&gt; Key Bindings &#8211; User</em> に以下の行を追加します。</p>
+
+<pre><code>{
+        &quot;keys&quot;: [&quot;ctrl+alt+enter&quot;],
+        &quot;command&quot;: &quot;replace_all&quot;,
+        &quot;args&quot;: {&quot;close_panel&quot;: false},
+        &quot;context&quot;: [
+            {&quot;key&quot;: &quot;panel&quot;, &quot;operand&quot;: &quot;replace&quot;},
+            {&quot;key&quot;: &quot;panel_has_focus&quot;}
+        ]
+    }
+</code></pre>
+
+<p>あとは置換ダイアログで「Ctrl+Alt+Enter」を叩けばOKです。置換してもダイアログは開きっぱなしになります。</p>
+
+<p>ちなみに「&#8221;keys&#8221;: [&#8220;enter&#8221;]」にすればデフォルトでダイアログを閉じないようにもできます。そこはお好みで。</p>
+
+<h2 id="参考:de3f7e5a79123635b90b973ac5e3402b">参考</h2>
+
+<p><a href="http://sublimetext.userecho.com/topic/45051-search-and-replace-panel-should-not-hide-when-we-click-on-replace-all/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://sublimetext.userecho.com/topic/45051-search-and-replace-panel-should-not-hide-when-we-click-on-replace-all/', 'Search and Replace panel should &#8230; / General forum / Sublime Text 2']);" title="Search and Replace panel should ... / General forum / Sublime Text 2">Search and Replace panel should &#8230; / General forum / Sublime Text 2</a></p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

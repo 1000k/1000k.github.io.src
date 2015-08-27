@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Virtualbox on 1000g</title>
+    <link>http://1000k.github.io/tags/virtualbox/</link>
+    <description>Recent content in Virtualbox on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 20 Mar 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/virtualbox/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>VM の共有フォルダ内の 静的ファイルが正しくロードできないときの対処方法</title>
+      <link>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</link>
+      <pubDate>Wed, 20 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</guid>
+      <description>
+
+&lt;p&gt;以下の環境でPHPアプリの開発を行っていたところ、静的コンテンツが正しく反映されない現象に陥りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Oracle VirtualBox で CentOS 6.3 VM を起動&lt;/li&gt;
+&lt;li&gt;ホストOSは Windows 7&lt;/li&gt;
+&lt;li&gt;ホストOS側の &amp;#8220;c:\www\app&amp;#8221; を VM 側の &amp;#8220;/www&amp;#8221; に共有フォルダとしてマウント&lt;/li&gt;
+&lt;li&gt;VM上は Apache 2.2 を稼働させ、PHP アプリサーバーとして利用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この状態でホストOS側で JavaScript などの静的コンテンツを編集し、ブラウザからアプリにアクセスすると、以下のようなエラーが出ました。&lt;/p&gt;
+
+&lt;p&gt;Chrome&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Uncaught SyntaxError: Unexpected end of input
+または
+Uncaught SyntaxError: Unexpected token ILLEGAL
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Firefox&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SyntaxError: unterminated string literal
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ブラウザのデバッグツールで問題のファイルを見ると、なぜか途中でコンテンツが切れていたり、末尾に謎の文字列（Chromeだと「?」で表示される）が追加されていました。&lt;/p&gt;
+
+&lt;p&gt;ただ改行を追加するだけでもこの現象が発生します。&lt;/p&gt;
+
+&lt;p&gt;原因は Apache の &lt;em&gt;EnableSendfile&lt;/em&gt; ディレクティブでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#39;, &#39;EnableSendfile ディレクティブ&#39;]);&#34; &gt;EnableSendfile ディレクティブ&lt;/a&gt; の説明には以下のように書いてあります。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;このディレクティブはクライアントにファイルの内容を送るときに httpd がカーネルの sendfile サポートを使うかどうかを制御します。デフォルトでは、 例えば静的なファイルの配送のように、リクエストの処理にファイルの 途中のデータのアクセスを必要としないときには、Apache は OS が サポートしていればファイルを読み込むことなく sendfile を使って ファイルの内容を送ります。&lt;/p&gt;
+
+&lt;p&gt;ネットワークマウントされた DocumentRoot (例えば NFS や SMB) では、カーネルは自身のキャッシュを使ってネットワークからのファイルを 送ることができないことがあります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;つまり、VirtualBox で共有フォルダが NFS としてマウントされていると、ホストOSで行った変更が正しく反映されないことがあるようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;直し方:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;直し方&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;/etc/httpd/conf/httpd.conf&lt;/em&gt; に以下の1行を追加して、Apache を再起動すればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、ホストOSで変更したファイルが、ゲストOS側のキャッシュを介することなく、正しく反映されるようになります。&lt;/p&gt;
+
+&lt;p&gt;Vagrant + Chef で環境構築が楽にできるようになったから喜んで使っていたら、こんな罠があるとは。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足-enablemmap-ディレクティブ:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;補足: EnableMMAP ディレクティブ&lt;/h2&gt;
+
+&lt;p&gt;私はまだ遭遇していないのですが、&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;EnableMMAP ディレクティブ&#39;]);&#34; &gt;&lt;em&gt;EnableMMAP&lt;/em&gt; ディレクティブ&lt;/a&gt;も Apache をクラッシュさせる危険があるので、Offにしておいた方が良いそうです。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;NFS マウントされた DocumentRoot では、httpd がメモリマップしている間にファイルが削除されたり 短くなったりしたときに起こるセグメンテーションフォールトのために httpd がクラッシュする可能性があります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;結局、httpd.conf に以下の2行を書いておけば不具合は避けられるでしょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+EnableMMAP Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#39;, &#39;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&#39;]);&#34; &gt;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tipshare.info/view/4f3481ee4b21227814000001&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tipshare.info/view/4f3481ee4b21227814000001&#39;, &#39;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&#39;]);&#34; &gt;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;core &amp;#8211; Apache HTTP サーバ&#39;]);&#34; &gt;core &amp;#8211; Apache HTTP サーバ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

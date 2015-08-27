@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>コラム on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%82%B3%E3%83%A9%E3%83%A0/</link>
+    <description>Recent content in コラム on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 09 Jan 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%82%B3%E3%83%A9%E3%83%A0/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>私のアジャイルへの取り組みの歴史と現在</title>
+      <link>http://1000k.github.io/2014/01/10/my-history-and-now-of-working-with-agile-method/</link>
+      <pubDate>Thu, 09 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/10/my-history-and-now-of-working-with-agile-method/</guid>
+      <description>
+
+&lt;p&gt;2010年に初めて XP に出会ってから4年が経過し、少なからず経験値も溜まってきました。今年からは私のノウハウを拙いながらもアウトプットをしていきます。&lt;/p&gt;
+
+&lt;p&gt;手始めに、私がアジャイルと出会った経緯と、これまでの取り組みを整理しておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;入社-ウォーターフォールを使った開発演習:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;入社 ～ ウォーターフォールを使った開発演習&lt;/h2&gt;
+
+&lt;p&gt;私は今の会社に2009年4月に新卒入社しました。私はホームページ作成のアルバイト等をしていたため、HTML, CSS, JS が多少使えましたが、ほとんど開発能力はありませんでした。&lt;/p&gt;
+
+&lt;p&gt;入社してから1ヶ月間、新人研修としてガチガチのウォーターフォールによる開発演習を行いました。これはひどい体験でした。誰もが意思疎通をできておらず、何度も高価な手戻りコストを支払い、最終的にはごく一部の機能しか実装できませんでした。チームの雰囲気も悪かったです。&lt;/p&gt;
+
+&lt;p&gt;この時に「ウォーターフォールは人間の働き方ではない」と確信しました。見当外れな予測の上に FIX されたスケジュールにチームが振り回され、生きた心地がしませんでした。しかし、当時はほかのやり方を何も知りませんでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;ec-プロジェクトへの参加:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;EC プロジェクトへの参加&lt;/h2&gt;
+
+&lt;p&gt;入社年の9月に EC サービスのプロジェクトに配属されました。当時の私の役割は、社内の企画担当部署の要求を協力会社に伝えるだけの SE でした。&lt;/p&gt;
+
+&lt;p&gt;このプロジェクトは社会人として初めて関わったプロジェクトでしたが、典型的なウォーターフォール型の過ちを犯していました。メインのコミュニケーション手段はメールやスプレッドシートで、あまりに多くの伝達ミスと仕様漏れが発生しました。リリース直前に毎回実装ミスに気付いて急いで修正するものだから、当然のように障害が発生しました。リリースは何度も遅延を繰り返しました。さらに、リリースのたびにデグレードが起き、障害が頻発しました。&lt;/p&gt;
+
+&lt;p&gt;協力会社はベンチャー企業だったのですが、しばしば担当者が変わりました。どうも毎日終電まで残って開発をする日々だったようで、すぐ耐えられなくなって辞めてしまっていたようです。一方で私は企画担当者の意図をブラッシュアップすることもせず、ボンヤリとした要件をただ伝言ゲームで渡すだけのダメエンジニアでした。&lt;/p&gt;
+
+&lt;p&gt;この頃から、「どうしてもっとうまくやれないのか？」「どうしてこんなに遅いのか？」「どうしてこんなに品質が低いのか？」という疑問を強く抱くようになりました。そしてより良いやり方を探すようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;xp-との出会い:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;XP との出会い&lt;/h2&gt;
+
+&lt;p&gt;2010年の初頭に &lt;a href=&#34;http://www.amazon.co.jp/gp/product/4873113954/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4873113954&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4873113954/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4873113954&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;『アート・オブ・アジャイル デベロップメント ―組織を成功に導くエクストリームプログラミング』&#39;]);&#34; &gt;『アート・オブ・アジャイル デベロップメント ―組織を成功に導くエクストリームプログラミング』&lt;/a&gt; に出会い、初めてアジャイルプロセスを学びました。この本を読んだ時の感動は今も覚えています。プロジェクトを改善するための具体的な手法がいくつも提示され、そのアイディアに希望を見出しました。&lt;/p&gt;
+
+&lt;p&gt;しかしこの頃はまだ、技術的にも社会人的にも未熟で、周囲にこのアイディアの素晴らしさをうまく伝えることができませんでした。そのため、まずは個人でできることを実践し、その効果を実証することにしました。&lt;/p&gt;
+
+&lt;p&gt;この頃にバージョン管理、テスト駆動開発、リファクタリング、継続的インテグレーションなどの基礎スキルを習得しました。私の会社には100人以上エンジニアがいますが、当時はこうしたことを誰もやっていなかったようです。協力会社もやっていませんでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;初めての-xp-チーム-そして大失敗:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;初めての XP チーム、そして大失敗&lt;/h2&gt;
+
+&lt;p&gt;2010年の終盤に、社内システムの開発プロジェクトのチームリーダーに任命されました。当時の所属部署の一番偉い人が要望を出し、私を含む同期4名が開発チームとしてそれを実装しました。&lt;/p&gt;
+
+&lt;p&gt;この時、私は初めて XP をチームで実践しました。が、全くうまくいかず、最終的にこの案件は雲散霧消しました。&lt;/p&gt;
+
+&lt;p&gt;失敗の原因はいくつもありました。&lt;/p&gt;
+
+&lt;p&gt;まず、私以外のメンバーが誰もテスト駆動開発のスキルを持っておらず、継続的なリリースが全くうまくいきませんでした。私は開発と要件整理に手一杯で、スキルを伝播させる余裕がありませんでした。&lt;/p&gt;
+
+&lt;p&gt;また、要望を出す側は一番偉い人1人だけでいいはずなのに、スケジュールの都合でほとんどミーティングに現れず、別の管理職6名が代わりに窓口になるという歪な体制になっていました。本当に欲しい要件が何なのか全くわからず、作ってデモするたびにリジェクトされました。&lt;/p&gt;
+
+&lt;p&gt;この経験により、今となっては当たり前な以下のことを痛感しました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;前もって正しい知識を学習しないと、誰も実践できない。&lt;/li&gt;
+&lt;li&gt;知識やスキルの習得にはコストがかかる。&lt;/li&gt;
+&lt;li&gt;「素晴らしいアイディア」を実践するのは難しい。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ec-サービスの規模縮小-内製化-そして-ひとりスクラム-の開始:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;EC サービスの規模縮小、内製化、そして「ひとりスクラム」の開始&lt;/h2&gt;
+
+&lt;p&gt;本業の EC サービスは十分な売上が上がらず、結局2012年1月には主要な店舗がクローズされました。しかし一部の店舗が残っていたため、システムは存続することになりました。 (この時点でプロジェクトの失敗は明らかだったのだから、システムごと廃棄するべきだったと思います)&lt;/p&gt;
+
+&lt;p&gt;規模と予算が縮小され、新規の開発要件が激減したため、協力会社との連携を解消して私が1人で開発・運用を担当することになりました。しかしこれは凄まじい苦行でした。&lt;/p&gt;
+
+&lt;p&gt;まず、システムは先述の通りつぎはぎだらけの非常に低品質なものでした。自動テストケースも無く、オブジェクト志向もまともに実践できていないメチャクチャなコードで、修正が非常に困難でした。バグも非常に多く、課金ミスやサービス障害が頻発していました。&lt;/p&gt;
+
+&lt;p&gt;課金と個人情報を取り扱うシステムのため、いい加減なコーディングによるミスは許されません。なぜ協力会社の人々がすぐに退職していたのかすぐに理解しました。このままではシステムに殺されると思いました。&lt;/p&gt;
+
+&lt;p&gt;そこで私は、当時強く関心を持っていたスクラムを採用し、一人で実践することにしました。これによってやるべきことの明確化と継続的な改善ができると考えたからです。&lt;/p&gt;
+
+&lt;p&gt;具体的には以下のように実践しました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;不具合リストを作成し、プロダクト・バックログに並べる。&lt;/li&gt;
+&lt;li&gt;2週間毎にふりかえり (レトロスペクティブ) を実践する。&lt;/li&gt;
+&lt;li&gt;不具合修正の際には必ず自動テストケースを導入し、手動テストを行わないようにする。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この方法はうまくいきました。修正した部分は自動テストで保護され、確実に品質が改善できるようになりました。&lt;/p&gt;
+
+&lt;p&gt;この時私の支えになっていた書籍を2冊紹介します。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4798116831&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4798116831&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;レガシーコード改善ガイド&#39;]);&#34; &gt;レガシーコード改善ガイド&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自動テストの無いシステムを、いかに安全に自動テスト可能にするかを学びました。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4274066983/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4274066983&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4274066983/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4274066983&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;アジャイルレトロスペクティブズ　強いチームを育てる「ふりかえり」の手引き&#39;]);&#34; &gt;アジャイルレトロスペクティブズ　強いチームを育てる「ふりかえり」の手引き&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2週間毎のふりかえりの効果を最大化するのに非常に役立ちました。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;認定スクラムマスターの取得:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;認定スクラムマスターの取得&lt;/h2&gt;
+
+&lt;p&gt;EC システムの内製化には心を病む寸前まで追い詰められましたが、報酬として技術力の向上とスクラムの習得に繋がりました。&lt;/p&gt;
+
+&lt;p&gt;ふと社内を見渡すと、私よりひどいプロジェクトが無数に存在していることに気付きました。多くのプロジェクトは十分な利益を上げておらず、その改善策を考える暇も無いほど「価値の無い」タスクに追い立てられていました。実際会社全体は落ち目で、成長が止まっていました。&lt;/p&gt;
+
+&lt;p&gt;この頃には私は、もっと面白い仕事ができる会社に行こうと考えていました。ある程度エンジニアとしてのスキルが (大したレベルでは無いですが) 身に付いており、まだ20代でもあり、こんな顧客価値に繋がらないプロジェクトにいつまでも関わっていても将来に繋がらないと思っていました。&lt;/p&gt;
+
+&lt;p&gt;が、ふと立ち止まって考えました。スクラムを使って社内を改善することはできないか？スクラムは本当に組織レベルでも効果があるのか？こういう状況だからこそ試せるのではないか？と。&lt;/p&gt;
+
+&lt;p&gt;私は社内にスクラムを広める活動を始めることを決意しました。&lt;/p&gt;
+
+&lt;p&gt;私の会社は典型的なピラミッド構造の会社であり、若手エンジニアが好き勝手言っても上長の耳には届かないことを知っていました。そこで、少しでも肩書があった方が有利だろうと思い、2013年6月に認定スクラムマスターになりました。結果としてこの肩書は説得力の向上に若干良い効果があったと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;社内ワークショップの開始:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;社内ワークショップの開始&lt;/h2&gt;
+
+&lt;p&gt;2013年7月に、スクラムワーキンググループを立ち上げました。過去に社内で3ヶ月だけスクラムを実践していたプロジェクトのメンバー2人を誘いました。月1のワークショップを実践し、アジャイルプロセスを伝播し始めました。この取り組みは現在も続いています。&lt;/p&gt;
+
+&lt;p&gt;そのうちインターンシップ演習や新人開発研修のコーチを担当するようになりました。2013年12月には新人がスクラムチームを作って新しい Web サービスを作るという研修を実践したのですが、これまでに見たことのない成果を上げていました。恐らく従来のやり方しか知らない社員では3ヶ月かかっても完成できないであろうサービスを作り上げていました。これもまた、スクラムの効果を確信するきっかけになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;そして現在:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;そして現在&lt;/h2&gt;
+
+&lt;p&gt;現在は定期的に &lt;a href=&#34;https://sites.google.com/site/spostudy/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://sites.google.com/site/spostudy/&#39;, &#39;POStudy (プロダクトオーナーシップ勉強会)&#39;]);&#34; &gt;POStudy (プロダクトオーナーシップ勉強会)&lt;/a&gt; などの勉強会に参加しつつ、より良いやり方の学習と検証を続けています。&lt;/p&gt;
+
+&lt;p&gt;まだ十分に管理職クラスを巻き込めておらず、会社全体では依然として古いやり方が続いています。それでも、徐々にカンバンを社内で見るようになったり、アジャイルプラクティスが実践されている様子を見かけるようになってきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:b9d62283c9c366b7e75ef176c55eddeb&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;長々と書きましたが、私がアジャイルプラクティスの啓蒙活動を初めてまだ半年しか経っていません。&lt;/p&gt;
+
+&lt;p&gt;今後も活動を続け、多くの人がハッピーになる仕事ができる環境を作っていくつもりです。&lt;/p&gt;
+
+&lt;p&gt;今年からはノウハウをアウトプットしつつ、外部の人々と頻繁に情報交換できるようにしたいと考えています。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>依存性注入の解説とやり方</title>
+      <link>http://1000k.github.io/2012/10/24/lecture-of-dependency-injection/</link>
+      <pubDate>Wed, 24 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/24/lecture-of-dependency-injection/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;依存性注入 (Dependency Injection)&lt;/strong&gt; は、クラスを単体テスト可能にするために使われるテクニックです。&lt;/p&gt;
+
+&lt;p&gt;これが意識されていないが故に単体テストが全くできないコードをよく見かけます。&lt;/p&gt;
+
+&lt;p&gt;単体テストの際には必ず必要になる知識なので、解説しておきます。&lt;/p&gt;
+
+&lt;p&gt;以下のサンプルでは &lt;a href=&#34;http://www.phpunit.de/manual/3.8/ja/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.8/ja/index.html&#39;, &#39;PHPUnit&#39;]);&#34; &gt;PHPUnit&lt;/a&gt; を利用しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;単体テストができないケース:d011759973daaf90efe485c60339885a&#34;&gt;単体テストができないケース&lt;/h2&gt;
+
+&lt;p&gt;例えば以下のメソッド Foo::play() は単体テストケースが書けません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Foo {
+    public function play() {
+        $bar = new Bar();
+
+        if ($bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;play() 内で外部クラス Bar をインスタンス化しています。つまり Foo::play() メソッドは Bar クラスに&lt;strong&gt;依存&lt;/strong&gt;しており、単体テストができません。&lt;/p&gt;
+
+&lt;p&gt;このまま無理矢理テストケースを書くと、以下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class FooTest {
+    /**
+     * @covers Foo::play
+     */
+    public function testPlay() {
+        $foo = new Foo;
+        $this-&amp;gt;assertTrue($this-&amp;gt;foo-&amp;gt;play());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何が問題かわかるでしょうか？Foo クラスのテスト結果は Bar クラスに依存してしまっています。つまり、Foo は何も変更していなくても、Bar を変更したタイミングで Foo の単体テストが壊れてしまう可能性があります。これでは結合テストであり、単体テストになっていません。&lt;/p&gt;
+
+&lt;p&gt;そのため、通常は Bar クラスを&lt;strong&gt;モック化&lt;/strong&gt;し、Bar クラスの実装を無視できるようにします。&lt;/p&gt;
+
+&lt;h2 id=&#34;モック化とは:d011759973daaf90efe485c60339885a&#34;&gt;モック化とは？&lt;/h2&gt;
+
+&lt;p&gt;モック化とは、クラスの挙動を置き換えることです。例えば特定のメソッドの戻り値を好きな値に指定することができます。&lt;/p&gt;
+
+&lt;p&gt;今回のケースでは、Bar::getSomething() が常に 1 を返すようにすれば、「return true」の行が実行されることをテストできますし、1 以外を返すようにすれば「return false」の行が実行されることをテストできます。&lt;/p&gt;
+
+&lt;p&gt;しかし先述のコードのままでは、テスト対象のメソッド内で Bar をインスタンス化しているため、モックを注入する手段がありません。&lt;/p&gt;
+
+&lt;p&gt;まだピンと来ない方も、この先の具体例を見ればイメージが掴めると思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;メソッドを単体テスト可能にする:d011759973daaf90efe485c60339885a&#34;&gt;メソッドを単体テスト可能にする&lt;/h2&gt;
+
+&lt;p&gt;もしメソッドが下記のようになっていればどうでしょうか？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function play(Bar $bar) {     // Bar クラスのインスタンスを受け取るようにした。
+        if ($bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;メソッド内で Bar クラスを new するのでなく、Bar インスタンスを引数に受け取って利用するだけにしました。これならテストケースでモックを注入することができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function testPlay() {
+        $foo = new Foo;
+
+        $bar = $this-&amp;gt;getMock(&#39;Bar&#39;);         // Bar クラスのモックを作成する。
+        $bar-&amp;gt;expects($this-&amp;gt;any())
+            -&amp;gt;method(&#39;getSomething&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(1));    // Bar::getSomething() の戻り値が 1 になるよう設定する。
+
+        $this-&amp;gt;assertTrue($foo-&amp;gt;play($bar));  // Foo::play() に注入
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Foo::play() メソッドは Bar クラスとの依存が解消され、単体テストが可能になりました。これでもう Bar クラスの実装を変更しても Foo クラスのテストが壊れることはありません。これが&lt;strong&gt;依存性注入&lt;/strong&gt;です。&lt;/p&gt;
+
+&lt;p&gt;これはメソッドの引数にオブジェクトを渡せるようにする手法で、&lt;strong&gt;インターフェース・インジェクション&lt;/strong&gt; (Interface Injection) と呼ばれます。&lt;/p&gt;
+
+&lt;p&gt;（※厳密なインターフェース・インジェクションでは、まずクラスの interface を作成し、それを委譲したメソッドを実装する必要があります。上記の例では簡略化のため interface は作成していません。）&lt;/p&gt;
+
+&lt;h2 id=&#34;コンストラクター-インジェクション:d011759973daaf90efe485c60339885a&#34;&gt;コンストラクター・インジェクション&lt;/h2&gt;
+
+&lt;p&gt;依存性注入は以下のようなやり方でも実現が可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Foo {
+    /** @var Bar */
+    protected $bar;
+
+    public function __constructor(Bar $bar = null) {
+        // メンバ変数として Bar インスタンスを作成しておく。
+        $this-&amp;gt;bar = $bar ? $bar : new Bar;
+    }
+
+    public function play() {
+        // メンバ変数の Bar インスタンスからメソッドを呼び出す。
+        if ($this-&amp;gt;bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このケースでは、Foo クラスのコンストラクタに Bar クラスのオブジェクトを渡せるようにしています。これは&lt;strong&gt;コンストラクター・インジェクション&lt;/strong&gt; (Constructor Injection) と呼ばれるテクニックです。&lt;/p&gt;
+
+&lt;p&gt;この場合のテストケースは以下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function testPlay() {
+        // Bar クラスのモックを作成する。
+        $bar = $this-&amp;gt;getMock(&#39;Bar&#39;);
+        $bar-&amp;gt;expects($this-&amp;gt;any())
+            -&amp;gt;method(&#39;getSomething&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(1));
+
+        $foo = new Foo($bar);   // Constructor Injection でモックを注入する。
+
+        $this-&amp;gt;assertTrue($foo-&amp;gt;play($bar));
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※コンストラクタ内の3項演算子について補足。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function __constructor(Bar $bar = null) {
+        $this-&amp;gt;bar = $bar ? $bar : new Bar;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクタの引数に $bar が渡されなかった時はデフォルトの Bar クラスを new するようにしています。これにより、テストの時はモックを注入して使うようにし、本番コードではパラメータを何も指定しないことでデフォルトの Foo クラスを使うようにしています。&lt;/p&gt;
+
+&lt;h2 id=&#34;セッター-インジェクション:d011759973daaf90efe485c60339885a&#34;&gt;セッター・インジェクション&lt;/h2&gt;
+
+&lt;p&gt;別のアプローチとして、クラスにオブジェクトを注入するためセッターメソッドを用意する方法もあります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Foo {
+    /** @var Bar */
+    protected $bar;
+
+    /**
+     * セッターメソッド
+     *
+     * @param Bar $bar
+     */
+    public function setBar(Bar $bar) {
+        $this-&amp;gt;bar = $bar;
+    }
+
+    public function play() {
+        if ($this-&amp;gt;bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクターで Bar インスタンスを注入するのでなく、setBar() メソッドで Bar オブジェクトを注入しています。&lt;/p&gt;
+
+&lt;p&gt;この場合のテストケースは以下のようになるでしょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function testPlay() {
+        // Bar クラスのモックを作成する。
+        $bar = $this-&amp;gt;getMock(&#39;Bar&#39;);
+        $bar-&amp;gt;expects($this-&amp;gt;any())
+            -&amp;gt;method(&#39;getSomething&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(1));
+
+        $foo = new Foo;
+        $foo-&amp;gt;setBar($bar);     // セッター経由でモックを注入する。
+
+        $this-&amp;gt;assertTrue($foo-&amp;gt;play($bar));
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これが&lt;strong&gt;セッター・インジェクション&lt;/strong&gt; (Setter Injection) です。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:d011759973daaf90efe485c60339885a&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;単体テストしたければ、メソッド内で外部クラスを new してはいけない。&lt;/li&gt;
+&lt;li&gt;モックを注入可能にするためには、以下のいずれか手法を採る。
+
+&lt;ul&gt;
+&lt;li&gt;メソッドの引数に使いたいオブジェクトを渡せるようにする。 (Interface Injection)&lt;/li&gt;
+&lt;li&gt;使う予定のオブジェクトをコンストラクタに渡せるようにする。(Constructor Injection)&lt;/li&gt;
+&lt;li&gt;オブジェクトを setter メソッドで渡せるようにする。(Setter Injection)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;補足1-runkitで強引にメソッドの挙動を変える方法:d011759973daaf90efe485c60339885a&#34;&gt;補足1: runkitで強引にメソッドの挙動を変える方法&lt;/h2&gt;
+
+&lt;p&gt;PHPにおいては &lt;a href=&#34;http://php.net/manual/ja/book.runkit.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://php.net/manual/ja/book.runkit.php&#39;, &#39;runkit&#39;]);&#34; &gt;runkit&lt;/a&gt; を使うことで、モック化をしなくてもメソッドの挙動を強引に変えることが可能です。ただし破壊的な手段であり、これが必要な時点でオブジェクト指向的な設計ができていない疑いが非常に強いです。&lt;/p&gt;
+
+&lt;p&gt;できるだけ Constructor Injection 等の方法を用い、テスト可能になるようリファクタリングをしましょう。リファクタリング中はコードが醜くなるかもしれませんが、最終的に設計が改善できるならば結果OKです。美しさよりも安全性が何より重要です。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足2-constructor-injection-vs-setter-injection:d011759973daaf90efe485c60339885a&#34;&gt;補足2: Constructor Injection vs Setter Injection&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/&#39;, &#39;抄訳: Constructor Injection vs. Setter Injection | 1000g&#39;]);&#34; &gt;抄訳: Constructor Injection vs. Setter Injection | 1000g&lt;/a&gt; にて、コンストラクター・インジェクションとセッター・インジェクションのどちらが良いかを考察しています。結論としてはコンストラクター・インジェクションがベターです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:d011759973daaf90efe485c60339885a&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5&#39;, &#39;依存性の注入 &amp;#8211; Wikipedia&#39;]);&#34; &gt;依存性の注入 &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/m-hiyama/20060926/1159253903&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/m-hiyama/20060926/1159253903&#39;, &#39;DI（依存性注入）を白紙から説明してみる &amp;#8211; 檜山正幸のキマイラ飼育記&#39;]);&#34; &gt;DI（依存性注入）を白紙から説明してみる &amp;#8211; 檜山正幸のキマイラ飼育記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://martinfowler.com/articles/injection.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://martinfowler.com/articles/injection.html&#39;, &#39;Inversion of Control Containers and the Dependency Injection pattern&#39;]);&#34; &gt;Inversion of Control Containers and the Dependency Injection pattern&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;リファクタリング界の大御所、Martin Fowler氏の考察。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.techscore.com/tech/Java/Others/Spring/1-3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.techscore.com/tech/Java/Others/Spring/1-3/&#39;, &#39;Dependency Injection のタイプ | TECHSCORE(テックスコア)&#39;]);&#34; &gt;Dependency Injection のタイプ | TECHSCORE(テックスコア)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects&#39;, &#39;第10章 テストダブル&#39;]);&#34; &gt;第10章 テストダブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PHPUnit 公式マニュアルによるモックの使い方。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

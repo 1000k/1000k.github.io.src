@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Jenkins で Git リポジトリの ID と PW をセキュアに保存する方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/">Jenkins で Git リポジトリの ID と PW をセキュアに保存する方法</a></h2>
+        <div class="post-content">
+          
+
+<p>Jenkins から https 接続で認証付きの Git リポジトリを参照する場合、以下のように URL に直接ユーザー名とパスワードを書く必要がありました。</p>
+
+<pre><code>https://{USERNAME}:{PASSWORD}@foo.com/git/bar.git
+</code></pre>
+
+<p>当然 Jenkins の設定ファイルにパスワードがそのまま書かれてしまいます。個人開発ならいいですが、チーム開発では危険すぎます。これをセキュアにしようとすると、.netrc を使ったりするややこしい手順が必要でした。</p>
+
+<p>ところが、2013年10月22日にリリースされた Git Plugin 2.0 から、Credential Plugin と連携して暗号化したパスワードを保存できるようになったため、大幅に設定が楽になりました。</p>
+
+<p>以下にそのやり方をメモしておきます。</p>
+
+<p>リポジトリの URL は <code>https://foo.com/git/bar.git</code> とします。</p>
+
+<p>&#8220;Jenkins の管理 &gt; Credentials &gt; Add domain&#8221; をクリックし、Git リポジトリのドメインを入力します。</p>
+
+<p>Specification の URI スキーマには <code>https</code> を選択します。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1-300x163.png" alt="jenkins_secure_credientials_1" width="300" height="163" class="alignnone size-medium wp-image-1641" /></a></p>
+
+<p>続いて、&#8221;Add Credentials&#8221; をクリックし、認証情報入力画面を出します。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2-300x71.png" alt="jenkins_secure_credientials_2" width="300" height="71" class="alignnone size-medium wp-image-1642" /></a></p>
+
+<p>&#8220;Kind&#8221; は <code>ユーザー名とパスワード</code> を、&#8221;ユーザー名&#8221; には https 認証のユーザー名を入力します。完了したら &#8220;OK&#8221; をクリック。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3-300x139.png" alt="jenkins_secure_credientials_3" width="300" height="139" class="alignnone size-medium wp-image-1643" /></a></p>
+
+<p>これで一旦、認証鍵一覧画面に戻されます。引き続き、いま入力したユーザー名をクリック。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4-300x136.png" alt="jenkins_secure_credientials_4" width="300" height="136" class="alignnone size-medium wp-image-1644" /></a></p>
+
+<p>&#8220;Update&#8221; をクリック。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5-300x137.png" alt="jenkins_secure_credientials_5" width="300" height="137" class="alignnone size-medium wp-image-1645" /></a></p>
+
+<p>&#8220;パスワード&#8221; 欄に認証パスワードを入力し、&#8221;Save&#8221; をクリック。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6-300x134.png" alt="jenkins_secure_credientials_6" width="300" height="134" class="alignnone size-medium wp-image-1646" /></a></p>
+
+<p>以上で foo.com のリポジトリの認証情報が設定できました。</p>
+
+<p>あとはプロジェクトの設定画面を開き、&#8221;ソースコード管理システム &gt; Git&#8221; の &#8220;Repository URL&#8221; に <code>https://foo.com/git/bar.git</code> を、&#8221;Credentials&#8221; に先ほど入力した ID/PW のペアを選択すれば OKです。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7-300x242.png" alt="jenkins_secure_credientials_7" width="300" height="242" class="alignnone size-medium wp-image-1647" /></a></p>
+
+<p>これでプロジェクトをビルド可能になります。</p>
+
+<h2 id="git-1-7-1-では認証が通らない:094599a56af5c07d8e54136f1f310fd1">Git 1.7.1 では認証が通らない？</h2>
+
+<p>CentOS 6.3 で、EPEL リポジトリから Git をインストールすると 1.7.1 が入りますが、これだとうまく認証が通りませんでした。プロジェクトの設定画面で &#8220;Repository URL&#8221; と &#8220;Credential&#8221; を入力しても、 <code>Error performing command: ls-remote -h</code> というエラーが出て進めませんでした。</p>
+
+<p>仕方ないので手動でソースから Git 1.8.4.1 をインストールしたら、無事エラーが出なくなりました。</p>
+
+<p>Git のソースインストール方法手順は以下。いつもの Configure -&gt; make -&gt; make install です。</p>
+
+<pre><code>cd /usr/local/src
+wget https://git-core.googlecode.com/files/git-1.8.4.1.tar.gz
+tar zxvf git-1.8.4.1.tar.gz
+cd git-1.8.4.1
+./configure
+make
+make install
+</code></pre>
+
+<p>なお、この場合 Git のバイナリが <code>/usr/local/bin</code> 配下にインストールされるので、&#8221;Jenkins の管理 &gt; システム設定 &gt; Git &gt; Path to Git executable&#8221; に <code>/usr/local/bin/git</code> と入力する必要があります。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81-255x300.png" alt="jenkins_secure_credientials_8" width="255" height="300" class="alignnone size-medium wp-image-1649" /></a></p>
+
+<h2 id="参考:094599a56af5c07d8e54136f1f310fd1">参考</h2>
+
+<ul>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin', 'Git Plugin &#8211; Jenkins &#8211; Jenkins Wiki']);" >Git Plugin &#8211; Jenkins &#8211; Jenkins Wiki</a></li>
+<li><a href="http://qiita.com/naonya3/items/54c8e3436212ad6686b3" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/naonya3/items/54c8e3436212ad6686b3', 'CentOS6.3にgitをソースコードから入れる &#8211; Qiita [キータ]']);" >CentOS6.3にgitをソースコードから入れる &#8211; Qiita [キータ]</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

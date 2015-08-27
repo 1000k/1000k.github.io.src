@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim on 1000g</title>
+    <link>http://1000k.github.io/tags/vim/</link>
+    <description>Recent content in Vim on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 01 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>init.dスクリプトが存在するのに「そのようなファイルやディレクトリはありません」と言われた</title>
+      <link>http://1000k.github.io/2013/10/01/no-file-or-directory-is-found-but-init-d-script-exists/</link>
+      <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/01/no-file-or-directory-is-found-but-init-d-script-exists/</guid>
+      <description>
+
+&lt;p&gt;CentOS 6.4 でとある init.d スクリプトを実行したら以下のようなエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# service mysql_master
+env: /etc/init.d/mysql_master: そのようなファイルやディレクトリはありません
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;いえ、何度確認してもそのファイルは確かに存在しています。&lt;/p&gt;
+
+&lt;p&gt;ファイルの中身を見ても何も異常が見つかりません。&lt;/p&gt;
+
+&lt;p&gt;グーグル先生に道を伺ったところ、「改行コードがLFじゃないから」とのこと。&lt;/p&gt;
+
+&lt;p&gt;さっそく改行コードを確認したところ CR+LF でした。&lt;/p&gt;
+
+&lt;p&gt;Vim で以下のコマンドを実行したら、正しく実行されるようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:set ff=unix
+:wq
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;# service mysql_master
+Usage: /etc/init.d/mysql_master {start|stop|restart|status}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:78516bd3eda8050d97cd4c550e13df69&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.linuxquestions.org/questions/red-hat-31/init-d-script-error-bad-interpreter-204902/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.linuxquestions.org/questions/red-hat-31/init-d-script-error-bad-interpreter-204902/&#39;, &#39;init.d script error bad interpreter&#39;]);&#34; &gt;init.d script error bad interpreter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/82726/convert-dos-line-endings-to-linux-line-endings-in-vim&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/82726/convert-dos-line-endings-to-linux-line-endings-in-vim&#39;, &#39;Convert DOS line endings to Linux line endings in vim &amp;#8211; Stack Overflow&#39;]);&#34; &gt;Convert DOS line endings to Linux line endings in vim &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

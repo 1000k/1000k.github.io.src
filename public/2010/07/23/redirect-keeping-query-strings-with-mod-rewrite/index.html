@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> mod_rewriteでクエリ付きのURIをリダイレクトする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/23/redirect-keeping-query-strings-with-mod-rewrite/">mod_rewriteでクエリ付きのURIをリダイレクトする</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="http://hige.jp/moja.php?category=1">http://hige.jp/moja.php?category=1</a></p>
+
+<p>→</p>
+
+<p><a href="http://hige.jp/moja.php?category=999">http://hige.jp/moja.php?category=999</a></p>
+
+<p>というリダイレクトをApacheで実現するにはどうすればいいでしょうか？リダイレクトの方法はいろいろありますが、今回RedirectやAliasディレクティブは使えません。これらはクエリ文字列（?category=999の部分）を把握できないようです。</p>
+
+<p>そんな時は、mod_rewriteの RewriteCond ${QUERY_STRING} を使うと良いです。具体的には以下の用にします。</p>
+
+<pre><code>&amp;lt;IfModule mod_rewrite.c&gt;
+    RewriteEngine on
+    RewriteCond %{QUERY_STRING} category=1
+    RewriteRule ^/moja.php /moja.php?category=999 [R=301,L]
+&amp;lt;/IfModule&gt;
+</code></pre>
+
+<p>これでApacheを再起動すれば、リダイレクトが成功するようになっています。</p>
+
+<h3 id="参考:44dfa8f56fa655b8b85093045fdbf75d">参考</h3>
+
+<ul>
+<li><a href="http://muumoo.jp/news/2006/04/06/0redirect.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://muumoo.jp/news/2006/04/06/0redirect.html', 'URIのリダイレクト設定をやってみた(管理人日記) &#8211; むぅもぉ.jp']);" title="URIのリダイレクト設定をやってみた(管理人日記) - むぅもぉ.jp">URIのリダイレクト設定をやってみた(管理人日記) &#8211; むぅもぉ.jp</a></li>
+<li><a href="http://cubic9.com/Linux/Apache/%A5%E2%A5%B8%A5%E5%A1%BC%A5%EB/mod_rewrite/%B0%DC%C5%BE%A5%EA%A5%C0%A5%A4%A5%EC%A5%AF%A5%C8/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://cubic9.com/Linux/Apache/%A5%E2%A5%B8%A5%E5%A1%BC%A5%EB/mod_rewrite/%B0%DC%C5%BE%A5%EA%A5%C0%A5%A4%A5%EC%A5%AF%A5%C8/', 'Linux/Apache/モジュール/mod_rewrite/移転リダイレクト &#8211; cubic9.com']);" title="Linux/Apache/モジュール/mod_rewrite/移転リダイレクト - cubic9.com">Linux/Apache/モジュール/mod_rewrite/移転リダイレクト &#8211; cubic9.com</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

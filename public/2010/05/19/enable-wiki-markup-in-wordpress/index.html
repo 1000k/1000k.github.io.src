@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> [WordPress] WordPressでwiki記法を有効にする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/05/19/enable-wiki-markup-in-wordpress/">[WordPress] WordPressでwiki記法を有効にする</a></h2>
+        <div class="post-content">
+          
+
+<h1 id="きっかけ:98dfd3c78aef4b2602956cc8387353ab">きっかけ</h1>
+
+<p>WordPressデフォルトのテキストエディタは以下の理由で使いづらいです。</p>
+
+<ul>
+<li>ビジュアルエディタは重い＆ときどき妙なブロックを作る</li>
+<li>シンプルエディタは入力が面倒</li>
+<li>特に見出しやリストを気軽に作れないのが面倒</li>
+</ul>
+
+<p>wiki記法なら多少は楽になるだろうと思い、「WP MarkItUp! WordPress plugin」プラグインを導入してみました。</p>
+
+<h1 id="導入環境:98dfd3c78aef4b2602956cc8387353ab">導入環境</h1>
+
+<ul>
+<li>WordPress 2.9.2</li>
+</ul>
+
+<h1 id="手順:98dfd3c78aef4b2602956cc8387353ab">手順</h1>
+
+<p>WordPress内のプラグインインストーラーだけで完結します。</p>
+
+<ol>
+<li>WordPress管理画面にて、 [プラグイン]-&gt;画面の上の方にある[新規追加] をクリック</li>
+<li>「プラグインのインストール」画面の検索窓で、「MarkItUp」で検索</li>
+<li>検索結果に「WP MarkItUp!」が出てくるので、テーブル一番右の「インストール」をクリック</li>
+<li>同様の手順で、「MarkDown」で検索→「Markdown for WordPress and bbPress」プラグインをインストール
+
+<ul>
+<li>※今回はMarkDown記法を使いたいので、このプラグインも必要になります</li>
+</ul></li>
+<li>両方のプラグインを有効化したら、 管理画面で[設定]-&gt;[WP MarkItUp!] を開く</li>
+<li>「Tag set to use:」は「MarkDown」を、「Skin:」と「Editor Default Height:」は好きなやつを選んで [Save Changes]ボタンをクリック</li>
+</ol>
+
+<p>あとはいつもの編集画面がMarkDown用に変わっているので、好きに書けばいいでしょう。</p>
+
+<p>初めてMarkDown記法を使ってみましたが、悪くないです。記法の詳細は <a href="http://bono.s206.xrea.com/2007/01/312-markdown_syntax/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://bono.s206.xrea.com/2007/01/312-markdown_syntax/', 'power source* » WP: PHP Markdown 記法早見表（的なもの）']);" title="power source* » WP: PHP Markdown 記法早見表（的なもの）">power source* » WP: PHP Markdown 記法早見表（的なもの）</a> あたりを見れば十分です。</p>
+
+<h1 id="トラブルシューティング:98dfd3c78aef4b2602956cc8387353ab">トラブルシューティング</h1>
+
+<h2 id="syntax-highlighter-と競合する場合:98dfd3c78aef4b2602956cc8387353ab">「Syntax Highlighter」と競合する場合</h2>
+
+<p>このブログでは「Syntax Highlighter for WordPress」を入れていますが、&#91;code]～[/code]ブロック内までMarkDown記法と解釈され、おかしな表示になることがあります。</p>
+
+<p>そんなときは、&#91;code]～[/code] をdivブロックで囲ってやると、MarkDownが無視して正常に表示されます。</p>
+
+<pre><code></code></pre>
+
+<p>&hellip; ```</p>
+
+<p>
+  参考: <a href="http://wordpress.org/support/topic/293458" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://wordpress.org/support/topic/293458', 'WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin']);" title="WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin">WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin</a>
+</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

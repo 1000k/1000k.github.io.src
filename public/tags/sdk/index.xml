@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sdk on 1000g</title>
+    <link>http://1000k.github.io/tags/sdk/</link>
+    <description>Recent content in Sdk on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 09 Jan 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/sdk/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Windows 7上にAndroid開発環境を構築する</title>
+      <link>http://1000k.github.io/2012/01/09/set-up-android-development-environment-on-windows7/</link>
+      <pubDate>Mon, 09 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/09/set-up-android-development-environment-on-windows7/</guid>
+      <description>
+
+&lt;p&gt;「Androidは簡単に開発が可能ですよ！」と言われてる割に導入がかなり面倒でした。&lt;/p&gt;
+
+&lt;p&gt;必要なパッケージとインストールからエミュレーターの起動まで、やり方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順:13bda493a2eaedf1be0894608e95258e&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-必要ファイルのダウンロード:13bda493a2eaedf1be0894608e95258e&#34;&gt;1. 必要ファイルのダウンロード&lt;/h3&gt;
+
+&lt;p&gt;Windows 7 64bitの場合、下記アプリをダウンロードしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Eclipse 3.7 (Indigo) Java Developer Edition
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.eclipse.org/downloads/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.eclipse.org/downloads/&#39;, &#39;Eclipse Downloads&#39;]);&#34; &gt;Eclipse Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Eclips IDE for Java Developers&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Java 6 JDK
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oracle.com/technetwork/java/javase/downloads/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.oracle.com/technetwork/java/javase/downloads/index.html&#39;, &#39;Java SE Downloads&#39;]);&#34; &gt;Java SE Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;JREではなくJDK！&lt;/li&gt;
+&lt;li&gt;執筆時バージョンは Java SE 6 Update 30&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Android SDK
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://developer.android.com/sdk/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://developer.android.com/sdk/index.html&#39;, &#39;Android SDK | Android Developers&#39;]);&#34; &gt;Android SDK | Android Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;installer_r16-windows.exe (Recommended)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;2-java-6-jdkの設定:13bda493a2eaedf1be0894608e95258e&#34;&gt;2. Java 6 JDKの設定&lt;/h3&gt;
+
+&lt;p&gt;インストールしたファイルを実行して、画面に従うだけです。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-android-sdkの設定:13bda493a2eaedf1be0894608e95258e&#34;&gt;3. Android SDKの設定&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ダウンロードしたファイルを解凍orインストーラー実行&lt;/li&gt;
+&lt;li&gt;Android SDKのインストールが完了後、Managerが起動するので、使いたいAPIにチェックして[Install * Packages]
+
+&lt;ul&gt;
+&lt;li&gt;2.1を選べば97%のAndroidユーザーをカバーできるらしいので、チェック&lt;/li&gt;
+&lt;li&gt;必要に応じて別のバージョンもインストールする&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;4-eclipseの設定:13bda493a2eaedf1be0894608e95258e&#34;&gt;4. Eclipseの設定&lt;/h3&gt;
+
+&lt;h4 id=&#34;android-developer-tools-adt-のインストール:13bda493a2eaedf1be0894608e95258e&#34;&gt;Android Developer Tools (ADT)のインストール&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ダウンロードしたファイルを解凍し、eclipse.exeを実行&lt;/li&gt;
+&lt;li&gt;Eclipseを起動し、[Help] &amp;#8211; [Install software]&lt;/li&gt;
+&lt;li&gt;[Work with:]の隣にある[Add]をクリック。完了したら[OK]
+
+&lt;ul&gt;
+&lt;li&gt;Name: Android Plugin&lt;/li&gt;
+&lt;li&gt;Location: &lt;a href=&#34;http://dl-ssl.google.com/android/eclipse/&#34;&gt;http://dl-ssl.google.com/android/eclipse/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;「https」を指定すると途中でエラーが出て止まる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;[Work with:]に今入力した項目を選択。数十秒「Pending&amp;#8230;」が表示された後、[Developer Tools]が出てきたらチェックを付けて[Next]&lt;/li&gt;
+&lt;li&gt;インストールされるパッケージ一覧が出るので、[Finish]&lt;/li&gt;
+&lt;li&gt;途中「Security Warning」が出るが、[OK]&lt;/li&gt;
+&lt;li&gt;長時間インストール完了を待ち、完了したら[Restart Now]&lt;/li&gt;
+&lt;li&gt;Eclipse再起動後、「Welcome to Android Development」が表示されるので、[Use existing SDKs]にチェック&lt;/li&gt;
+&lt;li&gt;SDKのインストール先を指定して[Next]
+
+&lt;ul&gt;
+&lt;li&gt;デフォルトなら &amp;#8220;C:\Program Files (x86)\Android\android-sdk&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;統計データをGoogleに送るかどうか選択して[Finish]&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;avdの作成:13bda493a2eaedf1be0894608e95258e&#34;&gt;AVDの作成&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[Window] &amp;#8211; [AVD Manager]&lt;/li&gt;
+&lt;li&gt;[New]&lt;/li&gt;
+&lt;li&gt;下記項目を入力して[Create AVD]
+
+&lt;ul&gt;
+&lt;li&gt;[Name]: 機器名。好きな名前でOK&lt;/li&gt;
+&lt;li&gt;[Target]: Androidのバージョン&lt;/li&gt;
+&lt;li&gt;[SD Card]: エミュレータが使用するSDカード容量。32MBもあれば十分&lt;/li&gt;
+&lt;li&gt;[Skin]: 画面解像度&lt;/li&gt;
+&lt;li&gt;[Hardware]: エミュレータのハード。GPSなど、開発しようとするアプリに合わせて選択&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;[Start]をクリックして、エミュレータが起動したらOK
+
+&lt;ul&gt;
+&lt;li&gt;日本語化したい場合&lt;/li&gt;
+&lt;li&gt;起動後にホーム画面でメニューボタンクリック&lt;/li&gt;
+&lt;li&gt;[Settings] &amp;gt; [Language &amp;amp; keyboard]&lt;/li&gt;
+&lt;li&gt;[Select locale］から日本語を選択&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;設定は以上で完了です。&lt;/p&gt;
+
+&lt;h3 id=&#34;5-サンプルアプリのビルド:13bda493a2eaedf1be0894608e95258e&#34;&gt;5. サンプルアプリのビルド&lt;/h3&gt;
+
+&lt;p&gt;ここまででビルド可能になっているので、試してみましょう。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[File] &amp;#8211; [New] &amp;#8211; [Other&amp;#8230;]&lt;/li&gt;
+&lt;li&gt;Android Project を選択して[Next]&lt;/li&gt;
+&lt;li&gt;以下のように設定して[Next]
+
+&lt;ul&gt;
+&lt;li&gt;Project Name: SampleApp&lt;/li&gt;
+&lt;li&gt;&amp;#8220;Create projects from existing source&amp;#8221;にチェック&lt;/li&gt;
+&lt;li&gt;Location: &amp;#8220;C:\Program Files (x86)\Android\android-sdk\samples\android-7\SkeletonApp&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Build Targetは&amp;#8221;Android 2.1&amp;#8243;にチェックして[Next]&lt;/li&gt;
+&lt;li&gt;Minumum SDKを&amp;#8221;7&amp;#8243;にして[Finish]&lt;/li&gt;
+&lt;li&gt;[Run] &amp;#8211; [Run Configurations&amp;#8230;]&lt;/li&gt;
+&lt;li&gt;[New launch configuration]アイコンをクリック&lt;/li&gt;
+&lt;li&gt;[Project:]に&amp;#8221;SampleApp&amp;#8221;を指定して[Run]&lt;/li&gt;
+&lt;li&gt;エミュレーター上に&amp;#8221;Hello there, you Activity!&amp;#8221;と表示されれば成功&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/android_tutorial.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/android_tutorial.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/android_tutorial-300x293.png&#34; alt=&#34;&#34; title=&#34;ビルド完了&#34; width=&#34;300&#34; height=&#34;293&#34; class=&#34;alignnone size-medium wp-image-937&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;なお、ビルドされたアプリはbinディレクトリの下に「SampleApp.apk」という名前で入っています。これをAndroidに転送すれば実機で実行できます。&lt;/p&gt;
+
+&lt;p&gt;（ただし「提供元不明のアプリ」を使用可能にしておくこと）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:13bda493a2eaedf1be0894608e95258e&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gihyo.jp/dev/serial/01/androidapp/0002&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gihyo.jp/dev/serial/01/androidapp/0002&#39;, &#39;世界を目指せ！Androidアプリ開発入門：第2回　Androidアプリ開発のための環境構築｜gihyo.jp … 技術評論社&#39;]);&#34; &gt;世界を目指せ！Androidアプリ開発入門：第2回　Androidアプリ開発のための環境構築｜gihyo.jp … 技術評論社&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2010年の記事なので少し古い部分もありますが、基本的に最新バージョンで読み替えればOK&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gihyo.jp/dev/serial/01/androidapp/0003&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gihyo.jp/dev/serial/01/androidapp/0003&#39;, &#39;世界を目指せ！Androidアプリ開発入門：第3回　Android SDKでサンプルアプリを使ってみる｜gihyo.jp … 技術評論社&#39;]);&#34; &gt;世界を目指せ！Androidアプリ開発入門：第3回　Android SDKでサンプルアプリを使ってみる｜gihyo.jp … 技術評論社&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sky.geocities.jp/izeefss/develop/android/env_eclipse.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sky.geocities.jp/izeefss/develop/android/env_eclipse.html&#39;, &#39;Android開発環境の構築 Eclipse編&#39;]);&#34; &gt;Android開発環境の構築 Eclipse編&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

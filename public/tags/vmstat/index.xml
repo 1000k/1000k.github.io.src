@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vmstat on 1000g</title>
+    <link>http://1000k.github.io/tags/vmstat/</link>
+    <description>Recent content in Vmstat on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 28 Sep 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/vmstat/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>vmstatの値をロギングする</title>
+      <link>http://1000k.github.io/2011/09/28/logging-vmstat-values/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/09/28/logging-vmstat-values/</guid>
+      <description>
+
+&lt;p&gt;vmstatの値をファイルに出力したいとき、次のコマンドが使えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nohup vmstat -n -S M 1 | awk &#39;{ print strftime(&amp;quot;%Y/%m/%d %H:%M:%S&amp;quot;), $0 } { system(&amp;quot;:&amp;quot;) }&#39; &amp;gt;&amp;gt; /path/to/log &amp;amp;#038;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2011/09/28 15:51:07 procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------
+2011/09/28 15:51:07  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+2011/09/28 15:51:07  1  0      0    251    153    358    0    0     0     9    1    0  0  0 99  0  0
+2011/09/28 15:51:08  0  0      0    251    153    358    0    0     0     0 1012   40  0  1 99  0  0
+2011/09/28 15:51:09  0  0      0    251    153    358    0    0     0     0 1004   37  0  0 100  0  0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このプロセスを終了したい場合は、下記のようにkillしてやればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pgrep vmstat      # vmstatのprocess idを取得する
+29248
+
+$ kill {上で出てきたpid}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;参考:981194324cf5b426a797d33ec4db9e80&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://babyp.blog55.fc2.com/blog-entry-446.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://babyp.blog55.fc2.com/blog-entry-446.html&#39;, &#39;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&#39;]);&#34; &gt;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#39;, &#39;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&#39;]);&#34; &gt;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#39;, &#39;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&#39;]);&#34; &gt;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

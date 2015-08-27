@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Netcat でサーバー間の疎通を確認する方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/04/10/how-to-check-communication-between-the-server-using-netcat/">Netcat でサーバー間の疎通を確認する方法</a></h2>
+        <div class="post-content">
+          
+
+<p>サーバー間のネットワークが繋がっているか確認したい場合、Netcat (nc) コマンドが便利です。</p>
+
+<h2 id="使うコマンド:eab99a5c8d7d52c5c56e0b2e7fa8bbba">使うコマンド</h2>
+
+<p>受信側では &#8220;-l&#8221; (Listen mode) オプションを使い、待受状態にします。</p>
+
+<pre><code>$ nc -l {listenするポート番号}
+</code></pre>
+
+<p>送信側は &#8220;-z&#8221; (Zero-I/O mode) オプションを使い、指定したポートに接続できるかテストします。</p>
+
+<pre><code>$ nc -v -z {受信側のIP} {受信側のポート番号}
+</code></pre>
+
+<h2 id="例:eab99a5c8d7d52c5c56e0b2e7fa8bbba">例</h2>
+
+<p>host001 のポート 4949 に、host002 から疎通できるかどうかテストするには、下記のようなコマンドを叩きます。</p>
+
+<h3 id="1-受信側のポートを-listen-する:eab99a5c8d7d52c5c56e0b2e7fa8bbba">1. 受信側のポートを listen する</h3>
+
+<pre><code>[host001]$ nc -v -k -l 4949
+</code></pre>
+
+<p>&#8220;-v&#8221; でより多くのメッセージを出力し、&#8221;-k&#8221; でコネクションを永続化することができます。（&#8221;-k&#8221; を指定しないと1回受信するたびに nc が終了します）</p>
+
+<h3 id="2-送信側から接続できるか確かめる:eab99a5c8d7d52c5c56e0b2e7fa8bbba">2. 送信側から接続できるか確かめる</h3>
+
+<pre><code>[host002]$ nc -v -z host001 4949
+</code></pre>
+
+<p>接続 OK の場合、以下のようなメッセージが出力されます。</p>
+
+<p>送信側</p>
+
+<pre><code>Connection to host001 4949 port [tcp/munin] succeeded!
+</code></pre>
+
+<p>受信側</p>
+
+<pre><code>Connection from host002 port 4949 [tcp/munin] accepted
+</code></pre>
+
+<h2 id="参考:eab99a5c8d7d52c5c56e0b2e7fa8bbba">参考</h2>
+
+<ul>
+<li><a href="http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982', 'Learn the many uses of netcat | TechRepublic']);" >Learn the many uses of netcat | TechRepublic</a></li>
+<li><a href="http://www.usupi.org/sysad/190.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.usupi.org/sysad/190.html', 'Netcat でネットワークをもう少し活用する &#8211; いますぐ実践! Linuxシステム管理 / Vol.190']);" >Netcat でネットワークをもう少し活用する &#8211; いますぐ実践! Linuxシステム管理 / Vol.190</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

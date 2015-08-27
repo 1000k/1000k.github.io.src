@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>勉強会 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E5%8B%89%E5%BC%B7%E4%BC%9A/</link>
+    <description>Recent content in 勉強会 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 16 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E5%8B%89%E5%BC%B7%E4%BC%9A/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Agile Samurai Base Camp 2013 参加レポート</title>
+      <link>http://1000k.github.io/2013/12/16/agile-samurai-base-camp-2013-report/</link>
+      <pubDate>Mon, 16 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/16/agile-samurai-base-camp-2013-report/</guid>
+      <description>
+
+&lt;p&gt;レポートが遅れましたが、12/8 (日) に開催された &lt;a href=&#34;http://www.agilesamuraibasecamp.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.agilesamuraibasecamp.org/&#39;, &#39;Agile Samurai Base Camp&#39;]);&#34; &gt;Agile Samurai Base Camp&lt;/a&gt; に参加してきました。「テスト駆動開発コース」と「インセプションデッキコース」の2つがありましたが、私は後者に参加しました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4274068560/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4274068560&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4274068560/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4274068560&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;「アジャイルサムライ」&#39;]);&#34; &gt;「アジャイルサムライ」&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=1000k-22&amp;#038;l=as2&amp;#038;o=9&amp;#038;a=4274068560&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;の内容は1年半ほど前から実践しており、だいぶ身に付いてはいたのですが、ワークショップの中でその価値を再認識させられました。「エレベーターピッチはビジネス側のゴールを示し、パッケージデザインは顧客にとってのゴールを示す」という表現はしっくり来ました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/nawoto&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/nawoto&#39;, &#39;西村直人さん&#39;]);&#34; &gt;西村直人さん&lt;/a&gt;によるワークショップや、&lt;a href=&#34;https://twitter.com/papanda&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/papanda&#39;, &#39;市谷聡啓さん&#39;]);&#34; &gt;市谷聡啓さん&lt;/a&gt;による&lt;a href=&#34;http://www.amazon.co.jp/gp/product/427406932X/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=427406932X&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/427406932X/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=427406932X&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;「リーン開発の現場」&#39;]);&#34; &gt;「リーン開発の現場」&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=1000k-22&amp;#038;l=as2&amp;#038;o=9&amp;#038;a=427406932X&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;のエピソードなども大変参考になりましたが、特に3名のスクラム実践者が経験談を話すセッションが参考になりました。それぞれのお話の簡単なまとめを共有します。&lt;/p&gt;
+
+&lt;h3 id=&#34;中佐藤-麻記子-さん:aeb03dc5a51eccc7b018530813e3ea50&#34;&gt;中佐藤 麻記子 さん&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4798130613/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4798130613&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4798130613/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4798130613&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;ディシプリンド・アジャイル・デリバリー エンタープライズ・アジャイル実践ガイド (Object Oriented SELECTION)&#39;]);&#34; &gt;ディシプリンド・アジャイル・デリバリー エンタープライズ・アジャイル実践ガイド (Object Oriented SELECTION)&lt;/a&gt; &lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=1000k-22&amp;#038;l=as2&amp;#038;o=9&amp;#038;a=4798130613&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;の翻訳者。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;どんなプロジェクトでも必ずやるべきこと:「目標を決める→最初のルールを決める→ルールの変更方法のルールを決める」
+
+&lt;ul&gt;
+&lt;li&gt;スクラムで置き換えれば、「インセプションデッキを作る→ロールを決める→いつレトロスペクティブを開催するか決める」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;どんなプロジェクト体制だろうと、定期的なふりかえりは必須！&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;しばたひろし-a-href-https-twitter-com-hsbt-onclick-gaq-push-trackevent-outbound-article-https-twitter-com-hsbt-hsbt-hsbt-a-さん:aeb03dc5a51eccc7b018530813e3ea50&#34;&gt;しばたひろし (&lt;a href=&#34;https://twitter.com/hsbt&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/hsbt&#39;, &#39;@hsbt&#39;]);&#34; &gt;@hsbt&lt;/a&gt;) さん&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;paperboy &amp;amp; co. にスクラムを普及させた時にやったこと:
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/hiranabe&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/hiranabe&#39;, &#39;平鍋健児&#39;]);&#34; &gt;平鍋健児&lt;/a&gt;さんのスクラム研修を管理職クラスに受講させた。&lt;/li&gt;
+&lt;li&gt;プロダクトオーナー研修も社内で開催した。&lt;/li&gt;
+&lt;li&gt;エレベーターピッチ、リーンキャンバス、アジャイルマニフェストなどを、社員の目につくところに貼りまくった。これによって職場の意識が変わった。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;「やらないことリスト」を作っておかないと、Web サービスの開発は永遠に終わらない。&lt;/li&gt;
+&lt;li&gt;エレベーターピッチを暗記できないサービスはやばい。
+
+&lt;ul&gt;
+&lt;li&gt;EP が無いチームに OJT を送り込むと、業務の理解に1週間以上かかる。EP があるチームなら、2～3時間で理解できる。&lt;/li&gt;
+&lt;li&gt;ビジョンがわかれば、新人でもできることはたくさん見つかる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;インセプションデッキは、意思疎通のためのコンテキストとして非常に便利。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;mti-岩崎さん:aeb03dc5a51eccc7b018530813e3ea50&#34;&gt;MTI 岩崎さん&lt;/h3&gt;
+
+&lt;p&gt;スクラムを普及する時に体験したつまづき&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;最初のつまづき:
+
+&lt;ul&gt;
+&lt;li&gt;人が集まらない。&lt;/li&gt;
+&lt;li&gt;「われわれはなぜここにいるのか？」と聞くと「仕事だから」と返される。&lt;/li&gt;
+&lt;li&gt;会議は静寂に包まれており、PO の独演会になっている。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;対策:
+
+&lt;ul&gt;
+&lt;li&gt;イベントの参加者は確実に参加させるように、2週間前から予約する。&lt;/li&gt;
+&lt;li&gt;まずはやる気のある人を対象に勉強会やワークショップを行う。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;次のつまづき:
+
+&lt;ul&gt;
+&lt;li&gt;人が集まりすぎる。&lt;/li&gt;
+&lt;li&gt;インセプションデッキの議論が白熱して作り終わらない。早くサービスを作って欲しいのに！&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;対策:
+
+&lt;ul&gt;
+&lt;li&gt;バランスを見るファシリテーターが必要。ゴールが無いのはダメだが、長時間話し合いすぎるのもダメ。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;まずは「みんなでやってみる」こと。「改善を続ける」こと。ファシリテーターを根気よく探し、育てること。&lt;/li&gt;
+&lt;li&gt;それでもダメなことはある。くじけないこと。謙虚と自省が大事。思い上がりは NG。&lt;/li&gt;
+&lt;li&gt;周囲の巻き込み方:
+
+&lt;ul&gt;
+&lt;li&gt;スクラムに興味のもってくれた人 (イノベーター、アーリーアダプター) を育てる。&lt;/li&gt;
+&lt;li&gt;周りの成功体験を増やす。&lt;/li&gt;
+&lt;li&gt;口コミが広がるように、根回しをする。&lt;/li&gt;
+&lt;li&gt;ズルく、クレバーに伝染させる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;完全なインセプションデッキを作るのは困難。効果的な議論のネタとして使うだけでも十分効果的。
+
+&lt;ul&gt;
+&lt;li&gt;「1時間でリーンキャンバスのこの部分を埋めてみよう」など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;私は半年ほど前から会社にアジャイルマインドを広めようとしており、日々苦闘しているのですが、今回のセミナーで大変元気付けられました。具体的なアイディアも仕入れることができました。登壇者の皆さん、ありがとうございました。ぜひまた開催していただきたい。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

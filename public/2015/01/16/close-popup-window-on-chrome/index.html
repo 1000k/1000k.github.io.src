@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> JavaScript で Chrome のウィンドウを閉じる方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2015/01/16/close-popup-window-on-chrome/">JavaScript で Chrome のウィンドウを閉じる方法</a></h2>
+        <div class="post-content">
+          
+
+<p>以前リリースしたあるサービスで、「一部の入力フォームを別ウィンドウをポップアップして入力させ、終わったらリンクをクリックして閉じる」という JavaScript の処理を入れていたのですが、なぜか最近の Chrome で画面が固まってしまう不具合が発生しました。2014年の春にテストした時は問題なく動いていたのですが。</p>
+
+<h2 id="再現方法:96680621d7ebbfce2d483f1126ea0d2a">再現方法</h2>
+
+<p>不具合は以下の流れで発生します。確認したブラウザは 39.0.2171.99m です。</p>
+
+<ol>
+<li>親ウィンドウにある <code>&lt;a onClick=&quot;window.open()&quot;&gt;</code> リンクを叩き、子ウィンドウをポップアップさせる。</li>
+<li>子ウィンドウにある <code>&lt;a onClick=&quot;window.open('about:blank','_self').close()&quot;&gt;</code> リンクを叩く。</li>
+<li>親・子ウィンドウ両方が固まってしまう。</li>
+</ol>
+
+<p>ウィンドウを閉じる時に単純な <code>window.close()</code> ではなく <code>window.open('about:blank','_self').close()</code> を使っているのは、IE/FF/Chrome いずれのブラウザーでも綺麗に閉じるための有名な Hack だったからです。詳細は <a href="http://kojikoji75.hatenablog.com/entry/2013/12/15/223839" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://kojikoji75.hatenablog.com/entry/2013/12/15/223839', 'JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote']);" >JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote</a> がわかりやすいです。</p>
+
+<p>どうやらブラウザーのバージョンアップに伴い、このあたりの事情が変わってきてたようです。</p>
+
+<p>今なら子ウィンドウを消す JavaScript をどう実装するべきなのかを、少し検証してみました。</p>
+
+<h2 id="検証:96680621d7ebbfce2d483f1126ea0d2a">検証</h2>
+
+<p>以下の2つの HTML を用意します。</p>
+
+<p>popup_parent.html</p>
+
+<pre><code class="language-html">&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Parent&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p&gt;&lt;a href=&quot;#&quot; onClick=&quot;window.open('popup_child.html', 'child', 'width=300,height=300');&quot;&gt;Open popup window&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>popup_child.html</p>
+
+<pre><code>&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Child&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p&gt;&lt;a href=&quot;#&quot; onClick=&quot;window.open('about:blank', '_self').close()&quot;&gt;Close window 1&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#&quot; onClick=&quot;window.close();&quot;&gt;Close window 2&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>検証手順は以下の通り。</p>
+
+<ol>
+<li>popup_parent.html にアクセスし、<code>Open popup window</code> リンクを叩く。</li>
+<li>子ウィンドウが開くので、<code>Close window 1</code> (ハック版) と <code>Close window 2</code> (単純版) の2つのリンクをそれぞれ叩き、正しく閉じられるかどうかを記録する。</li>
+</ol>
+
+<p>検証結果は次のようになりました。「o」は閉じられた場合、「x」は閉じられなかった場合です。</p>
+
+<table>
+<thead>
+<tr>
+<th>ブラウザー</th>
+<th>Close window 1</th>
+<th>Close window 2</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IE 10</td>
+<td>o</td>
+<td>o</td>
+</tr>
+
+<tr>
+<td>Chrome 39.0.2171.99m</td>
+<td>x</td>
+<td>o</td>
+</tr>
+
+<tr>
+<td>FireFox 34.0.5</td>
+<td>o</td>
+<td>o</td>
+</tr>
+
+<tr>
+<td>Safari 5.1.7</td>
+<td>o</td>
+<td>o</td>
+</tr>
+</tbody>
+</table>
+
+<p>Chrome だけハック版がうまく動かないという結果になりました。</p>
+
+<p>悪さをしているのは WebKit か検証するため、一応 Safari でも実験しましたが、問題はありませんでした。今のところは Chrome だけ処理を分けるようにすれば良さそうです。ただ、Safari の WebKit は若干バージョンが古い (Safari = WebKit/534.57.2, Chrome = Webkit/537.36) ので、今後のバージョンアップでどうなるかは不明です。</p>
+
+<h2 id="解決策:96680621d7ebbfce2d483f1126ea0d2a">解決策</h2>
+
+<p>検証結果から、全て Close window 2 (単純版) の書き方にすれば解決するように見えますが、一応古いブラウザーとの互換性を考えて、Chrome だけ単純版に分岐するような JS にしました。</p>
+
+<pre><code>&lt;p&gt;&lt;a href=&quot;#&quot; onClick=&quot;if (/Chrome/i.test(navigator.userAgent)) { window.close(); } else { window.open('about:blank', '_self').close(); }&quot;&gt;Close window 3&lt;/a&gt;&lt;/p&gt;
+</code></pre>
+
+<p>これでどのブラウザーでも閉じられるようになりました。</p>
+
+<h2 id="参考:96680621d7ebbfce2d483f1126ea0d2a">参考</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome', 'javascript - window.close and self.close do not close the window in Chrome - Stack Overflow']);" >javascript - window.close and self.close do not close the window in Chrome - Stack Overflow</a></li>
+<li><a href="http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit', 'javascript - How to detect chrome and safari browser (webkit) - Stack Overflow']);" >javascript - How to detect chrome and safari browser (webkit) - Stack Overflow</a></li>
+<li><a href="http://kojikoji75.hatenablog.com/entry/2013/12/15/223839" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://kojikoji75.hatenablog.com/entry/2013/12/15/223839', 'JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote']);" >JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

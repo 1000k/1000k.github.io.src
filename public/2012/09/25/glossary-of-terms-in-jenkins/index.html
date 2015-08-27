@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Jenkinsを触ると出てくる用語の解説 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/09/25/glossary-of-terms-in-jenkins/">Jenkinsを触ると出てくる用語の解説</a></h2>
+        <div class="post-content">
+          
+
+<p>Jenkinsは元々Javaのビルドを自動化するツールだったため、Javaの知識が無いと理解しづらい部分があります。</p>
+
+<p>以下、必要になる知識を簡単にまとめておきます。</p>
+
+<h2 id="ビルド:6c203f2a9b1efd0cf98a463f085d4cf8">ビルド</h2>
+
+<p>Java は PHP や ruby と異なり、ソースのままでは実行できません。実行前に必ず_コンパイル_を行い、実行可能形式（JARファイル）に変換する必要があります。</p>
+
+<p>実行可能形式を作成するための一連の流れを_ビルド_と呼びます。ビルドでは主に以下の作業を行います。</p>
+
+<ul>
+<li>ソースの文法解析</li>
+<li>テストの実行</li>
+<li>ドキュメントの作成（Javadocなど）</li>
+<li>コンパイル (実行可能ファイルの作成)</li>
+</ul>
+
+<p>これらすべてのコマンドを手動で打つのは困難です。そのため、自動でビルドを行うビルドツールが存在します。代表的なものとして make, Ant, Maven などがあります。（後述）</p>
+
+<p>PHP等のスクリプト言語ではコンパイルは不要ですが、コンパイル以外のプロセスはJavaと共通のため、「ソースが実行可能な状態にする」という意味でビルドという用語をそのまま使っているようです。</p>
+
+<p>参考:</p>
+
+<ul>
+<li><a href="http://www.nitoyon.com/vc/tutorial/project/build_detail.htm" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.nitoyon.com/vc/tutorial/project/build_detail.htm', 'ビルドは何をしている？ [VC++の使い方]']);" >ビルドは何をしている？ [VC++の使い方]</a></li>
+<li><a href="http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)', 'ビルド (ソフトウェア) &#8211; Wikipedia']);" >ビルド (ソフトウェア) &#8211; Wikipedia</a></li>
+</ul>
+
+<h2 id="デプロイ:6c203f2a9b1efd0cf98a463f085d4cf8">デプロイ</h2>
+
+<p>作成したコードを利用可能にすること。「本番反映」とも言い換えられます。</p>
+
+<p>Java ではビルドで作成したJARファイルやWARファイルをWebサーバー（Apache Tomcatなど）に読み込ませ、再起動することで利用可能になります。</p>
+
+<p>PHP や Ruby などのスクリプト言語なら、動作中のWebサーバーにソースコードを配置するだけです。</p>
+
+<h2 id="ant:6c203f2a9b1efd0cf98a463f085d4cf8">Ant</h2>
+
+<ul>
+<li>ビルドツール。</li>
+<li><a href="http://ja.wikipedia.org/wiki/Make" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/Make', 'GNU make']);" title="make - Wikipedia">GNU make</a> の代替。</li>
+<li>ビルドファイル（build.xml）にビルドルールを書くことで、ビルドを自動化できます。</li>
+</ul>
+
+<p>参考:</p>
+
+<ul>
+<li><a href="http://ja.wikipedia.org/wiki/Apache_Ant" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/Apache_Ant', 'Apache Ant &#8211; Wikipedia']);" >Apache Ant &#8211; Wikipedia</a></li>
+</ul>
+
+<h2 id="maven:6c203f2a9b1efd0cf98a463f085d4cf8">Maven</h2>
+
+<ul>
+<li>プロジェクト管理ツール。</li>
+<li>Apache Ant の機能を内包しており、単にビルドツールとしても利用可能です。</li>
+<li>コンパイル、テスト、Javadoc生成、テストレポート生成、デプロイなど、様々な機能が用意されています。</li>
+<li>Ant では build.xml に細かい指示を記述する必要があったが、Maven では指示をコマンドラインに記述するだけで良い。</li>
+<li>Jenkins は Ant/Maven どちらも利用可能です。</li>
+</ul>
+
+<p>参考:</p>
+
+<ul>
+<li><a href="http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/', '2. Maven 入門 | TECHSCORE(テックスコア)']);" >2. Maven 入門 | TECHSCORE(テックスコア)</a></li>
+<li><a href="http://ja.wikipedia.org/wiki/Apache_Maven" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/Apache_Maven', 'Apache Maven &#8211; Wikipedia']);" >Apache Maven &#8211; Wikipedia</a></li>
+<li><a href="http://d.hatena.ne.jp/nsas454/20101013/1287328377" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/nsas454/20101013/1287328377', 'Apache MavenとAntの違いについて調べてみた &#8211; Shuichi’Tec']);" >Apache MavenとAntの違いについて調べてみた &#8211; Shuichi’Tec</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

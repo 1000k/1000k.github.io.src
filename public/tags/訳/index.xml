@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>訳 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E8%A8%B3/</link>
+    <description>Recent content in 訳 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 23 Oct 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E8%A8%B3/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>抄訳: Constructor Injection vs. Setter Injection</title>
+      <link>http://1000k.github.io/2012/10/23/translation-constructor-injection-vs-setter-injection/</link>
+      <pubDate>Tue, 23 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/23/translation-constructor-injection-vs-setter-injection/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/&#39;, &#39;Constructor Injection vs. Setter Injection&#39;]);&#34; &gt;Constructor Injection vs. Setter Injection&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;3年前の記事ですが、かなり役立つ知識だったので、一部補足しながら訳しました。コードを単体テスト可能にする（＝「接合点を作る」）ために知っておくべき内容です。&lt;/p&gt;
+
+&lt;p&gt;クラスBに依存しているクラスAをテストするときに、依存性を排除する典型的な方法として &lt;strong&gt;Constructor Injection&lt;/strong&gt; (コンストラクター・インジェクション) と &lt;strong&gt;Setter Injection&lt;/strong&gt; (セッター・インジェクション) があります。以下でそれぞれのやり方と、どちらがベターかを解説します。&lt;/p&gt;
+
+&lt;h2 id=&#34;setter-injection-とは:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;Setter Injection とは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Springフレームワークで使用。&lt;/li&gt;
+&lt;li&gt;コンストラクタは引数を取らない。&lt;/li&gt;
+&lt;li&gt;インスタンス化後、そのインスタンスの setter メソッドを使ってオブジェクトを注入する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;Database db = new Database();
+
+OfflineQueue queue = new OfflineQueue();
+queue.setDatabase(db);
+
+CreditCardProcessor processor = new CreditCardProcessor();
+processor.setOfflineQueue(queue);
+processor.setDatabase(db);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;constructor-injection-とは:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;Constructor Injection とは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pico-Container や GUICE で使用。&lt;/li&gt;
+&lt;li&gt;コンストラクタの引数にインスタンスを渡し、メンバ変数に設定する方法。&lt;/li&gt;
+&lt;li&gt;もし引数が渡されなかったらデフォルトのインスタンスを作成する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;CreditCardProcessor processor = new CreditCardProcessor(?queue?, ?db?);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;どちらが良いか:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;どちらが良いか？&lt;/h2&gt;
+
+&lt;p&gt;一見すると、コンストラクタにごちゃごちゃ引数を渡さなくて済むぶん Setter Injection の方が楽に書けて良いように思えます。しかし Contructor Injection の方が優れている部分があるため、私は後者を選びます。それは、Constructor Injection はパラメータの順序を指定でき、&lt;a href=&#34;http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/&#39;, &#39;Circular Dependency&#39;]);&#34; title=&#34;Circular Dependency in constructors and Dependency Injection&#34;&gt;Circular Dependency&lt;/a&gt;（循環参照）に陥る危険が無いという点です。&lt;/p&gt;
+
+&lt;p&gt;一般的なアプリは多くのクラスと連携します。そこに Setter Injection を採用すると、何度も setter の呼び出しを行う事になってしまいます。これだと連携するクラスの数が増えるたびに setter をコールする行を追加しなくてはいけません。面倒ですし、コールし忘れの危険性も増えます。さらに set する順番が決まっている場合は最悪です。&lt;/p&gt;
+
+&lt;p&gt;一方で Constructor Injection はコンストラクタさえ書いてしまえば、指定した順に、自動でクラスをインスタンス化してくれます。コンストラクトの時点ですべて設定が完了するので、後はそのオブジェクトを確実に使えます。&lt;/p&gt;
+
+&lt;h2 id=&#34;例:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;例&lt;/h2&gt;
+
+&lt;p&gt;CreaditCardProcessor クラスをインスタンス化するケースを考えてみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CreditCardProcessor processor = new CreditCardProcessor();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;インスタンス化できてめでたしめでたし、とはなりません。実際にはこのクラスは OfflineQueue クラスと連携し、またDBとやりとりするために Database クラスとも連携します。これらのインスタンスを set してやらなければ使えません。&lt;/p&gt;
+
+&lt;p&gt;これらすべてを Setter Injection で行うと下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Database クラスのインスタンス化
+Database db = new Database();
+
+// 必要なインスタンスを setter で設定する
+db.setUsername(&amp;quot;username&amp;quot;);
+db.setPassword(&amp;quot;password&amp;quot;);
+db.setUrl(&amp;quot;jdbc:....&amp;quot;);
+
+// OfflineQueue クラスのインスタンス化
+OfflineQueue queue = new OfflineQueue();
+
+// setter による設定
+queue.setDatabase(db);
+
+// CreditCardProcessor クラスに、上で作ったインスタンスを setter でセットする
+CreditCardProcessor processor = new CreditCardProcessor();
+processor.setOfflineQueue(queue);
+processor.setDatabase(db);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで全部？いや、要件が増えればさらに setter でセットする内容は増えるかもしれません。何かフレームワークを使っていれば楽に書く方法があるかもしれませんが、使ってない場合はもうお手上げです。&lt;/p&gt;
+
+&lt;p&gt;では同じことを Constructor Injection で実現してみましょう。CreditCardProcessor は以下のようにインスタンス化できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CreditCardProcessor processor = new CreditCardProcessor(?queue?, ?db?);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクタは OfflineQueue と Database のインスタンスを必要とするので、両方ともインスタンス化しましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 必要となるインスタンスを作成する
+Database db = new Database(&amp;quot;username&amp;quot;, &amp;quot;password&amp;quot;, &amp;quot;jdbc:....&amp;quot;);
+OfflineQueue queue = new OfflineQueue(db);
+
+// コンストラクタに渡してやる
+CreditCardProcessor processor = new CreditCardProcessor(queue, db);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクタにインスタンスを渡すことができました。これで完了です。&lt;/p&gt;
+
+&lt;p&gt;このコードの良いところは、コンストラクタに渡す引数が不足していたらコンパイルエラーがちゃんと出ることです。また、意図していない順番でインスタンス化される不具合も防げます。&lt;/p&gt;
+
+&lt;p&gt;というわけで、個人的には Constructor Injection がおすすめです。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

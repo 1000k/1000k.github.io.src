@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Grunt で JS/CSS を自動ビルドする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/">Grunt で JS/CSS を自動ビルドする</a></h2>
+        <div class="post-content">
+          
+
+<h2 id="grunt-とは:31d9c632b09e89723d113ebbe8ae7aa4">Grunt とは？</h2>
+
+<p>JS/CSS のビルド自動化ツール。</p>
+
+<p>JS のユニットテスト、ファイルの結合＆難読化＆最小化などの様々なタスクを自動で行うことができます。</p>
+
+<h2 id="インストール:31d9c632b09e89723d113ebbe8ae7aa4">インストール</h2>
+
+<p>まず、node.js と npm をインストールします。</p>
+
+<p>やり方は以下の記事あたりを参考に。</p>
+
+<ul>
+<li><a href="http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html', 'node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ']);" >node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ</a></li>
+</ul>
+
+<p>次に grunt-cli をグローバルにインストールします。</p>
+
+<pre><code>$ sudo npm install -g grunt-cli
+</code></pre>
+
+<p>次に、プロジェクトのトップに <code>package.json</code> を作成します。</p>
+
+<p>この中には、使用したい Grunt ライブラリを列挙します。</p>
+
+<pre><code>{
+  &quot;name&quot;: &quot;mojamoja-project&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;devDependencies&quot;: {
+    &quot;grunt&quot;: &quot;~0.4.1&quot;,
+    &quot;grunt-contrib-sass&quot;: &quot;~0.3.0&quot;,
+    &quot;grunt-contrib-jshint&quot;: &quot;~0.6.3&quot;,
+    &quot;grunt-contrib-nodeunit&quot;: &quot;~0.2.0&quot;,
+    &quot;grunt-contrib-compass&quot;: &quot;~0.2.0&quot;,
+    &quot;grunt-contrib-concat&quot;: &quot;~0.1.2&quot;,
+    &quot;grunt-contrib-qunit&quot;: &quot;~0.1.1&quot;,
+    &quot;grunt-contrib-uglify&quot;: &quot;~0.2.2&quot;,
+    &quot;grunt-contrib-watch&quot;: &quot;~0.2.0&quot;
+  }
+}
+</code></pre>
+
+<p>これで <code>npm install grunt --save-dev</code> を叩くと、package.json に書かれたパッケージが一気にインストールされます。</p>
+
+<p>以上で前準備は完了です。</p>
+
+<h2 id="使い方:31d9c632b09e89723d113ebbe8ae7aa4">使い方</h2>
+
+<p>プロジェクトのルートに <code>Gruntfile.js</code> を書いて、実行したいタスクを列挙するだけです。</p>
+
+<p>※ grunt &lt; 0.4 では <code>grunt.js</code> というファイル名でした。</p>
+
+<pre><code>module.exports = function(grunt) {
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: [
+          'app/webroot/js/vendor/jquery/jquery.js',
+          'app/webroot/js/vendor/jquery-mousewheel/jquery.mousewheel.js',
+          'app/webroot/js/vendor/underscore/underscore.js',
+          'app/webroot/js/vendor/backbone/backbone.js',
+          'app/webroot/js/vendor/backbone.localStorage/backbone.localStorage.js',
+          'app/webroot/js/vendor/hook/hook.js',
+          'app/webroot/js/vendor/mobify-modules/carousel/src/carousel.js',
+          'app/webroot/js/vendor/snap/snap.js',
+          'app/webroot/js/app.js'
+        ],
+        dest: 'app/webroot/js/merged.js'
+      }
+    },
+    uglify: {
+      options: {
+        banner: '/*! &amp;lt;%= pkg.name %&gt; &amp;lt;%= grunt.template.today(&quot;dd-mm-yyyy&quot;) %&gt; */\n'
+      },
+      dist: {
+        files: {
+          'app/webroot/js/merged.min.js': ['&amp;lt;%= concat.dist.dest %&gt;']
+        }
+      }
+    },
+    jshint: {
+      files: ['gruntfile.js', 'app/webroot/js/**/*.js'],
+      options: {
+        // options here to override JSHint defaults
+        globals: {
+          jQuery: true,
+          console: true,
+          module: true,
+          document: true
+        }
+      }
+    },
+    watch: {
+      files: ['&amp;lt;%= jshint.files %&gt;'],
+      tasks: ['concat', 'uglify']
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+
+  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+  grunt.registerTask('merge', ['concat', 'uglify']);
+
+};
+</code></pre>
+
+<p>詳しい記述方法は公式のガイドを参考に。</p>
+
+<ul>
+<li><a href="http://gruntjs.com/configuring-tasks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/configuring-tasks', 'Configuring tasks &#8211; Grunt: The JavaScript Task Runner']);" >Configuring tasks &#8211; Grunt: The JavaScript Task Runner</a></li>
+<li><a href="http://gruntjs.com/creating-tasks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/creating-tasks', 'Creating tasks &#8211; Grunt: The JavaScript Task Runner']);" >Creating tasks &#8211; Grunt: The JavaScript Task Runner</a></li>
+</ul>
+
+<p>あとは <code>grunt {タスク名}</code> と叩くだけで、指定したタスクが動きます。</p>
+
+<p>例えば上で定義 (<code>grunt.registerTask()</code> )したタスクから merge を実行したければ、<code>grunt merge</code> と叩けば OK です。。</p>
+
+<h2 id="変更の監視-自動タスク実行:31d9c632b09e89723d113ebbe8ae7aa4">変更の監視＆自動タスク実行</h2>
+
+<p><code>grunt watch</code> を叩くことで、指定した js ファイルを監視し、変更があったら自動で指定したタスクを実行してくれます。</p>
+
+<h2 id="参考:31d9c632b09e89723d113ebbe8ae7aa4">参考</h2>
+
+<ul>
+<li><a href="http://hamalog.tumblr.com/post/18137176043/grunt-js-css" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://hamalog.tumblr.com/post/18137176043/grunt-js-css', 'gruntで快適JS/CSSビルド生活 &#8211; Takazudo hamalog']);" >gruntで快適JS/CSSビルド生活 &#8211; Takazudo hamalog</a></li>
+<li><a href="http://gruntjs.com/getting-started" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/getting-started', 'Getting started &#8211; Grunt: The JavaScript Task Runner']);" >Getting started &#8211; Grunt: The JavaScript Task Runner</a></li>
+<li><a href="https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile', 'Sample Gruntfile · gruntjs/grunt Wiki']);" >Sample Gruntfile · gruntjs/grunt Wiki</a>
+
+<ul>
+<li>Gruntfile のサンプル。</li>
+</ul></li>
+<li><a href="http://gruntjs.com/plugins/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gruntjs.com/plugins/', 'Plugins &#8211; Grunt: The JavaScript Task Runner']);" >Plugins &#8211; Grunt: The JavaScript Task Runner</a>
+
+<ul>
+<li>grunt プラグインの一覧。</li>
+<li>公式のものは &#8216;Show contrib plugins first&#8217; にチェックを入れれば出てくる。</li>
+</ul></li>
+<li><a href="http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/', 'npm / package.json | Public Draft | Outlining and Researching for the Presentation']);" >npm / package.json | Public Draft | Outlining and Researching for the Presentation</a>
+
+<ul>
+<li>package.json の基本。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

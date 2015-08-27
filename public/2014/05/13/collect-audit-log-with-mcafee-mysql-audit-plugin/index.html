@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> McAfee MySQL Audit Plugin で MySQL の監査ログを採取する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2014/05/13/collect-audit-log-with-mcafee-mysql-audit-plugin/">McAfee MySQL Audit Plugin で MySQL の監査ログを採取する</a></h2>
+        <div class="post-content">
+          
+
+<p>McAfee が作った MySQL プラグイン &#8220;<a href="https://github.com/mcafee/mysql-audit" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/mcafee/mysql-audit', 'McAfee MySQL Audit Plugin']);" >McAfee MySQL Audit Plugin</a>&#8221; を使うと、MySQL の監査ログが取得できるようになります。</p>
+
+<p>会社のセキュリティ要件で監査が必要になったので、検証してみました。</p>
+
+<h2 id="特徴:c6474aa8b06dbbdfd3d89714dc33b5d2">特徴</h2>
+
+<ul>
+<li>監査対象の DB やテーブルを細かく指定できる。</li>
+<li>監査を除外するユーザーも指定可能。</li>
+<li>JSON 形式でログが出る。</li>
+<li>無停止でインストールや設定変更が可能。</li>
+<li>MySQL &gt;= 5.1 に対応。</li>
+</ul>
+
+<h2 id="インストール手順:c6474aa8b06dbbdfd3d89714dc33b5d2">インストール手順</h2>
+
+<p>CentOS 6.3 (64bit) 上に MySQL 5.6 をインストールしている環境を想定しています。</p>
+
+<p>まず、<a href="https://bintray.com/mcafee/mysql-audit-plugin/release" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://bintray.com/mcafee/mysql-audit-plugin/release', 'Plugin のダウンロードページ']);" >Plugin のダウンロードページ</a> から最新のバイナリをダウンロードし、MySQL のプラグインディレクトリに解凍します。MySQL のバージョンと OS の bit を間違えないように。</p>
+
+<pre><code>$ wget http://dl.bintray.com/mcafee/mysql-audit-plugin/1.0.4/audit-plugin-mysql-5.6-1.0.4-459-linux-x86_64.zip
+$ unzip audit-plugin-mysql-5.6-1.0.4-459-linux-x86_64.zip
+$ sudo mv audit-plugin-mysql-5.6/lib/libaudit_plugin.so /usr/lib64/mysql/plugin/
+</code></pre>
+
+<p>※MySQL のプラグインディレクトリが不明な場合、MySQL クライアントから以下のクエリを叩くことで確認できます。</p>
+
+<pre><code>mysql&gt; show global variables like 'plugin_dir';
++---------------+--------------------------+
+| Variable_name | Value                    |
++---------------+--------------------------+
+| plugin_dir    | /usr/lib64/mysql/plugin/ |
++---------------+--------------------------+
+</code></pre>
+
+<p>次に、Audit プラグインを MySQL クライアントからインストールします。</p>
+
+<pre><code>mysql&gt; INSTALL PLUGIN AUDIT SONAME 'libaudit_plugin.so';
+</code></pre>
+
+<p>※my.cnf に以下の設定を書いて mysqld を再起動してもインストールできます。</p>
+
+<pre><code>[mysqld]
+plugin-load=AUDIT=libaudit_plugin.so
+</code></pre>
+
+<p>以下のようにコマンドを叩いた結果が出ればインストール成功です。</p>
+
+<pre><code>mysql&gt; show plugins;
++----------------------------+----------+--------------------+--------------------+---------+
+| Name                       | Status   | Type               | Library            | License |
++----------------------------+----------+--------------------+--------------------+---------+
+| binlog                     | ACTIVE   | STORAGE ENGINE     | NULL               | GPL     |
+...
+| AUDIT                      | ACTIVE   | AUDIT              | libaudit_plugin.so | GPL     |
++----------------------------+----------+--------------------+--------------------+---------+
+
+mysql&gt; show global status like 'AUDIT_version';
++---------------+-----------+
+| Variable_name | Value     |
++---------------+-----------+
+| Audit_version | 1.0.4-459 |
++---------------+-----------+
+</code></pre>
+
+<h2 id="プラグインを有効にする:c6474aa8b06dbbdfd3d89714dc33b5d2">プラグインを有効にする</h2>
+
+<p>インストールしただけでは Audit Plugin はまだ有効になっていないので、設定する必要があります。設定方法は以下の2通り。</p>
+
+<h3 id="my-cnf-に書き込む場合:c6474aa8b06dbbdfd3d89714dc33b5d2">my.cnf に書き込む場合</h3>
+
+<p>my.cnf の <code>[mysqld]</code> セクションに書き込んで、mysqld を再起動する。</p>
+
+<pre><code>[mysqld]
+audit_json_file = On
+</code></pre>
+
+<h3 id="mysql-クライアントから有効にする場合:c6474aa8b06dbbdfd3d89714dc33b5d2">MySQL クライアントから有効にする場合</h3>
+
+<p><code>SET</code> ステートメントを使います。この方法なら無停止で動的に設定変更ができます。</p>
+
+<pre><code>mysql&gt; SET GLOBAL audit_json_file = 'On';
+</code></pre>
+
+<h2 id="プラグインの設定:c6474aa8b06dbbdfd3d89714dc33b5d2">プラグインの設定</h2>
+
+<p>設定パラメータを全部書くのは面倒なので主要なものだけ。詳しくは <a href="https://github.com/mcafee/mysql-audit/wiki/Configuration" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/mcafee/mysql-audit/wiki/Configuration', 'Configuration · mcafee/mysql-audit Wiki']);" >Configuration · mcafee/mysql-audit Wiki</a> を参照。</p>
+
+<table>
+<thead>
+<tr>
+<th>変数名</th>
+<th>内容</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>audit_json_file</td>
+<td>Audit を有効にするか。`[On</td>
+</tr>
+
+<tr>
+<td>audit_json_log_file</td>
+<td>Audit ログの保存場所。絶対パスか、data-dir からの相対パスで記述。</td>
+</tr>
+
+<tr>
+<td>audit_record_cmds</td>
+<td>どのコマンドをロギングするか。カンマ区切り。空白なら全てのコマンドを記録。(e.g.: <code>insert,update,delete</code>)</td>
+</tr>
+
+<tr>
+<td>audit_record_objs</td>
+<td>ロギングしたいオブジェクト (テーブル)。カンマ区切り。空白なら全てのオブジェクトを記録。 (e.g.: <code>mydb.*,database.table</code>)</td>
+</tr>
+
+<tr>
+<td>audit_whitelist_users</td>
+<td>ここに指定したユーザーのクエリはロギングしない。カンマ区切り。</td>
+</tr>
+</tbody>
+</table>
+
+<p>設定値は以下のコマンドで確認できます。</p>
+
+<pre><code>mysql&gt; SHOW VARIABLES LIKE 'audit_%';
++---------------------------------+----------------------------+
+| Variable_name                   | Value                      |
++---------------------------------+----------------------------+
+| audit_checksum                  |                            |
+| audit_delay_cmds                |                            |
+| audit_delay_ms                  | 0                          |
+| audit_json_file                 | OFF                        |
+| audit_json_file_flush           | OFF                        |
+| audit_json_file_sync            | 0                          |
+| audit_json_log_file             | mysql-audit.json           |
+| audit_json_socket               | OFF                        |
+| audit_json_socket_name          | /tmp/mysql-audit.json.sock |
+| audit_offsets                   |                            |
+| audit_offsets_by_version        | ON                         |
+| audit_record_cmds               |                            |
+| audit_record_objs               |                            |
+| audit_uninstall_plugin          | OFF                        |
+| audit_validate_checksum         | ON                         |
+| audit_validate_offsets_extended | ON                         |
+| audit_whitelist_users           |                            |
++---------------------------------+----------------------------+
+17 rows in set (0.00 sec)
+</code></pre>
+
+<h2 id="注意:c6474aa8b06dbbdfd3d89714dc33b5d2">注意</h2>
+
+<ul>
+<li>MySQL 5.1 では boolean 型は `<code>か</code>1<code>で指定しないとエラーになります。(</code>On<code>or</code>Off` ではダメ)</li>
+<li>MariaDB や Percona MySQL などの MySQL の派生バイナリにインストールすると、デフォルトではエラーが出て動かせないそうです。この場合、<code>audit_offset</code> の設定が必要です。詳しくは以下の記事を参照。
+
+<ul>
+<li><a href="https://github.com/mcafee/mysql-audit/wiki/Troubleshooting#offset-extraction">https://github.com/mcafee/mysql-audit/wiki/Troubleshooting#offset-extraction</a></li>
+</ul></li>
+</ul>
+
+<h2 id="取得できる値の例:c6474aa8b06dbbdfd3d89714dc33b5d2">取得できる値の例</h2>
+
+<p>正しく設定できていると、クエリを投げるたびに以下のような値がログに吐かれます。</p>
+
+<pre><code>{
+  &quot;msg-type&quot;: &quot;activity&quot;,
+  &quot;date&quot;: &quot;1398043832028&quot;,
+  &quot;thread-id&quot;: &quot;8&quot;,
+  &quot;query-id&quot;: &quot;11436&quot;,
+  &quot;user&quot;: &quot;root&quot;,
+  &quot;priv_user&quot;: &quot;root&quot;,
+  &quot;host&quot;: &quot;localhost&quot;,
+  &quot;ip&quot;: &quot;&quot;,
+  &quot;cmd&quot;: &quot;update&quot;,
+  &quot;objects&quot;: [
+    {
+      &quot;db&quot;: &quot;crechu&quot;,
+      &quot;name&quot;: &quot;sessions&quot;,
+      &quot;obj_type&quot;: &quot;TABLE&quot;
+    }
+  ],
+  &quot;query&quot;: &quot;UPDATE `crechu`.`sessions` SET `status` = 'card_not_registered', `need_mail` = '0', `merchant_id` = 1, `modified` = '2014-04-21 10:30:32'  WHERE `crechu`.`sessions`.`id` = '1'&quot;
+}
+</code></pre>
+
+<p>それぞれの値の意味は下記。</p>
+
+<table>
+<thead>
+<tr>
+<th>キー</th>
+<th>中身</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>msg_type</td>
+<td>「activity」固定</td>
+</tr>
+
+<tr>
+<td>date</td>
+<td>コマンドが実行された日時のUNIXTIME。単位はミリ秒。</td>
+</tr>
+
+<tr>
+<td>thread-id</td>
+<td>スレッドID。コネクション毎のユニークなID。</td>
+</tr>
+
+<tr>
+<td>query-id</td>
+<td>クエリID。クエリ毎のユニークなID。</td>
+</tr>
+
+<tr>
+<td>user</td>
+<td>ユーザ名。</td>
+</tr>
+
+<tr>
+<td>priv_user</td>
+<td>ユーザ名。LDAP認証を使っている場合はuserと異なるユーザ名になるケースがある。基本はpriv_userを見れば良い。</td>
+</tr>
+
+<tr>
+<td>host</td>
+<td>アクセス元ホスト名。</td>
+</tr>
+
+<tr>
+<td>ip</td>
+<td>アクセス元IP。</td>
+</tr>
+
+<tr>
+<td>cmd</td>
+<td>実行したコマンド。</td>
+</tr>
+
+<tr>
+<td>objects</td>
+<td>対処のオブジェクト。</td>
+</tr>
+
+<tr>
+<td>query</td>
+<td>実行したクエリー全体。</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="まとめ:c6474aa8b06dbbdfd3d89714dc33b5d2">まとめ</h2>
+
+<p>インストールは非常に簡単ですし、動的に ON/OFF の切り替えや設定パラメータの変更が可能です。ログは JSON で出力されるので、fluentd などに食わせて管理するのも楽です。</p>
+
+<p>この記事には書きませんでしたが、監査対象のユーザーやテーブルの指定も簡単でした。</p>
+
+<p>MySQL の監査ログを取りたければ、これを使っておけばひとまず十分ではないでしょうか。</p>
+
+<h2 id="参考:c6474aa8b06dbbdfd3d89714dc33b5d2">参考</h2>
+
+<ul>
+<li><a href="https://github.com/mcafee/mysql-audit/wiki" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/mcafee/mysql-audit/wiki', 'Home · mcafee/mysql-audit Wiki']);" >Home · mcafee/mysql-audit Wiki</a>
+
+<ul>
+<li>公式の Wiki。これを見ればだいたい大丈夫。</li>
+</ul></li>
+<li><a href="http://blog.majide.com/2012/10/mysql-mcafee-audit-plugin/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.majide.com/2012/10/mysql-mcafee-audit-plugin/', 'McAfeeのおかげでMySQLで監査ログが取れるようになった']);" >McAfeeのおかげでMySQLで監査ログが取れるようになった</a>
+
+<ul>
+<li>インストール手順や設定項目が詳しい。プラグインが読み込めないエラーの直し方も。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

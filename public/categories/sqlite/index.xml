@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sqlite on 1000g</title>
+    <link>http://1000k.github.io/categories/sqlite/</link>
+    <description>Recent content in Sqlite on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 11 Nov 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/sqlite/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SQLiteのインメモリDBを異なるPDOオブジェクトから参照するには</title>
+      <link>http://1000k.github.io/2011/11/11/how-to-refer-sqlite-in-memory-db-from-defferent-pdo-object/</link>
+      <pubDate>Fri, 11 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/11/11/how-to-refer-sqlite-in-memory-db-from-defferent-pdo-object/</guid>
+      <description>
+
+&lt;p&gt;どうにもSQLiteのインメモリDBの値が取得できなかったので、実験してみました。&lt;/p&gt;
+
+&lt;p&gt;いきなり結論を書くと、&lt;strong&gt;「あるPDOオブジェクトからは、別のPDOオブジェクトが作成したインメモリDBには接続できない」&lt;/strong&gt;ようです。&lt;/p&gt;
+
+&lt;h1 id=&#34;テストコード:79219f7f66a89108f263ed750ab9ba1c&#34;&gt;テストコード&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+/**
+ * SQLiteのオンメモリDBにテストデータを作成し、PDOからアクセスできることを確かめる
+ */
+try {
+    $pdo1 = new PDO(&#39;sqlite::memory:&#39;, null, null);
+    $pdo1-&amp;gt;exec(&#39;CREATE TABLE uso(id INTEGER PRIMARY KEY, name STRING)&#39;);
+    $pdo1-&amp;gt;exec(&#39;INSERT INTO uso VALUES (1, &amp;quot;uhouho&amp;quot;);&#39;);
+    $pdo1-&amp;gt;exec(&#39;INSERT INTO uso VALUES (2, &amp;quot;mojamoja&amp;quot;);&#39;);
+
+    // 接続済みのPDOオブジェクトからデータを取得できるか試してみる
+    $stmt = $pdo1-&amp;gt;query(&#39;SELECT * FROM uso&#39;);
+    if (!$stmt) {
+        echo &#39;Cannot fetch data via $pdo1.&#39;;
+    } else {
+        print_r($stmt-&amp;gt;fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    // 新たにPDOオブジェクトを作成し、データを取得できるか試してみる
+    $pdo2 = new PDO(&#39;sqlite::memory:&#39;);
+    $stmt = $pdo2-&amp;gt;query(&#39;SELECT * FROM uso&#39;);
+    if (!$stmt) {
+        echo &#39;Cannot fetch data via $pdo2.&#39;;
+    } else {
+        print_r($stmt-&amp;gt;fetchAll(PDO::FETCH_ASSOC));
+    }
+} catch (Exception $e) {
+    exit($e-&amp;gt;getMessage());
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;結果:79219f7f66a89108f263ed750ab9ba1c&#34;&gt;結果&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;Array
+(
+    [0] =&amp;gt; Array
+        (
+            [id] =&amp;gt; 1
+            [name] =&amp;gt; uhouho
+        )
+
+    [1] =&amp;gt; Array
+        (
+            [id] =&amp;gt; 2
+            [name] =&amp;gt; mojamoja
+        )
+
+)
+Cannot fetch data via $pdo2.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$pdo1で作成したインメモリDBに、$pdo2からは接続できていません。&lt;/p&gt;
+
+&lt;p&gt;どちらも同じ「sqlite::memory:」ですが、見ている領域は異なるようです。&lt;/p&gt;
+
+&lt;h1 id=&#34;考察:79219f7f66a89108f263ed750ab9ba1c&#34;&gt;考察&lt;/h1&gt;
+
+&lt;p&gt;インメモリDB内に作ったテーブルに、複数のPDOオブジェクトからアクセスすることはできませんでした。&lt;/p&gt;
+
+&lt;p&gt;アクセスしたければ、テーブルを作ったPDOオブジェクトを使い回すしかなさそうです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP公式のブログ作成チュートリアルをSQLite3でやってみる</title>
+      <link>http://1000k.github.io/2010/07/06/cakephp-official-tutorial-using-sqlite3/</link>
+      <pubDate>Tue, 06 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/06/cakephp-official-tutorial-using-sqlite3/</guid>
+      <description>
+
+&lt;h3 id=&#34;このチュートリアルの目的:c559210a78aceddc33ab13f880a8e277&#34;&gt;このチュートリアルの目的&lt;/h3&gt;
+
+&lt;p&gt;一つの CakePHP コアに複数のアプリケーションを同居させる方法を学べます。DB を作って database.php を作成すれば、あとはbakeするだけで基本的な画面が出来上がります。&lt;/p&gt;
+
+&lt;h3 id=&#34;公式チュートリアルと今回のやり方の違い:c559210a78aceddc33ab13f880a8e277&#34;&gt;公式チュートリアルと今回のやり方の違い&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://book.cakephp.org/view/1527/Tutorials-Examples&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/view/1527/Tutorials-Examples&#39;, &#39;公式チュートリアル&#39;]);&#34; title=&#34;Tutorials &amp; Examples :: The Manual :: 1.3 Collection :: The Cookbook&#34;&gt;公式チュートリアル&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MySQL でなく SQLite3 で作る&lt;/li&gt;
+&lt;li&gt;アプリを CakePHP 解凍時の app ディレクトリ内に作らず、「{インストールディレクトリ}/blog」内に bake したファイルを元に作る
+
+&lt;ul&gt;
+&lt;li&gt;一つの CakePHP コアから複数のアプリを併存させる環境を想定&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Model/View/Controller は bake して作る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;作成環境:c559210a78aceddc33ab13f880a8e277&#34;&gt;作成環境&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CakePHP 1.3.2&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;XAMPP Windows&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;th&gt;場所&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ドキュメントルート&lt;/td&gt;
+&lt;td&gt;c:\xampp\htdocs&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;CakePHPインストールディレクトリ&lt;/td&gt;
+&lt;td&gt;c:\xampp\htdocs\cake&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;blogアプリの場所&lt;/td&gt;
+&lt;td&gt;c:\xampp\htdocs\cake\blog&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;手順:c559210a78aceddc33ab13f880a8e277&#34;&gt;手順&lt;/h3&gt;
+
+&lt;h4 id=&#34;1-sqlite3を使うための-dbo-sqlite3-php-を導入する:c559210a78aceddc33ab13f880a8e277&#34;&gt;1. SQLite3を使うための dbo_sqlite3.php を導入する&lt;/h4&gt;
+
+&lt;p&gt;導入先: &lt;strong&gt;{インストールディレクトリ}/cake/libs/model/datasources/dbo/dbo_sqlite3.php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;2-コンソールからblogアプリをbakeする:c559210a78aceddc33ab13f880a8e277&#34;&gt;2. コンソールからblogアプリをbakeする&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cd c:\xampp\htdocs\cake
+mkdir blog
+cake/console/cake bake blog
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;対話式コマンドは↓の通り（Databese Configurationは後で直接いじるので適当でよい）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Welcome to CakePHP v1.3.2 Console
+---------------------------------------------------------------
+App : sandbox
+Path: c:\xampp\htdocs\cake
+---------------------------------------------------------------
+Bake Project
+Skel Directory: C:\xampp\htdocs\cake\cake\console\templates\skel
+Will be copied to: c:\xampp\htdocs\cake\blog
+---------------------------------------------------------------
+Look okay? (y/n/q)
+[y] &amp;gt; y
+Do you want verbose output? (y/n)
+[n] &amp;gt;
+---------------------------------------------------------------
+Created: blog in c:\xampp\htdocs\cake\blog
+---------------------------------------------------------------
+
+Creating file c:\xampp\htdocs\cake\blog\views\pages\home.ctp
+Wrote `c:\xampp\htdocs\cake\blog\views\pages\home.ctp`
+Welcome page created
+Random hash key created for &#39;Security.salt&#39;
+Random seed created for &#39;Security.cipherSeed&#39;
+CAKE_CORE_INCLUDE_PATH set to C:\xampp\htdocs\cake in webroot/index.php
+CAKE_CORE_INCLUDE_PATH set to C:\xampp\htdocs\cake in webroot/test.php
+Remember to check these value after moving to production server
+Your database configuration was not found. Take a moment to create one.
+---------------------------------------------------------------
+Database Configuration:
+---------------------------------------------------------------
+Name:
+[default] &amp;gt;
+Driver: (db2/firebird/mssql/mysql/mysqli/odbc/oracle/postgres/sqlite/sybase)
+[mysql] &amp;gt; sqlite3
+Driver: (db2/firebird/mssql/mysql/mysqli/odbc/oracle/postgres/sqlite/sybase)
+[mysql] &amp;gt; sqlite
+Persistent Connection? (y/n)
+[n] &amp;gt;
+Database Host:
+[localhost] &amp;gt;
+Port?
+[n] &amp;gt;
+User:
+[root] &amp;gt;
+Password:
+&amp;gt;
+The password you supplied was empty. Use an empty password? (y/n)
+[n] &amp;gt; y
+Database Name:
+[cake] &amp;gt;
+Table Prefix?
+[n] &amp;gt;
+Table encoding?
+[n] &amp;gt;
+
+---------------------------------------------------------------
+The following database configuration will be created:
+---------------------------------------------------------------
+Name:         default
+Driver:       sqlite
+Persistent:   false
+Host:         localhost
+User:         root
+Pass:
+Database:     cake
+---------------------------------------------------------------
+Look okay? (y/n)
+[y] &amp;gt;
+Do you wish to add another database configuration?
+[n] &amp;gt;
+
+Creating file c:\xampp\htdocs\cake\blog\config\database.php
+Wrote `c:\xampp\htdocs\cake\blog\config\database.php`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;3-dbファイルを作成し-テーブルとテストデータを作成する:c559210a78aceddc33ab13f880a8e277&#34;&gt;3. DBファイルを作成し、テーブルとテストデータを作成する&lt;/h4&gt;
+
+&lt;p&gt;DBの作成先: &lt;strong&gt;{インストールディレクトリ}/blog/db/blog.sqlite3&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;DBファイルを開いて、下記SQLを実行する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-- テーブルを作成する
+CREATE TABLE posts (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    body TEXT,
+    created DATETIME DEFAULT NULL,
+    modified DATETIME DEFAULT NULL
+);
+
+-- テストデータを流し込む
+INSERT INTO posts (title,body,created) VALUES (&#39;The title&#39;, &#39;This is the post body.&#39;, datetime(&amp;quot;now&amp;quot;, &amp;quot;localtime&amp;quot;));
+INSERT INTO posts (title,body,created) VALUES (&#39;A title once again&#39;, &#39;And the post body follows.&#39;, datetime(&amp;quot;now&amp;quot;, &amp;quot;localtime&amp;quot;));
+INSERT INTO posts (title,body,created) VALUES (&#39;Title strikes back&#39;, &#39;This is really exciting! Not.&#39;, datetime(&amp;quot;now&amp;quot;, &amp;quot;localtime&amp;quot;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;4-database-phpを編集する:c559210a78aceddc33ab13f880a8e277&#34;&gt;4. database.phpを編集する&lt;/h4&gt;
+
+&lt;p&gt;編集するファイル: &lt;strong&gt;{インストールディレクトリ}/blog/config/database.php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+class DATABASE_CONFIG {
+
+    var $default = array(
+        &#39;driver&#39; =&amp;gt; &#39;sqlite3&#39;,
+        &#39;database&#39; =&amp;gt; &#39;C:/xampp/htdocs/cake/blog/db/blog.sqlite3&#39;,
+    );
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここまでやったら、&lt;a href=&#34;http://localhost/cake/blog&#34;&gt;http://localhost/cake/blog&lt;/a&gt; にアクセスして、「Sweet, &amp;#8220;Blog&amp;#8221; got Baked by CakePHP!」という画面が出ることを確認します。画面に赤か黄色で示されるエラーがあれば、どこか間違っているので直してください。&lt;/p&gt;
+
+&lt;p&gt;※画像やCSSが表示されない場合、.htaccessの設定が違う場合があります。下記を手がかりに解決してください。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/1533/A-Note-on-mod_rewrite&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1533/A-Note-on-mod_rewrite&#39;, &#39;mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook&#39;]);&#34; title=&#34;mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/37/Apache-and-mod_rewrite-and-htaccess&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/37/Apache-and-mod_rewrite-and-htaccess&#39;, &#39;Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#39;]);&#34; title=&#34;Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#34;&gt;Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/happy-lucky/20080208/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/happy-lucky/20080208/p1&#39;, &#39;CakePHP mod_rewriteについて &amp;#8211; happy-luckyのPHP5日記&#39;]);&#34; title=&#34;CakePHP mod_rewriteについて - happy-luckyのPHP5日記&#34;&gt;CakePHP mod_rewriteについて &amp;#8211; happy-luckyのPHP5日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.glamenv-septzen.net/view/167&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.glamenv-septzen.net/view/167&#39;, &#39;技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 &amp;#8211; Glamenv-Septzen.net&#39;]);&#34; title=&#34;技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 - Glamenv-Septzen.net&#34;&gt;技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 &amp;#8211; Glamenv-Septzen.net&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.itsmemo.com/it/web/000173.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.itsmemo.com/it/web/000173.html&#39;, &#39;動的ページを静的ページのように見せる方法 &amp;#8211; ItsMemo::IT (旧)&#39;]);&#34; title=&#34;動的ページを静的ページのように見せる方法 - ItsMemo::IT (旧)&#34;&gt;動的ページを静的ページのように見せる方法 &amp;#8211; ItsMemo::IT (旧)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;5-model-view-controllerをbakeする:c559210a78aceddc33ab13f880a8e277&#34;&gt;5. Model/View/Controllerをbakeする&lt;/h4&gt;
+
+&lt;p&gt;チュートリアルだと「/cake/console/にPATHを設定しろ」と書いていますが、面倒なのでやってません。&lt;/p&gt;
+
+&lt;p&gt;コンソールから、下記のように入力してbakeします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd c:/xampp/htdocs/cake/blog
+../cake/console/cake bake
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この後、何をするか対話式ダイアログで聞かれるので、「M」→「C」→「V」の順に作成してください。（Controllerより先にViewを作ろうとすると「まだControllerがないから作れません」と言われます）&lt;/p&gt;
+
+&lt;h3 id=&#34;6-完成:c559210a78aceddc33ab13f880a8e277&#34;&gt;6. 完成&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://localhost/cake/blog/posts&#34;&gt;http://localhost/cake/blog/posts&lt;/a&gt; にアクセスすると、画面ができあがってます。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SQLite3で現在時刻をINSERTする</title>
+      <link>http://1000k.github.io/2010/07/05/insert-current-time-in-sqlite3/</link>
+      <pubDate>Mon, 05 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/05/insert-current-time-in-sqlite3/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;datetime(&amp;#8216;now&amp;#8217;, &amp;#8216;localtime&amp;#8217;)&lt;/strong&gt;を使う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INSERT INTO posts (body, created, modified)
+VALUES (&#39;ウソ文章&#39;, datetime(&#39;now&#39;, &#39;localtime&#39;), datetime(&#39;now&#39;, &#39;localtime&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、この値はスキーマ定義時にDEFAULT値に設定することなどもできるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:f8899ebbf568af077f83512b36b60fed&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.tamandua-webtools.net/sqlite3-date.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.tamandua-webtools.net/sqlite3-date.html&#39;, &#39;SQLite3 での日付処理&#39;]);&#34; title=&#34;SQLite3 での日付処理&#34;&gt;SQLite3 での日付処理&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

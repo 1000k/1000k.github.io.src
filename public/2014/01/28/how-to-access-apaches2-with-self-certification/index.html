@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Apache2 にオレオレ証明書で HTTPS アクセスできるようにする手順 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2014/01/28/how-to-access-apaches2-with-self-certification/">Apache2 にオレオレ証明書で HTTPS アクセスできるようにする手順</a></h2>
+        <div class="post-content">
+          
+
+<p>よくやるけどすぐ忘れるのでメモ。</p>
+
+<h2 id="検証環境:1ec5ca8028cd506870889668379eecae">検証環境</h2>
+
+<ul>
+<li>CentOS 6.3</li>
+<li>Apache 2.2.26</li>
+<li>設定ファイルの格納フォルダ: <code>/usr/local/apache2/conf</code></li>
+<li>httpd.conf に <code>Include conf.d/*.conf</code> を書き、<code>/usr/local/apache2/conf.d/*.conf</code> を自動ロードできるようにしてあります。</li>
+</ul>
+
+<h2 id="チュートリアル:1ec5ca8028cd506870889668379eecae">チュートリアル</h2>
+
+<p>オレオレ証明書を作る。(有効期限は10年)</p>
+
+<pre><code>$ cd /usr/local/apache2/conf/
+$ sudo mkdir ssl.crt
+$ sudo mkdir ssl.key
+$ sudo sh -c &quot;openssl genrsa 2048 &gt; ssl.key/server.key&quot;
+$ sudo sh -c &quot;openssl req -new -key ssl.key/server.key &gt; server.csr&quot;
+(質問は全てデフォルトのまま Enter)
+$ sudo sh -c &quot;openssl x509 -days 3650 -req -signkey ssl.key/server.key &amp;lt; server.csr &gt; ssl.crt/server.crt&quot;
+</code></pre>
+
+<p>https アクセスを有効にする。</p>
+
+<pre><code>$ sudo sh -c &quot;cat &amp;lt;&amp;lt;EOT &gt; /usr/local/apache2/conf.d/ssl.conf
+NameVirtualHost *:443
+Listen 443
+
+&amp;lt;VirtualHost *:443&gt;
+    DocumentRoot /var/www
+
+    SSLEngine on
+    SSLCertificateFile conf/ssl.crt/server.crt
+    SSLCertificateKeyFile conf/ssl.key/server.key
+&amp;lt;/VirtualHost&gt;
+EOT&quot;
+</code></pre>
+
+<p>Apache を再起動する。</p>
+
+<pre><code>$ sudo service httpd restart
+</code></pre>
+
+<p>ダン！</p>
+
+<h2 id="参考:1ec5ca8028cd506870889668379eecae">参考</h2>
+
+<ul>
+<li><a href="http://smokycat.info/ubuntu/440" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://smokycat.info/ubuntu/440', 'ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info']);" >ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info</a></li>
+<li><a href="http://d.hatena.ne.jp/ozuma/20130511/1368284304" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/ozuma/20130511/1368284304', 'オレオレ証明書をopensslで作る（詳細版） &#8211; ろば電子が詰まっている']);" >オレオレ証明書をopensslで作る（詳細版） &#8211; ろば電子が詰まっている</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

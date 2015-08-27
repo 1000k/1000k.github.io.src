@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jquery Mobile on 1000g</title>
+    <link>http://1000k.github.io/tags/jquery-mobile/</link>
+    <description>Recent content in Jquery Mobile on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 20 Oct 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/jquery-mobile/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>jQMでアクセス中のページがトップページかどうか判別する</title>
+      <link>http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/</link>
+      <pubDate>Sat, 20 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/</guid>
+      <description>
+
+&lt;p&gt;現在アクセスしているURLがアプリのトップページか否かを判断するには、どうすればいいでしょうか？&lt;/p&gt;
+
+&lt;p&gt;jQuery Mobile では id 属性を使ってページを識別するため、簡単に判断できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;今アクセスしているURLが、アプリのトップページかどうか判別する関数を作る。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;トップページなら true&lt;/li&gt;
+&lt;li&gt;それ以外なら false&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;コード:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;トップページの id 属性が「top」という想定で進めます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div data-role=&amp;quot;page&amp;quot; id=&amp;quot;top&amp;quot; data-title=&amp;quot;top page&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;header&amp;quot;&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jQuery Mobile はページにアクセス時、画面を描画する前にページの構造を取得します。&lt;/p&gt;
+
+&lt;p&gt;つまり、今アクセスしているページの id 属性を取得できるので、これが top かそうでないかを判別すればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * アクセスしたページがトップページかどうか判別する
+ *
+ * @return {boolean} トップページなら true
+ */
+function isTop() {
+    return $(&amp;quot;:jqmData(role=&#39;page&#39;)&amp;quot;).attr(&amp;quot;id&amp;quot;) === &amp;quot;top&amp;quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jQuery Mobile では data-* 属性を取得する時にはカスタムセレクタの jqmData() を使うのが作法なので、このような書き方になります。（下記の参考リンク内の「$.fn.jqmData()」参照）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/api/methods.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/methods.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Methods&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Methods&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQM &#43; Google Maps でマップが表示されない時の対処法</title>
+      <link>http://1000k.github.io/2012/10/14/jqm-remedy-when-the-map-does-not-appear-in-google-maps/</link>
+      <pubDate>Sun, 14 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/jqm-remedy-when-the-map-does-not-appear-in-google-maps/</guid>
+      <description>
+
+&lt;p&gt;jQuery Mobile 1.2.0 Final での不具合です。&lt;/p&gt;
+
+&lt;p&gt;jQuery Mobile と Google Maps API の相性がいまいち良くないようで、いろいろな所で不具合が出ます。&lt;/p&gt;
+
+&lt;p&gt;今回発見したのは、フォーム画面から戻ってくるとマップが表示されない問題です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;マップが設置されたページからフォーム画面へ遷移する&lt;/li&gt;
+&lt;li&gt;フォームの値をPOSTして元のページへ戻る&lt;/li&gt;
+&lt;li&gt;マップが表示されない&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Google Maps と統合するサービスには致命的になりかねない不具合です。&lt;/p&gt;
+
+&lt;p&gt;以下に不具合の検証用コードと、かなり妥協した解決案を記します。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証用コード:463549662c038eb75ba927c71eba6045&#34;&gt;検証用コード&lt;/h2&gt;
+
+&lt;h3 id=&#34;gmap1-html:463549662c038eb75ba927c71eba6045&#34;&gt;gmap1.html&lt;/h3&gt;
+
+&lt;p&gt;マップを表示するページです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;map_canvas&amp;quot;&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+
+    &amp;lt;a href=&amp;quot;gmap2.html&amp;quot; data-role=&amp;quot;button&amp;quot; data-rel=&amp;quot;dialog&amp;quot;&amp;gt;Go to gmap2.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gmap2-html:463549662c038eb75ba927c71eba6045&#34;&gt;gmap2.html&lt;/h3&gt;
+
+&lt;p&gt;フォーム画面。今回は dialog を使いました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;dialog&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page2&amp;quot;&amp;gt;
+  &amp;amp;lt;/form&amp;gt;
+
+          &amp;lt;a href=&amp;quot;gmap1.html&amp;quot; data-role=&amp;quot;button&amp;quot; data-rel=&amp;quot;back&amp;quot;&amp;gt;back to gmap1.html&amp;lt;/a&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これらのページを設置し、「gmap1.html -&amp;gt; gmap2.html -&amp;gt; gmap1.html」という遷移をすると、2回目の gmap1.html でマップが表示されません。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決案:463549662c038eb75ba927c71eba6045&#34;&gt;解決案&lt;/h2&gt;
+
+&lt;p&gt;jQuery Mobile が内部で Ajax をガチャガチャやっているのが悪影響を及ぼしているようなので、Ajaxをオフにすれば治りました。&lt;/p&gt;
+
+&lt;p&gt;上記のコードで、「// $.mobile.ajaxEnabled = false;」となっている部分をコメントアウトすればOKです。&lt;/p&gt;
+
+&lt;h3 id=&#34;gmap1-html-1:463549662c038eb75ba927c71eba6045&#34;&gt;gmap1.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.mobile.ajaxEnabled = false;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gmap2-html-1:463549662c038eb75ba927c71eba6045&#34;&gt;gmap2.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.mobile.ajaxEnabled = false;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この対応によりマップは表示されるようになりますが、画面遷移時のエフェクトを始めとしたもろもろの機能が使えなくなります。&lt;/p&gt;
+
+&lt;p&gt;非常に心苦しい対応ですが、今のところこれぐらいしか思いつきませんでした。&lt;/p&gt;
+
+&lt;p&gt;なお、全ページにこの1行を書くのは面倒なので、外部JSファイルに以下の指定をして全ページのhead内で読み込むようにすれば楽です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(document).bind(&amp;quot;pageinit&amp;quot;, function() {
+  $.mobile.ajaxEnabled = false;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:463549662c038eb75ba927c71eba6045&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/api/globalconfig.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/globalconfig.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Configuring default settings&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Configuring default settings&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;$.mobile.ajaxEnabled のリファレンス。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial&#39;, &#39;jquery_ui_map_v_3_tutorial &amp;#8211; jquery-ui-map &amp;#8211; Google map v3 plugin for jQuery and jQuery Mobile &amp;#8211; Google Project Hosting&#39;]);&#34; &gt;jquery_ui_map_v_3_tutorial &amp;#8211; jquery-ui-map &amp;#8211; Google map v3 plugin for jQuery and jQuery Mobile &amp;#8211; Google Project Hosting&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;「Help, my map is rendered incorrectly! (jQM)」に同じ不具合の対処法が書いてありました。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQuery Mobileでリストビューを動的に挿入する方法</title>
+      <link>http://1000k.github.io/2012/10/14/how-to-dynamically-insert-the-list-view-in-the-jquery-mobile/</link>
+      <pubDate>Sun, 14 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/how-to-dynamically-insert-the-list-view-in-the-jquery-mobile/</guid>
+      <description>
+
+&lt;p&gt;jQuery Mobile 1.2 を使ってリストビューを動的に挿入する手順を紹介します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;公式マニュアル&#39;]);&#34; title=&#34;jQuery Mobile Docs - Dynamically Injecting Pages&#34;&gt;公式マニュアル&lt;/a&gt;にもやり方は書いてあるのですが、本題と関係ない部分（リンクをクリックしたらその取得先を正規表現で取得するなど）が長く読みづらいので、もっと簡単なバージョンを書きました。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;「Inject!」ボタンを押す&lt;/li&gt;
+&lt;li&gt;「data-role=&amp;#8221;content&amp;#8221;」内にリストビューを挿入する&lt;/li&gt;
+&lt;li&gt;画面遷移せずに表示する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;画面イメージはこんな感じです。↓&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/dynamic_injection1.png&#34; alt=&#34;&#34; title=&#34;before&#34; width=&#34;444&#34; height=&#34;296&#34; class=&#34;alignnone size-full wp-image-1173&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;「Inject!」をクリックすると、ヘッダとコンテンツが書き換えられます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/dynamic_injection2.png&#34; alt=&#34;&#34; title=&#34;after&#34; width=&#34;444&#34; height=&#34;248&#34; class=&#34;alignnone size-full wp-image-1174&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;サンプルコード:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;サンプルコード&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;header&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;
+      Dynamic Injection
+    &amp;lt;/h1&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;#&amp;quot; data-role=&amp;quot;button&amp;quot; id=&amp;quot;inject&amp;quot;&amp;gt;Inject!&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;処理の内容を細かく見てみましょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;クリックイベントをバインドする:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;クリックイベントをバインドする&lt;/h3&gt;
+
+&lt;p&gt;はじめに、「Inject!」ボタンをクリックした時に showList() 関数を呼び出すようにバインドします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(&amp;quot;#inject&amp;quot;).live(&amp;quot;click&amp;quot;, function() {
+  showList();
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に showList() の中身を見てみます。&lt;/p&gt;
+
+&lt;h3 id=&#34;dom要素を格納する:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;DOM要素を格納する&lt;/h3&gt;
+
+&lt;p&gt;まずはページ内の各要素のDOM要素を変数に格納しておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var $page = $(&amp;quot;#page1&amp;quot;),
+      $header = $page.children(&amp;quot;:jqmData(role=header)&amp;quot;),
+      $content = $page.children(&amp;quot;:jqmData(role=content)&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみにこの「:jqmData()」はjQuery Mobile 用のカスタムセレクタです。&lt;/p&gt;
+
+&lt;p&gt;意味は「$page.childern(&amp;#8220;[data-role=header]&amp;#8221;)」と同じなのですが、jQM独自の「data-*」という要素をセレクトしたい場合はこちらを使う方が良いそうです。&lt;/p&gt;
+
+&lt;p&gt;詳しくは下記のマニュアルを参照してください。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#39;, &#39;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&#34; &gt;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;リストビューを生成する:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;リストビューを生成する&lt;/h3&gt;
+
+&lt;p&gt;続いてリストビューのDOM要素を生成します。&lt;/p&gt;
+
+&lt;p&gt;jQueryのメソッドチェーンを使って作成すると楽です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var $listview = $(&amp;quot;
+
+&amp;lt;ul&amp;gt;
+  &amp;quot;).attr({&amp;quot;data-role&amp;quot;:&amp;quot;listview&amp;quot;, &amp;quot;data-inset&amp;quot;:&amp;quot;true&amp;quot;})
+      .append(
+        $(&amp;quot;
+
+  &amp;lt;li&amp;gt;
+    &amp;quot;).attr({&amp;quot;data-wrapperrels&amp;quot;:&amp;quot;div&amp;quot;, &amp;quot;data-iconpos&amp;quot;:&amp;quot;right&amp;quot;, &amp;quot;data-icon&amp;quot;:&amp;quot;arrow-l&amp;quot;})
+            .append($(&amp;quot;&amp;lt;a&amp;gt;&amp;quot;).attr({&amp;quot;href&amp;quot;:&amp;quot;#&amp;quot;, &amp;quot;title&amp;quot;:&amp;quot;Home&amp;quot;, &amp;quot;data-rel&amp;quot;:&amp;quot;back&amp;quot;})
+              .append($(&amp;quot;
+
+    &amp;lt;h3&amp;gt;
+      &amp;quot;).text(&amp;quot;FOO&amp;quot;))
+                .append($(&amp;quot;&amp;quot;).attr({&amp;quot;class&amp;quot;:&amp;quot;ui-li-aside ui-li-desc&amp;quot;}).text(&amp;quot;BAR&amp;quot;))
+              )
+          ).appendTo(&amp;quot;:jqmData(role=content)&amp;quot;);
+      ```
+
+
+
+      &amp;lt;p&amp;gt;
+        見慣れないと読みにくいかもしれませんが、インデントで階層構造が表現できて楽です。&amp;lt;br /&amp;gt;
+        これで実際に作成されるHTMLは以下のようになります。
+      &amp;lt;/p&amp;gt;
+
+
+      ```
+
+
+
+&amp;lt;ul data-role=&amp;quot;listview&amp;quot; data-inset=&amp;quot;true&amp;quot;&amp;gt;
+  &amp;lt;li data-icon=&amp;quot;arrow-r&amp;quot; data-iconpos=&amp;quot;right&amp;quot; data-wrapperrels=&amp;quot;div&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;
+
+
+    &amp;lt;h3&amp;gt;
+      FOO
+    &amp;lt;/h3&amp;gt;
+
+
+    &amp;lt;p class=&amp;quot;ui-li-aside ui-li-desc&amp;quot;&amp;gt;
+      BAR
+              &amp;lt;/a&amp;gt;
+          &amp;lt;/li&amp;gt;
+      &amp;lt;/ul&amp;gt;
+      ```
+
+
+
+      &amp;lt;p&amp;gt;
+        なお、この形式のリストは公式ドキュメントでは「Formatted content」と呼ばれています。説明ページは下記。
+      &amp;lt;/p&amp;gt;
+
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/lists/lists-inset.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/lists/lists-inset.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Lists with Form Controls&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Lists with Form Controls&amp;lt;/a&amp;gt;
+      &amp;lt;/p&amp;gt;
+
+
+      &amp;lt;h3&amp;gt;
+        DOM要素を変更＆挿入する
+      &amp;lt;/h3&amp;gt;
+
+
+      &amp;lt;p&amp;gt;
+        ページの要素を書き換えます。
+      &amp;lt;/p&amp;gt;
+
+
+      ```
+
+  $header.find(&amp;quot;h1&amp;quot;).html(&amp;quot;Injected&amp;quot;);
+  $content.html($listview);
+
+  $page.page();
+  $content.find(&amp;quot;:jqmData(role=listview)&amp;quot;).listview();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;p&amp;gt;
+    「$page.page()」は、遅延してページ要素を編集した後には必ず呼び出さねばならないようです。&amp;lt;br /&amp;gt;
+    その後、「$content.find(&amp;amp;#8220;:jqmData(role=listview)&amp;amp;#8221;).listview();」でリストビューをスタイリングしています。
+  &amp;lt;/p&amp;gt;
+
+
+  &amp;lt;h3&amp;gt;
+    ページを表示する
+  &amp;lt;/h3&amp;gt;
+
+
+  &amp;lt;p&amp;gt;
+    最後にページ遷移を手動で発生させます。&amp;lt;br /&amp;gt;
+    これまでに編集したDOM要素が表示されます。
+  &amp;lt;/p&amp;gt;
+
+
+  ```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$.mobile.changePage($page);
+```&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;h2&amp;gt;
+    補足
+  &amp;lt;/h2&amp;gt;
+
+
+  &amp;lt;p&amp;gt;
+    &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/pages/page-dynamic.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;公式ドキュメントのチュートリアル&#39;]);&amp;quot; title=&amp;quot;jQuery Mobile Docs - Dynamically Injecting Pages&amp;quot;&amp;gt;公式ドキュメントのチュートリアル&amp;lt;/a&amp;gt;ではここで紹介した内容にプラスして、「クリックしたボタンのhref属性を解析してデータ取得先を分ける」手順が説明されています。むしろその部分が長すぎて理解しづらくなっている気がします。
+  &amp;lt;/p&amp;gt;
+
+
+  &amp;lt;h2&amp;gt;
+    参考
+  &amp;lt;/h2&amp;gt;
+
+
+  &amp;lt;ul&amp;gt;
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/pages/page-dynamic.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Dynamically Injecting Pages&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Dynamically Injecting Pages&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          公式のチュートリアル。長い。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/api/methods.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/methods.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Methods&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Methods&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          $.mobile.changePage() のリファレンス。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#39;, &#39;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&amp;quot; &amp;gt;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          カスタムセレクタ「jqmData」の説明。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/&#39;, &#39;リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&amp;quot; &amp;gt;リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス&amp;lt;/a&amp;gt;
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views&#39;, &#39;jQuery Mobile: Organizing Information with List Views | Packt Publishing&#39;]);&amp;quot; &amp;gt;jQuery Mobile: Organizing Information with List Views | Packt Publishing&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          公式ドキュメントのリストビューの解説ではコードが書いてありませんが、このページには書いています。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://stackoverflow.com/questions/805159/building-html-dom-using-jquery&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/805159/building-html-dom-using-jquery&#39;, &#39;Building HTML (~= DOM) using jQuery &amp;amp;#8211; Stack Overflow&#39;]);&amp;quot; &amp;gt;Building HTML (~= DOM) using jQuery &amp;amp;#8211; Stack Overflow&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          jQueryのメソッドチェーンを使ってDOMを組み立てる方法。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+  &amp;lt;/ul&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQuery Mobileのページ遷移時にイベントが発火する順番</title>
+      <link>http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/</link>
+      <pubDate>Sat, 13 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/</guid>
+      <description>
+
+&lt;p&gt;ページ遷移持のイベントの発火タイミングをよくよく理解しておかなければ、jQuery Mobile を使いこなすことはできません。&lt;/p&gt;
+
+&lt;p&gt;単純なページ間の遷移で発生するイベントの順番を確認しておきます。&lt;/p&gt;
+
+&lt;p&gt;なお、イベント一覧は &lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Events&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Events&lt;/a&gt; に記されています。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証コード:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;検証コード&lt;/h2&gt;
+
+&lt;p&gt;コードはgistにも公開してあります。→&lt;a href=&#34;https://gist.github.com/3886193&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://gist.github.com/3886193&#39;, &#39;Verify the event firing timings of jQuery Mobile — Gist&#39;]);&#34; &gt;Verify the event firing timings of jQuery Mobile — Gist&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;page1-html:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;page1.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;page2.html&amp;quot; data-role=&amp;quot;button&amp;quot;&amp;gt;Go to page2.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;page2-html:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;page2.html&lt;/h3&gt;
+
+&lt;p&gt;page1 とほぼ同じなので、[data-role=&amp;#8221;page&amp;#8221;]ブロック内だけ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;e&amp;quot; id=&amp;quot;page2&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;page1.html&amp;quot; data-role=&amp;quot;button&amp;quot;&amp;gt;Back to page1.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;transition-js:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;transition.js&lt;/h3&gt;
+
+&lt;p&gt;イベント発火時にコンソールにイベント名が出るようにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Page load events
+$(document).bind(&amp;quot;pagebeforeload&amp;quot;, function(e, data) {
+  console.log(&amp;quot;pagebeforeload: &amp;quot; + data.url);
+});
+$(document).bind(&amp;quot;pageload&amp;quot;, function(e, data) {
+  console.log(&amp;quot;pageload: &amp;quot; + data.url);
+});
+$(document).bind(&amp;quot;pageloadfailed&amp;quot;, function() { console.log(&amp;quot;pageloadfailed&amp;quot;); });
+
+// Page change events
+$(document).bind(&amp;quot;pagebeforechange&amp;quot;, function() { console.log(&amp;quot;pagebeforechange&amp;quot;); });
+$(document).bind(&amp;quot;pagechange&amp;quot;, function() { console.log(&amp;quot;pagechange&amp;quot;); });
+$(document).bind(&amp;quot;pagechangefailed&amp;quot;, function() { console.log(&amp;quot;pagechangefailed&amp;quot;); });
+
+// Page transition events
+$(document).bind(&amp;quot;pagebeforeshow&amp;quot;, function() { console.log(&amp;quot;pagebeforeshow&amp;quot;); });
+$(document).bind(&amp;quot;pagebeforehide&amp;quot;, function() { console.log(&amp;quot;pagebeforehide&amp;quot;); });
+$(document).bind(&amp;quot;pageshow&amp;quot;, function() { console.log(&amp;quot;pageshow&amp;quot;); });
+$(document).bind(&amp;quot;pagehide&amp;quot;, function() { console.log(&amp;quot;pagehide&amp;quot;); });
+
+// Page initialization events
+$(document).bind(&amp;quot;pagebeforecreate&amp;quot;, function() { console.log(&amp;quot;pagebeforecreate&amp;quot;); });
+$(document).bind(&amp;quot;pagecreate&amp;quot;, function() { console.log(&amp;quot;pagecreate&amp;quot;); });
+$(document).bind(&amp;quot;pageinit&amp;quot;, function() { console.log(&amp;quot;pageinit&amp;quot;); });
+
+// Page remove events
+$(document).bind(&amp;quot;pageremove&amp;quot;, function() { console.log(&amp;quot;pageremove&amp;quot;); });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;実験:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;実験&lt;/h2&gt;
+
+&lt;p&gt;「page1.html -&amp;gt; page2.html -&amp;gt; page1.html -&amp;gt; page2.html」という遷移をした時のコンソールログは以下です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// page1.html にアクセス
+pagebeforechange
+pagebeforecreate
+pagecreate
+pageinit
+pagebeforeshow
+pageshow
+pagechange
+
+// 「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+
+// 「Back to page1.html」をクリック
+pagebeforechange
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pageremove
+pagehide
+pageshow
+pagechange
+
+// もう一度「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;考察:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;考察&lt;/h2&gt;
+
+&lt;p&gt;気付いた点をメモします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pagechange は全ての遷移の最後で発生する。&lt;/li&gt;
+&lt;li&gt;page2.html に遷移するたびに pageinit が発火している。&lt;/li&gt;
+&lt;li&gt;逆に、page1.html で pageinit が発火するのは最初のアクセス時のみ。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Scripting pages&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Scripting pages&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Events&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Events&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/Naotsugu/20120103/1325568080&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/Naotsugu/20120103/1325568080&#39;, &#39;はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &amp;#8211; etc9&#39;]);&#34; &gt;はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &amp;#8211; etc9&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

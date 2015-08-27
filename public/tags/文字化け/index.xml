@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>文字化け on 1000g</title>
+    <link>http://1000k.github.io/tags/%E6%96%87%E5%AD%97%E5%8C%96%E3%81%91/</link>
+    <description>Recent content in 文字化け on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 22 Jan 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E6%96%87%E5%AD%97%E5%8C%96%E3%81%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>NetBeansの日本語出力が文字化けするときの対処法</title>
+      <link>http://1000k.github.io/2011/01/22/fixing-gable-in-netbeans/</link>
+      <pubDate>Sat, 22 Jan 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/01/22/fixing-gable-in-netbeans/</guid>
+      <description>
+
+&lt;p&gt;NetBeansで出力ウインドウの日本語が文字化けしてしまった時の解決方法です。&lt;/p&gt;
+
+&lt;h3 id=&#34;検証環境:2cc311cc50f4986921909eddc3cc7def&#34;&gt;検証環境&lt;/h3&gt;
+
+&lt;p&gt;NetBeans IDE 7.0 Beta&lt;/p&gt;
+
+&lt;h3 id=&#34;対処法:2cc311cc50f4986921909eddc3cc7def&#34;&gt;対処法&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;netbeans.conf&lt;/strong&gt;の&lt;strong&gt;「netbeans_default_options」&lt;/strong&gt;ブロックに&lt;strong&gt;「-J-Dfile.encoding=UTF-8」&lt;/strong&gt;を追加してやればいいようです。&lt;/p&gt;
+
+&lt;p&gt;下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// C:\Program Files\NetBeans 7.0 Beta\etc\netbeans.conf
+
+# Options used by NetBeans launcher by default, can be overridden by explicit
+# command line switches:
+netbeans_default_options=&amp;quot;-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:MaxPermSize=384m -J-Dnetbeans.logger.console=true -J-ea -J-Dapple.laf.useScreenMenuBar=true -J-Dapple.awt.graphics.UseQuartz=true -J-Dsun.java2d.noddraw=true -J-Dfile.encoding=UTF-8&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;結果&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/LerningRuby-N_2059-e1295677532145.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/LerningRuby-N_2059-e1295677532145.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/LerningRuby-N_2059-e1295677532145-300x138.png&#34; alt=&#34;&#34; title=&#34;NetBeansで日本語出力&#34; width=&#34;300&#34; height=&#34;138&#34; class=&#34;alignnone size-medium wp-image-638&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;日本語フォントを指定する-2011-07-07追記:2cc311cc50f4986921909eddc3cc7def&#34;&gt;日本語フォントを指定する (2011/07/07追記)&lt;/h3&gt;
+
+&lt;p&gt;まだ文字化けする場合、出力ウインドウのフォントが日本語に対応していない可能性があります。出力ウインドウの適当な場所を&lt;strong&gt;右クリック -&amp;gt; [フォントを選択&amp;#8230;]&lt;/strong&gt;で、日本語フォントを指定してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:2cc311cc50f4986921909eddc3cc7def&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://completemirage.blog55.fc2.com/blog-entry-39.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://completemirage.blog55.fc2.com/blog-entry-39.html&#39;, &#39;Complete Mirage &amp;#8211; NetBeansでJRuby on Rails&#39;]);&#34; &gt;Complete Mirage &amp;#8211; NetBeansでJRuby on Rails&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

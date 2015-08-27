@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ruby on 1000g</title>
+    <link>http://1000k.github.io/categories/ruby/</link>
+    <description>Recent content in Ruby on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 27 Aug 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/ruby/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CentOS&#43;Rails4&#43;Ruby2.0の環境を構築するレシピ</title>
+      <link>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</link>
+      <pubDate>Tue, 27 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/1000k/rails_sandbox&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox&#39;, &#39;1000k/rails_sandbox&#39;]);&#34; &gt;1000k/rails_sandbox&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Vagrant を使って以下の環境を速攻で構築するレシピを作りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 6.4&lt;/li&gt;
+&lt;li&gt;Ruby 2.0.0&lt;/li&gt;
+&lt;li&gt;Ruby on Rails 4.0.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使い方は &lt;a href=&#34;https://github.com/1000k/rails_sandbox/blob/master/README.md&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox/blob/master/README.md&#39;, &#39;README&#39;]);&#34; &gt;README&lt;/a&gt; に書いてある通り、vagrant-berkshelf プラグインをインストールして &lt;code&gt;vagrant up&lt;/code&gt; するだけです。&lt;/p&gt;
+
+&lt;p&gt;最近ようやく第2言語として Ruby が使えるようになってきたので、ここいらで Rails を使いこなせるようになりたいです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>UnixタイムスタンプをYMD形式に変換するワンライナー</title>
+      <link>http://1000k.github.io/2013/01/11/oneliner-convert-unix-timestamp-to-ymd-format/</link>
+      <pubDate>Fri, 11 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/01/11/oneliner-convert-unix-timestamp-to-ymd-format/</guid>
+      <description>
+
+&lt;p&gt;Unixタイムスタンプを読みやすい形式に変更するワンライナーを、いくつかの言語で紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;シェル:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;シェル&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ date -d @1357872483
+2013年  1月 11日 金曜日 11:48:03 JST
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;php:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;PHP&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ php -r &#39;echo date(&amp;quot;r&amp;quot;, 1357872483);&#39;
+Fri, 11 Jan 2013 11:48:03 +090
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;date()関数の第1引数でフォーマットを変更できます。&lt;/p&gt;
+
+&lt;p&gt;詳しくは &lt;a href=&#34;http://php.net/manual/ja/function.date.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://php.net/manual/ja/function.date.php&#39;, &#39;PHP: date &amp;#8211; Manual&#39;]);&#34; title=&#34;PHP: date - Manual&#34;&gt;PHP: date &amp;#8211; Manual&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h2 id=&#34;ruby:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;Ruby&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ruby -e &#39;p Time.at(1357872483)&#39;
+Fri Jan 11 11:48:03 +0900 2013
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:9514b206b957b6cd4e0a3c8ebb046a97&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/2371248/how-to-convert-timestamps-to-dates-in-bash&#39;, &#39;How to convert timestamps to dates in bash? &amp;#8211; Stack Overflow&#39;]);&#34; title=&#34;How to convert timestamps to dates in bash? - Stack Overflow&#34;&gt;How to convert timestamps to dates in bash? &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://open-groove.net/linux/change-unix-timestamp/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://open-groove.net/linux/change-unix-timestamp/&#39;, &#39;UNIX timestampを通常時刻に変換したい時 &amp;#8211; OpenGroove&#39;]);&#34; title=&#34;UNIX timestampを通常時刻に変換したい時 - OpenGroove&#34;&gt;UNIX timestampを通常時刻に変換したい時 &amp;#8211; OpenGroove&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

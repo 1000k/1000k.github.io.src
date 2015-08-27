@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Safari 5系で、JavaScriptでformの値をsubmitできない不具合の対策 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/06/29/safari-5-x-cannot-submit-form-values-by-javascript/">Safari 5系で、JavaScriptでformの値をsubmitできない不具合の対策</a></h2>
+        <div class="post-content">
+          <p>Safari 5.x系では、JavaScriptで window.onload を使って自動でフォームの内容を送信（submit）しても、正しく値を渡せないバグがあります。</p>
+
+<p>現象と対策を整理しました。</p>
+
+<p>具体的には下記のようなコードがうまくいきません。</p>
+
+<p>page1.php -&gt; page2.php -&gt; page3.php の順に、usoFormの値をJSで自動でPOSTしています。</p>
+
+<p><em>page1.php</em></p>
+
+<pre><code></code></pre>
+
+<p><em>page2.php</em></p>
+
+<pre><code></code></pre>
+
+<p><em>page3.php</em></p>
+
+<pre><code></code></pre>
+
+<p>&lt;?php print_r($_POST); ?&gt;```</p>
+
+<p>
+  正常なブラウザなら page3.php で表示される uso の値は「801」ですが、Safari 5.xの場合「800」が表示されます。<br />
+  page2でPOSTしている値が、page1のもので上書きされてしまっているようです。
+</p>
+
+<h2>
+  原因
+</h2>
+
+<p>
+  下記のスレッドの内容は私が遭遇したケースと全く同じでした。<br />
+  どうやら原因はSafariの自動補完機能のようです。
+</p>
+
+<p>
+  <a href="http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5', 'What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow']);" title="What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow">What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow</a>
+</p>
+
+<blockquote>
+  <p>
+    Safari is filling in the form field using autofill behaviour. You probably have the &#8220;Other forms&#8221; option enabled in your preferences. Even Apple recommend you turn this feature off since it can be used for stealing private information.
+
+  </p>
+</blockquote>
+
+<h2>
+  対策
+</h2>
+
+<p>
+  上記のベストアンサーでは、<strong>formタグにautocomplete=&#8221;off&#8221;を指定してやれば直る</strong>とアドバイスされています。<br />
+  実際に試してみたところ、正しくPOSTできるようになりました。
+</p>
+
+<pre><code>
+
+
+
+</code></pre>
+
+<h2>
+  余談（文句）
+</h2>
+
+<p>
+  問題が確認できたバージョンは、5.0.1, 5.1.4, 5.1.5 でした。<br />
+  一度直ったバグが再発しているところを見ると、Safariの開発体制ではバグを正しく管理できていないようです。<br />
+  フォーム送信が失敗するなんて、ブラウザとして致命的のバグなのですが。
+</p>
+
+<h2>
+  参考
+</h2>
+
+<ul>
+  <li>
+    <a href="http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5', 'What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow']);" title="What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow">What is the work around for a weird javascript form submit bug in Safari 5? &#8211; Stack Overflow</a>
+  </li>
+
+
+  <li>
+    <a href="http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html', 'Safari 5.1.7 &#8211; Changelog &#8211; Softpedia']);" title="Safari 5.1.7 - Changelog - Softpedia">Safari 5.1.7 &#8211; Changelog &#8211; Softpedia</a>
+    <ul>
+      <li>
+        Safariの更新履歴一覧。
+      </li>
+
+    </ul>
+
+<p></li></p>
+
+<p></ul></p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

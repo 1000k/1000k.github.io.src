@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Npm on 1000g</title>
+    <link>http://1000k.github.io/tags/npm/</link>
+    <description>Recent content in Npm on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 19 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/npm/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Grunt で JS/CSS を自動ビルドする</title>
+      <link>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</guid>
+      <description>
+
+&lt;h2 id=&#34;grunt-とは:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;Grunt とは？&lt;/h2&gt;
+
+&lt;p&gt;JS/CSS のビルド自動化ツール。&lt;/p&gt;
+
+&lt;p&gt;JS のユニットテスト、ファイルの結合＆難読化＆最小化などの様々なタスクを自動で行うことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;まず、node.js と npm をインストールします。&lt;/p&gt;
+
+&lt;p&gt;やり方は以下の記事あたりを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#39;, &#39;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&#39;]);&#34; &gt;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に grunt-cli をグローバルにインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo npm install -g grunt-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、プロジェクトのトップに &lt;code&gt;package.json&lt;/code&gt; を作成します。&lt;/p&gt;
+
+&lt;p&gt;この中には、使用したい Grunt ライブラリを列挙します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;mojamoja-project&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;0.1.0&amp;quot;,
+  &amp;quot;devDependencies&amp;quot;: {
+    &amp;quot;grunt&amp;quot;: &amp;quot;~0.4.1&amp;quot;,
+    &amp;quot;grunt-contrib-sass&amp;quot;: &amp;quot;~0.3.0&amp;quot;,
+    &amp;quot;grunt-contrib-jshint&amp;quot;: &amp;quot;~0.6.3&amp;quot;,
+    &amp;quot;grunt-contrib-nodeunit&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-compass&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-concat&amp;quot;: &amp;quot;~0.1.2&amp;quot;,
+    &amp;quot;grunt-contrib-qunit&amp;quot;: &amp;quot;~0.1.1&amp;quot;,
+    &amp;quot;grunt-contrib-uglify&amp;quot;: &amp;quot;~0.2.2&amp;quot;,
+    &amp;quot;grunt-contrib-watch&amp;quot;: &amp;quot;~0.2.0&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで &lt;code&gt;npm install grunt --save-dev&lt;/code&gt; を叩くと、package.json に書かれたパッケージが一気にインストールされます。&lt;/p&gt;
+
+&lt;p&gt;以上で前準備は完了です。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;プロジェクトのルートに &lt;code&gt;Gruntfile.js&lt;/code&gt; を書いて、実行したいタスクを列挙するだけです。&lt;/p&gt;
+
+&lt;p&gt;※ grunt &amp;lt; 0.4 では &lt;code&gt;grunt.js&lt;/code&gt; というファイル名でした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports = function(grunt) {
+  grunt.initConfig({
+    pkg: grunt.file.readJSON(&#39;package.json&#39;),
+    concat: {
+      options: {
+        separator: &#39;;&#39;
+      },
+      dist: {
+        src: [
+          &#39;app/webroot/js/vendor/jquery/jquery.js&#39;,
+          &#39;app/webroot/js/vendor/jquery-mousewheel/jquery.mousewheel.js&#39;,
+          &#39;app/webroot/js/vendor/underscore/underscore.js&#39;,
+          &#39;app/webroot/js/vendor/backbone/backbone.js&#39;,
+          &#39;app/webroot/js/vendor/backbone.localStorage/backbone.localStorage.js&#39;,
+          &#39;app/webroot/js/vendor/hook/hook.js&#39;,
+          &#39;app/webroot/js/vendor/mobify-modules/carousel/src/carousel.js&#39;,
+          &#39;app/webroot/js/vendor/snap/snap.js&#39;,
+          &#39;app/webroot/js/app.js&#39;
+        ],
+        dest: &#39;app/webroot/js/merged.js&#39;
+      }
+    },
+    uglify: {
+      options: {
+        banner: &#39;/*! &amp;amp;lt;%= pkg.name %&amp;gt; &amp;amp;lt;%= grunt.template.today(&amp;quot;dd-mm-yyyy&amp;quot;) %&amp;gt; */\n&#39;
+      },
+      dist: {
+        files: {
+          &#39;app/webroot/js/merged.min.js&#39;: [&#39;&amp;amp;lt;%= concat.dist.dest %&amp;gt;&#39;]
+        }
+      }
+    },
+    jshint: {
+      files: [&#39;gruntfile.js&#39;, &#39;app/webroot/js/**/*.js&#39;],
+      options: {
+        // options here to override JSHint defaults
+        globals: {
+          jQuery: true,
+          console: true,
+          module: true,
+          document: true
+        }
+      }
+    },
+    watch: {
+      files: [&#39;&amp;amp;lt;%= jshint.files %&amp;gt;&#39;],
+      tasks: [&#39;concat&#39;, &#39;uglify&#39;]
+    }
+  });
+
+  grunt.loadNpmTasks(&#39;grunt-contrib-uglify&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-qunit&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-concat&#39;);
+
+  grunt.registerTask(&#39;test&#39;, [&#39;jshint&#39;]);
+  grunt.registerTask(&#39;default&#39;, [&#39;jshint&#39;, &#39;concat&#39;, &#39;uglify&#39;]);
+  grunt.registerTask(&#39;merge&#39;, [&#39;concat&#39;, &#39;uglify&#39;]);
+
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳しい記述方法は公式のガイドを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/configuring-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/configuring-tasks&#39;, &#39;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/creating-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/creating-tasks&#39;, &#39;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;あとは &lt;code&gt;grunt {タスク名}&lt;/code&gt; と叩くだけで、指定したタスクが動きます。&lt;/p&gt;
+
+&lt;p&gt;例えば上で定義 (&lt;code&gt;grunt.registerTask()&lt;/code&gt; )したタスクから merge を実行したければ、&lt;code&gt;grunt merge&lt;/code&gt; と叩けば OK です。。&lt;/p&gt;
+
+&lt;h2 id=&#34;変更の監視-自動タスク実行:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;変更の監視＆自動タスク実行&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;grunt watch&lt;/code&gt; を叩くことで、指定した js ファイルを監視し、変更があったら自動で指定したタスクを実行してくれます。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#39;, &#39;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&#39;]);&#34; &gt;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/getting-started&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/getting-started&#39;, &#39;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#39;, &#39;Sample Gruntfile · gruntjs/grunt Wiki&#39;]);&#34; &gt;Sample Gruntfile · gruntjs/grunt Wiki&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Gruntfile のサンプル。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/plugins/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/plugins/&#39;, &#39;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;grunt プラグインの一覧。&lt;/li&gt;
+&lt;li&gt;公式のものは &amp;#8216;Show contrib plugins first&amp;#8217; にチェックを入れれば出てくる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#39;, &#39;npm / package.json | Public Draft | Outlining and Researching for the Presentation&#39;]);&#34; &gt;npm / package.json | Public Draft | Outlining and Researching for the Presentation&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;package.json の基本。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

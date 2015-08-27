@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Modelのbake中に出る「A displayField could not be automatically detected」とは？ &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/06/what-is-a-displayfield-could-not-be-automatically-detected/">Modelのbake中に出る「A displayField could not be automatically detected」とは？</a></h2>
+        <div class="post-content">
+          
+
+<p>Modelをbakeしていると、「A displayField could not be automatically detected would you like to choose one? (y/n)」というメッセージが出ることがあります。</p>
+
+<p>displayFieldというのは、CakePHPが自動で「これは画面に表示するフィールドだろう」と認識してくれるフィールド。具体的には「name」「title」などが該当します。</p>
+
+<p>今bakeしようとしているテーブルにそうした名前のフィールドが見つからない場合、自分で指定しなければならない、ということのようです。</p>
+
+<p>自動で認識されるフィールド名と、それがどう利用されるかの関係は<a href="http://book.cakephp.org/ja/view/1014/Titles" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1014/Titles', 'Cookbook']);" title="タイトル :: データベースのテーブルを作成する :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook">Cookbook</a>に書いてありました。</p>
+
+<h3 id="参考:2197f5b0a679b1193bc02d7e1d7cc26d">参考</h3>
+
+<p><a href="http://cakephp.19694.n2.nabble.com/Cake-Console-Baking-Model-displayField-td4976131.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://cakephp.19694.n2.nabble.com/Cake-Console-Baking-Model-displayField-td4976131.html', 'Nabble &#8211; CakePHP &#8211; Cake Console Baking Model displayField?']);" title="Nabble - CakePHP - Cake Console Baking Model displayField?">Nabble &#8211; CakePHP &#8211; Cake Console Baking Model displayField?</a></p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP 単体テストで使うメソッドのコールバックの実行順序 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/">CakePHP 単体テストで使うメソッドのコールバックの実行順序</a></h2>
+        <div class="post-content">
+          
+
+<p>公式マニュアルだけではSimpleTestのコールバックの実行される順序がわからなかったので、調べた結果をメモしておきます。</p>
+
+<p>下のようなコードを実行してみました。実際のテストメソッドは「testHige()」です。</p>
+
+<pre><code>&lt;?php
+App::import('Controller', 'Usos');
+
+class TestUsosController extends UsosController {
+    var $autoRender = false;
+
+    function redirect($url, $status = null, $exit = true) {
+        $this-&gt;redirectUrl = $url;
+    }
+}
+
+class UsosControllerTestCase extends CakeTestCase {
+    var $fixtures = array('app.uso');
+
+    function startTest() {
+        echo(&quot;startTest\n&quot;);
+        $this-&gt;Usos =&amp;#038; new TestUsosController();
+        $this-&gt;Usos-&gt;constructClasses();
+    }
+
+    function endTest() {
+        echo(&quot;endTest\n&quot;);
+        unset($this-&gt;Usos);
+        ClassRegistry::flush();
+    }
+
+    function start() {
+        echo(&quot;start\n&quot;);
+    }
+
+    function end() {
+        echo(&quot;end\n&quot;);
+    }
+
+    function startCase() {
+        echo(&quot;startCase\n&quot;);
+    }
+
+    function endCase() {
+        echo(&quot;endCase\n&quot;);
+    }
+
+    function before($method) {
+        echo($method . &quot; before\n&quot;);
+    }
+
+    function after($method) {
+        echo($method . &quot; after\n&quot;);
+    }
+
+    // 実際のテストメソッド
+    function testHige() {
+        echo(&quot;testHige\n&quot;);
+    }
+}
+?&gt;
+</code></pre>
+
+<p>実行結果は以下の通りです。</p>
+
+<pre><code>start before
+start
+start after
+startCase before
+startCase
+startCase after
+testHige before
+testHige
+testHige after
+endCase before
+endCase
+endCase after
+end before
+end
+end after
+</code></pre>
+
+<p>大まかに書くと「start() → startCase() → testHige() → endCase() → end()」の順に実施され、それぞれのメソッドの前後にbefore($method) と after($method) が呼び出されるようです。</p>
+
+<h3 id="参考:7c93c2bceb58597d643b29645d174b10">参考</h3>
+
+<ul>
+<li><a href="http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods', 'CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook">CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

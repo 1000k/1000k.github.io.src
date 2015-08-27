@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP公式のブログ作成チュートリアルをSQLite3でやってみる &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/06/cakephp-official-tutorial-using-sqlite3/">CakePHP公式のブログ作成チュートリアルをSQLite3でやってみる</a></h2>
+        <div class="post-content">
+          
+
+<h3 id="このチュートリアルの目的:c559210a78aceddc33ab13f880a8e277">このチュートリアルの目的</h3>
+
+<p>一つの CakePHP コアに複数のアプリケーションを同居させる方法を学べます。DB を作って database.php を作成すれば、あとはbakeするだけで基本的な画面が出来上がります。</p>
+
+<h3 id="公式チュートリアルと今回のやり方の違い:c559210a78aceddc33ab13f880a8e277">公式チュートリアルと今回のやり方の違い</h3>
+
+<p><a href="http://book.cakephp.org/view/1527/Tutorials-Examples" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/view/1527/Tutorials-Examples', '公式チュートリアル']);" title="Tutorials & Examples :: The Manual :: 1.3 Collection :: The Cookbook">公式チュートリアル</a></p>
+
+<ul>
+<li>MySQL でなく SQLite3 で作る</li>
+<li>アプリを CakePHP 解凍時の app ディレクトリ内に作らず、「{インストールディレクトリ}/blog」内に bake したファイルを元に作る
+
+<ul>
+<li>一つの CakePHP コアから複数のアプリを併存させる環境を想定</li>
+</ul></li>
+<li>Model/View/Controller は bake して作る</li>
+</ul>
+
+<h3 id="作成環境:c559210a78aceddc33ab13f880a8e277">作成環境</h3>
+
+<ul>
+<li>CakePHP 1.3.2</li>
+
+<li><p>XAMPP Windows</p>
+
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>場所</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ドキュメントルート</td>
+<td>c:\xampp\htdocs</td>
+</tr>
+
+<tr>
+<td>CakePHPインストールディレクトリ</td>
+<td>c:\xampp\htdocs\cake</td>
+</tr>
+
+<tr>
+<td>blogアプリの場所</td>
+<td>c:\xampp\htdocs\cake\blog</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+
+<h3 id="手順:c559210a78aceddc33ab13f880a8e277">手順</h3>
+
+<h4 id="1-sqlite3を使うための-dbo-sqlite3-php-を導入する:c559210a78aceddc33ab13f880a8e277">1. SQLite3を使うための dbo_sqlite3.php を導入する</h4>
+
+<p>導入先: <strong>{インストールディレクトリ}/cake/libs/model/datasources/dbo/dbo_sqlite3.php</strong></p>
+
+<h4 id="2-コンソールからblogアプリをbakeする:c559210a78aceddc33ab13f880a8e277">2. コンソールからblogアプリをbakeする</h4>
+
+<pre><code>cd c:\xampp\htdocs\cake
+mkdir blog
+cake/console/cake bake blog
+</code></pre>
+
+<p>対話式コマンドは↓の通り（Databese Configurationは後で直接いじるので適当でよい）</p>
+
+<pre><code>Welcome to CakePHP v1.3.2 Console
+---------------------------------------------------------------
+App : sandbox
+Path: c:\xampp\htdocs\cake
+---------------------------------------------------------------
+Bake Project
+Skel Directory: C:\xampp\htdocs\cake\cake\console\templates\skel
+Will be copied to: c:\xampp\htdocs\cake\blog
+---------------------------------------------------------------
+Look okay? (y/n/q)
+[y] &gt; y
+Do you want verbose output? (y/n)
+[n] &gt;
+---------------------------------------------------------------
+Created: blog in c:\xampp\htdocs\cake\blog
+---------------------------------------------------------------
+
+Creating file c:\xampp\htdocs\cake\blog\views\pages\home.ctp
+Wrote `c:\xampp\htdocs\cake\blog\views\pages\home.ctp`
+Welcome page created
+Random hash key created for 'Security.salt'
+Random seed created for 'Security.cipherSeed'
+CAKE_CORE_INCLUDE_PATH set to C:\xampp\htdocs\cake in webroot/index.php
+CAKE_CORE_INCLUDE_PATH set to C:\xampp\htdocs\cake in webroot/test.php
+Remember to check these value after moving to production server
+Your database configuration was not found. Take a moment to create one.
+---------------------------------------------------------------
+Database Configuration:
+---------------------------------------------------------------
+Name:
+[default] &gt;
+Driver: (db2/firebird/mssql/mysql/mysqli/odbc/oracle/postgres/sqlite/sybase)
+[mysql] &gt; sqlite3
+Driver: (db2/firebird/mssql/mysql/mysqli/odbc/oracle/postgres/sqlite/sybase)
+[mysql] &gt; sqlite
+Persistent Connection? (y/n)
+[n] &gt;
+Database Host:
+[localhost] &gt;
+Port?
+[n] &gt;
+User:
+[root] &gt;
+Password:
+&gt;
+The password you supplied was empty. Use an empty password? (y/n)
+[n] &gt; y
+Database Name:
+[cake] &gt;
+Table Prefix?
+[n] &gt;
+Table encoding?
+[n] &gt;
+
+---------------------------------------------------------------
+The following database configuration will be created:
+---------------------------------------------------------------
+Name:         default
+Driver:       sqlite
+Persistent:   false
+Host:         localhost
+User:         root
+Pass:
+Database:     cake
+---------------------------------------------------------------
+Look okay? (y/n)
+[y] &gt;
+Do you wish to add another database configuration?
+[n] &gt;
+
+Creating file c:\xampp\htdocs\cake\blog\config\database.php
+Wrote `c:\xampp\htdocs\cake\blog\config\database.php`
+</code></pre>
+
+<h4 id="3-dbファイルを作成し-テーブルとテストデータを作成する:c559210a78aceddc33ab13f880a8e277">3. DBファイルを作成し、テーブルとテストデータを作成する</h4>
+
+<p>DBの作成先: <strong>{インストールディレクトリ}/blog/db/blog.sqlite3</strong></p>
+
+<p>DBファイルを開いて、下記SQLを実行する。</p>
+
+<pre><code>-- テーブルを作成する
+CREATE TABLE posts (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    body TEXT,
+    created DATETIME DEFAULT NULL,
+    modified DATETIME DEFAULT NULL
+);
+
+-- テストデータを流し込む
+INSERT INTO posts (title,body,created) VALUES ('The title', 'This is the post body.', datetime(&quot;now&quot;, &quot;localtime&quot;));
+INSERT INTO posts (title,body,created) VALUES ('A title once again', 'And the post body follows.', datetime(&quot;now&quot;, &quot;localtime&quot;));
+INSERT INTO posts (title,body,created) VALUES ('Title strikes back', 'This is really exciting! Not.', datetime(&quot;now&quot;, &quot;localtime&quot;));
+</code></pre>
+
+<h4 id="4-database-phpを編集する:c559210a78aceddc33ab13f880a8e277">4. database.phpを編集する</h4>
+
+<p>編集するファイル: <strong>{インストールディレクトリ}/blog/config/database.php</strong></p>
+
+<pre><code>&lt;?php
+class DATABASE_CONFIG {
+
+    var $default = array(
+        'driver' =&gt; 'sqlite3',
+        'database' =&gt; 'C:/xampp/htdocs/cake/blog/db/blog.sqlite3',
+    );
+}
+?&gt;
+</code></pre>
+
+<p>ここまでやったら、<a href="http://localhost/cake/blog">http://localhost/cake/blog</a> にアクセスして、「Sweet, &#8220;Blog&#8221; got Baked by CakePHP!」という画面が出ることを確認します。画面に赤か黄色で示されるエラーがあれば、どこか間違っているので直してください。</p>
+
+<p>※画像やCSSが表示されない場合、.htaccessの設定が違う場合があります。下記を手がかりに解決してください。</p>
+
+<ul>
+<li><a href="http://book.cakephp.org/ja/view/1533/A-Note-on-mod_rewrite" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1533/A-Note-on-mod_rewrite', 'mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook">mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook</a></li>
+<li><a href="http://book.cakephp.org/ja/view/37/Apache-and-mod_rewrite-and-htaccess" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/37/Apache-and-mod_rewrite-and-htaccess', 'Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook']);" title="Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook">Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook</a></li>
+<li><a href="http://d.hatena.ne.jp/happy-lucky/20080208/p1" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/happy-lucky/20080208/p1', 'CakePHP mod_rewriteについて &#8211; happy-luckyのPHP5日記']);" title="CakePHP mod_rewriteについて - happy-luckyのPHP5日記">CakePHP mod_rewriteについて &#8211; happy-luckyのPHP5日記</a></li>
+<li><a href="http://www.glamenv-septzen.net/view/167" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.glamenv-septzen.net/view/167', '技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 &#8211; Glamenv-Septzen.net']);" title="技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 - Glamenv-Septzen.net">技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 &#8211; Glamenv-Septzen.net</a></li>
+<li><a href="http://www.itsmemo.com/it/web/000173.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.itsmemo.com/it/web/000173.html', '動的ページを静的ページのように見せる方法 &#8211; ItsMemo::IT (旧)']);" title="動的ページを静的ページのように見せる方法 - ItsMemo::IT (旧)">動的ページを静的ページのように見せる方法 &#8211; ItsMemo::IT (旧)</a></li>
+</ul>
+
+<h4 id="5-model-view-controllerをbakeする:c559210a78aceddc33ab13f880a8e277">5. Model/View/Controllerをbakeする</h4>
+
+<p>チュートリアルだと「/cake/console/にPATHを設定しろ」と書いていますが、面倒なのでやってません。</p>
+
+<p>コンソールから、下記のように入力してbakeします。</p>
+
+<pre><code>cd c:/xampp/htdocs/cake/blog
+../cake/console/cake bake
+</code></pre>
+
+<p>この後、何をするか対話式ダイアログで聞かれるので、「M」→「C」→「V」の順に作成してください。（Controllerより先にViewを作ろうとすると「まだControllerがないから作れません」と言われます）</p>
+
+<h3 id="6-完成:c559210a78aceddc33ab13f880a8e277">6. 完成</h3>
+
+<p><a href="http://localhost/cake/blog/posts">http://localhost/cake/blog/posts</a> にアクセスすると、画面ができあがってます。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

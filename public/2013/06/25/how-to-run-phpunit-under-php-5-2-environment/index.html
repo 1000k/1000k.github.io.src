@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> 今さら PHP 5.2 環境で PHPUnit を動かせるようにする手順 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/06/25/how-to-run-phpunit-under-php-5-2-environment/">今さら PHP 5.2 環境で PHPUnit を動かせるようにする手順</a></h2>
+        <div class="post-content">
+          
+
+<p>業務で使っているアプリが PHP 5.2 でしか動かず、仕方なく PHP 5.2 でも動く PHPUnit 3.6.11 を使っています。(<a href="http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/', 'PHPUnit >= 3.6.12 は PHP 5.3 が必要。&rsquo;]);&rdquo; title=&ldquo;PHPUnitをアップグレードしたら動作しなくなった | 1000g&rdquo;&gt;PHPUnit &gt;= 3.6.12 は PHP 5.3 が必要。</a>)</p>
+
+<p>最近になってサーバーのリプレースの時期になり、新しいビルドマシンに PHPUnit をインストールする羽目になったのですが、うまくバージョンが揃わず苦労しました。</p>
+
+<p>作業メモを残しておきます。</p>
+
+<p>なお、コマンドは全て super user で叩いています。</p>
+
+<h2 id="環境:a58652de0ea1df651ea37649dd28159c">環境</h2>
+
+<p>CentOS 6.3 63bit</p>
+
+<h2 id="php-5-2-をインストールする:a58652de0ea1df651ea37649dd28159c">PHP 5.2 をインストールする</h2>
+
+<p>そもそも5.2系はとっくに Deprecated なので使うべきではないのですが、業務で使うから仕方ない。</p>
+
+<p><a href="http://www.php.net/releases/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.php.net/releases/', 'PHP: Releases']);" >PHP: Releases</a> から 5.2.17 をダウンロードして、ソースからインストールします。</p>
+
+<pre><code># wget http://museum.php.net/php5/php-5.2.17.tar.gz
+# tar -zxf php-5.2.17.tar.gz
+# cd php-5.2.17
+# ./configure #{好きな configure オプション}
+# make
+# make install
+</code></pre>
+
+<p>configure オプションは <a href="http://www.php.net/manual/ja/configure.about.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.php.net/manual/ja/configure.about.php', 'PHP: 中心となる configure オプションのリスト &#8211; Manual']);" >PHP: 中心となる configure オプションのリスト &#8211; Manual</a> を参考に。</p>
+
+<h2 id="pear-をアップグレードする:a58652de0ea1df651ea37649dd28159c">PEAR をアップグレードする</h2>
+
+<p>PHP 5.2.17 にデフォルトで入っている PEAR 1.9.1 では、各種パッケージをインストールする時に下のようなエラーが出ます。</p>
+
+<pre><code>warning: phpunit/PHPUnit requires PEAR Installer (version &gt;= 1.9.4), installed version iphpunit/PHPUnit can optionally use package &quot;phpunit/PHP_Invoker&quot; (version &gt;= 1.1.0)
+warning: phpunit/File_Iterator requires PHP (version &gt;= 5.3.3), installed version is 5.2warning: phpunit/File_Iterator requires PEAR Installer (version &gt;= 1.9.4), installed ver1.9.1
+warning: phpunit/Text_Template requires PHP (version &gt;= 5.3.3), installed version is 5.2warning: phpunit/Text_Template requires PEAR Installer (version &gt;= 1.9.4), installed ver1.9.1
+warning: phpunit/PHP_CodeCoverage requires PHP (version &gt;= 5.3.3), installed version is
+warning: phpunit/PHP_CodeCoverage requires PEAR Installer (version &gt;= 1.9.4), installed
+is 1.9.1
+...
+</code></pre>
+
+<p>まずは PEAR を 1.9.4 以上にアップデートしましょう。</p>
+
+<p>以下のコマンドです。</p>
+
+<pre><code># pear upgrade PEAR
+</code></pre>
+
+<h2 id="phpunit-をインストールする:a58652de0ea1df651ea37649dd28159c">PHPUnit をインストールする</h2>
+
+<p>これで PHPUnit をインストールする準備が整いました。</p>
+
+<p>下のコマンドを叩いてください。</p>
+
+<pre><code># pear config-set auto_discover 1
+# pear channel-add pear.phpunit.de
+# pear install php.phpunit.de/PHPUnit-3.6.11
+</code></pre>
+
+<p>以上で PHPUnit が動作可能になりました。</p>
+
+<pre><code># phpunit -v
+PHPUnit 3.6.11 by Sebastian Bergmann.
+</code></pre>
+
+<h2 id="ついでに関連ツールも入れる:a58652de0ea1df651ea37649dd28159c">ついでに関連ツールも入れる</h2>
+
+<p><a href="http://jenkins-php.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jenkins-php.org/', 'Template for Jenkins Jobs for PHP Projects']);" >Template for Jenkins Jobs for PHP Projects</a> で紹介されているツールは下記のコマンドでインストールできます。</p>
+
+<pre><code># pear channel-add pear.pdepend.org
+# pear channel-add pear.phpmd.org
+# pear channel-add components.ez.no
+# pear channel-add pear.symfony-project.com
+
+# pear install pdepend/PHP_Depend
+# pear install phpmd/PHP_PMD
+# pear install phpunit/phpcpd
+# pear install phpunit/phploc
+# pear install PHPDocumentor
+# pear install PHP_CodeSniffer
+</code></pre>
+
+<h2 id="愚痴:a58652de0ea1df651ea37649dd28159c">愚痴</h2>
+
+<ul>
+<li><a href="https://github.com/composer/composer" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/composer/composer', 'Composer']);" >Composer</a> を使えれば圧倒的に楽なのですが、PHP &gt;= 5.3.2 でしか動かないので諦めました。</li>
+<li>PEAR 遅い。</li>
+<li>自動テストがあれば PHP をバージョンアップできるか検証できるのですが、ほとんどテストケースが無いのでそれも無理。コード総数は10万行。死にたい。</li>
+</ul>
+
+<p>ちゃんと自動テストは作ろうね！</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Logrotate on 1000g</title>
+    <link>http://1000k.github.io/tags/logrotate/</link>
+    <description>Recent content in Logrotate on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 20 May 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/logrotate/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[Linux] logrotateの使い方</title>
+      <link>http://1000k.github.io/2010/05/20/usage-of-logrotate/</link>
+      <pubDate>Thu, 20 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/20/usage-of-logrotate/</guid>
+      <description>
+
+&lt;h1 id=&#34;設定チュートリアル:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;設定チュートリアル&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&amp;#8220;/etc/logrotate.d/&amp;#8221; 配下に設定ファイルを作成する&lt;/li&gt;
+&lt;li&gt;「logrotate -d 作成したファイル名」でデバッグする&lt;/li&gt;
+&lt;li&gt;翌日午前4時にローテーションが成功していることを確認する
+
+&lt;ul&gt;
+&lt;li&gt;実行ログ: /var/lib/logrotate.status&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;設定ファイルの書き方:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;設定ファイルの書き方&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;# コメントアウトは「#」で
+対象ファイル [,対象ファイル, ...] {
+        オプション1
+        オプション2
+        ...
+        オプションN
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;設定例:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;設定例&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;対象ファイル:
+
+&lt;ul&gt;
+&lt;li&gt;/hige/log/ ディレクトリ内の *.log ファイルすべて&lt;/li&gt;
+&lt;li&gt;/moja/log/ ディレクトリ内の *.log ファイルすべて&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;オプション
+
+&lt;ul&gt;
+&lt;li&gt;毎日実行&lt;/li&gt;
+&lt;li&gt;対象ファイルが見つからなくてもエラーで停止しない&lt;/li&gt;
+&lt;li&gt;ログファイルが空ならログローテーションしない&lt;/li&gt;
+&lt;li&gt;7世代前まで管理&lt;/li&gt;
+&lt;li&gt;1MB以上のログファイルだけログローテーションする&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;/hige/log/*.log /moja/log/*.log {
+        daily
+        missingok
+        notifempty
+        rotate 7
+        size 1M
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;logrotateの実行方法:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;logrotateの実行方法&lt;/h1&gt;
+
+&lt;p&gt;基本的には毎朝4:00に自動実行されるが、デバッグと即時ログローテートを行うこともできる。&lt;/p&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/749rotatetest.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/749rotatetest.html&#39;, &#39;＠IT：logrotateのテストを行うには&#39;]);&#34; title=&#34;＠IT：logrotateのテストを行うには&#34;&gt;＠IT：logrotateのテストを行うには&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デバッグ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;logrotate -d /etc/logrotate.d/対象ファイル
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;即時ログローテート&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;logrotate -f 対象ファイル
+ logrotate -f /etc/logrotate.conf   # 登録されているローテーションすべて実行
+ logrotate -f /etc/logrotate.d/test # testだけ実行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;関連ファイルの場所:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;関連ファイルの場所&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;設定ファイル
+
+&lt;ul&gt;
+&lt;li&gt;/etc/logrotate.d/対象ファイル&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;実行ログ
+
+&lt;ul&gt;
+&lt;li&gt;/var/lib/logrotate.status&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;オプション一覧:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;オプション一覧&lt;/h1&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.asahi-net.or.jp/~aa4t-nngk/logrotate.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.asahi-net.or.jp/~aa4t-nngk/logrotate.html&#39;, &#39;Stray Penguin &amp;#8211; Linux Memo (logrotate)&#39;]);&#34; title=&#34;Stray Penguin - Linux Memo (logrotate)&#34;&gt;Stray Penguin &amp;#8211; Linux Memo (logrotate)&lt;/a&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;設定値&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;create [mode] [owner] [group]&lt;/td&gt;
+&lt;td&gt;ローテーションを (下記の postrotate も) 行った後、代わりに空の新規ログファイルを作って置いてくる。その属性も指定できる。mode は 0755 のようなオクテット書式。指定しない属性については元のファイルの属性が引き継がれる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nocreate&lt;/td&gt;
+&lt;td&gt;上記をグローバルな設定にした場合に、個別規定内で create を無効にしたい際に使用&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;copy/nocopy&lt;/td&gt;
+&lt;td&gt;元のログファイルはそのままにして、そのコピーを保存する。ログファイルをリロードする術のないプログラムへの対処法のひとつ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;copytruncate/nocopytruncate&lt;/td&gt;
+&lt;td&gt;copy の動作を行った後、元のログファイルの内容 を消去する。見かけ的には create と同じ結果となる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;rotate &lt;em&gt;num&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;世代ローテーションのステップ数。例えば元のログファイルが a.log だとして、 num を 2 にしておくと a.log =&amp;gt; a.log.1 =&amp;gt; a.log.2 =&amp;gt; 廃棄 となる。0 だと a.log =&amp;gt; 廃棄&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;start &lt;em&gt;num&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;初代ローテーションファイルの末尾に付加するナンバー。デフォルトは 1。 nuｍ を例えば 5 にすると、a.log =&amp;gt; a.log.5 =&amp;gt; a.log.6 =&amp;gt; &amp;#8230; と推移&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;extension &lt;em&gt;ext&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ローテーションした旧ログファイルに拡張子 ext を付ける。ドットも必要。例えば some.log を &amp;#8220;extension .bak&amp;#8221; の設定でローテーションすると、初代ローテーションログは some.log.1.bak となる。圧縮も行う場合、圧縮による拡張子はさらにその後ろに付く&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compress/nocompress&lt;/td&gt;
+&lt;td&gt;ローテーションした後の旧ファイルに圧縮を掛ける。デフォルトは nocompress&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compresscmd &lt;em&gt;cmd&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ログファイルの圧縮に使用するプログラムを指定。デフォルトは gzip&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;uncompresscmd &lt;em&gt;cmd&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ログファイルの解凍に使用するプログラムを指定。デフォルトは gunzip&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compressoptions &lt;em&gt;opt&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;圧縮プログラムへ渡すオプション。デフォルトは gzip に渡す &amp;#8220;-9&amp;#8221; (圧縮率最大)。現在のところ &amp;#8220;-9 -s&amp;#8221; のようにスペース入りで複数のオプションを指定することは不可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compressext &lt;em&gt;ext&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;圧縮後のファイルに付ける拡張子 (ドットも必要)。デフォルトでは、使用する圧縮コマンドに応じたものが付くとされているが、bzip2 を使っても gz になってしまうなど、あまり当てにならない&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;delaycompress/nodelaycompress&lt;/td&gt;
+&lt;td&gt;圧縮処理を、その次のローテーションの時まで遅らせる。compress も指定しないと無意味&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;olddir &lt;em&gt;dir&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ローテーションした旧ログを dir に移動する。移動先は元と同じデバイス上でなければならない。元のログに対する相対指定も有効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;noolddir&lt;/td&gt;
+&lt;td&gt;上記の否定&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mail address&lt;/td&gt;
+&lt;td&gt;旧ログファイルを address に送信する。どの段階のものを送るかは maillast などのオプションで決まる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nomail&lt;/td&gt;
+&lt;td&gt;上記の否定&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;maillast&lt;/td&gt;
+&lt;td&gt;mail に関するオプション。最終世代を経て破棄されるログをメールする (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mailfirst&lt;/td&gt;
+&lt;td&gt;mail に関するオプション。初代ローテーションログをメールする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;daily/weekly/monthly&lt;/td&gt;
+&lt;td&gt;ログローテーションを日毎/週毎/月毎に行う。デフォルトは daily。例えば weekly なら、毎日実行を掛けたとしても、その週で最初に必要条件を満たした際にだけローテーションが行われる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;size &lt;em&gt;num[K/M]&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ログのサイズが num バイトを超えていればローテーションを行う。この条件は daily, weekly などの条件より優先される。キロ/メガバイトでの指定も可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ifempty&lt;/td&gt;
+&lt;td&gt;元のログファイルが空でもローテーションを行う (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;notifempty&lt;/td&gt;
+&lt;td&gt;元のログファイルが空ならばローテーションしない&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;missingok&lt;/td&gt;
+&lt;td&gt;指定のログファイルが実在しなかったとしてもエラーを出さずに処理続行&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nomissingok&lt;/td&gt;
+&lt;td&gt;指定のログファイルが実在しなければエラーを出力 (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;firstaction &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションの条件に合致するログファイルがひとつでもあった場合に、ローテーションを行う前 (prerotate のアクションよりも前) に一度だけ実行するスクリプト。個別定義内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;prerotate &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションの条件に合致するログファイルがひとつでもあった場合に、ローテーションの前に (firstaction よりは後) に実行するスクリプト。個別定義内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;postrotate &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションが行われた後 (lastaction よりは前) に実行するスクリプト。個別指定内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;lastaction &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションが行われた後 (postrotate よりも後) に一度だけ実行するスクリプト。個別指定内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nosharedscripts&lt;/td&gt;
+&lt;td&gt;ローテーションの条件に合致するログが複数あった場合に、prerotate, postrotate のスクリプトを各ログファイル毎に実行する (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;sharedscripts&lt;/td&gt;
+&lt;td&gt;ローテーションの条件に合致するログが複数あった場合に、prerotate, postrotate のスクリプトを一度だけ実行する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;include file_or_dir&lt;/td&gt;
+&lt;td&gt;設定ファイル内でこの記述のある位置に別の設定ファイルを読み込む。ディレクトリを指定した場合、その dir 内から、ディレクトリおよび名前付きパイプ以外のレギュラーファイルがアルファベット順に読み込まれる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;tabooext &lt;em&gt;[+] ext[,ext,&amp;#8230;]&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;include でディレクトリを指定した場合に読み込みから除外するファイルの拡張子を指定。デフォルトで .rpmorig, .rpmsave, .rpmnew, .v, .swp, ~ が設定されている。+ を挟むと追加指定、挟まないと根こそぎ置き換えとなる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&#34;copytruncate方式の欠点:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;copytruncate方式の欠点&lt;/h1&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://kamoland.com/wiki/wiki.cgi?logrotate%A4%CE%C0%DF%C4%EA&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kamoland.com/wiki/wiki.cgi?logrotate%A4%CE%C0%DF%C4%EA&#39;, &#39;logrotateの設定 &amp;#8211; KamoLand&#39;]);&#34; title=&#34;logrotateの設定 - KamoLand&#34;&gt;logrotateの設定 &amp;#8211; KamoLand&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;今回の方式ではcopytruncateを使っているため，ローテーション時には&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;元ファイルのコピーを作り&lt;/li&gt;
+&lt;li&gt;元ファイルの内容をクリアする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;という動作によってローテーションを実現している．&lt;/p&gt;
+
+&lt;p&gt;なので，ログを出力しているプロセス(Apache)から見れば永遠に同じファイルに出力し続ければよいため，Apacheにファイルの切り替えを認識させるために再起動をかける必要もない．&lt;/p&gt;
+
+&lt;p&gt;しかし見てわかるように，1.と2.の間のわずかな時間に発生したログは，&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;コピーのファイルには含まれず&lt;/li&gt;
+&lt;li&gt;しかもクリアされる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ということになってしまい，結果として消滅してしまう．これがcopytruncate方式の欠点．&lt;/p&gt;
+
+&lt;p&gt;もしこのようなロストが許されない場合はcopytruncate方式は使えないので，&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;copytruncateを使わずに，かつpostrotateでApacheの再起動を行う&lt;/li&gt;
+&lt;li&gt;Apacheでログをパイプに出力するように設定して，パイプの内容をrotatelogs，cronologなどでファイルに仕分けする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;などの方法を採る必要があります．&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

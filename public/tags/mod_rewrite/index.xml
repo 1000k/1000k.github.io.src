@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mod_rewrite on 1000g</title>
+    <link>http://1000k.github.io/tags/mod_rewrite/</link>
+    <description>Recent content in Mod_rewrite on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 23 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/mod_rewrite/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>mod_rewriteでクエリ付きのURIをリダイレクトする</title>
+      <link>http://1000k.github.io/2010/07/23/redirect-keeping-query-strings-with-mod-rewrite/</link>
+      <pubDate>Fri, 23 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/23/redirect-keeping-query-strings-with-mod-rewrite/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://hige.jp/moja.php?category=1&#34;&gt;http://hige.jp/moja.php?category=1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;→&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://hige.jp/moja.php?category=999&#34;&gt;http://hige.jp/moja.php?category=999&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;というリダイレクトをApacheで実現するにはどうすればいいでしょうか？リダイレクトの方法はいろいろありますが、今回RedirectやAliasディレクティブは使えません。これらはクエリ文字列（?category=999の部分）を把握できないようです。&lt;/p&gt;
+
+&lt;p&gt;そんな時は、mod_rewriteの RewriteCond ${QUERY_STRING} を使うと良いです。具体的には以下の用にします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;IfModule mod_rewrite.c&amp;gt;
+    RewriteEngine on
+    RewriteCond %{QUERY_STRING} category=1
+    RewriteRule ^/moja.php /moja.php?category=999 [R=301,L]
+&amp;amp;lt;/IfModule&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでApacheを再起動すれば、リダイレクトが成功するようになっています。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:44dfa8f56fa655b8b85093045fdbf75d&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://muumoo.jp/news/2006/04/06/0redirect.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://muumoo.jp/news/2006/04/06/0redirect.html&#39;, &#39;URIのリダイレクト設定をやってみた(管理人日記) &amp;#8211; むぅもぉ.jp&#39;]);&#34; title=&#34;URIのリダイレクト設定をやってみた(管理人日記) - むぅもぉ.jp&#34;&gt;URIのリダイレクト設定をやってみた(管理人日記) &amp;#8211; むぅもぉ.jp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cubic9.com/Linux/Apache/%A5%E2%A5%B8%A5%E5%A1%BC%A5%EB/mod_rewrite/%B0%DC%C5%BE%A5%EA%A5%C0%A5%A4%A5%EC%A5%AF%A5%C8/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://cubic9.com/Linux/Apache/%A5%E2%A5%B8%A5%E5%A1%BC%A5%EB/mod_rewrite/%B0%DC%C5%BE%A5%EA%A5%C0%A5%A4%A5%EC%A5%AF%A5%C8/&#39;, &#39;Linux/Apache/モジュール/mod_rewrite/移転リダイレクト &amp;#8211; cubic9.com&#39;]);&#34; title=&#34;Linux/Apache/モジュール/mod_rewrite/移転リダイレクト - cubic9.com&#34;&gt;Linux/Apache/モジュール/mod_rewrite/移転リダイレクト &amp;#8211; cubic9.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jquery on 1000g</title>
+    <link>http://1000k.github.io/tags/jquery/</link>
+    <description>Recent content in Jquery on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 18 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/jquery/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>残り時間をプログレスバーで表示するチュートリアル</title>
+      <link>http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/</link>
+      <pubDate>Wed, 18 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://e.ggtimer.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://e.ggtimer.com/&#39;, &#39;E.gg Timer&#39;]);&#34; &gt;E.gg Timer&lt;/a&gt; のようなタイマーアプリを作りたかったので、プログレスバーの作り方を調べました。タイマーそのものより、progress タグのスタイルシートをクロスブラウザ対応させるのに苦労しました。&lt;/p&gt;
+
+&lt;p&gt;今回作ったのは下の画像のような簡単なタイマーです。経過時間に合わせてプログレスバーが赤くなります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/timer.png&#34; alt=&#34;timer&#34; width=&#34;585&#34; height=&#34;81&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/tcxx9/3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/tcxx9/3/&#39;, &#39;デモはこちら。&#39;]);&#34; &gt;デモはこちら。&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;なお、IE11, Firefox26, Chrome31 で動作を確認しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;実装コード:2853c5683734ff1185ea9e66d817967b&#34;&gt;実装コード&lt;/h2&gt;
+
+&lt;h3 id=&#34;html:2853c5683734ff1185ea9e66d817967b&#34;&gt;HTML&lt;/h3&gt;
+
+&lt;p&gt;プログレスバー、時間入力欄、開始/停止ボタンがあるだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&amp;quot;progressWrapper&amp;quot;&amp;gt;
+  &amp;amp;lt;progress id=&amp;quot;bar&amp;quot; value=&amp;quot;0&amp;quot; max=&amp;quot;1000&amp;quot; min=&amp;quot;0&amp;quot;&amp;gt;&amp;amp;lt;/progress&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+
+&amp;lt;fieldset&amp;gt;
+  Time (msec): &amp;lt;input type=&amp;quot;text&amp;quot; value=&amp;quot;5000&amp;quot; id=&amp;quot;time&amp;quot; /&amp;gt;
+
+    &amp;lt;button id =&amp;quot;start&amp;quot;&amp;gt;start&amp;lt;/button&amp;gt;
+    &amp;lt;button id =&amp;quot;stop&amp;quot;&amp;gt;stop&amp;lt;/button&amp;gt;
+
+&amp;lt;/fieldset&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;javascript:2853c5683734ff1185ea9e66d817967b&#34;&gt;JavaScript&lt;/h3&gt;
+
+&lt;p&gt;jQuery 1.10.2 で試しました。経過時間に合わせて progress タグの value 要素を増やしていくだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var timer,
+  limitMs = 0,
+  restMs = 0,
+  resolutionMs = 50,    /* NOTE: Too small value does not work on IE11. */
+  maxBar;
+
+var countdown = function() {
+  restMs -= resolutionMs;
+
+  var restRate = (limitMs - restMs) / limitMs;
+  var restBarLength = maxBar * restRate
+
+  $(&#39;#bar&#39;).attr(&#39;value&#39;, restBarLength);
+
+  if (restMs &amp;amp;lt; 0) {
+    resetTimer();
+    alert(&#39;time expired&#39;);
+  }
+};
+
+var resetTimer = function() {
+  clearInterval(timer);
+  limitMs = restMs = $(&#39;#time&#39;).val();
+  $(&#39;#bar&#39;).attr(&#39;value&#39;, 0);
+};
+
+$(function() {
+  maxBar = $(&#39;#bar&#39;).attr(&#39;max&#39;);
+
+  $(&#39;#start&#39;).on(&#39;click&#39;, function() {
+    resetTimer();
+    timer = setInterval(&#39;countdown()&#39;, resolutionMs);
+  });
+
+  $(&#39;#stop&#39;).on(&#39;click&#39;, function() {
+    resetTimer();
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ひとつだけ IE11 でバグがありました。&lt;code&gt;resolutionMs&lt;/code&gt; (タイマーを更新する間隔) を10ミリ秒以下にすると、赤いバーが全く表示されなくなりました。50ミリ秒ならなんとか描画されました。&lt;/p&gt;
+
+&lt;p&gt;どうも IE11 ではバーの表示を勝手に加速度を付けて滑らかにする機能が付いているのですが、これが悪さをしているようです。デバッグしてみると value 属性は間違いなく増加しているのですが、画面には反映されませんでした。IE ユーザーはご注意ください。&lt;/p&gt;
+
+&lt;h3 id=&#34;css:2853c5683734ff1185ea9e66d817967b&#34;&gt;CSS&lt;/h3&gt;
+
+&lt;p&gt;progress 要素はブラウザ毎に属性の解釈が結構異なります。Opera は面倒なので試してません。すいません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.progressWrapper {
+  width: 100%;
+}
+
+progress {
+  /* Turn off default styling. */
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+
+  height: 10px;
+  width: 100%;
+  color: red;       /* IE */
+  background: navy; /* Firefox */
+}
+
+/* Chrome needs &#39;-webkit-progress-value&#39; and &#39;-webkit-progress-bar&#39; attributes. */
+progress::-webkit-progress-value {
+  background: red;
+}
+
+progress::-webkit-progress-bar {
+  background: navy;
+}
+
+/* Firefox needs only &#39;-moz-progress-bar&#39; attiribute. */
+progress::-moz-progress-bar {
+  background: red;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:2853c5683734ff1185ea9e66d817967b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.hongkiat.com/blog/html5-progress-bar/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.hongkiat.com/blog/html5-progress-bar/&#39;, &#39;Creating &amp; Styling Progress Bar With HTML5&#39;]);&#34; &gt;Creating &amp;amp; Styling Progress Bar With HTML5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.pori2.net/js/timer/6.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.pori2.net/js/timer/6.html&#39;, &#39;カウントダウンタイマー－JavaScript入門&#39;]);&#34; &gt;カウントダウンタイマー－JavaScript入門&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/&#39;, &#39;Cross Browser HTML5 Progress Bars In Depth&#39;]);&#34; &gt;Cross Browser HTML5 Progress Bars In Depth&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;カウントダウンに合わせて動くサルのアニメや、スピードメーターの書き方など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://css-tricks.com/html5-progress-element/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://css-tricks.com/html5-progress-element/&#39;, &#39;The HTML5 progress Element | CSS-Tricks&#39;]);&#34; &gt;The HTML5 progress Element | CSS-Tricks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar&#39;, &#39;::-moz-progress-bar - CSS | MDN&#39;]);&#34; &gt;::-moz-progress-bar - CSS | MDN&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQMでアクセス中のページがトップページかどうか判別する</title>
+      <link>http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/</link>
+      <pubDate>Sat, 20 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/</guid>
+      <description>
+
+&lt;p&gt;現在アクセスしているURLがアプリのトップページか否かを判断するには、どうすればいいでしょうか？&lt;/p&gt;
+
+&lt;p&gt;jQuery Mobile では id 属性を使ってページを識別するため、簡単に判断できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;今アクセスしているURLが、アプリのトップページかどうか判別する関数を作る。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;トップページなら true&lt;/li&gt;
+&lt;li&gt;それ以外なら false&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;コード:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;トップページの id 属性が「top」という想定で進めます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div data-role=&amp;quot;page&amp;quot; id=&amp;quot;top&amp;quot; data-title=&amp;quot;top page&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;header&amp;quot;&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jQuery Mobile はページにアクセス時、画面を描画する前にページの構造を取得します。&lt;/p&gt;
+
+&lt;p&gt;つまり、今アクセスしているページの id 属性を取得できるので、これが top かそうでないかを判別すればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * アクセスしたページがトップページかどうか判別する
+ *
+ * @return {boolean} トップページなら true
+ */
+function isTop() {
+    return $(&amp;quot;:jqmData(role=&#39;page&#39;)&amp;quot;).attr(&amp;quot;id&amp;quot;) === &amp;quot;top&amp;quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jQuery Mobile では data-* 属性を取得する時にはカスタムセレクタの jqmData() を使うのが作法なので、このような書き方になります。（下記の参考リンク内の「$.fn.jqmData()」参照）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/api/methods.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/methods.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Methods&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Methods&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQuery Mobileでリストビューを動的に挿入する方法</title>
+      <link>http://1000k.github.io/2012/10/14/how-to-dynamically-insert-the-list-view-in-the-jquery-mobile/</link>
+      <pubDate>Sun, 14 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/how-to-dynamically-insert-the-list-view-in-the-jquery-mobile/</guid>
+      <description>
+
+&lt;p&gt;jQuery Mobile 1.2 を使ってリストビューを動的に挿入する手順を紹介します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;公式マニュアル&#39;]);&#34; title=&#34;jQuery Mobile Docs - Dynamically Injecting Pages&#34;&gt;公式マニュアル&lt;/a&gt;にもやり方は書いてあるのですが、本題と関係ない部分（リンクをクリックしたらその取得先を正規表現で取得するなど）が長く読みづらいので、もっと簡単なバージョンを書きました。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;「Inject!」ボタンを押す&lt;/li&gt;
+&lt;li&gt;「data-role=&amp;#8221;content&amp;#8221;」内にリストビューを挿入する&lt;/li&gt;
+&lt;li&gt;画面遷移せずに表示する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;画面イメージはこんな感じです。↓&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/dynamic_injection1.png&#34; alt=&#34;&#34; title=&#34;before&#34; width=&#34;444&#34; height=&#34;296&#34; class=&#34;alignnone size-full wp-image-1173&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;「Inject!」をクリックすると、ヘッダとコンテンツが書き換えられます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/dynamic_injection2.png&#34; alt=&#34;&#34; title=&#34;after&#34; width=&#34;444&#34; height=&#34;248&#34; class=&#34;alignnone size-full wp-image-1174&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;サンプルコード:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;サンプルコード&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;header&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;
+      Dynamic Injection
+    &amp;lt;/h1&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;#&amp;quot; data-role=&amp;quot;button&amp;quot; id=&amp;quot;inject&amp;quot;&amp;gt;Inject!&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;処理の内容を細かく見てみましょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;クリックイベントをバインドする:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;クリックイベントをバインドする&lt;/h3&gt;
+
+&lt;p&gt;はじめに、「Inject!」ボタンをクリックした時に showList() 関数を呼び出すようにバインドします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(&amp;quot;#inject&amp;quot;).live(&amp;quot;click&amp;quot;, function() {
+  showList();
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に showList() の中身を見てみます。&lt;/p&gt;
+
+&lt;h3 id=&#34;dom要素を格納する:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;DOM要素を格納する&lt;/h3&gt;
+
+&lt;p&gt;まずはページ内の各要素のDOM要素を変数に格納しておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var $page = $(&amp;quot;#page1&amp;quot;),
+      $header = $page.children(&amp;quot;:jqmData(role=header)&amp;quot;),
+      $content = $page.children(&amp;quot;:jqmData(role=content)&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみにこの「:jqmData()」はjQuery Mobile 用のカスタムセレクタです。&lt;/p&gt;
+
+&lt;p&gt;意味は「$page.childern(&amp;#8220;[data-role=header]&amp;#8221;)」と同じなのですが、jQM独自の「data-*」という要素をセレクトしたい場合はこちらを使う方が良いそうです。&lt;/p&gt;
+
+&lt;p&gt;詳しくは下記のマニュアルを参照してください。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#39;, &#39;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&#34; &gt;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;リストビューを生成する:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;リストビューを生成する&lt;/h3&gt;
+
+&lt;p&gt;続いてリストビューのDOM要素を生成します。&lt;/p&gt;
+
+&lt;p&gt;jQueryのメソッドチェーンを使って作成すると楽です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var $listview = $(&amp;quot;
+
+&amp;lt;ul&amp;gt;
+  &amp;quot;).attr({&amp;quot;data-role&amp;quot;:&amp;quot;listview&amp;quot;, &amp;quot;data-inset&amp;quot;:&amp;quot;true&amp;quot;})
+      .append(
+        $(&amp;quot;
+
+  &amp;lt;li&amp;gt;
+    &amp;quot;).attr({&amp;quot;data-wrapperrels&amp;quot;:&amp;quot;div&amp;quot;, &amp;quot;data-iconpos&amp;quot;:&amp;quot;right&amp;quot;, &amp;quot;data-icon&amp;quot;:&amp;quot;arrow-l&amp;quot;})
+            .append($(&amp;quot;&amp;lt;a&amp;gt;&amp;quot;).attr({&amp;quot;href&amp;quot;:&amp;quot;#&amp;quot;, &amp;quot;title&amp;quot;:&amp;quot;Home&amp;quot;, &amp;quot;data-rel&amp;quot;:&amp;quot;back&amp;quot;})
+              .append($(&amp;quot;
+
+    &amp;lt;h3&amp;gt;
+      &amp;quot;).text(&amp;quot;FOO&amp;quot;))
+                .append($(&amp;quot;&amp;quot;).attr({&amp;quot;class&amp;quot;:&amp;quot;ui-li-aside ui-li-desc&amp;quot;}).text(&amp;quot;BAR&amp;quot;))
+              )
+          ).appendTo(&amp;quot;:jqmData(role=content)&amp;quot;);
+      ```
+
+
+
+      &amp;lt;p&amp;gt;
+        見慣れないと読みにくいかもしれませんが、インデントで階層構造が表現できて楽です。&amp;lt;br /&amp;gt;
+        これで実際に作成されるHTMLは以下のようになります。
+      &amp;lt;/p&amp;gt;
+
+
+      ```
+
+
+
+&amp;lt;ul data-role=&amp;quot;listview&amp;quot; data-inset=&amp;quot;true&amp;quot;&amp;gt;
+  &amp;lt;li data-icon=&amp;quot;arrow-r&amp;quot; data-iconpos=&amp;quot;right&amp;quot; data-wrapperrels=&amp;quot;div&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;
+
+
+    &amp;lt;h3&amp;gt;
+      FOO
+    &amp;lt;/h3&amp;gt;
+
+
+    &amp;lt;p class=&amp;quot;ui-li-aside ui-li-desc&amp;quot;&amp;gt;
+      BAR
+              &amp;lt;/a&amp;gt;
+          &amp;lt;/li&amp;gt;
+      &amp;lt;/ul&amp;gt;
+      ```
+
+
+
+      &amp;lt;p&amp;gt;
+        なお、この形式のリストは公式ドキュメントでは「Formatted content」と呼ばれています。説明ページは下記。
+      &amp;lt;/p&amp;gt;
+
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/lists/lists-inset.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/lists/lists-inset.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Lists with Form Controls&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Lists with Form Controls&amp;lt;/a&amp;gt;
+      &amp;lt;/p&amp;gt;
+
+
+      &amp;lt;h3&amp;gt;
+        DOM要素を変更＆挿入する
+      &amp;lt;/h3&amp;gt;
+
+
+      &amp;lt;p&amp;gt;
+        ページの要素を書き換えます。
+      &amp;lt;/p&amp;gt;
+
+
+      ```
+
+  $header.find(&amp;quot;h1&amp;quot;).html(&amp;quot;Injected&amp;quot;);
+  $content.html($listview);
+
+  $page.page();
+  $content.find(&amp;quot;:jqmData(role=listview)&amp;quot;).listview();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;p&amp;gt;
+    「$page.page()」は、遅延してページ要素を編集した後には必ず呼び出さねばならないようです。&amp;lt;br /&amp;gt;
+    その後、「$content.find(&amp;amp;#8220;:jqmData(role=listview)&amp;amp;#8221;).listview();」でリストビューをスタイリングしています。
+  &amp;lt;/p&amp;gt;
+
+
+  &amp;lt;h3&amp;gt;
+    ページを表示する
+  &amp;lt;/h3&amp;gt;
+
+
+  &amp;lt;p&amp;gt;
+    最後にページ遷移を手動で発生させます。&amp;lt;br /&amp;gt;
+    これまでに編集したDOM要素が表示されます。
+  &amp;lt;/p&amp;gt;
+
+
+  ```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$.mobile.changePage($page);
+```&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;h2&amp;gt;
+    補足
+  &amp;lt;/h2&amp;gt;
+
+
+  &amp;lt;p&amp;gt;
+    &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/pages/page-dynamic.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;公式ドキュメントのチュートリアル&#39;]);&amp;quot; title=&amp;quot;jQuery Mobile Docs - Dynamically Injecting Pages&amp;quot;&amp;gt;公式ドキュメントのチュートリアル&amp;lt;/a&amp;gt;ではここで紹介した内容にプラスして、「クリックしたボタンのhref属性を解析してデータ取得先を分ける」手順が説明されています。むしろその部分が長すぎて理解しづらくなっている気がします。
+  &amp;lt;/p&amp;gt;
+
+
+  &amp;lt;h2&amp;gt;
+    参考
+  &amp;lt;/h2&amp;gt;
+
+
+  &amp;lt;ul&amp;gt;
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/pages/page-dynamic.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Dynamically Injecting Pages&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Dynamically Injecting Pages&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          公式のチュートリアル。長い。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/api/methods.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/methods.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Methods&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Methods&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          $.mobile.changePage() のリファレンス。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#39;, &#39;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&amp;quot; &amp;gt;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          カスタムセレクタ「jqmData」の説明。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/&#39;, &#39;リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&amp;quot; &amp;gt;リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス&amp;lt;/a&amp;gt;
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views&#39;, &#39;jQuery Mobile: Organizing Information with List Views | Packt Publishing&#39;]);&amp;quot; &amp;gt;jQuery Mobile: Organizing Information with List Views | Packt Publishing&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          公式ドキュメントのリストビューの解説ではコードが書いてありませんが、このページには書いています。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://stackoverflow.com/questions/805159/building-html-dom-using-jquery&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/805159/building-html-dom-using-jquery&#39;, &#39;Building HTML (~= DOM) using jQuery &amp;amp;#8211; Stack Overflow&#39;]);&amp;quot; &amp;gt;Building HTML (~= DOM) using jQuery &amp;amp;#8211; Stack Overflow&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          jQueryのメソッドチェーンを使ってDOMを組み立てる方法。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+  &amp;lt;/ul&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>デコード/エンコードを1ファイルで行うPHP</title>
+      <link>http://1000k.github.io/2011/09/01/php-script-to-decode-and-encode/</link>
+      <pubDate>Thu, 01 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/09/01/php-script-to-decode-and-encode/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco-278x300.png&#34; alt=&#34;&#34; title=&#34;エンコード/デコードフォーム&#34; width=&#34;278&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-805&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;URLエンコード/デコード、HTMLエンティティエンコード/デコードを行うとき便利なフォームを作成しました。&lt;/p&gt;
+
+&lt;p&gt;PHP+jQueryで実装されており、このファイルをPHPの動くWebサーバーに置けばすぐに使えます。&lt;/p&gt;
+
+&lt;h1 id=&#34;できること:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;できること&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;URLエンコード/デコード&lt;/li&gt;
+&lt;li&gt;HTMLエンティティエンコード/デコード&lt;/li&gt;
+&lt;li&gt;PHPの配列のシリアライズ/アンシリアライズ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;必要な環境:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;必要な環境&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PHPの動作するWebサーバー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;ソースコード:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;ソースコード&lt;/h1&gt;
+
+&lt;p&gt;初めてコードをgistに公開してみました。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>「要素をクリックする」命令をjQueryで書く</title>
+      <link>http://1000k.github.io/2011/06/22/click-specific-element-by-jquery/</link>
+      <pubDate>Wed, 22 Jun 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/06/22/click-specific-element-by-jquery/</guid>
+      <description>
+
+&lt;p&gt;LightBoxのように、リンクをクリックするとアクションが発生するスクリプトは数多く存在します。&lt;/p&gt;
+
+&lt;p&gt;任意の場所をクリックした時にそのアクションを起動したい場合は、jQueryの&lt;strong&gt;click()&lt;/strong&gt;メソッドを使うと簡単に実現できます。&lt;/p&gt;
+
+&lt;h1 id=&#34;例:8f479fe2b847018d9162cbf4baf74733&#34;&gt;例&lt;/h1&gt;
+
+&lt;p&gt;classが&amp;#8221;uso&amp;#8221;のaリンクをクリックした時に &amp;#8220;a#mojamoja&amp;#8221; をクリックした時のアクション起動したい場合は、下記のように書けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(function() {
+    $(&amp;quot;a.uso&amp;quot;).click(function(e) {
+        e.preventDefault();
+        $(&amp;quot;a#mojamoja&amp;quot;).eq(0).click();
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;応用-悪用:8f479fe2b847018d9162cbf4baf74733&#34;&gt;応用（悪用？）&lt;/h1&gt;
+
+&lt;p&gt;FirebugやChromeのスクリプト入力ボックスに下記のコードを書き込むと、button#usoを永遠に毎秒10回叩き続けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;setInterval(function() {$(&amp;quot;button#uso&amp;quot;).eq(0).click();}, 100);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「どうしてもボタンが連打したい。でも指が折れて動かせない…。」という名人にお勧めです。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8f479fe2b847018d9162cbf4baf74733&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://semooh.jp/jquery/api/events/click/_/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://semooh.jp/jquery/api/events/click/_/&#39;, &#39;click() &amp;#8211; jQuery 日本語リファレンス&#39;]);&#34; title=&#34;click() - jQuery 日本語リファレンス&#34;&gt;click() &amp;#8211; jQuery 日本語リファレンス&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://semooh.jp/jquery/api/events/click/fn/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://semooh.jp/jquery/api/events/click/fn/&#39;, &#39;click(fn) &amp;#8211; jQuery 日本語リファレンス&#39;]);&#34; title=&#34;click(fn) - jQuery 日本語リファレンス&#34;&gt;click(fn) &amp;#8211; jQuery 日本語リファレンス&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tobysoft.net/wiki/index.php?JavaScript%2FjQuery%2Fready%A4%B8%A4%E3%A4%CA%A4%AF%A4%C6onload%A5%A4%A5%D9%A5%F3%A5%C8%A4%CB%B4%D8%BF%F4%A4%F2%C4%C9%B2%C3%A4%B7%A4%BF%A4%A4&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tobysoft.net/wiki/index.php?JavaScript%2FjQuery%2Fready%A4%B8%A4%E3%A4%CA%A4%AF%A4%C6onload%A5%A4%A5%D9%A5%F3%A5%C8%A4%CB%B4%D8%BF%F4%A4%F2%C4%C9%B2%C3%A4%B7%A4%BF%A4%A4&#39;, &#39;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい &amp;#8211; TOBY SOFT wiki&#39;]);&#34; title=&#34;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい - TOBY SOFT wiki&#34;&gt;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい &amp;#8211; TOBY SOFT wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[JavaScript] 画像の実際のサイズを取得する (jQuery使用)</title>
+      <link>http://1000k.github.io/2010/05/16/get-image-size-using-jquery/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/get-image-size-using-jquery/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;imgタグのwidth/height要素を指定していない場合、イメージがどう表示されるかはブラウザによって異なる。
+
+&lt;ul&gt;
+&lt;li&gt;すべてのブラウザで画像オリジナルのwidth/heightを取得しようとしても、ブラウザ毎にパラメータやメソッドが異なる&lt;/li&gt;
+&lt;li&gt;jQueryを利用すると、下記コードで画像の実際のサイズを取得できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+ * 画像の実際のサイズを取得する
+ *
+ * @param  string  image  img要素
+ */
+function getActualDimension(image) {
+    var run, mem, w, h, key = &amp;quot;actual&amp;quot;;
+
+    // for Firefox, Safari, Google Chrome
+    if (&amp;quot;naturalWidth&amp;quot; in image) {
+        return {width: image.naturalWidth, height: image.naturalHeight};
+    }
+    if (&amp;quot;src&amp;quot; in image) { // HTMLImageElement
+        if (image[key] &amp;amp;#038;&amp;amp;#038; image[key].src === image.src) {return  image[key];}
+
+        if (document.uniqueID) { // for IE
+            w = $(image).css(&amp;quot;width&amp;quot;);
+            h = $(image).css(&amp;quot;height&amp;quot;);
+        } else { // for Opera and Other
+            mem = {w: image.width, h: image.height}; // keep current style
+            $(this).removeAttr(&amp;quot;width&amp;quot;).removeAttr(&amp;quot;height&amp;quot;).css({width:&amp;quot;&amp;quot;,  height:&amp;quot;&amp;quot;});    // Remove attributes in case img-element has set width  and height (for webkit browsers)
+            w = image.width;
+            h = image.height;
+            image.width  = mem.w; // restore
+            image.height = mem.h;
+        }
+        return image[key] = {width: w, height: h, src: image.src}; // bond
+    }
+
+    // HTMLCanvasElement
+    return {width: image.width, height: image.height};
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[jQuery] セレクタで「&lt;」「&gt;」が選択できない</title>
+      <link>http://1000k.github.io/2010/05/16/cannot-select-gt-and-lt-with-jquery/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/cannot-select-gt-and-lt-with-jquery/</guid>
+      <description>
+
+&lt;h1 id=&#34;症状:fef478bcfeefba53d74161fd20826e36&#34;&gt;症状&lt;/h1&gt;
+
+&lt;p&gt;JavaScriptにおいて、「&amp;lt;」「&amp;gt;」は基本的にダメ文字（使用不可）だが、jQueryのセレクタ内で使用すると選択できたりできなかったりすることがある。&lt;/p&gt;
+
+&lt;h1 id=&#34;原因:fef478bcfeefba53d74161fd20826e36&#34;&gt;原因&lt;/h1&gt;
+
+&lt;p&gt;そもそも、XHTMLの仕様では「&amp;lt;」「&amp;gt;」は属性値に使ってはいけない。&lt;/p&gt;
+
+&lt;p&gt;たまに仕様で許可されてない記号も使えるが、そうしたものが選択できるのはブラウザ依存の偶然でしかない。&lt;/p&gt;
+
+&lt;h1 id=&#34;対策:fef478bcfeefba53d74161fd20826e36&#34;&gt;対策&lt;/h1&gt;
+
+&lt;p&gt;こういう文字を使うときは、別の文字に置換でもしないとダメ。例えばDOMロード後に全角の「＜」「＞」に置換するとか。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:fef478bcfeefba53d74161fd20826e36&#34;&gt;参考&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010&#39;, &#39;\nSelector problem: $(\&#39;#&amp;#092;&lt;foo\&#39;) and $(\&#39;#bar&amp;#092;&gt;\&amp;lsquo;) works, but $(\&amp;lsquo;#&amp;#092;&lt;buz&amp;#092;&gt;\&amp;lsquo;) doesn\&amp;rsquo;t. &amp;#8211; jQuery Forum&amp;rsquo;]);&amp;rdquo; &amp;gt;&lt;br /&gt; Selector problem: $(&amp;lsquo;#&amp;#92;&lt;foo&#39;) and $(&#39;#bar&amp;#92;&gt;&amp;rsquo;) works, but $(&amp;lsquo;#&amp;#92;&lt;buz&amp;#92;&gt;&amp;rsquo;) doesn&amp;rsquo;t. &amp;#8211; jQuery Forum&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

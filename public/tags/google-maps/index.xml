@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Google Maps on 1000g</title>
+    <link>http://1000k.github.io/tags/google-maps/</link>
+    <description>Recent content in Google Maps on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 17 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/google-maps/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ヘッダーとフッターを固定しつつ高さ100% の Google Maps を描画する方法</title>
+      <link>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</link>
+      <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/893s2/2/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/893s2/2/&#39;, &#39;このデモ&#39;]);&#34; &gt;このデモ&lt;/a&gt;を見れば、何をやりたいかすぐ把握できると思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_1.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_1.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_1-300x225.png&#34; alt=&#34;map_1&#34; width=&#34;300&#34; height=&#34;225&#34; class=&#34;alignnone size-medium wp-image-1683&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_2.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_2.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_2-190x300.png&#34; alt=&#34;map_2&#34; width=&#34;190&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-1684&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ウィンドウの幅や高さを変えても、ヘッダーとフッターは常に同じ高さのままで、マップの部分はウィンドウサイズに合うように伸縮しています。&lt;/p&gt;
+
+&lt;p&gt;以下、このようなコードの実装方法を書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード:58e354fc35f3ca4266379278104f5f1b&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;まずはお決まりの Google Maps 呼び出しコードと、HTML の構造です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div id=&amp;quot;container&amp;quot;&amp;gt;
+  &amp;amp;lt;header&amp;gt;header&amp;amp;lt;/header&amp;gt;
+
+
+
+  &amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;map_canvas&amp;quot; style=&amp;quot;width: 100%; height: 100%;&amp;quot;&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+      &amp;amp;lt;footer&amp;gt;This footer is absolutely positioned&amp;amp;lt;/footer&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+&amp;lt;!-- /#container --&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これについては説明は不要でしょう。ページ全体を覆う &lt;code&gt;#container&lt;/code&gt; の中に、ヘッダーとコンテンツとフッターがあります。&lt;/p&gt;
+
+&lt;p&gt;次に、ポイントとなる CSS は以下のとおりです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;html,body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* needed for container min-height */
+  background: #300;
+}
+
+#container {
+  background: #ccc;
+  height: 100%;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  /*height:auto !important;  real browsers */
+  height:100%; /* IE6: treaded as min-height*/
+
+  min-height:100%; /* real browsers */
+}
+
+header {
+  height: 108px;
+  position: relative;
+  background: #0ff;
+}
+
+#content{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  margin-top: 108px;    /* header&#39;s height */
+  width: 100%;
+}
+
+footer {
+  position: absolute;
+  clear: both;
+  width: 100%;
+  height: 40px;
+  bottom: 0;        /* stick to bottom */
+  background: #ff0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;全体を覆う &lt;code&gt;#container&lt;/code&gt; には &lt;code&gt;min-height: 100%;&lt;/code&gt; を指定し、ブラウザの高さいっぱいに描画するようにしています。また、&lt;code&gt;position: relative;&lt;/code&gt; を指定することで、その内部で自由に要素を配置できるようにしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;header&lt;/code&gt; に関しては特にコメントは不要ですね。ただ高さを指定しているだけです。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;#content&lt;/code&gt; にはいくつか工夫があります。まず、&lt;code&gt;position: absolute; top: 0; bottom: 0;&lt;/code&gt; によって、要素の高さを 100% にしています。次に、&lt;code&gt;margin-top: 108px;&lt;/code&gt; というように header と同じ高さでマージンを作ることで、ヘッダーとマップを隙間なく描画しています。&lt;/p&gt;
+
+&lt;p&gt;最後に &lt;code&gt;footer&lt;/code&gt; ですが、&lt;code&gt;position: absolute; bottom: 0;&lt;/code&gt; によって、常に &lt;code&gt;#container&lt;/code&gt; の最下部に貼り付くようにしています。&lt;/p&gt;
+
+&lt;p&gt;実現したいことはシンプルですが、実装するのに結構工夫が必要だったのでメモしておきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:58e354fc35f3ca4266379278104f5f1b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#39;, &#39;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&#39;]);&#34; &gt;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;今回のデモは、この Q&amp;amp;A に書かれているコードをシンプルにしただけです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQM &#43; Google Maps でマップが表示されない時の対処法</title>
+      <link>http://1000k.github.io/2012/10/14/jqm-remedy-when-the-map-does-not-appear-in-google-maps/</link>
+      <pubDate>Sun, 14 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/jqm-remedy-when-the-map-does-not-appear-in-google-maps/</guid>
+      <description>
+
+&lt;p&gt;jQuery Mobile 1.2.0 Final での不具合です。&lt;/p&gt;
+
+&lt;p&gt;jQuery Mobile と Google Maps API の相性がいまいち良くないようで、いろいろな所で不具合が出ます。&lt;/p&gt;
+
+&lt;p&gt;今回発見したのは、フォーム画面から戻ってくるとマップが表示されない問題です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;マップが設置されたページからフォーム画面へ遷移する&lt;/li&gt;
+&lt;li&gt;フォームの値をPOSTして元のページへ戻る&lt;/li&gt;
+&lt;li&gt;マップが表示されない&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Google Maps と統合するサービスには致命的になりかねない不具合です。&lt;/p&gt;
+
+&lt;p&gt;以下に不具合の検証用コードと、かなり妥協した解決案を記します。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証用コード:463549662c038eb75ba927c71eba6045&#34;&gt;検証用コード&lt;/h2&gt;
+
+&lt;h3 id=&#34;gmap1-html:463549662c038eb75ba927c71eba6045&#34;&gt;gmap1.html&lt;/h3&gt;
+
+&lt;p&gt;マップを表示するページです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;map_canvas&amp;quot;&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+
+    &amp;lt;a href=&amp;quot;gmap2.html&amp;quot; data-role=&amp;quot;button&amp;quot; data-rel=&amp;quot;dialog&amp;quot;&amp;gt;Go to gmap2.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gmap2-html:463549662c038eb75ba927c71eba6045&#34;&gt;gmap2.html&lt;/h3&gt;
+
+&lt;p&gt;フォーム画面。今回は dialog を使いました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;dialog&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page2&amp;quot;&amp;gt;
+  &amp;amp;lt;/form&amp;gt;
+
+          &amp;lt;a href=&amp;quot;gmap1.html&amp;quot; data-role=&amp;quot;button&amp;quot; data-rel=&amp;quot;back&amp;quot;&amp;gt;back to gmap1.html&amp;lt;/a&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これらのページを設置し、「gmap1.html -&amp;gt; gmap2.html -&amp;gt; gmap1.html」という遷移をすると、2回目の gmap1.html でマップが表示されません。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決案:463549662c038eb75ba927c71eba6045&#34;&gt;解決案&lt;/h2&gt;
+
+&lt;p&gt;jQuery Mobile が内部で Ajax をガチャガチャやっているのが悪影響を及ぼしているようなので、Ajaxをオフにすれば治りました。&lt;/p&gt;
+
+&lt;p&gt;上記のコードで、「// $.mobile.ajaxEnabled = false;」となっている部分をコメントアウトすればOKです。&lt;/p&gt;
+
+&lt;h3 id=&#34;gmap1-html-1:463549662c038eb75ba927c71eba6045&#34;&gt;gmap1.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.mobile.ajaxEnabled = false;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gmap2-html-1:463549662c038eb75ba927c71eba6045&#34;&gt;gmap2.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.mobile.ajaxEnabled = false;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この対応によりマップは表示されるようになりますが、画面遷移時のエフェクトを始めとしたもろもろの機能が使えなくなります。&lt;/p&gt;
+
+&lt;p&gt;非常に心苦しい対応ですが、今のところこれぐらいしか思いつきませんでした。&lt;/p&gt;
+
+&lt;p&gt;なお、全ページにこの1行を書くのは面倒なので、外部JSファイルに以下の指定をして全ページのhead内で読み込むようにすれば楽です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(document).bind(&amp;quot;pageinit&amp;quot;, function() {
+  $.mobile.ajaxEnabled = false;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:463549662c038eb75ba927c71eba6045&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/api/globalconfig.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/globalconfig.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Configuring default settings&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Configuring default settings&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;$.mobile.ajaxEnabled のリファレンス。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial&#39;, &#39;jquery_ui_map_v_3_tutorial &amp;#8211; jquery-ui-map &amp;#8211; Google map v3 plugin for jQuery and jQuery Mobile &amp;#8211; Google Project Hosting&#39;]);&#34; &gt;jquery_ui_map_v_3_tutorial &amp;#8211; jquery-ui-map &amp;#8211; Google map v3 plugin for jQuery and jQuery Mobile &amp;#8211; Google Project Hosting&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;「Help, my map is rendered incorrectly! (jQM)」に同じ不具合の対処法が書いてありました。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

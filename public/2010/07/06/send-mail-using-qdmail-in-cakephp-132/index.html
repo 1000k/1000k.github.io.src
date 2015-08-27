@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Qdmailを使ってCakePHP1.3.2のコンソールからメールを送信する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/06/send-mail-using-qdmail-in-cakephp-132/">Qdmailを使ってCakePHP1.3.2のコンソールからメールを送信する</a></h2>
+        <div class="post-content">
+          
+
+<p>QdmailはCakePHPを初めとしたフレームワークで簡単にメールを作成・送信できるライブラリです。CakePHP1.2 で利用するサンプルは見つかったのですが、1.3で使っている例をあまり見かけず、少しつまづいたのでメモしておきます。</p>
+
+<h3 id="手順:82fe1e63d08f1c786a02c83fe3f1d6bb">手順</h3>
+
+<p>1&#46; <a href="http://hal456.net/qdmail/downloads" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://hal456.net/qdmail/downloads', 'Qdmailをダウンロード']);" title="ダウンロードdownload - Qdmail - PHP::Mail Library , Quick and Detailed for Multibyte">Qdmailをダウンロード</a>し、/app/controllers/components に解凍する</p>
+
+<p>2&#46; コンソールプログラムを下記のように作成する</p>
+
+<pre><code>// /app/vendors/shells/uso.php
+
+&lt;?php
+class UsoShell extends Shell {
+    // 使用するコア
+    var $Controller;
+
+    // 使用するコンポーネント
+    var $Qdmail;
+
+    // overrideしてcake起動メッセージを消す
+    function startup() {}
+
+    // 初期化処理
+    function initialize() {
+        parent::initialize();
+
+        App::import(&quot;Core&quot;, &quot;Controller&quot;);
+        App::import(&quot;Component&quot;, &quot;Qdmail&quot;);
+
+        $this-&gt;Controller =&amp;#038; new Controller();
+        $this-&gt;Qdmail =&amp;#038; new QdmailComponent(null);
+        $this-&gt;Qdmail-&gt;startup($this-&gt;Controller);
+    }
+
+    // エントリーポイント
+    function main() {
+
+        // Qdmailの設定
+        $this-&gt;Qdmail-&gt;to('to@uso.uso', '送信先の名前');
+        $this-&gt;Qdmail-&gt;subject('件名');
+        $this-&gt;Qdmail-&gt;from('from@uso.uso' , '送信元の名前');
+        $this-&gt;Qdmail-&gt;text('本文');
+
+        // 送信する
+        $return = $this-&gt;Qdmail-&gt;send();
+        $this-&gt;Qdmail-&gt;reset();
+
+        if ($return) {
+            $this-&gt;out(&quot;送信完了。&quot;);
+        } else {
+            $this-&gt;out(&quot;送信失敗...&quot;);
+        }
+    }
+}
+?&gt;
+</code></pre>
+
+<h3 id="補足:82fe1e63d08f1c786a02c83fe3f1d6bb">補足</h3>
+
+<p>何が悪いのかよくわかりませんが、上のコードを実行すると「指定されたパスが見つかりません。」と表示されます。送信するぶんには問題ないのですが、気持ち悪いのでどうにか消せないか方法を探しています。</p>
+
+<h3 id="参考:82fe1e63d08f1c786a02c83fe3f1d6bb">参考</h3>
+
+<ul>
+<li><a href="http://hal456.net/qdmail/cakebase" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://hal456.net/qdmail/cakebase', '使い方　CakePHPでのメール送信 &#8211; Qdmail &#8211; PHP::Mail Library , Quick and Detailed for Multibyte']);" title="使い方　CakePHPでのメール送信 - Qdmail - PHP::Mail Library , Quick and Detailed for Multibyte">使い方　CakePHPでのメール送信 &#8211; Qdmail &#8211; PHP::Mail Library , Quick and Detailed for Multibyte</a></li>
+<li><a href="http://c-brains.jp/blog/wsg/10/06/10-110652.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://c-brains.jp/blog/wsg/10/06/10-110652.php', '[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。']);" title="[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。">[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。</a></li>
+<li><a href="http://bakery.cakephp.org/articles/view/emailcomponent-in-a-cake-shell" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://bakery.cakephp.org/articles/view/emailcomponent-in-a-cake-shell', 'EmailComponent in a (cake) Shell (Articles) | The Bakery, Everything CakePHP']);" title="EmailComponent in a (cake) Shell (Articles) | The Bakery, Everything CakePHP">EmailComponent in a (cake) Shell (Articles) | The Bakery, Everything CakePHP</a></li>
+<li><a href="http://c-brains.jp/blog/wsg/10/06/10-110652.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://c-brains.jp/blog/wsg/10/06/10-110652.php', '[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。']);" title="[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。">[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

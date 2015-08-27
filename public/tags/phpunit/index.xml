@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Phpunit on 1000g</title>
+    <link>http://1000k.github.io/tags/phpunit/</link>
+    <description>Recent content in Phpunit on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 24 Sep 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/phpunit/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PHPUnit の Expectation を簡潔に書く TIPS</title>
+      <link>http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/</link>
+      <pubDate>Tue, 24 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit の小ネタです。&lt;/p&gt;
+
+&lt;p&gt;PHPUnit でモックを使ったテストケースを書くと、以下のように記述量が多くなってうんざりします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+class FooClassTest extends PHPUnit_Framework_TestCase {
+    /**
+     * @covers FooClass::doSomething
+     */
+    public function testDoSomething() {
+        // FooClass が依存している BarClass のモックを作る。
+        // 何もしないように、__construct() と __clone() は無効化しておく。
+        $mockBar = $this-&amp;gt;getMockBuilder(&#39;BarClass&#39;)
+            -&amp;gt;disableOriginalConstructor()
+            -&amp;gt;disableOriginalClone()
+            -&amp;gt;getMock();
+
+        // BarClass::barMethod のモックの挙動を変える。
+        $mockBar-&amp;gt;expect($this-&amp;gt;any())
+            -&amp;gt;method(&#39;barMethod&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(true));
+
+        $object = new FooClass($mockBar);
+
+        $this-&amp;gt;assertTrue($object-&amp;gt;doSomething());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;長い、書きづらい、読みづらい。こんなテストケース、2つ以上書きたくないですね。もっと楽に書くための TIPS をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;まず、何もしない「プレーンな」モックオブジェクトを作るメソッドを作りましょう。&lt;code&gt;PHPUnit_Framework_TestCase&lt;/code&gt; を継承した &lt;code&gt;MyTestCase&lt;/code&gt; に実装してやります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class MyTestCase extends PHPUnit_Framework_TestCase {
+
+    /**
+     * 元のクラスが完全に何もしないよう擬装したモックを作成する。
+     *
+     * - コンストラクタが無効
+     * - クローンコンストラクタが無効
+     *
+     * @param string $class_name
+     * @return mixed 指定したクラスのモック
+     * @throws InvalidArgumentException 指定したクラス名が見つからない場合
+     */
+    protected function _getPlainMock($class_name) {
+        if (!class_exists($class_name)) {
+            throw new InvalidArgumentException(&amp;quot;{$class_name} does not exist.&amp;quot;);
+        }
+
+        return $this-&amp;gt;getMockBuilder($class_name)
+            -&amp;gt;disableOriginalConstructor()
+            -&amp;gt;disableOriginalClone()
+            -&amp;gt;getMock();
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、PHPUnit の Expectation はメソッドチェーンで連続して指定できます (&amp;#8220;-&amp;gt;&amp;#8221; 演算子で繋げて書ける) が、そもそも記述量が多いです。いちいち this this 書くのも煩わしい。&lt;/p&gt;
+
+&lt;p&gt;そこで、Expectation をセットするためのメソッドを作ってやると楽になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+    /**
+     * モックオブジェクトに Expectation を設定する。
+     *
+     * @param Object &amp;amp;#038;$mock モックオブジェクト
+     * @param string $matcher マッチャー ([any|once|never|...])
+     * @param string $method メソッド名
+     * @param mixed $return_value 期待する戻り値
+     */
+    protected function _setExpectation(&amp;amp;#038;$mock, $matcher, $method, $return_value = null) {
+        $mock-&amp;gt;expects($this-&amp;gt;$matcher())
+            -&amp;gt;method($method)
+            -&amp;gt;will($this-&amp;gt;returnValue($return_value));
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを使うと、一番最初のテストケースは以下のように書き直せます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require_once &#39;MyTestCase.php&#39;;
+
+class FooClassTest extends MyTestCase {
+    /**
+     * @covers FooClass::doSomething
+     * @test
+     */
+    function doSomething() {
+        $mockBar = $this-&amp;gt;_getPlainMock(&#39;BarClass&#39;)
+        $this-&amp;gt;_setExpectation($mockBar, &#39;any&#39;, &#39;barMethod&#39;, true);
+
+        $object = new FooClass($mockBar);
+
+        $this-&amp;gt;assertTrue($object-&amp;gt;doSomething());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単になりましたね！9行もあったコードが4行に減りました。&lt;/p&gt;
+
+&lt;p&gt;ちなみに、さり気なくテストケースの &lt;code&gt;public&lt;/code&gt; は削除しています。PHP の仕様上、public なメソッドはわざわざそれを書く必要がありません。&lt;/p&gt;
+
+&lt;p&gt;また、PHPDoc 部分に &lt;code&gt;@test&lt;/code&gt; アノテーションを付けると、メソッド名を &lt;code&gt;test&lt;/code&gt; で始めなくてもテストケースとして認識されるようになります。私はこの方が読みやすいので、最近はこう書くことが多いです。&lt;/p&gt;
+
+&lt;p&gt;こういう改善をしても、Ruby に慣れているとまだ長く感じます。「$」「&amp;#8217;」「&amp;gt;」などの記号を打つのも煩わしいです。Ruby 使いてえなあ。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:66eb9e16e3cbfb7a24c972ec7c7d6f12&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://phpunit.de/manual/3.8/ja/test-doubles.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpunit.de/manual/3.8/ja/test-doubles.html&#39;, &#39;PHPUnit 公式マニュアル &gt; 第10章 テストダブル&amp;rsquo;]);&amp;rdquo; &amp;gt;PHPUnit 公式マニュアル &amp;gt; 第10章 テストダブル&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://phpunit.de/manual/3.8/ja/appendixes.annotations.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpunit.de/manual/3.8/ja/appendixes.annotations.html&#39;, &#39;付録B アノテーション&#39;]);&#34; &gt;付録B アノテーション&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jenkins ユーザーが ant を実行できないときの対処法</title>
+      <link>http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/</link>
+      <pubDate>Tue, 02 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/</guid>
+      <description>
+
+&lt;p&gt;CentOS 6.3 にて、&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; にある ant タスク (build.xml) 通りに PHPUnit タスクを実行しようとしたら、エラーが出てしまいました。&lt;/p&gt;
+
+&lt;p&gt;かなり長時間ハマったのでメモを残しておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;症状:135291858de89f6329950b22fca515d3&#34;&gt;症状&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 にて、&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; にある以下のタスクを実行するとエラーが出ました。&lt;code&gt;
+ &amp;lt;target name=&amp;quot;phpunit&amp;quot; description=&amp;quot;Run unit tests using PHPUnit and generates junit.xml and clover.xml&amp;quot;&amp;gt; &amp;lt;exec executable=&amp;quot;phpunit&amp;quot; failonerror=&amp;quot;true&amp;quot;/&amp;gt; &amp;lt;/target&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージ:&lt;code&gt;
+ # sudo -u jenkins ant ... phpunit: BUILD FAILED /var/lib/jenkins/jobs/mojamoja-unit-testing/workspace/build.xml:22: Execute failed: java.io.IOException: Cannot run program &amp;quot;phpunit&amp;quot;: error=2, No such file or directory Total time: 0 seconds&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:135291858de89f6329950b22fca515d3&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;どうやら phpunit へのパスが通っていないようです。&lt;/p&gt;
+
+&lt;p&gt;phpunit の実体は &lt;code&gt;/usr/local/bin/phpunit&lt;/code&gt; なのですが、jenkins ユーザーがこの PATH を参照できていない模様。&lt;/p&gt;
+
+&lt;h2 id=&#34;試行錯誤:135291858de89f6329950b22fca515d3&#34;&gt;試行錯誤&lt;/h2&gt;
+
+&lt;p&gt;まず、jenkins ユーザーの &lt;code&gt;~/.bash_profile&lt;/code&gt; と &lt;code&gt;~/.bashrc&lt;/code&gt; を以下の内容で作成してもダメでした。PATH は反映されません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+export PATH=$PATH:/usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、下記のように ant タスク内で PATH を変更するシェルを走らせてもダメでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;target name=&amp;quot;setenv&amp;quot;&amp;gt;
+   &amp;amp;lt;exec executable=&amp;quot;/bin/sh&amp;quot;&amp;gt;
+     &amp;amp;lt;arg line=&amp;quot;./setenv.sh&amp;quot;/&amp;gt;
+   &amp;amp;lt;/exec&amp;gt;
+ &amp;amp;lt;/target&amp;gt;
+
+ &amp;amp;lt;target name=&amp;quot;env&amp;quot;&amp;gt;&amp;amp;lt;exec executable=&amp;quot;env&amp;quot; /&amp;gt;&amp;amp;lt;/target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;setenv.sh の中身は下記。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+export PATH=${PATH}:/usr/local/bin
+echo $PATH
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで ant を実行すると、&lt;code&gt;setenv&lt;/code&gt; タスクの時点では PATH は変更されていますが、次に実行される &lt;code&gt;env&lt;/code&gt; タスクで元に戻ってしまっています。まるで setenv と env が別々のプロセスで動いているように見えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Buildfile: build.xml
+
+setenv:
+     [exec] /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+
+env:
+     [exec] HOSTNAME=mojamoja
+     [exec] SHELL=/bin/bash
+     [exec] TERM=xterm
+     [exec] HISTSIZE=1000
+     [exec] USER=jenkins
+     ...
+     [exec] PATH=/sbin:/bin:/usr/sbin:/usr/bin      &amp;amp;lt;- /usr/local/bin が追加されていない
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とういわけで、setenv で環境変数をセットする方法はボツでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決方法:135291858de89f6329950b22fca515d3&#34;&gt;解決方法&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-jenkins-のグローバルプロパティを設定する:135291858de89f6329950b22fca515d3&#34;&gt;1. Jenkins のグローバルプロパティを設定する&lt;/h3&gt;
+
+&lt;p&gt;Jenkins から環境変数を上書きすることで、PATH を追加することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Jenkinsの管理 &amp;gt; システムの設定 &amp;gt; グローバルプロパティ &amp;gt; 環境変数&lt;/code&gt; にて、以下のように設定します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_global_property-300x191.png&#34; alt=&#34;Jenkins グローバルプロパティ&#34; width=&#34;300&#34; height=&#34;191&#34; class=&#34;alignnone size-medium wp-image-1507&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;キー: &lt;code&gt;PATH&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;値: &lt;code&gt;${PATH}:/usr/local/bin&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ただし、この方法だと Jenkins から Ant を実行した時しか PATH は上書きされません。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-sudoers-の-secure-path-を無効にする:135291858de89f6329950b22fca515d3&#34;&gt;2. sudoers の secure_path を無効にする&lt;/h3&gt;
+
+&lt;p&gt;Fedora 系では sudo ユーザー向けの PATH が &lt;code&gt;/sbin:/bin:/usr/sbin:/usr/bin&lt;/code&gt; のみに制限されているので、これを外してやります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;visudo&lt;/code&gt; コマンドを実行して、以下のように書き直します。&lt;code&gt;
+ # secure\_path をコメントアウト # Defaults secure\_path = /sbin:/bin:/usr/sbin:/usr/bin # env\_keep に PATH を追加 Defaults env\_keep += &amp;quot;PATH&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;これで secure_path の縛りが解除されました。&lt;/p&gt;
+
+&lt;p&gt;sudoers の環境変数は `sudo -l` で確認できます。&lt;code&gt;
+ # sudo -l Matching Defaults entries for root on this host: !visiblepw, always\_set\_home, env\_reset, env\_keep=&amp;quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS\_COLORS&amp;quot;, env\_keep+=&amp;quot;MAIL PS1 PS2 QTDIR USERNAME LANG LC\_ADDRESS LC\_CTYPE&amp;quot;, env\_keep+=&amp;quot;LC\_COLLATE LC\_IDENTIFICATION LC\_MEASUREMENT LC\_MESSAGES&amp;quot;, env\_keep+=&amp;quot;LC\_MONETARY LC\_NAME LC\_NUMERIC LC\_PAPER LC\_TELEPHONE&amp;quot;, env\_keep+=&amp;quot;LC\_TIME LC\_ALL LANGUAGE LINGUAS \_XKB\_CHARSET XAUTHORITY&amp;quot;, env_keep+=PATH User root may run the following commands on this host: (ALL) ALL&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:135291858de89f6329950b22fca515d3&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/&#39;, &#39;[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163\&#39;s Blog&#39;]);&#34; &gt;[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163&amp;rsquo;s Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://fishrimper.blogspot.jp/2012/12/sudo-path.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://fishrimper.blogspot.jp/2012/12/sudo-path.html&#39;, &#39;IT とかその他もろもろ: sudo した時の PATH&#39;]);&#34; &gt;IT とかその他もろもろ: sudo した時の PATH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://superuser.com/questions/98686/passing-path-through-sudo&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://superuser.com/questions/98686/passing-path-through-sudo&#39;, &#39;linux - Passing PATH through sudo - Super User&#39;]);&#34; &gt;linux - Passing PATH through sudo - Super User&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>今さら PHP 5.2 環境で PHPUnit を動かせるようにする手順</title>
+      <link>http://1000k.github.io/2013/06/25/how-to-run-phpunit-under-php-5-2-environment/</link>
+      <pubDate>Tue, 25 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/06/25/how-to-run-phpunit-under-php-5-2-environment/</guid>
+      <description>
+
+&lt;p&gt;業務で使っているアプリが PHP 5.2 でしか動かず、仕方なく PHP 5.2 でも動く PHPUnit 3.6.11 を使っています。(&lt;a href=&#34;http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/&#39;, &#39;PHPUnit &gt;= 3.6.12 は PHP 5.3 が必要。&amp;rsquo;]);&amp;rdquo; title=&amp;ldquo;PHPUnitをアップグレードしたら動作しなくなった | 1000g&amp;rdquo;&amp;gt;PHPUnit &amp;gt;= 3.6.12 は PHP 5.3 が必要。&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;最近になってサーバーのリプレースの時期になり、新しいビルドマシンに PHPUnit をインストールする羽目になったのですが、うまくバージョンが揃わず苦労しました。&lt;/p&gt;
+
+&lt;p&gt;作業メモを残しておきます。&lt;/p&gt;
+
+&lt;p&gt;なお、コマンドは全て super user で叩いています。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境:a58652de0ea1df651ea37649dd28159c&#34;&gt;環境&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 63bit&lt;/p&gt;
+
+&lt;h2 id=&#34;php-5-2-をインストールする:a58652de0ea1df651ea37649dd28159c&#34;&gt;PHP 5.2 をインストールする&lt;/h2&gt;
+
+&lt;p&gt;そもそも5.2系はとっくに Deprecated なので使うべきではないのですが、業務で使うから仕方ない。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.php.net/releases/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.php.net/releases/&#39;, &#39;PHP: Releases&#39;]);&#34; &gt;PHP: Releases&lt;/a&gt; から 5.2.17 をダウンロードして、ソースからインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# wget http://museum.php.net/php5/php-5.2.17.tar.gz
+# tar -zxf php-5.2.17.tar.gz
+# cd php-5.2.17
+# ./configure #{好きな configure オプション}
+# make
+# make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;configure オプションは &lt;a href=&#34;http://www.php.net/manual/ja/configure.about.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.php.net/manual/ja/configure.about.php&#39;, &#39;PHP: 中心となる configure オプションのリスト &amp;#8211; Manual&#39;]);&#34; &gt;PHP: 中心となる configure オプションのリスト &amp;#8211; Manual&lt;/a&gt; を参考に。&lt;/p&gt;
+
+&lt;h2 id=&#34;pear-をアップグレードする:a58652de0ea1df651ea37649dd28159c&#34;&gt;PEAR をアップグレードする&lt;/h2&gt;
+
+&lt;p&gt;PHP 5.2.17 にデフォルトで入っている PEAR 1.9.1 では、各種パッケージをインストールする時に下のようなエラーが出ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;warning: phpunit/PHPUnit requires PEAR Installer (version &amp;gt;= 1.9.4), installed version iphpunit/PHPUnit can optionally use package &amp;quot;phpunit/PHP_Invoker&amp;quot; (version &amp;gt;= 1.1.0)
+warning: phpunit/File_Iterator requires PHP (version &amp;gt;= 5.3.3), installed version is 5.2warning: phpunit/File_Iterator requires PEAR Installer (version &amp;gt;= 1.9.4), installed ver1.9.1
+warning: phpunit/Text_Template requires PHP (version &amp;gt;= 5.3.3), installed version is 5.2warning: phpunit/Text_Template requires PEAR Installer (version &amp;gt;= 1.9.4), installed ver1.9.1
+warning: phpunit/PHP_CodeCoverage requires PHP (version &amp;gt;= 5.3.3), installed version is
+warning: phpunit/PHP_CodeCoverage requires PEAR Installer (version &amp;gt;= 1.9.4), installed
+is 1.9.1
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;まずは PEAR を 1.9.4 以上にアップデートしましょう。&lt;/p&gt;
+
+&lt;p&gt;以下のコマンドです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear upgrade PEAR
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;phpunit-をインストールする:a58652de0ea1df651ea37649dd28159c&#34;&gt;PHPUnit をインストールする&lt;/h2&gt;
+
+&lt;p&gt;これで PHPUnit をインストールする準備が整いました。&lt;/p&gt;
+
+&lt;p&gt;下のコマンドを叩いてください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear config-set auto_discover 1
+# pear channel-add pear.phpunit.de
+# pear install php.phpunit.de/PHPUnit-3.6.11
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で PHPUnit が動作可能になりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# phpunit -v
+PHPUnit 3.6.11 by Sebastian Bergmann.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ついでに関連ツールも入れる:a58652de0ea1df651ea37649dd28159c&#34;&gt;ついでに関連ツールも入れる&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; で紹介されているツールは下記のコマンドでインストールできます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear channel-add pear.pdepend.org
+# pear channel-add pear.phpmd.org
+# pear channel-add components.ez.no
+# pear channel-add pear.symfony-project.com
+
+# pear install pdepend/PHP_Depend
+# pear install phpmd/PHP_PMD
+# pear install phpunit/phpcpd
+# pear install phpunit/phploc
+# pear install PHPDocumentor
+# pear install PHP_CodeSniffer
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;愚痴:a58652de0ea1df651ea37649dd28159c&#34;&gt;愚痴&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/composer/composer&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/composer/composer&#39;, &#39;Composer&#39;]);&#34; &gt;Composer&lt;/a&gt; を使えれば圧倒的に楽なのですが、PHP &amp;gt;= 5.3.2 でしか動かないので諦めました。&lt;/li&gt;
+&lt;li&gt;PEAR 遅い。&lt;/li&gt;
+&lt;li&gt;自動テストがあれば PHP をバージョンアップできるか検証できるのですが、ほとんどテストケースが無いのでそれも無理。コード総数は10万行。死にたい。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ちゃんと自動テストは作ろうね！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>vfsStream の使い方</title>
+      <link>http://1000k.github.io/2013/03/27/usage-of-vfsstream/</link>
+      <pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/27/usage-of-vfsstream/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit でファイルシステムのテストを行うとき便利な &lt;a href=&#34;http://vfs.bovigo.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://vfs.bovigo.org/&#39;, &#39;vfsStream&#39;]);&#34; &gt;vfsStream&lt;/a&gt; ですが、簡単なサンプルがあまり無かったので書いてみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;vfsstream-とは:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;vfsStream とは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ファイルの読み書きをテストする時に使うフレームワーク。&lt;/li&gt;
+&lt;li&gt;仮想ファイルシステムを作成し、その中でディレクトリやファイルを操作できる。
+
+&lt;ul&gt;
+&lt;li&gt;実ファイルシステム: &lt;em&gt;file://&amp;#8230;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;仮想ファイルシステム: &lt;em&gt;vfs://&amp;#8230;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;実ファイルを作成せずにテストできるので、テストファイルが散らばる可能性が無く、前回のテストのゴミを意識せずに済む。&lt;/li&gt;
+&lt;li&gt;ディレクトリやファイルの権限/ユーザー/オーナーも再現可能。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール方法:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;インストール方法&lt;/h2&gt;
+
+&lt;p&gt;詳しくは以前書いた &lt;a href=&#34;http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/&#39;, &#39;vfsStreamをインストールする | 1000g&#39;]);&#34; &gt;vfsStreamをインストールする | 1000g&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h3 id=&#34;php-5-3-の場合:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;PHP &amp;lt; 5.3 の場合&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pear channel-discover pear.bovigo.org
+$ pear install bovigo/vfsStream-beta
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;php-5-3-の場合-1:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;PHP &amp;gt;= 5.3 の場合&lt;/h3&gt;
+
+&lt;p&gt;composer.json に以下のように書く。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;mikey179/vfsStream&amp;quot;: &amp;quot;v1.1.0&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用可能なバージョンは &lt;a href=&#34;https://packagist.org/packages/mikey179/vfsStream&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://packagist.org/packages/mikey179/vfsStream&#39;, &#39;mikey179/vfsStream &amp;#8211; Packagist&#39;]);&#34; &gt;mikey179/vfsStream &amp;#8211; Packagist&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h2 id=&#34;サンプルコード:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;サンプルコード&lt;/h2&gt;
+
+&lt;p&gt;単純にファイルにテキストを追記するだけのロガーをテストしてみます。&lt;/p&gt;
+
+&lt;p&gt;なお、vfsStream 0.12 を利用しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Logger.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Class Logger {
+  public static function log($str, $path) {
+    return file_put_contents($path, $str);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;LoggerTest.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require_once &#39;Logger.php&#39;;
+require_once &#39;vfsStream/vfsStream.php&#39;;
+
+class LoggerTest extends PHPUnit_Framework_Test {
+    /**
+     * @var vfsStreamDirectory
+     */
+    private $root;
+
+    protected function setUp() {
+        // 仮想ファイルシステムにルートディレクトリを作る。
+        $this-&amp;gt;root = vfsStream::setup();     // &amp;quot;vfs://root&amp;quot; ディレクトリが作成される
+
+        // ファイルのパスは vfsStream::url() で取得する。
+        var_dump(vfsStream::url(&#39;root&#39;));         // =&amp;gt; vfs://root
+        var_dump(is_dir(vfsStream::url(&#39;root&#39;))); // =&amp;gt; true
+    }
+
+    /**
+     * @covers Logger::log
+     */
+    public function testLog() {
+        $str = &#39;Lorem ipsum&#39;;
+        $path = vfsStream::url(&#39;root/foo.txt&#39;);
+
+        $this-&amp;gt;assertGreaterThan(0, Logger::log($str, $path));
+        $this-&amp;gt;assertEquals($str, file_get_contents($path));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/&#39;, &#39;Mocking the file system using PHPUnit and vfsStream – VG Tech&#39;]);&#34; &gt;Mocking the file system using PHPUnit and vfsStream – VG Tech&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vfsStream を使った様々なテストのサンプルがあります。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mikey179/vfsStream/wiki&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mikey179/vfsStream/wiki&#39;, &#39;Home · mikey179/vfsStream Wiki&#39;]);&#34; &gt;Home · mikey179/vfsStream Wiki&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;作成元の GitHub ページ。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/current/ja/test-doubles.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/current/ja/test-doubles.html&#39;, &#39;第10章 テストダブル&#39;]);&#34; &gt;第10章 テストダブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PHPUnit のドキュメント内にある解説。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>header()関数を使ったメソッドをPHPUnitでテストする方法</title>
+      <link>http://1000k.github.io/2012/10/20/how-to-test-method-using-header-function-in-phpunit/</link>
+      <pubDate>Sat, 20 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/20/how-to-test-method-using-header-function-in-phpunit/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit はテスト中のメッセージを逐一標準出力するため、header() 関数を用いたメソッドのテストができません。&lt;/p&gt;
+
+&lt;p&gt;header() 関数はその実行前の何らかの標準出力がされていると「Cannot modify header information」というエラーを吐いてしまいます。&lt;/p&gt;
+
+&lt;p&gt;以下、テストコードと対策をメモします。&lt;/p&gt;
+
+&lt;h2 id=&#34;現象:caf62378c2e0b948501f395df88dace1&#34;&gt;現象&lt;/h2&gt;
+
+&lt;p&gt;たとえば下記のようなテストケースはエラーで止まります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Api {
+    public function output($data, $response_code = 200) {
+        http_response_code($response_code);
+        header(&#39;Content-Type: application/json&#39;); // PHPUnitの標準出力のせいで、テストケース中にエラーになる
+        $output = json_encode($data);
+
+        echo $output;
+        return $output;
+    }
+}
+
+class ApiTest extends \PHPUnit_Framework_TestCase {
+    // テストケース
+    /**
+     * @covers Api::output
+     * @dataProvider forTestOutput
+     */
+    public function testOutput($data, $response_code) {
+        ob_start();
+        $actual = $this-&amp;gt;object-&amp;gt;output($data, $response_code);
+        $output = ob_get_contents();
+        $expected = json_encode($data);
+
+        $this-&amp;gt;assertEquals($expected, $actual);
+        $this-&amp;gt;assertEquals($output, $actual);
+        $this-&amp;gt;assertEquals(http_response_code(), $response_code);
+        ob_clean();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以下のようなエラーを吐きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cannot modify header information - headers already sent by (output started at D:\xampp\php\pear\PHPUnit\Util\Printer.php:172)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;対策:caf62378c2e0b948501f395df88dace1&#34;&gt;対策&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;@runInSeparateProcess&lt;/strong&gt; アノテーションを利用することで、テストケースだけを別プロセスで実行することができます。&lt;/p&gt;
+
+&lt;p&gt;つまり、標準出力が真っさらな状態でテストを開始できるので、header() 関数がエラーを吐きません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+     * @covers Api::output
+     * @dataProvider forTestOutput
+     * @runInSeparateProcess
+     */
+    public function testOutput($data, $response_code) {
+        // ...
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;PHPUnit 3.7.8 by Sebastian Bergmann.
+
+.
+
+Time: 3 seconds, Memory: 2.75Mb
+
+OK (1 test, 3 assertions)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;header() 関数を使ったメソッドのテストをする際には覚えておきたいテクニックです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:caf62378c2e0b948501f395df88dace1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/3.7/ja/appendixes.annotations.html#appendixes.annotations.runInSeparateProcess&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.7/ja/appendixes.annotations.html#appendixes.annotations.runInSeparateProcess&#39;, &#39;付録B アノテーション&#39;]);&#34; &gt;付録B アノテーション&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.php.net/manual/ja/function.header.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.php.net/manual/ja/function.header.php&#39;, &#39;PHP: header &amp;#8211; Manual&#39;]);&#34; &gt;PHP: header &amp;#8211; Manual&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/9745080/test-php-headers-with-phpunit&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/9745080/test-php-headers-with-phpunit&#39;, &#39;unit testing &amp;#8211; Test PHP headers with PHPunit &amp;#8211; Stack Overflow&#39;]);&#34; &gt;unit testing &amp;#8211; Test PHP headers with PHPunit &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHPUnitをアップグレードしたら動作しなくなった</title>
+      <link>http://1000k.github.io/2012/10/19/phpunit-does-not-run-after-upgrade/</link>
+      <pubDate>Fri, 19 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/19/phpunit-does-not-run-after-upgrade/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit を何となくアップグレードしたら動かなくなってしまいました。&lt;/p&gt;
+
+&lt;p&gt;今回は pear upgrade で PHPUnit を 3.6.11 から 3.6.12 に 更新した後、phpunit コマンドを叩くと下記のようなエラーが出るようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# phpunit
+
+Parse error: syntax error, unexpected T_FUNCTION, expecting &#39;)&#39; in /usr/local/lib/php/PHP/Timer/Autoload.php on line 47
+
+Call Stack:
+    0.0018      50328   1. {main}() /usr/local/bin/phpunit:0
+    0.0030      87992   2. require(&#39;/usr/local/lib/php/PHPUnit/Autoload.php&#39;) /usr/local/bin/phpunit:43
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修復に小一時間かかったので、直し方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:50be0dd242e143a3defa66c95863f49e&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;PHPUnit は PHP &amp;gt;= 5.3 での利用を強く推奨しており、PHP &amp;lt;= 5.2 のままだと動かない機能を盛り込んでくることがあります。&lt;/p&gt;
+
+&lt;p&gt;また、本体以外にも多数の依存パッケージがあり、どれかが急に &amp;gt;= 5.3 の機能を使い始めても動かなくなります。&lt;/p&gt;
+
+&lt;p&gt;私の環境は PHP 5.2.x だったため、今回のエラーに出くわしました。原因は phpunit/PHP_Timer がバージョンアップしたせいでした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php&#39;, &#39;phpunit/PHP_Timer-1.0.4&#39;]);&#34; title=&#34;php-timer/PHP/Timer/Autoload.php at 1.0.4 · sebastianbergmann/php-timer&#34;&gt;phpunit/PHP_Timer-1.0.4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php&#39;, &#39;phpunit/PHP_Timer-1.0.3&#39;]);&#34; title=&#34;php-timer/PHP/Timer/Autoload.php at 1.0.3 · sebastianbergmann/php-timer&#34;&gt;phpunit/PHP_Timer-1.0.3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上記のソースからおわかりのように、1.0.4 から匿名関数を使っています。これは PHP &amp;gt;= 5.3 でしか動きません。5.2系ではパースエラーになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;対策:50be0dd242e143a3defa66c95863f49e&#34;&gt;対策&lt;/h2&gt;
+
+&lt;p&gt;PHP_Timer を再インストールすることで修正可能です。&lt;/p&gt;
+
+&lt;p&gt;アンインストールの時は依存関係を無視して削除するため「-n」オプションを付けています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear uninstall -n phpunit/PHP_Timer
+&amp;quot;phpunit/PHP_Timer&amp;quot; can be optionally used by installed package pear/PHP_CodeSniffer
+warning: phpunit/PHP_Timer (version &amp;gt;= 1.0.2) is required by installed package &amp;quot;phpunit/phpcpd&amp;quot;
+warning: phpunit/PHP_Timer (version &amp;gt;= 1.0.1, version &amp;amp;lt;= 1.0.3) is required by installed package &amp;quot;phpunit/PHPUnit&amp;quot;
+warning: phpunit/PHP_Timer should not be uninstalled, other installed packages depend on this package
+uninstall ok: channel://pear.phpunit.de/PHP_Timer-1.0.4
+
+#  pear install phpunit/PHP_Timer-1.0.3
+downloading PHP_Timer-1.0.3.tgz ...
+Starting to download PHP_Timer-1.0.3.tgz (3,743 bytes)
+....done: 3,743 bytes
+install ok: channel://pear.phpunit.de/PHP_Timer-1.0.3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で動作するようになりました。&lt;/p&gt;
+
+&lt;p&gt;PHP 5.2系の人はうかつに 「pear upgrade phpunit/phpunit」なんてコマンドを叩かないようにしましょう。&lt;/p&gt;
+
+&lt;p&gt;もしくはさっさと5.4系に移行しましょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:50be0dd242e143a3defa66c95863f49e&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/&#39;, &#39;How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan&#39;]);&#34; &gt;How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pear パッケージのダウングレード方法はこちらを参考にしました。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>vfsStreamをインストールする</title>
+      <link>http://1000k.github.io/2012/09/04/installing-vfsstream/</link>
+      <pubDate>Tue, 04 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/09/04/installing-vfsstream/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit のマニュアルに出てくる仮想ファイルシステムの vfsStream ですが、&lt;a href=&#34;http://www.phpunit.de/manual/3.6/ja/test-doubles.html#test-doubles.mocking-the-filesystem&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.6/ja/test-doubles.html#test-doubles.mocking-the-filesystem&#39;, &#39;公式マニュアル&#39;]);&#34; title=&#34;第10章 テストダブル&#34;&gt;公式マニュアル&lt;/a&gt;に載っている方法では既にPEARチャンネルが消えているため、インストールできません。&lt;/p&gt;
+
+&lt;p&gt;以下に正しいインストール方法をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;php-5-2-の場合:95f81ffdb8fe1ed455aec73bf72b588a&#34;&gt;PHP &amp;lt; 5.2 の場合&lt;/h2&gt;
+
+&lt;p&gt;以下のコマンドで vfsStream &amp;lt; 1.0 をインストールできます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pear channel-discover pear.bovigo.org
+$ pear install bovigo/vfsStream-beta
+
+downloading vfsStream-0.12.0.tgz ...
+Starting to download vfsStream-0.12.0.tgz (459,376 bytes)
+.........done: 459,376 bytes
+install ok: channel://pear.bovigo.org/vfsStream-0.12.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;php-5-3-の場合:95f81ffdb8fe1ed455aec73bf72b588a&#34;&gt;PHP &amp;gt;= 5.3 の場合&lt;/h2&gt;
+
+&lt;p&gt;vfsStream &amp;gt;= 1.0 を &lt;a href=&#34;http://getcomposer.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://getcomposer.org/&#39;, &#39;Composer&#39;]);&#34; &gt;Composer&lt;/a&gt; でインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;mikey179/vfsStream&amp;quot;: &amp;quot;v1.1.0&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用可能なバージョンは &lt;a href=&#34;https://packagist.org/packages/mikey179/vfsStream&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://packagist.org/packages/mikey179/vfsStream&#39;, &#39;mikey179/vfsStream &amp;#8211; Packagist&#39;]);&#34; &gt;mikey179/vfsStream &amp;#8211; Packagist&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:95f81ffdb8fe1ed455aec73bf72b588a&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mikey179/vfsStream/wiki/Install&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mikey179/vfsStream/wiki/Install&#39;, &#39;Download and install vfsStream · mikey179/vfsStream Wiki&#39;]);&#34; title=&#34;Download and install vfsStream · mikey179/vfsStream Wiki&#34;&gt;Download and install vfsStream · mikey179/vfsStream Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

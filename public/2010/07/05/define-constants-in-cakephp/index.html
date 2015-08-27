@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP で独自定数を定義する方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/05/define-constants-in-cakephp/">CakePHP で独自定数を定義する方法</a></h2>
+        <div class="post-content">
+          
+
+<p>defineで定義するパターンと、連想配列で定義するパターンがあります。基本的に後者の方が便利です。</p>
+
+<h3 id="defineで定義する方法:40b449d6a266142180bc2f169853d920">defineで定義する方法</h3>
+
+<p>1&#46; <strong>/app/config/bootstrap.php</strong> に下記を追加する</p>
+
+<pre><code>// /app/config/bootstrap.php
+&lt;?php
+config(‘const’);
+?&gt;
+</code></pre>
+
+<p>2&#46; <strong>/app/config/const.php</strong> に定義したい定数を追加する</p>
+
+<pre><code>// /app/config/const.php
+define(’USO’,'800’);
+</code></pre>
+
+<p>これで全ファイルから定数USOを呼び出せるようになっています。</p>
+
+<h3 id="連想配列で定義する方法:40b449d6a266142180bc2f169853d920">連想配列で定義する方法</h3>
+
+<p>1&#46; app/config/ 配下に、任意のコンフィグファイルを作成します。ここでは <strong>hige.php</strong> とします。</p>
+
+<pre><code>// app/config/hige.php
+&lt;?php
+$config[&quot;Band1&quot;] = array(
+    &quot;name&quot;  =&gt; &quot;Thelonious Monk Quartet&quot;,
+    &quot;piano&quot; =&gt; &quot;Thelonious Monk&quot;,
+    &quot;sax&quot;   =&gt; &quot;Charlie Rouse&quot;,
+    &quot;bass&quot;  =&gt; &quot;Larry Gales&quot;,
+    &quot;drums&quot; =&gt; &quot;Ben Riley&quot;,
+);
+
+$config[&quot;Band2&quot;] = array(
+    &quot;name&quot;      =&gt; &quot;Miles Davis Quintet&quot;,
+    &quot;trumpet&quot;   =&gt; &quot;Miles Davis&quot;,
+    &quot;sax&quot;       =&gt; &quot;John Coltrane&quot;,
+    &quot;piano&quot;     =&gt; &quot;Wynton Kelly&quot;,
+    &quot;bass&quot;      =&gt; &quot;Paul Chambers&quot;,
+    &quot;drums&quot;     =&gt; &quot;Jimmy Cobb&quot;,
+);
+
+?&gt;
+</code></pre>
+
+<p>2&#46; <strong>app/config/bootstrap.php</strong> に下の行を追加します。</p>
+
+<pre><code>Configure::load(&quot;hige&quot;);
+</code></pre>
+
+<p>3&#46; これで任意のスクリプトから設定した値を読み込めるようになりました。例えばコンソールに出力する場合、下記のようになります。</p>
+
+<pre><code>// app/vendors/shells/moja.php
+&lt;?php
+    // エントリーポイント
+    function main() {
+        $this-&gt;out(Configure::read(&quot;Band1&quot;));
+        $this-&gt;out(Configure::read(&quot;Band1.name&quot;));
+
+        $this-&gt;hr();
+
+        $this-&gt;out(Configure::read(&quot;Band2&quot;));
+        $this-&gt;out(Configure::read(&quot;Band2.name&quot;));
+    }
+}
+?&gt;
+</code></pre>
+
+<p>出力結果</p>
+
+<pre><code>Thelonious Monk Quartet
+Thelonious Monk
+Charlie Rouse
+Larry Gales
+Ben Riley
+Thelonious Monk Quartet
+---------------------------------------------------------------
+Miles Davis Quintet
+Miles Davis
+John Coltrane
+Wynton Kelly
+Paul Chambers
+Jimmy Cobb
+Miles Davis Quintet
+</code></pre>
+
+<h3 id="参考:40b449d6a266142180bc2f169853d920">参考</h3>
+
+<ul>
+<li><a href="http://php.sunvisor.net/2008/01/configure.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://php.sunvisor.net/2008/01/configure.html', 'アプリケーション独自の設定情報(Configureクラス) &#8211; PHP学習日記']);" title="アプリケーション独自の設定情報(Configureクラス) - PHP学習日記">アプリケーション独自の設定情報(Configureクラス) &#8211; PHP学習日記</a></li>
+<li><a href="http://blog.ne2ma2.com/archives/154" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.ne2ma2.com/archives/154', '【CakePHP】独自の定数の書き方 | ねねとまつの小部屋']);" title="【CakePHP】独自の定数の書き方 | ねねとまつの小部屋">【CakePHP】独自の定数の書き方 | ねねとまつの小部屋</a></li>
+<li><a href="http://book.cakephp.org/ja/view/1565/Library-Classes" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1565/Library-Classes', 'ライブラリクラス :: 1.2から1.3への移行ガイド :: 付録 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="ライブラリクラス :: 1.2から1.3への移行ガイド :: 付録 :: マニュアル :: 1.3コレクション :: The Cookbook">ライブラリクラス :: 1.2から1.3への移行ガイド :: 付録 :: マニュアル :: 1.3コレクション :: The Cookbook</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

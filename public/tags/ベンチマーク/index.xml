@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ベンチマーク on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%83%99%E3%83%B3%E3%83%81%E3%83%9E%E3%83%BC%E3%82%AF/</link>
+    <description>Recent content in ベンチマーク on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 13 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%83%99%E3%83%B3%E3%83%81%E3%83%9E%E3%83%BC%E3%82%AF/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>McAfee MySQL Audit Plugin の負荷検証</title>
+      <link>http://1000k.github.io/2014/05/13/estimate-load-of-mcafee-mysql-audit-plugin/</link>
+      <pubDate>Tue, 13 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/13/estimate-load-of-mcafee-mysql-audit-plugin/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/?p=1837&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/?p=1837&#39;, &#39;前の記事&#39;]);&#34; &gt;前の記事&lt;/a&gt; で McAfee MySQL Audit Plugin を使うと簡単に監査ログが取れることを紹介しましたが、性能劣化はどれくらいあるのか心配になったので検証してみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;audit-プラグインの設定値:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;Audit プラグインの設定値&lt;/h2&gt;
+
+&lt;p&gt;以下の通り、ほぼインストールしたままの状態です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SHOW VARIABLES LIKE &#39;audit_%&#39;;
++---------------------------------+----------------------------+
+| Variable_name                   | Value                      |
++---------------------------------+----------------------------+
+| audit_checksum                  |                            |
+| audit_delay_cmds                |                            |
+| audit_delay_ms                  | 0                          |
+| audit_json_file                 | OFF                        | &amp;amp;lt;- Audit 有効時は ON にする
+| audit_json_file_flush           | OFF                        |
+| audit_json_file_sync            | 0                          |
+| audit_json_log_file             | mysql-audit.json           |
+| audit_json_socket               | OFF                        |
+| audit_json_socket_name          | /tmp/mysql-audit.json.sock |
+| audit_offsets                   |                            |
+| audit_offsets_by_version        | ON                         |
+| audit_record_cmds               |                            |
+| audit_record_objs               |                            |
+| audit_uninstall_plugin          | OFF                        |
+| audit_validate_checksum         | ON                         |
+| audit_validate_offsets_extended | ON                         |
+| audit_whitelist_users           |                            |
++---------------------------------+----------------------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ベンチマークの条件:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;ベンチマークの条件&lt;/h2&gt;
+
+&lt;p&gt;mysqlslap なら簡単にベンチマークが取れます。詳しい使い方は &lt;a href=&#34;http://blog.1000k.net/?p=1847&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/?p=1847&#39;, &#39;mysqlslap で MySQL の負荷テストをする方法&#39;]);&#34; &gt;mysqlslap で MySQL の負荷テストをする方法&lt;/a&gt; をご覧ください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysqlslap \
+  --no-defaults \
+  --concurrency=100 \
+  --iterations=5 \
+  --number-int-cols=2 \
+  --number-char-cols=3 \
+  --engine=innodb \
+  --auto-generate-sql \
+  --auto-generate-sql-add-autoincrement \
+  --auto-generate-sql-load-type=key \
+  --auto-generate-sql-write-number=1000 \
+  --number-of-queries=100000 \
+  --host=localhost \
+  --port=3306 \
+  --user=root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;結果:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;結果&lt;/h2&gt;
+
+&lt;h3 id=&#34;audit-無効時:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;Audit 無効時&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;Running for engine innodb
+Average number of seconds to run all queries: 15.935 seconds
+Minimum number of seconds to run all queries: 15.487 seconds
+Maximum number of seconds to run all queries: 16.717 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;audit-有効時:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;Audit 有効時&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;Running for engine innodb
+Average number of seconds to run all queries: 19.083 seconds
+Minimum number of seconds to run all queries: 18.763 seconds
+Maximum number of seconds to run all queries: 19.902 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;若干の性能劣化 (10%～20% 程度) が見られます。カツカツのシステムで使う場合は注意が必要かもしれません。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>mysqlslap で MySQL の負荷テストをする方法</title>
+      <link>http://1000k.github.io/2014/05/13/load-test-with-mysqlslap/</link>
+      <pubDate>Tue, 13 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/13/load-test-with-mysqlslap/</guid>
+      <description>
+
+&lt;p&gt;mysqlslap は MySQL の負荷テストに使えるツールです。MySQL &amp;gt;= 5.1.4 からはデフォルトで提供されています。&lt;/p&gt;
+
+&lt;p&gt;テスト中は &lt;code&gt;mysqlslap&lt;/code&gt; という DB を自動で作って、そこにクエリを投げまくります。&lt;/p&gt;
+
+&lt;p&gt;以下に基本的な使い方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:c586e0247ceee441e4b1b150e9d62fd0&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;mysqlslap -?&lt;/code&gt; で詳しいヘルプが見られます。典型的な例は下記。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysqlslap \
+  --no-defaults \
+  --concurrency=50 \
+  --iterations=1 \
+  --number-int-cols=2 \
+  --number-char-cols=3 \
+  --engine=innodb \
+  --auto-generate-sql \
+  --auto-generate-sql-add-autoincrement \
+  --auto-generate-sql-load-type=key \
+  --auto-generate-sql-write-number=1000 \
+  --number-of-queries=100000 \
+  --host=localhost \
+  --port=3306 \
+  --user=root \
+  --csv=/tmp/bench_result.csv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;パラメータ&lt;/th&gt;
+&lt;th&gt;意味&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;no-defaults&lt;/td&gt;
+&lt;td&gt;my.cnf に書かれたデフォルト値を無視する。このオプションは先頭に付ける必要がある&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;concurrency&lt;/td&gt;
+&lt;td&gt;同時に接続してくるクライアントの数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;iterations&lt;/td&gt;
+&lt;td&gt;テストの試行回数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;number-int-cols&lt;/td&gt;
+&lt;td&gt;テストテーブルに作る INT 型カラムの数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;number-char-cols&lt;/td&gt;
+&lt;td&gt;テストテーブルに作る VARCHAR 型カラムの数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;engine&lt;/td&gt;
+&lt;td&gt;使用する DB エンジン&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql&lt;/td&gt;
+&lt;td&gt;テストで使用する SQL 文を自動で生成する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql-add-autoincrement&lt;/td&gt;
+&lt;td&gt;自動で作ったテーブルに AUTO_INCREMENT カラムを追加する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql-load-type&lt;/td&gt;
+&lt;td&gt;クエリのタイプ。`[mixed&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql-write-number&lt;/td&gt;
+&lt;td&gt;スレッド毎の INSERT 文の発行数。デフォルトは 100&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;number-of-queries&lt;/td&gt;
+&lt;td&gt;各クライアントが投げるクエリの上限数。正確にこの値にはならない&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;host&lt;/td&gt;
+&lt;td&gt;ホスト&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;port&lt;/td&gt;
+&lt;td&gt;ポート番号&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;user&lt;/td&gt;
+&lt;td&gt;ベンチマークを実行するユーザー。DB 作成権限が無いユーザーを指定するとテストできないので注意！&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;csv&lt;/td&gt;
+&lt;td&gt;結果を CSV 形式で取得したい時は、ここに出力先のパスを書く&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;結果は以下のように出力されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Benchmark
+        Running for engine innodb
+        Average number of seconds to run all queries: 16.086 seconds
+        Minimum number of seconds to run all queries: 16.086 seconds
+        Maximum number of seconds to run all queries: 16.086 seconds
+        Number of clients running queries: 50
+        Average number of queries per client: 2000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:c586e0247ceee441e4b1b150e9d62fd0&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション&#39;]);&#34; &gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/tetsuyai/20110209/1297253834&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/tetsuyai/20110209/1297253834&#39;, &#39;MySQL標準 負荷測定ツール mysqlslap &amp;#8211; 祈れ、そして働け ～ Ora et labora&#39;]);&#34; &gt;MySQL標準 負荷測定ツール mysqlslap &amp;#8211; 祈れ、そして働け ～ Ora et labora&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

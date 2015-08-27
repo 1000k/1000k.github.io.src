@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Unittest on 1000g</title>
+    <link>http://1000k.github.io/tags/unittest/</link>
+    <description>Recent content in Unittest on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 30 May 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/unittest/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Phactoryで単数形のテーブルをテストする</title>
+      <link>http://1000k.github.io/2012/05/30/how-to-test-singular-named-table-by-phacory/</link>
+      <pubDate>Wed, 30 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/05/30/how-to-test-singular-named-table-by-phacory/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://phactory.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phactory.org/&#39;, &#39;Phactory&#39;]);&#34; title=&#34;Phactory - A Database Factory for PHP Unit Tests&#34;&gt;Phactory&lt;/a&gt;はRoRライクな設計思想のため、テーブル名を勝手に複数形に変換（pluralize）します。&lt;/p&gt;
+
+&lt;p&gt;このせいで単数形のテーブル名がテストできない場合、下記のようにdefine()の前に&lt;strong&gt;setInflector()&lt;/strong&gt;を使えば直ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// dtb_shopというテーブルをテストしたい
+    protected function setUp() {
+        $pdo = new PDO(DB_TYPE . &#39;:dbname=&#39; . DB_NAME . &#39;;host=&#39; . DB_SERVER . &#39;;port=&#39; . DB_PORT, DB_USER, DB_PASSWORD);
+        $pdo-&amp;gt;exec(&#39;CREATE TABLE dtb_shop (shop_id INTEGER, shop_key TEXT)&#39;);
+
+        Phactory::setConnection($pdo);
+        Phactory::reset();
+        Phactory::setInflection(&#39;dtb_shop&#39;, &#39;dtb_shop&#39;);    // 勝手に「dtb_shops」にされるのを防ぐ
+        Phactory::define(&#39;dtb_shop&#39;, array(&#39;shop_id&#39; =&amp;gt; &#39;$n&#39;, &#39;shop_key&#39; =&amp;gt; &#39;test shop $n&#39;));
+
+        $this-&amp;gt;object = new ShopModel;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;https://github.com/chriskite/phactory/issues/3&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/chriskite/phactory/issues/3&#39;, &#39;Issue #3: Can&amp;#8217;t create singular tables · chriskite/phactory · GitHub&#39;]);&#34; title=&#34;Issue #3: Can&#39;t create singular tables · chriskite/phactory · GitHub&#34;&gt;Issue #3: Can&amp;#8217;t create singular tables · chriskite/phactory · GitHub&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>スタブとモック</title>
+      <link>http://1000k.github.io/2011/04/07/what-is-stub-and-mock/</link>
+      <pubDate>Thu, 07 Apr 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/04/07/what-is-stub-and-mock/</guid>
+      <description>
+
+&lt;p&gt;今までモックをほとんど使ったことがなかったので、勉強してみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;スタブとは:64967b015e52257cb9a199be0513508e&#34;&gt;スタブとは&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%96&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%96&#39;, &#39;スタブ &amp;#8211; Wikipedia&#39;]);&#34; title=&#34;スタブ - Wikipedia&#34;&gt;スタブ &amp;#8211; Wikipedia&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;呼び出す側（上位）のモジュールを検査する場合に、呼び出される側（下位）の部品モジュールが未完成であることがある。このとき、呼び出される側の部品モジュールの代用とする仮のモジュールを、「スタブ」と呼ぶ。スタブモジュールは設計仕様に定義されている全ての関数を実装してあるが、関数内部は正規の動作をする事無く適当な定数を返すというような作りになっている事が多い。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;「必ずfalseを返すスタブ」「ランダムな整数を返すスタブ」なんて言葉はよく聞きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;モックとは:64967b015e52257cb9a199be0513508e&#34;&gt;モックとは&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://d.hatena.ne.jp/sekom/20090702/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/sekom/20090702/p1&#39;, &#39;スタブとモックの違い &amp;#8211; ソフト開発お仕事メモ&#39;]);&#34; title=&#34;スタブとモックの違い - ソフト開発お仕事メモ&#34;&gt;スタブとモックの違い &amp;#8211; ソフト開発お仕事メモ&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;モック戦略を使用する際には、3つの手順を踏むことになります。&lt;/p&gt;
+
+&lt;p&gt;| No | 手順名                  | 説明                                                                           |
+| &amp;ndash; | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- |
+| 1  | 期待値の設定               | モックオブジェクトに対して、メソッドが呼び出されるべき順序を記録します。その際に、期待される引数、モックオブジェクトのメソッドが返す戻り値も設定します。 |
+| 2  | テスト条件下でのモックオブジェクトの使用 | モックオブジェクトを使用したテストを実施します。                                                     |
+| 3  | 結果の検証                | モックオブジェクトに対し、期待されたとおりにモックオブジェクトが使用されたか問い合わせます。                               |&lt;/p&gt;
+
+&lt;h2 id=&#34;スタブやモックが必要になる理由:64967b015e52257cb9a199be0513508e&#34;&gt;スタブやモックが必要になる理由&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://www39.atwiki.jp/startruby/pages/23.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www39.atwiki.jp/startruby/pages/23.html&#39;, &#39;Start! Ruby &amp;#8211; RSpecの構文&#39;]);&#34; title=&#34;Start! Ruby - RSpecの構文&#34;&gt;Start! Ruby &amp;#8211; RSpecの構文&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;全てを「本物」でテストしようとすると、「全てが揃わないとテストできない」という本末転倒な事が起こりかねない。&lt;/li&gt;
+&lt;li&gt;たとえば時刻に関するオブジェクトのように、システムの構成によって変化してしまうオブジェクトがあると、テスト環境によって差異ができてしまう。&lt;/li&gt;
+&lt;li&gt;UnitTestが大きな問題に移ると段々と結合テスト化してしまう、という問題がある。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;※ ただし、スタブ/モックを多用し過ぎると、今度はインタフェース不一致の発見を先送りにする、という状況にもなりかねない。このあたりはさじ加減が必要。&lt;/p&gt;
+
+&lt;h2 id=&#34;モックでできること:64967b015e52257cb9a199be0513508e&#34;&gt;モックでできること&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://gihyo.jp/dev/feature/01/php-test/0004&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gihyo.jp/dev/feature/01/php-test/0004&#39;, &#39;PHPUnit3で始めるユニットテスト：第4回　モックオブジェクトを使ったテスト｜gihyo.jp … 技術評論社&#39;]);&#34; title=&#34;PHPUnit3で始めるユニットテスト：第4回　モックオブジェクトを使ったテスト｜gihyo.jp … 技術評論社&#34;&gt;PHPUnit3で始めるユニットテスト：第4回　モックオブジェクトを使ったテスト｜gihyo.jp … 技術評論社&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;生成されるオブジェクトにメソッドを定義する&lt;/li&gt;
+&lt;li&gt;そのメソッドの振る舞いを指定する
+
+&lt;ul&gt;
+&lt;li&gt;実行回数の制約を設ける
+
+&lt;ul&gt;
+&lt;li&gt;たとえば「1回のみ呼び出される」や「0回以上呼び出される」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;メソッド名を指定する&lt;/li&gt;
+&lt;li&gt;具体的な振る舞いを記述する
+
+&lt;ul&gt;
+&lt;li&gt;メソッドの戻り値&lt;/li&gt;
+&lt;li&gt;メソッドが投げる例外&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;スタブとモックの違い:64967b015e52257cb9a199be0513508e&#34;&gt;スタブとモックの違い&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://www.ibm.com/developerworks/jp/web/library/wa-mockrails/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.ibm.com/developerworks/jp/web/library/wa-mockrails/index.html&#39;, &#39;Ruby on Rails でのモックとスタブの作成&#39;]);&#34; title=&#34;Ruby on Rails でのモックとスタブの作成&#34;&gt;Ruby on Rails でのモックとスタブの作成&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;「&lt;a href=&#34;http://d.hatena.ne.jp/devbankh/20100210&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/devbankh/20100210&#39;, &#39;モックとスタブの違い &amp;#8211; [lib]&#39;]);&#34; title=&#34;モックとスタブの違い - [lib]&#34;&gt;モックとスタブの違い &amp;#8211; [lib]&lt;/a&gt;」&lt;/p&gt;
+
+&lt;p&gt;モック・オブジェクトは一種のスタブです。モック・オブジェクトは、テスト対象のオブジェクトを使用するクライアント・コードを置き換えます。しかしモック・オブジェクトはそれ以上のことを行い、テスト対象のオブジェクトがクライアント・コードを実際にどう使うかを測定するのです。&lt;/p&gt;
+
+&lt;p&gt;インターフェースの使い方をテストする場合にはモックを、インターフェースの使い方をまったく気にしない場合にはスタブを使う必要があります。&lt;/p&gt;
+
+&lt;p&gt;モック・オブジェクトの作成は、スタブの作成とよく似ています。違いは、スタブは受動的であるということです。スタブは、スタブの作成対象のメソッドに対して呼び出しを行う実在のソリューションを単にシミュレーションするにすぎません。一方モックは能動的であり、モック・オブジェクトを使って行うその方法を実際にテストします。想定の動作と一致する方法でモックを使わないと、テストは失敗します。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://capsctrl.que.jp/kdmsnr/wiki/bliki/?TestDouble&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://capsctrl.que.jp/kdmsnr/wiki/bliki/?TestDouble&#39;, &#39;Martin Fowler&amp;#8217;s Bliki in Japanese &amp;#8211; テストダブル&#39;]);&#34; title=&#34;Martin Fowler&#39;s Bliki in Japanese - テストダブル&#34;&gt;Martin Fowler&amp;#8217;s Bliki in Japanese &amp;#8211; テストダブル&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;スタブは、テスト時の呼び出しに対して、あらかじめ用意された結果を返す。通常、テスト用にプログラムされたところ以外には応答しない。スタブは呼び出しの情報を記録することもある。例えば、Eメールゲートウェイスタブは「送られた」メッセージを記録するような場合だ。単に「送られた」メールの数を記録する場合もあるだろう。&lt;/p&gt;
+
+&lt;p&gt;モックは、エクスペクテーションが事前にプログラムされたものである。エクスペクテーションとは、受信する一連の呼び出しの仕様を表わしたものである。期待されない呼び出しが行なわれた場合は例外をスローする。また、テスト実行後の検証(verification)で、期待された呼び出しがすべてきちんと行われたかどうかを確認する。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP のコントローラを単純化するために例外を使う</title>
+      <link>http://1000k.github.io/2010/07/23/simplify-controller-by-exception/</link>
+      <pubDate>Fri, 23 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/23/simplify-controller-by-exception/</guid>
+      <description>&lt;p&gt;2009年6月12日の記事でだいぶ古いのですが、CakePHP のコードを改善する TIPS があったので訳してみました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions&#39;, &#39;Simplifying Controller logic with Exceptions | Mark Story&#39;]);&#34; title=&#34;Simplifying Controller logic with Exceptions | Mark Story&#34;&gt;Simplifying Controller logic with Exceptions | Mark Story&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;要約すると、&lt;strong&gt;「モデル内で例外を吐くようにすると、エラーコードが読みやすくなり、コントローラのテストもしやすくなるよ」&lt;/strong&gt;ということです。&lt;/p&gt;
+
+&lt;p&gt;以下、訳です。&lt;/p&gt;
+
+&lt;p&gt;増大するコードと格闘する日々・・・どうにかクリエイティブな方法で解決したい。そんな悩みを、モデルのメソッドから例外を投げる方法で解決しました。別にビックリするようなものではないです。ただfalseを返すより、ちょっと便利な点がいくつかあります。&lt;/p&gt;
+
+&lt;p&gt;第一に、if-elseを減らすことができます。第二に、エラーが起こる部分のソースにエラーメッセージを書くことができるので、何度も使うメソッドならエラーメッセージを重複させずに書くことができます。&lt;/p&gt;
+
+&lt;p&gt;例えば以下のメソッドは、リモートアドレスからリソースをダウンロードし、&lt;/p&gt;
+
+&lt;p&gt;ローカルファイルシステムとデータベースに記録するものです。&lt;em&gt;（訳注: ダウンロードの時点で失敗すると例外を、保存に成功するとtrueを、保存に失敗するとfalseを返します。）&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function downloadResource($url, $userId, $type = &#39;image&#39;) {
+    if (!isset($this-&amp;gt;_fetchMimes[$type])) {
+        throw new OutOfBoundsException(__(&#39;Invalid media type&#39;, true));
+    }
+    $this-&amp;gt;_loadSocket($url);
+    $resource = $this-&amp;gt;Socket-&amp;gt;get($url);
+    if (!isset($this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;])) {
+        throw new OutOfBoundsException(__(&#39;Submitted url has no Mime-Type&#39;, true));
+    }
+    $allowedContentTypes = $this-&amp;gt;_fetchMimes[$type];
+    if (!in_array($this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;], $allowedContentTypes)) {
+        throw new OutOfBoundsException(__(&#39;Submitted url has an invalid Mime-Type&#39;, true));
+    }
+    $newFile = array(
+        &#39;File&#39; =&amp;gt; array(
+            &#39;file&#39; =&amp;gt; $this-&amp;gt;_saveFetchedFile($resource, $url, $this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;]),
+            &#39;user_id&#39; =&amp;gt; $userId,
+            &#39;title&#39; =&amp;gt; $url,
+        )
+    );
+    $this-&amp;gt;create($newMedia);
+    if ($this-&amp;gt;save()) {
+        return true;
+    }
+    return false;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;見てわかる通り、起きてはならないことが起きた時には OutOfBoundsExceptions を投げています。最近のバージョンの PHP に含まれている SPL ライブラリには、便利なクラスが多数用意されています。もちろん自分で例外を作ることもできますが、たいていは組み込みの例外を使うだけで十分でしょう。&lt;/p&gt;
+
+&lt;p&gt;これを使えば、コントローラのメソッドをかなりスッキリさせることができます。何重もの if でチェックする必要が無くなります。また、シンプルでエラーの見通しも良いコードを書くことができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;try {
+    $this-&amp;gt;File-&amp;gt;downloadResource($this-&amp;gt;data[&#39;File&#39;][&#39;url&#39;], $this-&amp;gt;Auth-&amp;gt;user(&#39;id&#39;), &#39;image&#39;);
+    //do some additional file handling and data processing.
+
+    $this-&amp;gt;Session-&amp;gt;setFlash(__(&#39;File uploaded successfully&#39;, true));
+} catch(OutOfBoundsException $e) {
+    $this-&amp;gt;Session-&amp;gt;setFlash($e-&amp;gt;getMessage());
+}
+$this-&amp;gt;redirect(array(&#39;action&#39; =&amp;gt; &#39;index&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このメソッドの例外発生をテストするのは簡単です。assertFalse を使うのではなく、pass() と fail() を使えばいいのです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// (訳注) 不正なURLを送った時に例外が発生することをテストする
+try {
+    $this-&amp;gt;File-&amp;gt;downloadResource(&#39;http:/bogus.com/&#39;, 1, &#39;image&#39;);  // 間違ったURL
+    $this-&amp;gt;fail(&#39;No exception thrown with bogus arguments&#39;);
+} catch (Exception $e) {
+    $this-&amp;gt;pass(&#39;Exception thrown&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例外を使うと便利になることは多いです。だからと言って、false を返すタイプのメソッドすべてを例外を返すようにする必要はないでしょう。たとえばヘルパから例外を返すようにすると、満足より苦痛を感じることのほうが多くなるでしょう。&lt;/p&gt;
+
+&lt;p&gt;どんなツールもそうですが、正しく使えばメンテナンス性の良いコードを生み出すことができるのです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP コントローラからビューに渡る変数をアサーションする</title>
+      <link>http://1000k.github.io/2010/07/20/assert-vars-from-controller-to-view/</link>
+      <pubDate>Tue, 20 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/20/assert-vars-from-controller-to-view/</guid>
+      <description>
+
+&lt;p&gt;公式マニュアルの「&lt;a href=&#34;http://book.cakephp.org/ja/view/366/Testing-controllers&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/366/Testing-controllers&#39;, &#39;コントローラのテスト&#39;]);&#34; title=&#34;コントローラのテスト :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.2コレクション :: The Cookbook&#34;&gt;コントローラのテスト&lt;/a&gt;」では、ただ単に変数をdebugして吐いてるだけで一切アサーションをしていません。これってテストと言えるのでしょうか？&lt;/p&gt;
+
+&lt;p&gt;コントローラのメソッドが実行された後、仕様通りに値が入っているかチェックするにはどうすればいいでしょうか？&lt;/p&gt;
+
+&lt;p&gt;コントローラ内でsetされた変数は &lt;strong&gt;viewVars&lt;/strong&gt; というメンバ変数に格納されるようです。例えば、下記のようなコントローラがあった場合。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// app/controllers/usos_controller.php
+class UsosController extends AppController {
+    var $name = &#39;Usos&#39;;
+
+    function hige() {
+        $this-&amp;gt;set(&#39;moja&#39;, $this-&amp;gt;Uso-&amp;gt;find(&amp;quot;all&amp;quot;));
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをコントローラのテストクラスで取得するには下記のようにすれば良いです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// app/tests/cases/controllers/usos_controller.test.php
+&amp;lt;?php
+/* Usos Test cases generated on: 2010-07-16 16:07:53 : 1279264793*/
+App::import(&#39;Controller&#39;, &#39;Usos&#39;);
+
+class TestUsosController extends UsosController {
+    var $autoRender = false;
+
+    function redirect($url, $status = null, $exit = true) {
+        $this-&amp;gt;redirectUrl = $url;
+    }
+
+    function render($action = null, $layout = null, $file = null) {
+        $this-&amp;gt;renderedAction = $action;
+    }
+
+    function _stop($status = 0) {
+        $this-&amp;gt;stopped = $status;
+    }
+}
+
+
+class UsosControllerTestCase extends CakeTestCase {
+    var $fixtures = array(&#39;app.uso&#39;);
+
+    function startTest() {
+        $this-&amp;gt;Usos =&amp;amp;#038; new TestUsosController();
+        $this-&amp;gt;Usos-&amp;gt;constructClasses();
+    }
+
+    function endTest() {
+        unset($this-&amp;gt;Usos);
+        ClassRegistry::flush();
+    }
+
+    function testHige() {
+        $this-&amp;gt;Usos-&amp;gt;hige();
+        $result = $this-&amp;gt;Usos-&amp;gt;viewVars;     // Usos::viewVars に、set された値が格納されている
+        var_dump($result);
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力結果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array(1) {
+  [&amp;quot;moja&amp;quot;]=&amp;gt;
+  array(1) {
+    [0]=&amp;gt;
+    array(1) {
+      [&amp;quot;Uso&amp;quot;]=&amp;gt;
+      array(4) {
+        [&amp;quot;id&amp;quot;]=&amp;gt;
+        string(1) &amp;quot;1&amp;quot;
+        [&amp;quot;name&amp;quot;]=&amp;gt;
+        string(11) &amp;quot;Miles Davis&amp;quot;
+        [&amp;quot;created&amp;quot;]=&amp;gt;
+        string(19) &amp;quot;2010-07-16 15:00:49&amp;quot;
+        [&amp;quot;modified&amp;quot;]=&amp;gt;
+        string(19) &amp;quot;2010-07-16 15:00:49&amp;quot;
+      }
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;参考:b3a8ccee870fe281430f610f255f01b4&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case&#39;, &#39;Anatomy of a CakePHP Test Case | Mark Story&#39;]);&#34; title=&#34;Anatomy of a CakePHP Test Case | Mark Story&#34;&gt;Anatomy of a CakePHP Test Case | Mark Story&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way&#39;, &#39;Testing CakePHP Controllers the hard way | Mark Story&#39;]);&#34; title=&#34;Testing CakePHP Controllers the hard way | Mark Story&#34;&gt;Testing CakePHP Controllers the hard way | Mark Story&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031&#39;, &#39;Nabble &amp;#8211; CakePHP &amp;#8211; Getting viewVars set in a controller when using Mock objects during testing&#39;]);&#34; title=&#34;Nabble - CakePHP - Getting viewVars set in a controller when using Mock objects during testing&#34;&gt;Nabble &amp;#8211; CakePHP &amp;#8211; Getting viewVars set in a controller when using Mock objects during testing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP 単体テストで使うメソッドのコールバックの実行順序</title>
+      <link>http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/</link>
+      <pubDate>Fri, 16 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/</guid>
+      <description>
+
+&lt;p&gt;公式マニュアルだけではSimpleTestのコールバックの実行される順序がわからなかったので、調べた結果をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;下のようなコードを実行してみました。実際のテストメソッドは「testHige()」です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+App::import(&#39;Controller&#39;, &#39;Usos&#39;);
+
+class TestUsosController extends UsosController {
+    var $autoRender = false;
+
+    function redirect($url, $status = null, $exit = true) {
+        $this-&amp;gt;redirectUrl = $url;
+    }
+}
+
+class UsosControllerTestCase extends CakeTestCase {
+    var $fixtures = array(&#39;app.uso&#39;);
+
+    function startTest() {
+        echo(&amp;quot;startTest\n&amp;quot;);
+        $this-&amp;gt;Usos =&amp;amp;#038; new TestUsosController();
+        $this-&amp;gt;Usos-&amp;gt;constructClasses();
+    }
+
+    function endTest() {
+        echo(&amp;quot;endTest\n&amp;quot;);
+        unset($this-&amp;gt;Usos);
+        ClassRegistry::flush();
+    }
+
+    function start() {
+        echo(&amp;quot;start\n&amp;quot;);
+    }
+
+    function end() {
+        echo(&amp;quot;end\n&amp;quot;);
+    }
+
+    function startCase() {
+        echo(&amp;quot;startCase\n&amp;quot;);
+    }
+
+    function endCase() {
+        echo(&amp;quot;endCase\n&amp;quot;);
+    }
+
+    function before($method) {
+        echo($method . &amp;quot; before\n&amp;quot;);
+    }
+
+    function after($method) {
+        echo($method . &amp;quot; after\n&amp;quot;);
+    }
+
+    // 実際のテストメソッド
+    function testHige() {
+        echo(&amp;quot;testHige\n&amp;quot;);
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行結果は以下の通りです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;start before
+start
+start after
+startCase before
+startCase
+startCase after
+testHige before
+testHige
+testHige after
+endCase before
+endCase
+endCase after
+end before
+end
+end after
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大まかに書くと「start() → startCase() → testHige() → endCase() → end()」の順に実施され、それぞれのメソッドの前後にbefore($method) と after($method) が呼び出されるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:7c93c2bceb58597d643b29645d174b10&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods&#39;, &#39;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#39;]);&#34; title=&#34;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

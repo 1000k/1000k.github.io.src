@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> [CodeIgniter] Modelの使い方 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/05/24/usage-of-codeigniter-model/">[CodeIgniter] Modelの使い方</a></h2>
+        <div class="post-content">
+          
+
+<h1 id="modelの役割:9e420bce93e176a58a0a53cf159db0b1">Modelの役割</h1>
+
+<ul>
+<li>ControllerやViewから独立して、DBのデータの取り扱い(CRUD)だけに専念する</li>
+<li>CodeIgniterでは、Modelクラスを継承することで、直感的なDB操作メソッドが利用できる</li>
+</ul>
+
+<h1 id="簡単な例:9e420bce93e176a58a0a53cf159db0b1">簡単な例</h1>
+
+<p>下記は「Usersテーブルのデータを取得したり件数をカウントしたりするクラス」の例。 <strong>/system/application/models/users_model.php</strong>とする。</p>
+
+<pre><code>&lt;?php
+class Users_model extends Model {
+
+    function __construct() {
+        // ※コンストラクタでは必ず親クラスを継承する
+        parent::Model();
+
+        // database.php で定義したDBに接続する
+        $this-&gt;load-&gt;database();
+    }
+
+    function getAllUsers() {
+        $query = $this-&gt;db-&gt;get(&quot;users&quot;);
+
+        if($query-&gt;num_rows() &gt; 0) {
+            // 結果セットを連想配列として返す
+            return $query-&gt;result_array();
+        }
+    }
+
+    function getUsersWhere($field, $param) {
+        $this-&gt;db-&gt;where($field, $param);
+        $query = $this-&gt;db-&gt;get(&quot;users&quot;);
+        // 結果セットを連想配列として返す
+        return $ruery-&gt;result_array();
+    }
+
+    function getNumUsers() {
+        return $this-&gt;db-&gt;count_all(&quot;users&quot;);
+    }
+
+}
+/** End of PHP file */
+</code></pre>
+
+<p>データベースクラスの細かい実装は <a href="http://codeigniter.jp/user_guide_ja/database/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.jp/user_guide_ja/database/index.html', 'データベースクラス : CodeIgniter ユーザガイド 日本語版']);" title="データベースクラス : CodeIgniter ユーザガイド 日本語版">データベースクラス : CodeIgniter ユーザガイド 日本語版</a> を参照。以下に挙げるものはよく使うので覚えておいた方が良い。</p>
+
+<table>
+<thead>
+<tr>
+<th>クエリ</th>
+<th>意味</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>$this-&gt;db-&gt;get(&#8216;table_name&#8217;)</td>
+<td>table_nameテーブル内の全行を取得する</td>
+</tr>
+
+<tr>
+<td>$this-&gt;db-&gt;where($field,$param)</td>
+<td>SQLのWHERE句の要領で行を取得する (WHERE $field = $param)</td>
+</tr>
+
+<tr>
+<td>$this-&gt;db-&gt;count_all(&#8216;table_name&#8217;)</td>
+<td>table_nameテーブルの行数を取得する</td>
+</tr>
+
+<tr>
+<td>$query-&gt;result_array()</td>
+<td>結果セット(result set)を連想配列として返す</td>
+</tr>
+
+<tr>
+<td>$query-&gt;num_rows()</td>
+<td>結果セットの行数を返す</td>
+</tr>
+</tbody>
+</table>
+
+<p>このModelクラスのAPIを使うことで、Controllerから簡単にDBのデータを取得できる。</p>
+
+<h1 id="controllerからmodelのapiを呼び出す:9e420bce93e176a58a0a53cf159db0b1">ControllerからModelのAPIを呼び出す</h1>
+
+<p><strong>/system/application/controllers/Users.php</strong> を下記のようにすることで、上述のモデルで作成したAPIをロードできる。</p>
+
+<pre><code>&lt;?php
+class Users extends Controller {
+
+    function __construct() {
+        // ※コンストラクタ内では親クラスをロードするお約束
+        parent::Controller();
+        // Usersモデルをロードする
+        $this-&gt;load-&gt;model(&quot;users_model&quot;);
+    }
+
+    function index() {
+        // Usersモデルで先ほど作成したAPIを利用する
+        $data[&quot;users&quot;] = $this-&gt;user_model-&gt;getAllUsers();
+        $data[&quot;numusers&quot;] = $this-&gt;user_model-&gt;getNumUsers();
+
+        $this-&gt;load-&gt;view(&quot;users_view&quot;, $data);
+    }
+}
+/** End of PHP file */
+</code></pre>
+
+<h1 id="参考:9e420bce93e176a58a0a53cf159db0b1">参考</h1>
+
+<p><a href="http://www.devshed.com/c/a/PHP/Building-a-DatabaseDriven-Application-with-the-Code-Igniter-PHP-Framework/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.devshed.com/c/a/PHP/Building-a-DatabaseDriven-Application-with-the-Code-Igniter-PHP-Framework/', 'Building a Database-Driven Application with the Code Igniter PHP Framework']);" title="Building a Database-Driven Application with the Code Igniter PHP Framework">Building a Database-Driven Application with the Code Igniter PHP Framework</a></p>
+
+<p>（文字がクレイジーなほど小さくて読みづらいので、「PDF Version Of Article」を見るのがおすすめ）</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

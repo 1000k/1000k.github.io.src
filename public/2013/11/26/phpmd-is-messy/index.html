@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> PHPMD の頭がかなり messy &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/11/26/phpmd-is-messy/">PHPMD の頭がかなり messy</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="http://phpmd.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpmd.org/', 'PHPMD (PHP Mess Detector)']);" >PHPMD (PHP Mess Detector)</a> は、PHP のコードを静的解析して、潜在的なバグや無意味なブロックを発見してくれるツールです。</p>
+
+<p>が、しばしば問題ないブロックにもケチをつけてきます。</p>
+
+<p>たとえばこんなコード。</p>
+
+<pre><code>public function setUp() {
+    // 警告: Avoid using static access to class 'parent' in method 'setUp'.
+    parent::setUp();
+
+    $this-&gt;Account = ClassRegistry::init('Account');
+}
+</code></pre>
+
+<p>親クラスの setUp() メソッドを呼んだけで、「静的アクセスするな」と怒られます。じゃあどうやってオーバーライドすればいいんだよ、と思います。メンバ定数にアクセスしようと <code>self::</code> を使っても出ます。オブジェクト指向を否定してんのか。</p>
+
+<p><code>@SuppressWarnings</code> アノテーションをクラスの PHPDoc に書くことでこの警告は出なくなりますが、本当に間違った静的アクセスを行っていても無視されるようになってしまいます。困ったもんです。</p>
+
+<p>ほかにも、if-else を使うと下のような警告を出します。</p>
+
+<pre><code>public function step() {
+    if ($this-&gt;find('count') &amp;lt; 1) {
+        $this-&gt;foo();
+    } else {
+        // 警告: The method step uses an else expression. Else is never necessary and you can simplify the code to work without else.
+        $this-&gt;bar();
+    }
+</code></pre>
+
+<p>「else なんて必要ねえよ。else の必要ない書き方しろよ。」と言ってきます。言いたいことはわかりますが、リファクタリングした結果最もメンテナンス性が高くなるなら、if-else 構文を使っても全然問題ないはずです。else を使うだけで警告レベル High で糾弾するのはいかがなものでしょうか。</p>
+
+<h2 id="まとめ:fa9ca428d896ab32fcf9e86dc6eea620">まとめ</h2>
+
+<p>PHPMD はヒステリー気味なので、レポート結果をあまり深刻に受け取らないようにしましょう。</p>
+
+<h2 id="参考:fa9ca428d896ab32fcf9e86dc6eea620">参考</h2>
+
+<ul>
+<li><a href="http://phpmd.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpmd.org/', 'PHPMD &#8211; PHP Mess Detector']);" >PHPMD &#8211; PHP Mess Detector</a></li>
+<li><a href="http://stackoverflow.com/questions/18604179/phpmd-avoid-static-access-to-parent" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/18604179/phpmd-avoid-static-access-to-parent', 'php &#8211; PHPMD avoid static access to parent &#8211; Stack Overflow']);" >php &#8211; PHPMD avoid static access to parent &#8211; Stack Overflow</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

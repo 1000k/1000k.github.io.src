@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>改造 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E6%94%B9%E9%80%A0/</link>
+    <description>Recent content in 改造 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 05 Jul 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E6%94%B9%E9%80%A0/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>fixtureをディレクトリに分けて管理する</title>
+      <link>http://1000k.github.io/2011/07/05/mange-fixtures-in-several-directories/</link>
+      <pubDate>Tue, 05 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/07/05/mange-fixtures-in-several-directories/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;(2011/07/15 Update) 7/13以前のコードに誤りがあり、正しく動作しなかったので修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:06041edaaf4ad9c158653456ce78f617&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;CakePHPの規則に従うと、フィクスチャは /app/test/fixtures/ ディレクトリにすべて入れなければなりません。この場合、「同じモデルを使うけど、テストケース毎に異なるフィクスチャを代入したい」という要望をかなえるのが難しいです。&lt;/p&gt;
+
+&lt;p&gt;例えば、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Hige コントローラー&lt;/li&gt;
+&lt;li&gt;Moja コントローラー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;どちらも同じ Uso モデルを使う場合を考えます。&lt;/p&gt;
+
+&lt;p&gt;それぞれで違うフィクスチャを使いたくても、Uso モデルのフィクスチャは uso_fixture.php の1個です。フィクスチャの値を両方のテストケースで使えるようにするのは難しく、まして複数人でテスト設計するのは困難です。&lt;/p&gt;
+
+&lt;p&gt;そこで、それぞれのコントローラーから呼び出すフィクスチャを&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;/app/test/fixtures/hige/uso_fixture.php&lt;/li&gt;
+&lt;li&gt;/app/test/fixtures/moja/uso_fixture.php&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;と使い分けられるようにする方法を考えました。&lt;/p&gt;
+
+&lt;h2 id=&#34;やり方:06041edaaf4ad9c158653456ce78f617&#34;&gt;やり方&lt;/h2&gt;
+
+&lt;p&gt;CakeTestCase を拡張した MyCakeTestCase を作成し、その中で _loadFixtures をオーバーライドします。&lt;/p&gt;
+
+&lt;p&gt;なお、参考にしたバージョンは CakePHP 1.3.10 です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;/app/libs/my_cake_test_case.php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+/**
+ * Extension of CakeTestCase Class
+ *
+ * @author  $Author: senge.keiyo $
+ * @version $id$
+ */
+class MyCakeTestCase extends CakeTestCase {
+
+    /**
+     * Load fixtures specified in var $fixtures.
+     *
+     * fixtureディレクトリ配下の任意のディレクトリにフィクスチャを配置できるよう拡張。
+     *
+     * 例えば $fixtures に &#39;app.unit_test.uso&#39; と指定すると、
+     * /app/tests/fixtures/unit_test/uso_fixture.php をロードできる。
+     *
+     * @author senda.keijiro
+     * @return void
+     * @access protected
+     */
+    function _loadFixtures() {
+        if (!isset($this-&amp;gt;fixtures) || empty($this-&amp;gt;fixtures)) {
+            return;
+        }
+
+        if (!is_array($this-&amp;gt;fixtures)) {
+            $this-&amp;gt;fixtures = array_map(&#39;trim&#39;, explode(&#39;,&#39;, $this-&amp;gt;fixtures));
+        }
+
+        $this-&amp;gt;_fixtures = array();
+
+        foreach ($this-&amp;gt;fixtures as $index =&amp;gt; $fixture) {
+            $fixtureFile = null;
+            $fixturePaths = null;
+
+            if (strpos($fixture, &#39;core.&#39;) === 0) {
+                $fixture = substr($fixture, strlen(&#39;core.&#39;));
+                foreach (App::core(&#39;cake&#39;) as $key =&amp;gt; $path) {
+                    $fixturePaths[] = $path . &#39;tests&#39; . DS . &#39;fixtures&#39;;
+                }
+            } elseif (strpos($fixture, &#39;app.&#39;) === 0) {
+                // MODIFIED
+                // app.unittest.plan が来たら /fixtures/unittest/plan_fixtures.php
+                // をロードするようにする
+                $parts = explode(&#39;.&#39;, $fixture);
+                $fixture = $parts[count($parts) - 1];
+
+                array_shift($parts);
+                array_pop($parts);
+                $path = implode(DS, $parts);
+
+                $fixturePaths = array(
+                    TESTS . &#39;fixtures&#39; . DS . $path,
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            } elseif (strpos($fixture, &#39;plugin.&#39;) === 0) {
+                $parts = explode(&#39;.&#39;, $fixture, 3);
+                $pluginName = $parts[1];
+                $fixture = $parts[2];
+                $fixturePaths = array(
+                    App::pluginPath($pluginName) . &#39;tests&#39; . DS . &#39;fixtures&#39;,
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            } else {
+                $fixturePaths = array(
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;,
+                    TEST_CAKE_CORE_INCLUDE_PATH . DS . &#39;cake&#39; . DS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            }
+
+            foreach ($fixturePaths as $path) {
+                if (is_readable($path . DS . $fixture . &#39;_fixture.php&#39;)) {
+                    $fixtureFile = $path . DS . $fixture . &#39;_fixture.php&#39;;
+                    break;
+                }
+            }
+
+            if (isset($fixtureFile)) {
+                require_once($fixtureFile);
+                $fixtureClass = Inflector::camelize($fixture) . &#39;Fixture&#39;;
+                $this-&amp;gt;_fixtures[$this-&amp;gt;fixtures[$index]] =&amp;amp;#038; new $fixtureClass($this-&amp;gt;db);
+                $this-&amp;gt;_fixtureClassMap[Inflector::camelize($fixture)] = $this-&amp;gt;fixtures[$index];
+            }
+        }
+
+        if (empty($this-&amp;gt;_fixtures)) {
+            unset($this-&amp;gt;_fixtures);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとはテストケースでこのクラスを呼び出してやればOKです。&lt;/p&gt;
+
+&lt;p&gt;**/app/tests/cases/controllers/higes_controller.test.php**&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+App::import(&#39;Model&#39;, &#39;Uso&#39;);
+App::import(&#39;Lib&#39;, &#39;MyCakeTestCase&#39;);
+
+class HigesControllerTestCase extends MyCakeTestCase {
+    var $fixtures = array(
+        &#39;app.hige.uso&#39;      // /app/test/fixtures/hige/uso_fixture.php がロードされる
+    );
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;副作用:06041edaaf4ad9c158653456ce78f617&#34;&gt;副作用&lt;/h2&gt;
+
+&lt;p&gt;テストケースで「App::import(&amp;#8216;Lib&amp;#8217;, &amp;#8216;MyCakeTestCase&amp;#8217;);」すると、なぜかMyCakeTestCaseもテスト対象になるらしく、テスト結果の「n/n test cases complete」の値が1増えます。&lt;/p&gt;
+
+&lt;p&gt;テスト結果のGreen/Redには影響しないので、無視してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:06041edaaf4ad9c158653456ce78f617&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#39;, &#39;App::import() は凄い &amp;#8211; 24時間CakePHP&#39;]);&#34; title=&#34;App::import() は凄い - 24時間CakePHP&#34;&gt;App::import() は凄い &amp;#8211; 24時間CakePHP&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;本当はApp::importだけでできれば一番いいんですけどね。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

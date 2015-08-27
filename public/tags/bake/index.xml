@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bake on 1000g</title>
+    <link>http://1000k.github.io/tags/bake/</link>
+    <description>Recent content in Bake on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 05 Nov 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/bake/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CakePHPでいわれのない「Missing database table」エラーを直すには</title>
+      <link>http://1000k.github.io/2010/11/05/missing-database-table-error-in-cakephp/</link>
+      <pubDate>Fri, 05 Nov 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/11/05/missing-database-table-error-in-cakephp/</guid>
+      <description>&lt;p&gt;モデルの名前を修正して、再度Bakeしようとすると以下のようなエラーが。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Error: Missing database table &#39;people&#39; for model &#39;Person&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「people」テーブルはさっきDBから消したので、存在していません。いったい何を見てエラーを出しているのか。&lt;/p&gt;
+
+&lt;p&gt;Googleでエラーメッセージを検索すると、「&lt;strong&gt;/app/tmp/cache/&lt;/strong&gt;配下のキャッシュを消せば直る」という記事が。さっそく消して見るも、やはり同じエラーが出ました。&lt;/p&gt;
+
+&lt;p&gt;思い切って &lt;strong&gt;/app/models&lt;/strong&gt;配下にあるモデルをすべて消したところ、無事bakeができるようになりました。&lt;/p&gt;
+
+&lt;p&gt;作成済みのモデルも見てリレーションを判別していたのでしょうか？何という想定外な仕様。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

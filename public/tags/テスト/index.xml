@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>テスト on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%83%86%E3%82%B9%E3%83%88/</link>
+    <description>Recent content in テスト on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 22 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%83%86%E3%82%B9%E3%83%88/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Protractor が動かなくてハマった</title>
+      <link>http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/</link>
+      <pubDate>Thu, 22 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/angular/angular-seed&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/angular/angular-seed&#39;, &#39;angular-seed&#39;]);&#34; &gt;angular-seed&lt;/a&gt; を使って Angular.js の開発環境を作成していたのですが、どうにもこうにも e2e テストが動かなくてハマりました。&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージは以下のとおり。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm run protractor
+
+&amp;gt; angular-seed@0.0.0 preprotractor /var/www
+&amp;gt; npm run update-webdriver
+
+
+&amp;gt; angular-seed@0.0.0 preupdate-webdriver /var/www
+&amp;gt; npm install
+
+
+&amp;gt; angular-seed@0.0.0 postinstall /var/www
+&amp;gt; bower install
+
+
+&amp;gt; angular-seed@0.0.0 update-webdriver /var/www
+&amp;gt; webdriver-manager update
+
+selenium standalone is up to date.
+chromedriver is up to date.
+
+&amp;gt; angular-seed@0.0.0 protractor /var/www
+&amp;gt; protractor test/protractor-conf.js
+
+
+------------------------------------
+PID: 2314 (capability: chrome #1)
+------------------------------------
+
+Starting selenium standalone server...
+
+events.js:72
+        throw er; // Unhandled &#39;error&#39; event
+              ^
+Error: spawn ENOENT
+    at errnoException (child_process.js:998:11)
+    at Process.ChildProcess._handle.onexit (child_process.js:789:34)
+[launcher] Runner Process Exited With Error Code: 8
+
+npm ERR! angular-seed@0.0.0 protractor: `protractor test/protractor-conf.js`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the angular-seed@0.0.0 protractor script.
+npm ERR! This is most likely a problem with the angular-seed package,
+npm ERR! not with npm itself.
+npm ERR! Tell the author that this fails on your system:
+npm ERR!     protractor test/protractor-conf.js
+npm ERR! You can get their info via:
+npm ERR!     npm owner ls angular-seed
+npm ERR! There is likely additional logging output above.
+npm ERR! System Linux 3.13.0-24-generic
+npm ERR! command &amp;quot;node&amp;quot; &amp;quot;/usr/bin/npm&amp;quot; &amp;quot;run&amp;quot; &amp;quot;protractor&amp;quot;
+npm ERR! cwd /var/www
+npm ERR! node -v v0.10.28
+npm ERR! npm -v 1.4.10
+npm ERR! code ELIFECYCLE
+npm ERR!
+npm ERR! Additional logging details can be found in:
+npm ERR!     /var/www/npm-debug.log
+npm ERR! not ok code 0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;code ELIFECYCLE&lt;/code&gt; が何を意味しているのかさっぱりわからず途方に暮れていましたが、結局のところ Java に PATH が通っていなかったのが原因だったようです。&lt;/p&gt;
+
+&lt;p&gt;e2e テストは内部で Selenium Standalone Server を呼んでいますが、そこに Java が必要でした。&lt;/p&gt;
+
+&lt;p&gt;単純に OpenJDK をパッケージインストールするだけで解決しました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo apt-get install openjdk-7-jre-headless
+$ java -version
+(バージョンが表示されれば PATH が通ってるので OK)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Node.js はデバッグメッセージが雑なことが多いので苦手です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:44911033301877b7be87059dd5b5c5f6&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014&#39;, &#39;angularjs &amp;#8211; How to run protractor? &amp;#8211; Stack Overflow&#39;]);&#34; &gt;angularjs &amp;#8211; How to run protractor? &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHPUnit の Expectation を簡潔に書く TIPS</title>
+      <link>http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/</link>
+      <pubDate>Tue, 24 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit の小ネタです。&lt;/p&gt;
+
+&lt;p&gt;PHPUnit でモックを使ったテストケースを書くと、以下のように記述量が多くなってうんざりします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+class FooClassTest extends PHPUnit_Framework_TestCase {
+    /**
+     * @covers FooClass::doSomething
+     */
+    public function testDoSomething() {
+        // FooClass が依存している BarClass のモックを作る。
+        // 何もしないように、__construct() と __clone() は無効化しておく。
+        $mockBar = $this-&amp;gt;getMockBuilder(&#39;BarClass&#39;)
+            -&amp;gt;disableOriginalConstructor()
+            -&amp;gt;disableOriginalClone()
+            -&amp;gt;getMock();
+
+        // BarClass::barMethod のモックの挙動を変える。
+        $mockBar-&amp;gt;expect($this-&amp;gt;any())
+            -&amp;gt;method(&#39;barMethod&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(true));
+
+        $object = new FooClass($mockBar);
+
+        $this-&amp;gt;assertTrue($object-&amp;gt;doSomething());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;長い、書きづらい、読みづらい。こんなテストケース、2つ以上書きたくないですね。もっと楽に書くための TIPS をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;まず、何もしない「プレーンな」モックオブジェクトを作るメソッドを作りましょう。&lt;code&gt;PHPUnit_Framework_TestCase&lt;/code&gt; を継承した &lt;code&gt;MyTestCase&lt;/code&gt; に実装してやります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class MyTestCase extends PHPUnit_Framework_TestCase {
+
+    /**
+     * 元のクラスが完全に何もしないよう擬装したモックを作成する。
+     *
+     * - コンストラクタが無効
+     * - クローンコンストラクタが無効
+     *
+     * @param string $class_name
+     * @return mixed 指定したクラスのモック
+     * @throws InvalidArgumentException 指定したクラス名が見つからない場合
+     */
+    protected function _getPlainMock($class_name) {
+        if (!class_exists($class_name)) {
+            throw new InvalidArgumentException(&amp;quot;{$class_name} does not exist.&amp;quot;);
+        }
+
+        return $this-&amp;gt;getMockBuilder($class_name)
+            -&amp;gt;disableOriginalConstructor()
+            -&amp;gt;disableOriginalClone()
+            -&amp;gt;getMock();
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、PHPUnit の Expectation はメソッドチェーンで連続して指定できます (&amp;#8220;-&amp;gt;&amp;#8221; 演算子で繋げて書ける) が、そもそも記述量が多いです。いちいち this this 書くのも煩わしい。&lt;/p&gt;
+
+&lt;p&gt;そこで、Expectation をセットするためのメソッドを作ってやると楽になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+    /**
+     * モックオブジェクトに Expectation を設定する。
+     *
+     * @param Object &amp;amp;#038;$mock モックオブジェクト
+     * @param string $matcher マッチャー ([any|once|never|...])
+     * @param string $method メソッド名
+     * @param mixed $return_value 期待する戻り値
+     */
+    protected function _setExpectation(&amp;amp;#038;$mock, $matcher, $method, $return_value = null) {
+        $mock-&amp;gt;expects($this-&amp;gt;$matcher())
+            -&amp;gt;method($method)
+            -&amp;gt;will($this-&amp;gt;returnValue($return_value));
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを使うと、一番最初のテストケースは以下のように書き直せます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require_once &#39;MyTestCase.php&#39;;
+
+class FooClassTest extends MyTestCase {
+    /**
+     * @covers FooClass::doSomething
+     * @test
+     */
+    function doSomething() {
+        $mockBar = $this-&amp;gt;_getPlainMock(&#39;BarClass&#39;)
+        $this-&amp;gt;_setExpectation($mockBar, &#39;any&#39;, &#39;barMethod&#39;, true);
+
+        $object = new FooClass($mockBar);
+
+        $this-&amp;gt;assertTrue($object-&amp;gt;doSomething());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単になりましたね！9行もあったコードが4行に減りました。&lt;/p&gt;
+
+&lt;p&gt;ちなみに、さり気なくテストケースの &lt;code&gt;public&lt;/code&gt; は削除しています。PHP の仕様上、public なメソッドはわざわざそれを書く必要がありません。&lt;/p&gt;
+
+&lt;p&gt;また、PHPDoc 部分に &lt;code&gt;@test&lt;/code&gt; アノテーションを付けると、メソッド名を &lt;code&gt;test&lt;/code&gt; で始めなくてもテストケースとして認識されるようになります。私はこの方が読みやすいので、最近はこう書くことが多いです。&lt;/p&gt;
+
+&lt;p&gt;こういう改善をしても、Ruby に慣れているとまだ長く感じます。「$」「&amp;#8217;」「&amp;gt;」などの記号を打つのも煩わしいです。Ruby 使いてえなあ。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:66eb9e16e3cbfb7a24c972ec7c7d6f12&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://phpunit.de/manual/3.8/ja/test-doubles.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpunit.de/manual/3.8/ja/test-doubles.html&#39;, &#39;PHPUnit 公式マニュアル &gt; 第10章 テストダブル&amp;rsquo;]);&amp;rdquo; &amp;gt;PHPUnit 公式マニュアル &amp;gt; 第10章 テストダブル&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://phpunit.de/manual/3.8/ja/appendixes.annotations.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpunit.de/manual/3.8/ja/appendixes.annotations.html&#39;, &#39;付録B アノテーション&#39;]);&#34; &gt;付録B アノテーション&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>vfsStream の使い方</title>
+      <link>http://1000k.github.io/2013/03/27/usage-of-vfsstream/</link>
+      <pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/27/usage-of-vfsstream/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit でファイルシステムのテストを行うとき便利な &lt;a href=&#34;http://vfs.bovigo.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://vfs.bovigo.org/&#39;, &#39;vfsStream&#39;]);&#34; &gt;vfsStream&lt;/a&gt; ですが、簡単なサンプルがあまり無かったので書いてみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;vfsstream-とは:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;vfsStream とは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ファイルの読み書きをテストする時に使うフレームワーク。&lt;/li&gt;
+&lt;li&gt;仮想ファイルシステムを作成し、その中でディレクトリやファイルを操作できる。
+
+&lt;ul&gt;
+&lt;li&gt;実ファイルシステム: &lt;em&gt;file://&amp;#8230;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;仮想ファイルシステム: &lt;em&gt;vfs://&amp;#8230;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;実ファイルを作成せずにテストできるので、テストファイルが散らばる可能性が無く、前回のテストのゴミを意識せずに済む。&lt;/li&gt;
+&lt;li&gt;ディレクトリやファイルの権限/ユーザー/オーナーも再現可能。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール方法:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;インストール方法&lt;/h2&gt;
+
+&lt;p&gt;詳しくは以前書いた &lt;a href=&#34;http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/&#39;, &#39;vfsStreamをインストールする | 1000g&#39;]);&#34; &gt;vfsStreamをインストールする | 1000g&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h3 id=&#34;php-5-3-の場合:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;PHP &amp;lt; 5.3 の場合&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pear channel-discover pear.bovigo.org
+$ pear install bovigo/vfsStream-beta
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;php-5-3-の場合-1:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;PHP &amp;gt;= 5.3 の場合&lt;/h3&gt;
+
+&lt;p&gt;composer.json に以下のように書く。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;mikey179/vfsStream&amp;quot;: &amp;quot;v1.1.0&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用可能なバージョンは &lt;a href=&#34;https://packagist.org/packages/mikey179/vfsStream&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://packagist.org/packages/mikey179/vfsStream&#39;, &#39;mikey179/vfsStream &amp;#8211; Packagist&#39;]);&#34; &gt;mikey179/vfsStream &amp;#8211; Packagist&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h2 id=&#34;サンプルコード:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;サンプルコード&lt;/h2&gt;
+
+&lt;p&gt;単純にファイルにテキストを追記するだけのロガーをテストしてみます。&lt;/p&gt;
+
+&lt;p&gt;なお、vfsStream 0.12 を利用しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Logger.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Class Logger {
+  public static function log($str, $path) {
+    return file_put_contents($path, $str);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;LoggerTest.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require_once &#39;Logger.php&#39;;
+require_once &#39;vfsStream/vfsStream.php&#39;;
+
+class LoggerTest extends PHPUnit_Framework_Test {
+    /**
+     * @var vfsStreamDirectory
+     */
+    private $root;
+
+    protected function setUp() {
+        // 仮想ファイルシステムにルートディレクトリを作る。
+        $this-&amp;gt;root = vfsStream::setup();     // &amp;quot;vfs://root&amp;quot; ディレクトリが作成される
+
+        // ファイルのパスは vfsStream::url() で取得する。
+        var_dump(vfsStream::url(&#39;root&#39;));         // =&amp;gt; vfs://root
+        var_dump(is_dir(vfsStream::url(&#39;root&#39;))); // =&amp;gt; true
+    }
+
+    /**
+     * @covers Logger::log
+     */
+    public function testLog() {
+        $str = &#39;Lorem ipsum&#39;;
+        $path = vfsStream::url(&#39;root/foo.txt&#39;);
+
+        $this-&amp;gt;assertGreaterThan(0, Logger::log($str, $path));
+        $this-&amp;gt;assertEquals($str, file_get_contents($path));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:1bb7a2da6956cd5c18323dac9c2045f6&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/&#39;, &#39;Mocking the file system using PHPUnit and vfsStream – VG Tech&#39;]);&#34; &gt;Mocking the file system using PHPUnit and vfsStream – VG Tech&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vfsStream を使った様々なテストのサンプルがあります。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mikey179/vfsStream/wiki&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mikey179/vfsStream/wiki&#39;, &#39;Home · mikey179/vfsStream Wiki&#39;]);&#34; &gt;Home · mikey179/vfsStream Wiki&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;作成元の GitHub ページ。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/current/ja/test-doubles.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/current/ja/test-doubles.html&#39;, &#39;第10章 テストダブル&#39;]);&#34; &gt;第10章 テストダブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PHPUnit のドキュメント内にある解説。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Jenkins が古い Java JDK を参照するせいで起動しなくなった</title>
+      <link>http://1000k.github.io/2013/02/19/jenkins-cannot-run-because-of-refering-old-java-jdk/</link>
+      <pubDate>Tue, 19 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/02/19/jenkins-cannot-run-because-of-refering-old-java-jdk/</guid>
+      <description>
+
+&lt;p&gt;CentOS 5.2 で発生した不具合。Jenkins を最新版 (1.502)にアップデートしたら起動できなくなりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# service jenkins start
+Starting Jenkins Jenkins requires Java5 or later, but you are running 1.4.2 from /usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre
+java.lang.UnsupportedClassVersionError: 48.0
+   at Main.main(Main.java:90)
+                                                           [  OK  ]
+(OK と出るが起動せず)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JDK 1.6.0 がインストールされているにも関わらず、なぜか CentOS デフォルトの 1.4.2 を見に行っています。&lt;/p&gt;
+
+&lt;p&gt;修正方法をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;OS がどの JDK を参照しているのかは、 &lt;span class=&#34;lang:default decode:true crayon-inline&#34;&gt;update-alternatives &amp;#8211;display java&lt;/span&gt; コマンドで確認することができます。&lt;/p&gt;
+
+&lt;p&gt;叩いてみると、やはり古い JDK を参照していました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --display java
+
+java -ステータスは自動です。
+リンクは現在 /usr/lib/jvm/jre-1.4.2-gcj/bin/java を指しています。
+/usr/lib/jvm/jre-1.4.2-gcj/bin/java - 優先項目 1420
+ スレーブ jre: /usr/lib/jvm/jre-1.4.2-gcj
+ スレーブ jre_exports: /usr/lib/jvm-exports/jre-1.4.2-gcj
+ スレーブ keytool: /usr/lib/jvm/jre-1.4.2-gcj/bin/keytool
+ スレーブ rmiregistry: /usr/lib/jvm/jre-1.4.2-gcj/bin/rmiregistry
+現在の「最適」バージョンは /usr/lib/jvm/jre-1.4.2-gcj/bin/java です。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを最新版に切り替えたいのですが、私は手動で JDK 1.6.0 をインストールしたせいで、update-alternatives に認識されていませんでした。&lt;/p&gt;
+
+&lt;p&gt;&lt;span class=&#34;lang:default decode:true crayon-inline&#34;&gt;&amp;#8211;config java&lt;/span&gt; オプションで確認してみると、JDK 1.4.2 しか表示されません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --config java
+
+1 プログラムがあり &#39;java&#39; を提供します。
+
+  選択       コマンド
+-----------------------------------------------
+*+ 1           /usr/lib/jvm/jre-1.4.2-gcj/bin/java
+
+Enter を押して現在の選択 [+] を保持するか、選択番号を入力します:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;というわけで、JDK 1.6.0_32 のパスを追加して、リンクを書きなおしてやります。&lt;/p&gt;
+
+&lt;p&gt;以下のコマンドでリンクを追加することができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_32/bin/java 16032
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでOKです。&lt;/p&gt;
+
+&lt;p&gt;再び &lt;span class=&#34;lang:default decode:true crayon-inline&#34;&gt;update-alternatives &amp;#8211;config java&lt;/span&gt; コマンドでリンクの書き換えが成功してしていることを確かめられます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --config java
+
+2 プログラムがあり &#39;java&#39; を提供します。
+
+  選択       コマンド
+-----------------------------------------------
+   1           /usr/lib/jvm/jre-1.4.2-gcj/bin/java
+*+ 2           /usr/java/jdk1.6.0_32/bin/java
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で Jenkins が起動するようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# service jenkins start
+Starting Jenkins                                           [  OK  ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:ad0e5aaa074c415a1446b0cc67a27773&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/9527737/how-do-i-configure-starting-jdk-for-hudsonnow-jenkins&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/9527737/how-do-i-configure-starting-jdk-for-hudsonnow-jenkins&#39;, &#39;How do I configure starting jdk for hudson(now jenkins)? &amp;#8211; Stack Overflow&#39;]);&#34; &gt;How do I configure starting jdk for hudson(now jenkins)? &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.neofig.com/2011/03/11/update-alternatives%E3%81%A7%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%82%92%E6%8C%81%E3%81%A4%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E3%81%AE%E5%88%87%E3%82%8A/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.neofig.com/2011/03/11/update-alternatives%E3%81%A7%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%82%92%E6%8C%81%E3%81%A4%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E3%81%AE%E5%88%87%E3%82%8A/&#39;, &#39;update-alternativesで複数のバージョンを持つプログラムの切り替え | kyamamoto at blog.neofig.com&#39;]);&#34; &gt;update-alternativesで複数のバージョンを持つプログラムの切り替え | kyamamoto at blog.neofig.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://piggydb.jp/document-view.htm?id=597&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://piggydb.jp/document-view.htm?id=597&#39;, &#39;update-alternativesのグループにインストールしたJavaが追加されていないのかも&#39;]);&#34; &gt;update-alternativesのグループにインストールしたJavaが追加されていないのかも&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>依存性注入の解説とやり方</title>
+      <link>http://1000k.github.io/2012/10/24/lecture-of-dependency-injection/</link>
+      <pubDate>Wed, 24 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/24/lecture-of-dependency-injection/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;依存性注入 (Dependency Injection)&lt;/strong&gt; は、クラスを単体テスト可能にするために使われるテクニックです。&lt;/p&gt;
+
+&lt;p&gt;これが意識されていないが故に単体テストが全くできないコードをよく見かけます。&lt;/p&gt;
+
+&lt;p&gt;単体テストの際には必ず必要になる知識なので、解説しておきます。&lt;/p&gt;
+
+&lt;p&gt;以下のサンプルでは &lt;a href=&#34;http://www.phpunit.de/manual/3.8/ja/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.8/ja/index.html&#39;, &#39;PHPUnit&#39;]);&#34; &gt;PHPUnit&lt;/a&gt; を利用しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;単体テストができないケース:d011759973daaf90efe485c60339885a&#34;&gt;単体テストができないケース&lt;/h2&gt;
+
+&lt;p&gt;例えば以下のメソッド Foo::play() は単体テストケースが書けません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Foo {
+    public function play() {
+        $bar = new Bar();
+
+        if ($bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;play() 内で外部クラス Bar をインスタンス化しています。つまり Foo::play() メソッドは Bar クラスに&lt;strong&gt;依存&lt;/strong&gt;しており、単体テストができません。&lt;/p&gt;
+
+&lt;p&gt;このまま無理矢理テストケースを書くと、以下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class FooTest {
+    /**
+     * @covers Foo::play
+     */
+    public function testPlay() {
+        $foo = new Foo;
+        $this-&amp;gt;assertTrue($this-&amp;gt;foo-&amp;gt;play());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何が問題かわかるでしょうか？Foo クラスのテスト結果は Bar クラスに依存してしまっています。つまり、Foo は何も変更していなくても、Bar を変更したタイミングで Foo の単体テストが壊れてしまう可能性があります。これでは結合テストであり、単体テストになっていません。&lt;/p&gt;
+
+&lt;p&gt;そのため、通常は Bar クラスを&lt;strong&gt;モック化&lt;/strong&gt;し、Bar クラスの実装を無視できるようにします。&lt;/p&gt;
+
+&lt;h2 id=&#34;モック化とは:d011759973daaf90efe485c60339885a&#34;&gt;モック化とは？&lt;/h2&gt;
+
+&lt;p&gt;モック化とは、クラスの挙動を置き換えることです。例えば特定のメソッドの戻り値を好きな値に指定することができます。&lt;/p&gt;
+
+&lt;p&gt;今回のケースでは、Bar::getSomething() が常に 1 を返すようにすれば、「return true」の行が実行されることをテストできますし、1 以外を返すようにすれば「return false」の行が実行されることをテストできます。&lt;/p&gt;
+
+&lt;p&gt;しかし先述のコードのままでは、テスト対象のメソッド内で Bar をインスタンス化しているため、モックを注入する手段がありません。&lt;/p&gt;
+
+&lt;p&gt;まだピンと来ない方も、この先の具体例を見ればイメージが掴めると思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;メソッドを単体テスト可能にする:d011759973daaf90efe485c60339885a&#34;&gt;メソッドを単体テスト可能にする&lt;/h2&gt;
+
+&lt;p&gt;もしメソッドが下記のようになっていればどうでしょうか？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function play(Bar $bar) {     // Bar クラスのインスタンスを受け取るようにした。
+        if ($bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;メソッド内で Bar クラスを new するのでなく、Bar インスタンスを引数に受け取って利用するだけにしました。これならテストケースでモックを注入することができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function testPlay() {
+        $foo = new Foo;
+
+        $bar = $this-&amp;gt;getMock(&#39;Bar&#39;);         // Bar クラスのモックを作成する。
+        $bar-&amp;gt;expects($this-&amp;gt;any())
+            -&amp;gt;method(&#39;getSomething&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(1));    // Bar::getSomething() の戻り値が 1 になるよう設定する。
+
+        $this-&amp;gt;assertTrue($foo-&amp;gt;play($bar));  // Foo::play() に注入
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Foo::play() メソッドは Bar クラスとの依存が解消され、単体テストが可能になりました。これでもう Bar クラスの実装を変更しても Foo クラスのテストが壊れることはありません。これが&lt;strong&gt;依存性注入&lt;/strong&gt;です。&lt;/p&gt;
+
+&lt;p&gt;これはメソッドの引数にオブジェクトを渡せるようにする手法で、&lt;strong&gt;インターフェース・インジェクション&lt;/strong&gt; (Interface Injection) と呼ばれます。&lt;/p&gt;
+
+&lt;p&gt;（※厳密なインターフェース・インジェクションでは、まずクラスの interface を作成し、それを委譲したメソッドを実装する必要があります。上記の例では簡略化のため interface は作成していません。）&lt;/p&gt;
+
+&lt;h2 id=&#34;コンストラクター-インジェクション:d011759973daaf90efe485c60339885a&#34;&gt;コンストラクター・インジェクション&lt;/h2&gt;
+
+&lt;p&gt;依存性注入は以下のようなやり方でも実現が可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Foo {
+    /** @var Bar */
+    protected $bar;
+
+    public function __constructor(Bar $bar = null) {
+        // メンバ変数として Bar インスタンスを作成しておく。
+        $this-&amp;gt;bar = $bar ? $bar : new Bar;
+    }
+
+    public function play() {
+        // メンバ変数の Bar インスタンスからメソッドを呼び出す。
+        if ($this-&amp;gt;bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このケースでは、Foo クラスのコンストラクタに Bar クラスのオブジェクトを渡せるようにしています。これは&lt;strong&gt;コンストラクター・インジェクション&lt;/strong&gt; (Constructor Injection) と呼ばれるテクニックです。&lt;/p&gt;
+
+&lt;p&gt;この場合のテストケースは以下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function testPlay() {
+        // Bar クラスのモックを作成する。
+        $bar = $this-&amp;gt;getMock(&#39;Bar&#39;);
+        $bar-&amp;gt;expects($this-&amp;gt;any())
+            -&amp;gt;method(&#39;getSomething&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(1));
+
+        $foo = new Foo($bar);   // Constructor Injection でモックを注入する。
+
+        $this-&amp;gt;assertTrue($foo-&amp;gt;play($bar));
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※コンストラクタ内の3項演算子について補足。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function __constructor(Bar $bar = null) {
+        $this-&amp;gt;bar = $bar ? $bar : new Bar;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクタの引数に $bar が渡されなかった時はデフォルトの Bar クラスを new するようにしています。これにより、テストの時はモックを注入して使うようにし、本番コードではパラメータを何も指定しないことでデフォルトの Foo クラスを使うようにしています。&lt;/p&gt;
+
+&lt;h2 id=&#34;セッター-インジェクション:d011759973daaf90efe485c60339885a&#34;&gt;セッター・インジェクション&lt;/h2&gt;
+
+&lt;p&gt;別のアプローチとして、クラスにオブジェクトを注入するためセッターメソッドを用意する方法もあります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Foo {
+    /** @var Bar */
+    protected $bar;
+
+    /**
+     * セッターメソッド
+     *
+     * @param Bar $bar
+     */
+    public function setBar(Bar $bar) {
+        $this-&amp;gt;bar = $bar;
+    }
+
+    public function play() {
+        if ($this-&amp;gt;bar-&amp;gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクターで Bar インスタンスを注入するのでなく、setBar() メソッドで Bar オブジェクトを注入しています。&lt;/p&gt;
+
+&lt;p&gt;この場合のテストケースは以下のようになるでしょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function testPlay() {
+        // Bar クラスのモックを作成する。
+        $bar = $this-&amp;gt;getMock(&#39;Bar&#39;);
+        $bar-&amp;gt;expects($this-&amp;gt;any())
+            -&amp;gt;method(&#39;getSomething&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(1));
+
+        $foo = new Foo;
+        $foo-&amp;gt;setBar($bar);     // セッター経由でモックを注入する。
+
+        $this-&amp;gt;assertTrue($foo-&amp;gt;play($bar));
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これが&lt;strong&gt;セッター・インジェクション&lt;/strong&gt; (Setter Injection) です。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:d011759973daaf90efe485c60339885a&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;単体テストしたければ、メソッド内で外部クラスを new してはいけない。&lt;/li&gt;
+&lt;li&gt;モックを注入可能にするためには、以下のいずれか手法を採る。
+
+&lt;ul&gt;
+&lt;li&gt;メソッドの引数に使いたいオブジェクトを渡せるようにする。 (Interface Injection)&lt;/li&gt;
+&lt;li&gt;使う予定のオブジェクトをコンストラクタに渡せるようにする。(Constructor Injection)&lt;/li&gt;
+&lt;li&gt;オブジェクトを setter メソッドで渡せるようにする。(Setter Injection)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;補足1-runkitで強引にメソッドの挙動を変える方法:d011759973daaf90efe485c60339885a&#34;&gt;補足1: runkitで強引にメソッドの挙動を変える方法&lt;/h2&gt;
+
+&lt;p&gt;PHPにおいては &lt;a href=&#34;http://php.net/manual/ja/book.runkit.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://php.net/manual/ja/book.runkit.php&#39;, &#39;runkit&#39;]);&#34; &gt;runkit&lt;/a&gt; を使うことで、モック化をしなくてもメソッドの挙動を強引に変えることが可能です。ただし破壊的な手段であり、これが必要な時点でオブジェクト指向的な設計ができていない疑いが非常に強いです。&lt;/p&gt;
+
+&lt;p&gt;できるだけ Constructor Injection 等の方法を用い、テスト可能になるようリファクタリングをしましょう。リファクタリング中はコードが醜くなるかもしれませんが、最終的に設計が改善できるならば結果OKです。美しさよりも安全性が何より重要です。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足2-constructor-injection-vs-setter-injection:d011759973daaf90efe485c60339885a&#34;&gt;補足2: Constructor Injection vs Setter Injection&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/&#39;, &#39;抄訳: Constructor Injection vs. Setter Injection | 1000g&#39;]);&#34; &gt;抄訳: Constructor Injection vs. Setter Injection | 1000g&lt;/a&gt; にて、コンストラクター・インジェクションとセッター・インジェクションのどちらが良いかを考察しています。結論としてはコンストラクター・インジェクションがベターです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:d011759973daaf90efe485c60339885a&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5&#39;, &#39;依存性の注入 &amp;#8211; Wikipedia&#39;]);&#34; &gt;依存性の注入 &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/m-hiyama/20060926/1159253903&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/m-hiyama/20060926/1159253903&#39;, &#39;DI（依存性注入）を白紙から説明してみる &amp;#8211; 檜山正幸のキマイラ飼育記&#39;]);&#34; &gt;DI（依存性注入）を白紙から説明してみる &amp;#8211; 檜山正幸のキマイラ飼育記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://martinfowler.com/articles/injection.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://martinfowler.com/articles/injection.html&#39;, &#39;Inversion of Control Containers and the Dependency Injection pattern&#39;]);&#34; &gt;Inversion of Control Containers and the Dependency Injection pattern&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;リファクタリング界の大御所、Martin Fowler氏の考察。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.techscore.com/tech/Java/Others/Spring/1-3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.techscore.com/tech/Java/Others/Spring/1-3/&#39;, &#39;Dependency Injection のタイプ | TECHSCORE(テックスコア)&#39;]);&#34; &gt;Dependency Injection のタイプ | TECHSCORE(テックスコア)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects&#39;, &#39;第10章 テストダブル&#39;]);&#34; &gt;第10章 テストダブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PHPUnit 公式マニュアルによるモックの使い方。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>抄訳: Constructor Injection vs. Setter Injection</title>
+      <link>http://1000k.github.io/2012/10/23/translation-constructor-injection-vs-setter-injection/</link>
+      <pubDate>Tue, 23 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/23/translation-constructor-injection-vs-setter-injection/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/&#39;, &#39;Constructor Injection vs. Setter Injection&#39;]);&#34; &gt;Constructor Injection vs. Setter Injection&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;3年前の記事ですが、かなり役立つ知識だったので、一部補足しながら訳しました。コードを単体テスト可能にする（＝「接合点を作る」）ために知っておくべき内容です。&lt;/p&gt;
+
+&lt;p&gt;クラスBに依存しているクラスAをテストするときに、依存性を排除する典型的な方法として &lt;strong&gt;Constructor Injection&lt;/strong&gt; (コンストラクター・インジェクション) と &lt;strong&gt;Setter Injection&lt;/strong&gt; (セッター・インジェクション) があります。以下でそれぞれのやり方と、どちらがベターかを解説します。&lt;/p&gt;
+
+&lt;h2 id=&#34;setter-injection-とは:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;Setter Injection とは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Springフレームワークで使用。&lt;/li&gt;
+&lt;li&gt;コンストラクタは引数を取らない。&lt;/li&gt;
+&lt;li&gt;インスタンス化後、そのインスタンスの setter メソッドを使ってオブジェクトを注入する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;Database db = new Database();
+
+OfflineQueue queue = new OfflineQueue();
+queue.setDatabase(db);
+
+CreditCardProcessor processor = new CreditCardProcessor();
+processor.setOfflineQueue(queue);
+processor.setDatabase(db);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;constructor-injection-とは:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;Constructor Injection とは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pico-Container や GUICE で使用。&lt;/li&gt;
+&lt;li&gt;コンストラクタの引数にインスタンスを渡し、メンバ変数に設定する方法。&lt;/li&gt;
+&lt;li&gt;もし引数が渡されなかったらデフォルトのインスタンスを作成する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;CreditCardProcessor processor = new CreditCardProcessor(?queue?, ?db?);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;どちらが良いか:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;どちらが良いか？&lt;/h2&gt;
+
+&lt;p&gt;一見すると、コンストラクタにごちゃごちゃ引数を渡さなくて済むぶん Setter Injection の方が楽に書けて良いように思えます。しかし Contructor Injection の方が優れている部分があるため、私は後者を選びます。それは、Constructor Injection はパラメータの順序を指定でき、&lt;a href=&#34;http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/&#39;, &#39;Circular Dependency&#39;]);&#34; title=&#34;Circular Dependency in constructors and Dependency Injection&#34;&gt;Circular Dependency&lt;/a&gt;（循環参照）に陥る危険が無いという点です。&lt;/p&gt;
+
+&lt;p&gt;一般的なアプリは多くのクラスと連携します。そこに Setter Injection を採用すると、何度も setter の呼び出しを行う事になってしまいます。これだと連携するクラスの数が増えるたびに setter をコールする行を追加しなくてはいけません。面倒ですし、コールし忘れの危険性も増えます。さらに set する順番が決まっている場合は最悪です。&lt;/p&gt;
+
+&lt;p&gt;一方で Constructor Injection はコンストラクタさえ書いてしまえば、指定した順に、自動でクラスをインスタンス化してくれます。コンストラクトの時点ですべて設定が完了するので、後はそのオブジェクトを確実に使えます。&lt;/p&gt;
+
+&lt;h2 id=&#34;例:b2ac201c3b760f5a9180de0cd4a738c1&#34;&gt;例&lt;/h2&gt;
+
+&lt;p&gt;CreaditCardProcessor クラスをインスタンス化するケースを考えてみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CreditCardProcessor processor = new CreditCardProcessor();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;インスタンス化できてめでたしめでたし、とはなりません。実際にはこのクラスは OfflineQueue クラスと連携し、またDBとやりとりするために Database クラスとも連携します。これらのインスタンスを set してやらなければ使えません。&lt;/p&gt;
+
+&lt;p&gt;これらすべてを Setter Injection で行うと下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Database クラスのインスタンス化
+Database db = new Database();
+
+// 必要なインスタンスを setter で設定する
+db.setUsername(&amp;quot;username&amp;quot;);
+db.setPassword(&amp;quot;password&amp;quot;);
+db.setUrl(&amp;quot;jdbc:....&amp;quot;);
+
+// OfflineQueue クラスのインスタンス化
+OfflineQueue queue = new OfflineQueue();
+
+// setter による設定
+queue.setDatabase(db);
+
+// CreditCardProcessor クラスに、上で作ったインスタンスを setter でセットする
+CreditCardProcessor processor = new CreditCardProcessor();
+processor.setOfflineQueue(queue);
+processor.setDatabase(db);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで全部？いや、要件が増えればさらに setter でセットする内容は増えるかもしれません。何かフレームワークを使っていれば楽に書く方法があるかもしれませんが、使ってない場合はもうお手上げです。&lt;/p&gt;
+
+&lt;p&gt;では同じことを Constructor Injection で実現してみましょう。CreditCardProcessor は以下のようにインスタンス化できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CreditCardProcessor processor = new CreditCardProcessor(?queue?, ?db?);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクタは OfflineQueue と Database のインスタンスを必要とするので、両方ともインスタンス化しましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 必要となるインスタンスを作成する
+Database db = new Database(&amp;quot;username&amp;quot;, &amp;quot;password&amp;quot;, &amp;quot;jdbc:....&amp;quot;);
+OfflineQueue queue = new OfflineQueue(db);
+
+// コンストラクタに渡してやる
+CreditCardProcessor processor = new CreditCardProcessor(queue, db);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクタにインスタンスを渡すことができました。これで完了です。&lt;/p&gt;
+
+&lt;p&gt;このコードの良いところは、コンストラクタに渡す引数が不足していたらコンパイルエラーがちゃんと出ることです。また、意図していない順番でインスタンス化される不具合も防げます。&lt;/p&gt;
+
+&lt;p&gt;というわけで、個人的には Constructor Injection がおすすめです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>header()関数を使ったメソッドをPHPUnitでテストする方法</title>
+      <link>http://1000k.github.io/2012/10/20/how-to-test-method-using-header-function-in-phpunit/</link>
+      <pubDate>Sat, 20 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/20/how-to-test-method-using-header-function-in-phpunit/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit はテスト中のメッセージを逐一標準出力するため、header() 関数を用いたメソッドのテストができません。&lt;/p&gt;
+
+&lt;p&gt;header() 関数はその実行前の何らかの標準出力がされていると「Cannot modify header information」というエラーを吐いてしまいます。&lt;/p&gt;
+
+&lt;p&gt;以下、テストコードと対策をメモします。&lt;/p&gt;
+
+&lt;h2 id=&#34;現象:caf62378c2e0b948501f395df88dace1&#34;&gt;現象&lt;/h2&gt;
+
+&lt;p&gt;たとえば下記のようなテストケースはエラーで止まります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Api {
+    public function output($data, $response_code = 200) {
+        http_response_code($response_code);
+        header(&#39;Content-Type: application/json&#39;); // PHPUnitの標準出力のせいで、テストケース中にエラーになる
+        $output = json_encode($data);
+
+        echo $output;
+        return $output;
+    }
+}
+
+class ApiTest extends \PHPUnit_Framework_TestCase {
+    // テストケース
+    /**
+     * @covers Api::output
+     * @dataProvider forTestOutput
+     */
+    public function testOutput($data, $response_code) {
+        ob_start();
+        $actual = $this-&amp;gt;object-&amp;gt;output($data, $response_code);
+        $output = ob_get_contents();
+        $expected = json_encode($data);
+
+        $this-&amp;gt;assertEquals($expected, $actual);
+        $this-&amp;gt;assertEquals($output, $actual);
+        $this-&amp;gt;assertEquals(http_response_code(), $response_code);
+        ob_clean();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以下のようなエラーを吐きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cannot modify header information - headers already sent by (output started at D:\xampp\php\pear\PHPUnit\Util\Printer.php:172)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;対策:caf62378c2e0b948501f395df88dace1&#34;&gt;対策&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;@runInSeparateProcess&lt;/strong&gt; アノテーションを利用することで、テストケースだけを別プロセスで実行することができます。&lt;/p&gt;
+
+&lt;p&gt;つまり、標準出力が真っさらな状態でテストを開始できるので、header() 関数がエラーを吐きません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+     * @covers Api::output
+     * @dataProvider forTestOutput
+     * @runInSeparateProcess
+     */
+    public function testOutput($data, $response_code) {
+        // ...
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;PHPUnit 3.7.8 by Sebastian Bergmann.
+
+.
+
+Time: 3 seconds, Memory: 2.75Mb
+
+OK (1 test, 3 assertions)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;header() 関数を使ったメソッドのテストをする際には覚えておきたいテクニックです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:caf62378c2e0b948501f395df88dace1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/3.7/ja/appendixes.annotations.html#appendixes.annotations.runInSeparateProcess&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.7/ja/appendixes.annotations.html#appendixes.annotations.runInSeparateProcess&#39;, &#39;付録B アノテーション&#39;]);&#34; &gt;付録B アノテーション&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.php.net/manual/ja/function.header.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.php.net/manual/ja/function.header.php&#39;, &#39;PHP: header &amp;#8211; Manual&#39;]);&#34; &gt;PHP: header &amp;#8211; Manual&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/9745080/test-php-headers-with-phpunit&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/9745080/test-php-headers-with-phpunit&#39;, &#39;unit testing &amp;#8211; Test PHP headers with PHPunit &amp;#8211; Stack Overflow&#39;]);&#34; &gt;unit testing &amp;#8211; Test PHP headers with PHPunit &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

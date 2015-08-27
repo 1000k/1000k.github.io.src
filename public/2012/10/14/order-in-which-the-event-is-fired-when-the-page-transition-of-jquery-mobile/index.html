@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> jQuery Mobileのページ遷移時にイベントが発火する順番 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/">jQuery Mobileのページ遷移時にイベントが発火する順番</a></h2>
+        <div class="post-content">
+          
+
+<p>ページ遷移持のイベントの発火タイミングをよくよく理解しておかなければ、jQuery Mobile を使いこなすことはできません。</p>
+
+<p>単純なページ間の遷移で発生するイベントの順番を確認しておきます。</p>
+
+<p>なお、イベント一覧は <a href="http://jquerymobile.com/demos/1.2.0/docs/api/events.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/demos/1.2.0/docs/api/events.html', 'jQuery Mobile Docs &#8211; Events']);" >jQuery Mobile Docs &#8211; Events</a> に記されています。</p>
+
+<h2 id="検証コード:c15683fca1bbc196b47070ebbf2c2463">検証コード</h2>
+
+<p>コードはgistにも公開してあります。→<a href="https://gist.github.com/3886193" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://gist.github.com/3886193', 'Verify the event firing timings of jQuery Mobile — Gist']);" >Verify the event firing timings of jQuery Mobile — Gist</a></p>
+
+<h3 id="page1-html:c15683fca1bbc196b47070ebbf2c2463">page1.html</h3>
+
+<pre><code>
+
+
+
+
+
+&lt;div data-role=&quot;page&quot; data-theme=&quot;a&quot; id=&quot;page1&quot;&gt;
+  &lt;div data-role=&quot;content&quot;&gt;
+    &lt;a href=&quot;page2.html&quot; data-role=&quot;button&quot;&gt;Go to page2.html&lt;/a&gt;
+
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+</code></pre>
+
+<h3 id="page2-html:c15683fca1bbc196b47070ebbf2c2463">page2.html</h3>
+
+<p>page1 とほぼ同じなので、[data-role=&#8221;page&#8221;]ブロック内だけ。</p>
+
+<pre><code>&lt;div data-role=&quot;page&quot; data-theme=&quot;e&quot; id=&quot;page2&quot;&gt;
+  &lt;div data-role=&quot;content&quot;&gt;
+    &lt;a href=&quot;page1.html&quot; data-role=&quot;button&quot;&gt;Back to page1.html&lt;/a&gt;
+
+  &lt;/div&gt;
+
+&lt;/div&gt;
+</code></pre>
+
+<h3 id="transition-js:c15683fca1bbc196b47070ebbf2c2463">transition.js</h3>
+
+<p>イベント発火時にコンソールにイベント名が出るようにしています。</p>
+
+<pre><code>// Page load events
+$(document).bind(&quot;pagebeforeload&quot;, function(e, data) {
+  console.log(&quot;pagebeforeload: &quot; + data.url);
+});
+$(document).bind(&quot;pageload&quot;, function(e, data) {
+  console.log(&quot;pageload: &quot; + data.url);
+});
+$(document).bind(&quot;pageloadfailed&quot;, function() { console.log(&quot;pageloadfailed&quot;); });
+
+// Page change events
+$(document).bind(&quot;pagebeforechange&quot;, function() { console.log(&quot;pagebeforechange&quot;); });
+$(document).bind(&quot;pagechange&quot;, function() { console.log(&quot;pagechange&quot;); });
+$(document).bind(&quot;pagechangefailed&quot;, function() { console.log(&quot;pagechangefailed&quot;); });
+
+// Page transition events
+$(document).bind(&quot;pagebeforeshow&quot;, function() { console.log(&quot;pagebeforeshow&quot;); });
+$(document).bind(&quot;pagebeforehide&quot;, function() { console.log(&quot;pagebeforehide&quot;); });
+$(document).bind(&quot;pageshow&quot;, function() { console.log(&quot;pageshow&quot;); });
+$(document).bind(&quot;pagehide&quot;, function() { console.log(&quot;pagehide&quot;); });
+
+// Page initialization events
+$(document).bind(&quot;pagebeforecreate&quot;, function() { console.log(&quot;pagebeforecreate&quot;); });
+$(document).bind(&quot;pagecreate&quot;, function() { console.log(&quot;pagecreate&quot;); });
+$(document).bind(&quot;pageinit&quot;, function() { console.log(&quot;pageinit&quot;); });
+
+// Page remove events
+$(document).bind(&quot;pageremove&quot;, function() { console.log(&quot;pageremove&quot;); });
+</code></pre>
+
+<h2 id="実験:c15683fca1bbc196b47070ebbf2c2463">実験</h2>
+
+<p>「page1.html -&gt; page2.html -&gt; page1.html -&gt; page2.html」という遷移をした時のコンソールログは以下です。</p>
+
+<pre><code>// page1.html にアクセス
+pagebeforechange
+pagebeforecreate
+pagecreate
+pageinit
+pagebeforeshow
+pageshow
+pagechange
+
+// 「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+
+// 「Back to page1.html」をクリック
+pagebeforechange
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pageremove
+pagehide
+pageshow
+pagechange
+
+// もう一度「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+</code></pre>
+
+<h2 id="考察:c15683fca1bbc196b47070ebbf2c2463">考察</h2>
+
+<p>気付いた点をメモします。</p>
+
+<ul>
+<li>pagechange は全ての遷移の最後で発生する。</li>
+<li>page2.html に遷移するたびに pageinit が発火している。</li>
+<li>逆に、page1.html で pageinit が発火するのは最初のアクセス時のみ。</li>
+</ul>
+
+<h2 id="参考:c15683fca1bbc196b47070ebbf2c2463">参考</h2>
+
+<ul>
+<li><a href="http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html', 'jQuery Mobile Docs &#8211; Scripting pages']);" >jQuery Mobile Docs &#8211; Scripting pages</a></li>
+<li><a href="http://jquerymobile.com/demos/1.2.0/docs/api/events.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/demos/1.2.0/docs/api/events.html', 'jQuery Mobile Docs &#8211; Events']);" >jQuery Mobile Docs &#8211; Events</a></li>
+<li><a href="http://d.hatena.ne.jp/Naotsugu/20120103/1325568080" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/Naotsugu/20120103/1325568080', 'はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &#8211; etc9']);" >はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &#8211; etc9</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

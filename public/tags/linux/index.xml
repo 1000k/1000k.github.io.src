@@ -1,0 +1,1381 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on 1000g</title>
+    <link>http://1000k.github.io/tags/linux/</link>
+    <description>Recent content in Linux on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 11 Mar 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>tmuxはじめました</title>
+      <link>http://1000k.github.io/2015/03/11/introducing-to-tmux/</link>
+      <pubDate>Wed, 11 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/03/11/introducing-to-tmux/</guid>
+      <description>
+
+&lt;p&gt;とあるきっかけで開発効率強化ウィークに入りました。まずはターミナルをもっと効率的にすべく、tmux を習得することにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;tumxとは:a506571e48bbc5459d921757c1950894&#34;&gt;tumxとは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ターミナルマルチプレクサ (端末多重化ソフトウェア, 仮想端末マネージャー) のひとつ
+
+&lt;ul&gt;
+&lt;li&gt;ほかには GNU screen が有名&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;読み方は &amp;#8220;ティーマックス&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;できること:a506571e48bbc5459d921757c1950894&#34;&gt;できること&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1つの端末で複数の仮想端末を起動できる&lt;/li&gt;
+&lt;li&gt;仮想端末の画面を自由に分割・統合できる&lt;/li&gt;
+&lt;li&gt;マウスを使わずキーボードだけでコピペできる&lt;/li&gt;
+&lt;li&gt;デタッチ(切り離し)とアタッチ(接続)により、ネットワークが切れても同じセッションを再開できる&lt;/li&gt;
+&lt;li&gt;ステータスバーなどでターミナルの情報をリッチにできる
+
+&lt;ul&gt;
+&lt;li&gt;現在時刻、Wi-Fi接続強度、バッテリー残量なども表示できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;設定ファイルで高度にカスタマイズできる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;tmuxの構成:a506571e48bbc5459d921757c1950894&#34;&gt;tmuxの構成&lt;/h3&gt;
+
+&lt;p&gt;tmuxはサーバー/クライアント構成を取る。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tmuxサーバー(セッション)
+
+&lt;ul&gt;
+&lt;li&gt;tmux起動時に生成される&lt;/li&gt;
+&lt;li&gt;セッションを管理するプロセス&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;tmuxクライアント(pty; 仮想端末)
+
+&lt;ul&gt;
+&lt;li&gt;tmuxセッションへ接続(アタッチ)しているプロセス(pty)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;画面の内包関係:a506571e48bbc5459d921757c1950894&#34;&gt;画面の内包関係&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;セッション &amp;gt; ウィンドウ &amp;gt; ペイン&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;セッション: ウィンドウの集まり。&lt;/li&gt;
+&lt;li&gt;ウィンドウ: ペインを管理する領域。タブのイメージ。&lt;/li&gt;
+&lt;li&gt;ペイン: ウィンドウを分割した領域。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール:a506571e48bbc5459d921757c1950894&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;yum ユーザーは EPEL リポジトリからインストールが可能。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo yum install -y tmux
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;チュートリアル:a506571e48bbc5459d921757c1950894&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;h3 id=&#34;起動:a506571e48bbc5459d921757c1950894&#34;&gt;起動&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;tmux&lt;/code&gt; または &lt;code&gt;tmux new-session&lt;/code&gt; で新規セッションを起動すると、新しい仮想端末が開く。&lt;/p&gt;
+
+&lt;h3 id=&#34;ペインの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;C-b %&lt;/code&gt; でペインを分割し、&lt;code&gt;C-b n&lt;/code&gt; で次のウィンドウに移動します。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;C-b ?&lt;/code&gt; でヘルプが開くので、片方のペインにヘルプを表示した状態で、もう片方でいろいろ実験してみると理解が進みます。&lt;/p&gt;
+
+&lt;h3 id=&#34;デタッチ:a506571e48bbc5459d921757c1950894&#34;&gt;デタッチ&lt;/h3&gt;
+
+&lt;p&gt;仮想端末上で &lt;code&gt;C-b d&lt;/code&gt; で、端末がセッションからデタッチされます。&lt;/p&gt;
+
+&lt;p&gt;デタッチ状態ではセッションは残っているので、再度 &lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; と入力すれば、最後の画面から再開できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本操作:a506571e48bbc5459d921757c1950894&#34;&gt;基本操作&lt;/h2&gt;
+
+&lt;h3 id=&#34;セッションの操作:a506571e48bbc5459d921757c1950894&#34;&gt;セッションの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;セッションの作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux&lt;/code&gt; or &lt;code&gt;tmux new-session&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-sessions&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;接続されているクライアントの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-client&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションのアタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; or &lt;code&gt;tmux a&lt;/code&gt; (&lt;code&gt;-d&lt;/code&gt; を指定すると、そのセッションに接続しているほかのクライアントはデタッチされる)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-session [-t セッション番号]&lt;/code&gt; (引数を指定しなければ直近のセッションが削除される)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;全セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-server&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ウィンドウの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ウィンドウの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ヘルプ表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ?&lt;/code&gt; (閉じるには &lt;code&gt;q&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b c&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;amp;&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ名変更&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ,&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ一覧表示/移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b w&lt;/code&gt; (カーソルキーで選択、[Enter] で表示)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;前のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b p&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;次のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b n&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b l&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ウィンドウ番号&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;デタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b d&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ペインの操作-1:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ペイン番号表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q&lt;/code&gt; or &lt;code&gt;C-b :display-panes&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q ペイン番号&lt;/code&gt; (インジケーターが表示されている間に番号を入力する)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (水平方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;quot;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (垂直方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b %&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割解除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b !&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン強制終了&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b x&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン間移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b o&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン入れ替え&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b {&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;カスタマイズ:a506571e48bbc5459d921757c1950894&#34;&gt;カスタマイズ&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;~/.tmux.conf&lt;/code&gt; にカスタマイズ設定を書き込むことができます。&lt;/p&gt;
+
+&lt;p&gt;yum でインストールした場合は &lt;code&gt;/usr/share/doc/tmux-1.6/examples/&lt;/code&gt; 配下にサンプルファイルがあります。vimmer は &lt;a href=&#34;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#39;, &#39;vim-keys.conf&#39;]);&#34; &gt;vim-keys.conf&lt;/a&gt; を設定するとペイン操作が楽になるかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:a506571e48bbc5459d921757c1950894&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#39;, &#39;OpenBSD manual pages&#39;]);&#34; &gt;OpenBSD manual pages&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;公式マニュアル。英語。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#39;, &#39;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&#39;]);&#34; &gt;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;概念図やスクリーンショット満載でわかりやすいです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://room6933.com/mymemo/tmux/tmux-basic.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://room6933.com/mymemo/tmux/tmux-basic.html&#39;, &#39;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&#39;]);&#34; &gt;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#39;, &#39;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&#39;]);&#34; &gt;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使えるカスタマイズの例。zsh と連携して、ログイン時にいきなり tmux セッションにアタッチする方法など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Netcat でサーバー間の疎通を確認する方法</title>
+      <link>http://1000k.github.io/2013/04/10/how-to-check-communication-between-the-server-using-netcat/</link>
+      <pubDate>Wed, 10 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/10/how-to-check-communication-between-the-server-using-netcat/</guid>
+      <description>
+
+&lt;p&gt;サーバー間のネットワークが繋がっているか確認したい場合、Netcat (nc) コマンドが便利です。&lt;/p&gt;
+
+&lt;h2 id=&#34;使うコマンド:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;使うコマンド&lt;/h2&gt;
+
+&lt;p&gt;受信側では &amp;#8220;-l&amp;#8221; (Listen mode) オプションを使い、待受状態にします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ nc -l {listenするポート番号}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;送信側は &amp;#8220;-z&amp;#8221; (Zero-I/O mode) オプションを使い、指定したポートに接続できるかテストします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ nc -v -z {受信側のIP} {受信側のポート番号}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;例:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;例&lt;/h2&gt;
+
+&lt;p&gt;host001 のポート 4949 に、host002 から疎通できるかどうかテストするには、下記のようなコマンドを叩きます。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-受信側のポートを-listen-する:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;1. 受信側のポートを listen する&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;[host001]$ nc -v -k -l 4949
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;#8220;-v&amp;#8221; でより多くのメッセージを出力し、&amp;#8221;-k&amp;#8221; でコネクションを永続化することができます。（&amp;#8221;-k&amp;#8221; を指定しないと1回受信するたびに nc が終了します）&lt;/p&gt;
+
+&lt;h3 id=&#34;2-送信側から接続できるか確かめる:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;2. 送信側から接続できるか確かめる&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;[host002]$ nc -v -z host001 4949
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;接続 OK の場合、以下のようなメッセージが出力されます。&lt;/p&gt;
+
+&lt;p&gt;送信側&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Connection to host001 4949 port [tcp/munin] succeeded!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;受信側&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Connection from host002 port 4949 [tcp/munin] accepted
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982&#39;, &#39;Learn the many uses of netcat | TechRepublic&#39;]);&#34; &gt;Learn the many uses of netcat | TechRepublic&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.usupi.org/sysad/190.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.usupi.org/sysad/190.html&#39;, &#39;Netcat でネットワークをもう少し活用する &amp;#8211; いますぐ実践! Linuxシステム管理 / Vol.190&#39;]);&#34; &gt;Netcat でネットワークをもう少し活用する &amp;#8211; いますぐ実践! Linuxシステム管理 / Vol.190&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VM の共有フォルダ内の 静的ファイルが正しくロードできないときの対処方法</title>
+      <link>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</link>
+      <pubDate>Wed, 20 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</guid>
+      <description>
+
+&lt;p&gt;以下の環境でPHPアプリの開発を行っていたところ、静的コンテンツが正しく反映されない現象に陥りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Oracle VirtualBox で CentOS 6.3 VM を起動&lt;/li&gt;
+&lt;li&gt;ホストOSは Windows 7&lt;/li&gt;
+&lt;li&gt;ホストOS側の &amp;#8220;c:\www\app&amp;#8221; を VM 側の &amp;#8220;/www&amp;#8221; に共有フォルダとしてマウント&lt;/li&gt;
+&lt;li&gt;VM上は Apache 2.2 を稼働させ、PHP アプリサーバーとして利用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この状態でホストOS側で JavaScript などの静的コンテンツを編集し、ブラウザからアプリにアクセスすると、以下のようなエラーが出ました。&lt;/p&gt;
+
+&lt;p&gt;Chrome&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Uncaught SyntaxError: Unexpected end of input
+または
+Uncaught SyntaxError: Unexpected token ILLEGAL
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Firefox&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SyntaxError: unterminated string literal
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ブラウザのデバッグツールで問題のファイルを見ると、なぜか途中でコンテンツが切れていたり、末尾に謎の文字列（Chromeだと「?」で表示される）が追加されていました。&lt;/p&gt;
+
+&lt;p&gt;ただ改行を追加するだけでもこの現象が発生します。&lt;/p&gt;
+
+&lt;p&gt;原因は Apache の &lt;em&gt;EnableSendfile&lt;/em&gt; ディレクティブでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#39;, &#39;EnableSendfile ディレクティブ&#39;]);&#34; &gt;EnableSendfile ディレクティブ&lt;/a&gt; の説明には以下のように書いてあります。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;このディレクティブはクライアントにファイルの内容を送るときに httpd がカーネルの sendfile サポートを使うかどうかを制御します。デフォルトでは、 例えば静的なファイルの配送のように、リクエストの処理にファイルの 途中のデータのアクセスを必要としないときには、Apache は OS が サポートしていればファイルを読み込むことなく sendfile を使って ファイルの内容を送ります。&lt;/p&gt;
+
+&lt;p&gt;ネットワークマウントされた DocumentRoot (例えば NFS や SMB) では、カーネルは自身のキャッシュを使ってネットワークからのファイルを 送ることができないことがあります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;つまり、VirtualBox で共有フォルダが NFS としてマウントされていると、ホストOSで行った変更が正しく反映されないことがあるようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;直し方:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;直し方&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;/etc/httpd/conf/httpd.conf&lt;/em&gt; に以下の1行を追加して、Apache を再起動すればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、ホストOSで変更したファイルが、ゲストOS側のキャッシュを介することなく、正しく反映されるようになります。&lt;/p&gt;
+
+&lt;p&gt;Vagrant + Chef で環境構築が楽にできるようになったから喜んで使っていたら、こんな罠があるとは。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足-enablemmap-ディレクティブ:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;補足: EnableMMAP ディレクティブ&lt;/h2&gt;
+
+&lt;p&gt;私はまだ遭遇していないのですが、&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;EnableMMAP ディレクティブ&#39;]);&#34; &gt;&lt;em&gt;EnableMMAP&lt;/em&gt; ディレクティブ&lt;/a&gt;も Apache をクラッシュさせる危険があるので、Offにしておいた方が良いそうです。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;NFS マウントされた DocumentRoot では、httpd がメモリマップしている間にファイルが削除されたり 短くなったりしたときに起こるセグメンテーションフォールトのために httpd がクラッシュする可能性があります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;結局、httpd.conf に以下の2行を書いておけば不具合は避けられるでしょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+EnableMMAP Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#39;, &#39;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&#39;]);&#34; &gt;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tipshare.info/view/4f3481ee4b21227814000001&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tipshare.info/view/4f3481ee4b21227814000001&#39;, &#39;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&#39;]);&#34; &gt;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;core &amp;#8211; Apache HTTP サーバ&#39;]);&#34; &gt;core &amp;#8211; Apache HTTP サーバ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOSでbzip2が解凍できないエラー</title>
+      <link>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</guid>
+      <description>
+
+&lt;p&gt;bzip2ファイルを解凍しようと思ったら、見慣れないエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# tar xvf paco-2.0.9.tar.bz2
+tar: bzip2: exec 不能: そのようなファイルやディレクトリはありません
+tar: エラーを回復できません: 直ちに終了します
+tar: Child returned status 2
+tar: 処理中にエラーが起きましたが、最後まで処理してからエラー終了させました
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただ単にbzip2がインストールされていなかったのが原因でした。yumで入れて即解決です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install bzip2
+...
+Installed:
+  bzip2.x86_64 0:1.0.3-6.el5_5
+
+Complete!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CloudCore VPSでこのエラーに遭遇しました。&lt;/p&gt;
+
+&lt;p&gt;CentOSの最小構成でインストールされているようで、ごく普通のコマンドが使えないことが多いです。&lt;/p&gt;
+
+&lt;p&gt;パッケージが不足していないか注意が必要ですね。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:b209194a963523f744e005b58f948c6d&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiroponz/20070205&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiroponz/20070205&#39;, &#39;2007-02-05 &amp;#8211; プチ技術メモ&#39;]);&#34; &gt;2007-02-05 &amp;#8211; プチ技術メモ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CloudCore VPS初期設定</title>
+      <link>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</guid>
+      <description>
+
+&lt;p&gt;高スペック＆安価＆国産で話題のCloudCore VPSをレンタルしてみました。&lt;/p&gt;
+
+&lt;p&gt;ざっとスペックを確認すると、以下のようになりました。これで月980円はたしかにお得です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cat /etc/redhat-release
+CentOS release 5.6 (Final)
+
+# df -h
+Filesystem          サイズ  使用  残り 使用% マウント位置
+/dev/vda1              97G  5.0G   87G   6% /
+tmpfs                1003M     0 1003M   0% /dev/shm
+
+# cat /proc/cpuinfo
+processor       : 0
+vendor_id       : AuthenticAMD
+cpu family      : 16
+model           : 2
+model name      : AMD Phenom(tm) 9550 Quad-Core Processor
+stepping        : 3
+cpu MHz         : 2199.998
+cache size      : 512 KB
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 5
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1gb lm up pni cx16 popcnt lahf_lm cmp_legacy svm cr8_legacy altmovcr8 abm sse4a misalignsse
+bogomips        : 4399.99
+TLB size        : 1024 4K pages
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 48 bits virtual
+power management:
+
+# cat /proc/meminfo
+MemTotal:      2053764 kB
+MemFree:       1859380 kB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今後利用するかもしれないので、初期設定メモを残しておきます。&lt;/p&gt;
+
+&lt;h1 id=&#34;よく使うパッケージのインストール:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;よく使うパッケージのインストール&lt;/h1&gt;
+
+&lt;p&gt;CentOS最小構成でインストールされているらしく、よく使うパッケージが全然入っていません。入れておきましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install sudo vim-enhanced iptables vsftpd bzip2 gcc gcc-c++ make automake mlocate
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;導入しているパッケージの説明は下記の通り。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;パッケージ名&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;sudo&lt;/td&gt;
+&lt;td&gt;sudoコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vim-enhanced&lt;/td&gt;
+&lt;td&gt;標準で入っているviの高機能版&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;iptables&lt;/td&gt;
+&lt;td&gt;ファイアーウォール&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vsftpd&lt;/td&gt;
+&lt;td&gt;FTPデーモン&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;bzip2&lt;/td&gt;
+&lt;td&gt;bzip2圧縮・解凍&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;gcc, gcc-c++&lt;/td&gt;
+&lt;td&gt;コンパイル時に必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;make, automake&lt;/td&gt;
+&lt;td&gt;ソースからインストールする時必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mlocate&lt;/td&gt;
+&lt;td&gt;locate &amp;amp; updatedbコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vixie-cron&lt;/td&gt;
+&lt;td&gt;crontabコマンド &amp;amp; cronデーモン&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;crondは起動し、自動起動をオンにしておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/crond start
+# chkconfig crond on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、インストール済みのパッケージを更新しましょう。&lt;/p&gt;
+
+&lt;p&gt;私の場合100パッケージ(129MB)ありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;作業用ユーザー追加:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;作業用ユーザー追加&lt;/h1&gt;
+
+&lt;p&gt;rootでの作業はリスク上よろしくないので、作業用ユーザーを追加します。&lt;/p&gt;
+
+&lt;p&gt;wheelグループに追加することで、su権限が得られます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# useradd mojamoja
+# usermod -G wheel mojamoja
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;wheelグループのユーザーがsudoを実行できるよう設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# visudo
+
+----
+## Allows people in group wheel to run all commands
+%wheel  ALL=(ALL)       ALL
+↑この行のコメントアウトを外す。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;sshポートの変更:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;sshポートの変更&lt;/h1&gt;
+
+&lt;p&gt;sshポートデフォルトの22番ではポートスキャンの標的になりやすいので、変更します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#vim /etc/ssh/sshd_config
+
+以下の行を変更。
+
+#port 22
+port 10022
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sshデーモンを再起動して変更を反映します。&lt;/p&gt;
+
+&lt;p&gt;これで22番ポートではsshログインできなくなっています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/init.d/sshd restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;不要なデーモンの停止:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;不要なデーモンの停止&lt;/h1&gt;
+
+&lt;p&gt;初期状態では4つのデーモンしか自動起動設定になっておらず、特に停止するようなデーモンはありません。&lt;/p&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;ファイアーウォールの構築:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;ファイアーウォールの構築&lt;/h1&gt;
+
+&lt;p&gt;ssh(10022), FTP, HTTPで接続できるようポートを開放してやります。&lt;/p&gt;
+
+&lt;p&gt;下記シェルファイルを作成し、実行してください。&lt;/p&gt;
+
+&lt;p&gt;※コンソールから1行ずつ打つと、「/sbin/iptables -P INPUT DROP」設定直後にコンソールが操作不能になります。&lt;/p&gt;
+
+&lt;p&gt;その場合、コントロールパネルから再起動することで再度ログイン可能になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+/sbin/iptables -F
+/sbin/iptables -X
+
+/sbin/iptables -P INPUT DROP
+/sbin/iptables -P OUTPUT ACCEPT
+/sbin/iptables -P FORWARD DROP
+
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j DROP
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j DROP
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j DROP
+
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+/sbin/iptables -A INPUT -p tcp --dport 10022 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+/sbin/iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+/etc/rc.d/init.d/iptables save
+
+/sbin/service iptables restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chmod +x set_iptables.sh
+# ./set_iptables.sh
+ファイアウォールのルールを /etc/sysconfig/iptables に保存中[  OK  ]
+ファイアウォールルールを適用中:                            [  OK  ]
+チェインポリシーを ACCEPT に設定中filter                   [  OK  ]
+iptables モジュールを取り外し中                            [  OK  ]
+iptables ファイアウォールルールを適用中:                   [  OK  ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;無事設定できたら、サーバー起動時にサービスが開始するよう設定します。設定が間違ったままこれをonにすると、コントロールパネルから再起動してもログイン不能になるので注意してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chkconfig iptables on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;ftpを接続可能にする:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;FTPを接続可能にする&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;/etc/vsftpd/vsftpd.conf&lt;/strong&gt; を以下のように設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;以下の既存の行を修正する。
+
+# 匿名ユーザーのログインを禁止
+anonymous_enable=NO
+
+# asciiモードでファイルを転送可能にする
+ascii_upload_enable=YES
+ascii_download_enable=YES
+
+以下の行を追加。
+
+# ファイル所有者を数字ではなくユーザー名で表示する
+text_userdb_names=YES
+
+# ファイルの上書き時間が日本時間になる
+use_localtime=YES
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら起動し、自動起動もオンにしましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/vsftpd start
+vsftpd 用の vsftpd を起動中:                               [  OK  ]
+# chkconfig vsftpd on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FTPクライアントで10022番ポートにSFTP接続可能になっていることを確認してください。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tanaka.sakura.ad.jp/archives/001065.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tanaka.sakura.ad.jp/archives/001065.html&#39;, &#39;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&#39;]);&#34; &gt;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;さくらの社長による、自社のVPSの初期設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/a__z/20071011&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/a__z/20071011&#39;, &#39;CentOS:sudo を設定する &amp;#8211; 日々のメモ&#39;]);&#34; &gt;CentOS:sudo を設定する &amp;#8211; 日々のメモ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://weble.org/2011/05/16/sakura-vps-and-centos&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://weble.org/2011/05/16/sakura-vps-and-centos&#39;, &#39;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&#39;]);&#34; &gt;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;LAMP環境の構築手順も&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#39;, &#39;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&#39;]);&#34; &gt;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.searchman.info/linux/1070.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.searchman.info/linux/1070.html&#39;, &#39;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&#39;]);&#34; &gt;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vsftpdの設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#39;, &#39;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&#39;]);&#34; &gt;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>pacoでソースからインストールしたアプリを管理する</title>
+      <link>http://1000k.github.io/2012/01/15/managing-source-installed-packages-using-paco/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/managing-source-installed-packages-using-paco/</guid>
+      <description>
+
+&lt;p&gt;pacoは、自分でソースからインストールしたアプリでもrpmのようにパッケージ管理できるようになるツールです。&lt;/p&gt;
+
+&lt;p&gt;rpmが無いアプリの管理が楽になるのでおすすめです。&lt;/p&gt;
+
+&lt;p&gt;以下、インストール方法と使い方を簡単に記します。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール手順:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストール手順&lt;/h2&gt;
+
+&lt;p&gt;最新のソースは &lt;a href=&#34;http://paco.sourceforge.net/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://paco.sourceforge.net/&#39;, &#39;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&#39;]);&#34; &gt;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&lt;/a&gt; で確認してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# wget http://sourceforge.net/projects/paco/files/paco/2.0.9/paco-2.0.9.tar.bz2/download
+# tar xvf paco-2.0.9.tar.bz2
+# cd paco-2.0.9
+# ./configure --disable-gpaco
+# make
+# make install
+# make logme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今回はGUIを使わないので、configureオプションに「&amp;#8211;disable-gpaco」を付けています。&lt;/p&gt;
+
+&lt;p&gt;これを付けないと「No package &amp;#8216;gtkmm-2.4&amp;#8217; found」というエラーが出ます。&lt;/p&gt;
+
+&lt;p&gt;最後の「make logme」でpaco自身のインストール内容を記録しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:2e9f7bf7118303b30947563102a07bb4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;h3 id=&#34;インストールを記録する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストールを記録する&lt;/h3&gt;
+
+&lt;p&gt;今後、何らかのアプリをmake installする際には、「paco -D」を付けることでpacoに記録できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cd {インストールしたいパッケージ}
+# paco -D make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;インストール済みパッケージを確認する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストール済みパッケージを確認する&lt;/h3&gt;
+
+&lt;p&gt;「-a」オプションを使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# paco -a
+paco-2.0.9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;パッケージでインストールされたファイルを確認する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;パッケージでインストールされたファイルを確認する&lt;/h3&gt;
+
+&lt;p&gt;「-f」オプションを使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ paco -f paco-2.0.9
+paco-2.0.9:
+/usr/local/share/paco/README
+/usr/local/lib/libpaco-log.a
+/usr/local/lib/libpaco-log.la
+/usr/local/lib/libpaco-log.so
+/usr/local/lib/libpaco-log.so.0
+/usr/local/lib/libpaco-log.so.0.0.0
+/usr/local/bin/paco
+/usr/local/etc/pacorc
+/usr/local/lib/pkgconfig/paco.pc
+/usr/local/share/man/man5/pacorc.5
+/usr/local/share/man/man8/paco.8
+/usr/local/share/man/man8/pacoball.8
+/usr/local/share/man/man8/rpm2paco.8
+/usr/local/share/man/man8/superpaco.8
+/usr/local/share/paco/faq.txt
+/usr/local/share/paco/pacorc
+/usr/local/bin/ocap
+/usr/local/bin/pacoball
+/usr/local/bin/rpm2paco
+/usr/local/bin/superpaco
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;パッケージをアンインストールする:2e9f7bf7118303b30947563102a07bb4&#34;&gt;パッケージをアンインストールする&lt;/h3&gt;
+
+&lt;p&gt;「-r」オプションです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# paco -r {アンインストールしたいパッケージ名}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:2e9f7bf7118303b30947563102a07bb4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/kasei_san/20100220/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/kasei_san/20100220/p1&#39;, &#39;さくらのユーザディレクトリにPACOをインストールしたときの手順 &amp;#8211; かせいさんとこ&#39;]);&#34; &gt;さくらのユーザディレクトリにPACOをインストールしたときの手順 &amp;#8211; かせいさんとこ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://paco.sourceforge.net/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://paco.sourceforge.net/&#39;, &#39;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&#39;]);&#34; &gt;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html&#39;, &#39;ソースからインストールしたアプリを管理するには － ＠IT&#39;]);&#34; &gt;ソースからインストールしたアプリを管理するには － ＠IT&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>最新のパッケージをyumでインストールする</title>
+      <link>http://1000k.github.io/2012/01/15/installing-up-to-date-package-by-yum/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/installing-up-to-date-package-by-yum/</guid>
+      <description>
+
+&lt;p&gt;yum公式リポジトリ内の古いApacheやphpではなく、最新版をrpmで入れる方法です。&lt;/p&gt;
+
+&lt;p&gt;下記に記す非公式リポジトリを参照することで、最新のパッケージをyumでインストールできます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.famillecollet.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.famillecollet.com/&#39;, &#39;Remi&#39;]);&#34; &gt;Remi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.jasonlitka.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.jasonlitka.com/&#39;, &#39;Utter Ramblings&#39;]);&#34; &gt;Utter Ramblings&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;なお、これらのサイトで配布されているパッケージの信頼性は公式のリポジトリのものより劣るので、利用の際には注意が必要です。&lt;/p&gt;
+
+&lt;h1 id=&#34;手順:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;手順&lt;/h1&gt;
+
+&lt;h2 id=&#34;remiリポジトリ追加:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;Remiリポジトリ追加&lt;/h2&gt;
+
+&lt;p&gt;RemiリポジトリはEPELリポジトリに依存しているため、両方追加する必要があります。&lt;/p&gt;
+
+&lt;p&gt;最新のダウンロード先は下記から確認してください。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Remi: &lt;a href=&#34;http://rpms.famillecollet.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rpms.famillecollet.com/&#39;, &#39;RepoView: Les RPM de Remi&#39;]);&#34; &gt;RepoView: Les RPM de Remi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;EPEL: &lt;a href=&#34;http://download.fedora.redhat.com/pub/epel/5/i386/&#34;&gt;http://download.fedora.redhat.com/pub/epel/5/i386/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# wget http://rpms.famillecollet.com/enterprise/remi-release-5.rpm
+# wget http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+# rpm -ivh epel-release-5-4.noarch.rpm remi-release-5.rpm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※以前のバージョンのrpmが入っている場合、「rpm -Uvh {パッケージ名}」でアップグレードします。&lt;/p&gt;
+
+&lt;p&gt;これでyumのリポジトリにRemiとEPELを参照できるようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ls /etc/yum.repos.d/
+CentOS-Base.repo       CentOS-Media.repo  epel-testing.repo  remi.repo
+CentOS-Debuginfo.repo  CentOS-Vault.repo  epel.repo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;utterリポジトリ追加:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;Utterリポジトリ追加&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;/etc/yum.repos.d/utter.repo&lt;/strong&gt; を開き、下記のように編集します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[utter]
+name=Jason&#39;s Utter Ramblings Repo
+baseurl=http://www.jasonlitka.com/media/EL$releasever/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=http://www.jasonlitka.com/media/RPM-GPG-KEY-jlitka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で、phpやhttpdの最新版がyumでインストールできるようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;最新パッケージのインストール:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;最新パッケージのインストール&lt;/h2&gt;
+
+&lt;p&gt;yumコマンドに「&amp;#8211;enablerepo={リポジトリ名}」オプションを付けることで、それぞれのリポジトリを参照できます。&lt;/p&gt;
+
+&lt;p&gt;PHPの場合&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum --enablerepo=remi install php
+...
+===================================================================================================================
+ Package                  Arch                 Version                                 Repository             Size
+===================================================================================================================
+Installing:
+ php                      x86_64               5.3.9-1.el5.remi                        remi                  2.8 M
+Installing for dependencies:
+ httpd                    x86_64               2.2.3-53.el5.centos.3                   updates               1.2 M
+ libedit                  x86_64               2.11-2.20080712cvs.el5                  epel                   80 k
+ php-cli                  x86_64               5.3.9-1.el5.remi                        remi                  2.6 M
+ php-common               x86_64               5.3.9-1.el5.remi                        remi                  997 k
+
+Transaction Summary
+===================================================================================================================
+Install       5 Package(s)
+Upgrade       0 Package(s)
+
+Total download size: 7.7 M
+Is this ok [y/N]:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apache2(httpd)の場合&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum --enablerepo=utter install httpd
+...
+===================================================================================================================
+ Package                       Arch                   Version                          Repository             Size
+===================================================================================================================
+Installing:
+ httpd                         x86_64                 2.2.21-jason.1                   utter                 3.2 M
+Installing for dependencies:
+ apr-util-ldap                 x86_64                 1.3.12-1.jason.1                 utter                  20 k
+Updating for dependencies:
+ apr-util                      x86_64                 1.3.12-1.jason.1                 utter                 201 k
+
+Transaction Summary
+===================================================================================================================
+Install       2 Package(s)
+Upgrade       1 Package(s)
+
+Total download size: 3.4 M
+Is this ok [y/N]:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;参考:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://hoge001.exblog.jp/13982612/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hoge001.exblog.jp/13982612/&#39;, &#39;hoge001 : CentOS5.5 Apache 2.2.15 インストール&#39;]);&#34; &gt;hoge001 : CentOS5.5 Apache 2.2.15 インストール&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://fedoraproject.org/wiki/About_EPEL/ja&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://fedoraproject.org/wiki/About_EPEL/ja&#39;, &#39;About EPEL/ja &amp;#8211; FedoraProject&#39;]);&#34; &gt;About EPEL/ja &amp;#8211; FedoraProject&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EPELとは？EPELの目的など&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.goofoo.jp/2011/03/556&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.goofoo.jp/2011/03/556&#39;, &#39;yumでremiリポジトリを使えるようにする | グーフー WordPressのためのLinuxノート&#39;]);&#34; &gt;yumでremiリポジトリを使えるようにする | グーフー WordPressのためのLinuxノート&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://pentan.info/server/linux/yum_new.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pentan.info/server/linux/yum_new.html&#39;, &#39;yumで、より新しいパッケージをインストールする方法(CentOS) &amp;#8211; [yum/Linux [Red Hatなど]] ぺんたん info&#39;]);&#34; &gt;yumで、より新しいパッケージをインストールする方法(CentOS) &amp;#8211; [yum/Linux [Red Hatなど]] ぺんたん info&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>vmstatの値をロギングする</title>
+      <link>http://1000k.github.io/2011/09/28/logging-vmstat-values/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/09/28/logging-vmstat-values/</guid>
+      <description>
+
+&lt;p&gt;vmstatの値をファイルに出力したいとき、次のコマンドが使えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nohup vmstat -n -S M 1 | awk &#39;{ print strftime(&amp;quot;%Y/%m/%d %H:%M:%S&amp;quot;), $0 } { system(&amp;quot;:&amp;quot;) }&#39; &amp;gt;&amp;gt; /path/to/log &amp;amp;#038;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2011/09/28 15:51:07 procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------
+2011/09/28 15:51:07  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+2011/09/28 15:51:07  1  0      0    251    153    358    0    0     0     9    1    0  0  0 99  0  0
+2011/09/28 15:51:08  0  0      0    251    153    358    0    0     0     0 1012   40  0  1 99  0  0
+2011/09/28 15:51:09  0  0      0    251    153    358    0    0     0     0 1004   37  0  0 100  0  0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このプロセスを終了したい場合は、下記のようにkillしてやればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pgrep vmstat      # vmstatのprocess idを取得する
+29248
+
+$ kill {上で出てきたpid}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;参考:981194324cf5b426a797d33ec4db9e80&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://babyp.blog55.fc2.com/blog-entry-446.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://babyp.blog55.fc2.com/blog-entry-446.html&#39;, &#39;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&#39;]);&#34; &gt;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#39;, &#39;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&#39;]);&#34; &gt;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#39;, &#39;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&#39;]);&#34; &gt;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>svnでdiffの行数を取得する</title>
+      <link>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</link>
+      <pubDate>Wed, 03 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</guid>
+      <description>
+
+&lt;p&gt;どれだけコーディングしたかチェックするため、svnのdiffの行数を取得するコマンドを考えました。&lt;/p&gt;
+
+&lt;p&gt;下のコマンドを叩くと、変更された行の総数が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(2011-08-17修正) 以前のコードはdiffのヘッダ行まで取得してしまっていたので、正しい数値が得られるよう修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;svn diff -r {before}[:{after}] -x -b {path} | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば「チェンジセット301～310で uso.php に発生した差分の総行数」は、下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn diff -r 301:310 -x -b ./uso.php | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ロジックは、&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;空白文字の差分（インデントや空行の削除）を無視してdiffを取る&lt;/li&gt;
+&lt;li&gt;差分行だけ(「+ 」「- 」どちらかから始まっている行)を取得する&lt;/li&gt;
+&lt;li&gt;行数をカウントする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;となっています。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8ae62bd64dbb38a5a9b5b7de400f164f&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://openlab.dino.co.jp/2007/10/23/184825129.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://openlab.dino.co.jp/2007/10/23/184825129.html&#39;, &#39;svn diffで-wオプションを使う — ディノオープンラボラトリ&#39;]);&#34; title=&#34;svn diffで-wオプションを使う — ディノオープンラボラトリ&#34;&gt;svn diffで-wオプションを使う — ディノオープンラボラトリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.enjoitech.jp/article/71&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.enjoitech.jp/article/71&#39;, &#39;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&#39;]);&#34; title=&#34;Linux である文字を含む行を削除したい - Enjoi Blog&#34;&gt;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[Linux] logrotateの使い方</title>
+      <link>http://1000k.github.io/2010/05/20/usage-of-logrotate/</link>
+      <pubDate>Thu, 20 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/20/usage-of-logrotate/</guid>
+      <description>
+
+&lt;h1 id=&#34;設定チュートリアル:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;設定チュートリアル&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&amp;#8220;/etc/logrotate.d/&amp;#8221; 配下に設定ファイルを作成する&lt;/li&gt;
+&lt;li&gt;「logrotate -d 作成したファイル名」でデバッグする&lt;/li&gt;
+&lt;li&gt;翌日午前4時にローテーションが成功していることを確認する
+
+&lt;ul&gt;
+&lt;li&gt;実行ログ: /var/lib/logrotate.status&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;設定ファイルの書き方:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;設定ファイルの書き方&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;# コメントアウトは「#」で
+対象ファイル [,対象ファイル, ...] {
+        オプション1
+        オプション2
+        ...
+        オプションN
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;設定例:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;設定例&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;対象ファイル:
+
+&lt;ul&gt;
+&lt;li&gt;/hige/log/ ディレクトリ内の *.log ファイルすべて&lt;/li&gt;
+&lt;li&gt;/moja/log/ ディレクトリ内の *.log ファイルすべて&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;オプション
+
+&lt;ul&gt;
+&lt;li&gt;毎日実行&lt;/li&gt;
+&lt;li&gt;対象ファイルが見つからなくてもエラーで停止しない&lt;/li&gt;
+&lt;li&gt;ログファイルが空ならログローテーションしない&lt;/li&gt;
+&lt;li&gt;7世代前まで管理&lt;/li&gt;
+&lt;li&gt;1MB以上のログファイルだけログローテーションする&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;/hige/log/*.log /moja/log/*.log {
+        daily
+        missingok
+        notifempty
+        rotate 7
+        size 1M
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;logrotateの実行方法:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;logrotateの実行方法&lt;/h1&gt;
+
+&lt;p&gt;基本的には毎朝4:00に自動実行されるが、デバッグと即時ログローテートを行うこともできる。&lt;/p&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/749rotatetest.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/749rotatetest.html&#39;, &#39;＠IT：logrotateのテストを行うには&#39;]);&#34; title=&#34;＠IT：logrotateのテストを行うには&#34;&gt;＠IT：logrotateのテストを行うには&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デバッグ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;logrotate -d /etc/logrotate.d/対象ファイル
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;即時ログローテート&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;logrotate -f 対象ファイル
+ logrotate -f /etc/logrotate.conf   # 登録されているローテーションすべて実行
+ logrotate -f /etc/logrotate.d/test # testだけ実行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;関連ファイルの場所:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;関連ファイルの場所&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;設定ファイル
+
+&lt;ul&gt;
+&lt;li&gt;/etc/logrotate.d/対象ファイル&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;実行ログ
+
+&lt;ul&gt;
+&lt;li&gt;/var/lib/logrotate.status&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;オプション一覧:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;オプション一覧&lt;/h1&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.asahi-net.or.jp/~aa4t-nngk/logrotate.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.asahi-net.or.jp/~aa4t-nngk/logrotate.html&#39;, &#39;Stray Penguin &amp;#8211; Linux Memo (logrotate)&#39;]);&#34; title=&#34;Stray Penguin - Linux Memo (logrotate)&#34;&gt;Stray Penguin &amp;#8211; Linux Memo (logrotate)&lt;/a&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;設定値&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;create [mode] [owner] [group]&lt;/td&gt;
+&lt;td&gt;ローテーションを (下記の postrotate も) 行った後、代わりに空の新規ログファイルを作って置いてくる。その属性も指定できる。mode は 0755 のようなオクテット書式。指定しない属性については元のファイルの属性が引き継がれる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nocreate&lt;/td&gt;
+&lt;td&gt;上記をグローバルな設定にした場合に、個別規定内で create を無効にしたい際に使用&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;copy/nocopy&lt;/td&gt;
+&lt;td&gt;元のログファイルはそのままにして、そのコピーを保存する。ログファイルをリロードする術のないプログラムへの対処法のひとつ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;copytruncate/nocopytruncate&lt;/td&gt;
+&lt;td&gt;copy の動作を行った後、元のログファイルの内容 を消去する。見かけ的には create と同じ結果となる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;rotate &lt;em&gt;num&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;世代ローテーションのステップ数。例えば元のログファイルが a.log だとして、 num を 2 にしておくと a.log =&amp;gt; a.log.1 =&amp;gt; a.log.2 =&amp;gt; 廃棄 となる。0 だと a.log =&amp;gt; 廃棄&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;start &lt;em&gt;num&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;初代ローテーションファイルの末尾に付加するナンバー。デフォルトは 1。 nuｍ を例えば 5 にすると、a.log =&amp;gt; a.log.5 =&amp;gt; a.log.6 =&amp;gt; &amp;#8230; と推移&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;extension &lt;em&gt;ext&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ローテーションした旧ログファイルに拡張子 ext を付ける。ドットも必要。例えば some.log を &amp;#8220;extension .bak&amp;#8221; の設定でローテーションすると、初代ローテーションログは some.log.1.bak となる。圧縮も行う場合、圧縮による拡張子はさらにその後ろに付く&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compress/nocompress&lt;/td&gt;
+&lt;td&gt;ローテーションした後の旧ファイルに圧縮を掛ける。デフォルトは nocompress&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compresscmd &lt;em&gt;cmd&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ログファイルの圧縮に使用するプログラムを指定。デフォルトは gzip&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;uncompresscmd &lt;em&gt;cmd&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ログファイルの解凍に使用するプログラムを指定。デフォルトは gunzip&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compressoptions &lt;em&gt;opt&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;圧縮プログラムへ渡すオプション。デフォルトは gzip に渡す &amp;#8220;-9&amp;#8221; (圧縮率最大)。現在のところ &amp;#8220;-9 -s&amp;#8221; のようにスペース入りで複数のオプションを指定することは不可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;compressext &lt;em&gt;ext&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;圧縮後のファイルに付ける拡張子 (ドットも必要)。デフォルトでは、使用する圧縮コマンドに応じたものが付くとされているが、bzip2 を使っても gz になってしまうなど、あまり当てにならない&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;delaycompress/nodelaycompress&lt;/td&gt;
+&lt;td&gt;圧縮処理を、その次のローテーションの時まで遅らせる。compress も指定しないと無意味&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;olddir &lt;em&gt;dir&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ローテーションした旧ログを dir に移動する。移動先は元と同じデバイス上でなければならない。元のログに対する相対指定も有効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;noolddir&lt;/td&gt;
+&lt;td&gt;上記の否定&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mail address&lt;/td&gt;
+&lt;td&gt;旧ログファイルを address に送信する。どの段階のものを送るかは maillast などのオプションで決まる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nomail&lt;/td&gt;
+&lt;td&gt;上記の否定&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;maillast&lt;/td&gt;
+&lt;td&gt;mail に関するオプション。最終世代を経て破棄されるログをメールする (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mailfirst&lt;/td&gt;
+&lt;td&gt;mail に関するオプション。初代ローテーションログをメールする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;daily/weekly/monthly&lt;/td&gt;
+&lt;td&gt;ログローテーションを日毎/週毎/月毎に行う。デフォルトは daily。例えば weekly なら、毎日実行を掛けたとしても、その週で最初に必要条件を満たした際にだけローテーションが行われる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;size &lt;em&gt;num[K/M]&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;ログのサイズが num バイトを超えていればローテーションを行う。この条件は daily, weekly などの条件より優先される。キロ/メガバイトでの指定も可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ifempty&lt;/td&gt;
+&lt;td&gt;元のログファイルが空でもローテーションを行う (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;notifempty&lt;/td&gt;
+&lt;td&gt;元のログファイルが空ならばローテーションしない&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;missingok&lt;/td&gt;
+&lt;td&gt;指定のログファイルが実在しなかったとしてもエラーを出さずに処理続行&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nomissingok&lt;/td&gt;
+&lt;td&gt;指定のログファイルが実在しなければエラーを出力 (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;firstaction &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションの条件に合致するログファイルがひとつでもあった場合に、ローテーションを行う前 (prerotate のアクションよりも前) に一度だけ実行するスクリプト。個別定義内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;prerotate &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションの条件に合致するログファイルがひとつでもあった場合に、ローテーションの前に (firstaction よりは後) に実行するスクリプト。個別定義内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;postrotate &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションが行われた後 (lastaction よりは前) に実行するスクリプト。個別指定内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;lastaction &lt;em&gt;script&lt;/em&gt; endscript&lt;/td&gt;
+&lt;td&gt;実際にローテーションが行われた後 (postrotate よりも後) に一度だけ実行するスクリプト。個別指定内でのみ指定可能&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nosharedscripts&lt;/td&gt;
+&lt;td&gt;ローテーションの条件に合致するログが複数あった場合に、prerotate, postrotate のスクリプトを各ログファイル毎に実行する (デフォルト)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;sharedscripts&lt;/td&gt;
+&lt;td&gt;ローテーションの条件に合致するログが複数あった場合に、prerotate, postrotate のスクリプトを一度だけ実行する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;include file_or_dir&lt;/td&gt;
+&lt;td&gt;設定ファイル内でこの記述のある位置に別の設定ファイルを読み込む。ディレクトリを指定した場合、その dir 内から、ディレクトリおよび名前付きパイプ以外のレギュラーファイルがアルファベット順に読み込まれる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;tabooext &lt;em&gt;[+] ext[,ext,&amp;#8230;]&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;include でディレクトリを指定した場合に読み込みから除外するファイルの拡張子を指定。デフォルトで .rpmorig, .rpmsave, .rpmnew, .v, .swp, ~ が設定されている。+ を挟むと追加指定、挟まないと根こそぎ置き換えとなる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&#34;copytruncate方式の欠点:6d0eb099fbc632b15b52ccdd35c3ab67&#34;&gt;copytruncate方式の欠点&lt;/h1&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://kamoland.com/wiki/wiki.cgi?logrotate%A4%CE%C0%DF%C4%EA&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kamoland.com/wiki/wiki.cgi?logrotate%A4%CE%C0%DF%C4%EA&#39;, &#39;logrotateの設定 &amp;#8211; KamoLand&#39;]);&#34; title=&#34;logrotateの設定 - KamoLand&#34;&gt;logrotateの設定 &amp;#8211; KamoLand&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;今回の方式ではcopytruncateを使っているため，ローテーション時には&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;元ファイルのコピーを作り&lt;/li&gt;
+&lt;li&gt;元ファイルの内容をクリアする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;という動作によってローテーションを実現している．&lt;/p&gt;
+
+&lt;p&gt;なので，ログを出力しているプロセス(Apache)から見れば永遠に同じファイルに出力し続ければよいため，Apacheにファイルの切り替えを認識させるために再起動をかける必要もない．&lt;/p&gt;
+
+&lt;p&gt;しかし見てわかるように，1.と2.の間のわずかな時間に発生したログは，&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;コピーのファイルには含まれず&lt;/li&gt;
+&lt;li&gt;しかもクリアされる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ということになってしまい，結果として消滅してしまう．これがcopytruncate方式の欠点．&lt;/p&gt;
+
+&lt;p&gt;もしこのようなロストが許されない場合はcopytruncate方式は使えないので，&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;copytruncateを使わずに，かつpostrotateでApacheの再起動を行う&lt;/li&gt;
+&lt;li&gt;Apacheでログをパイプに出力するように設定して，パイプの内容をrotatelogs，cronologなどでファイルに仕分けする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;などの方法を採る必要があります．&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

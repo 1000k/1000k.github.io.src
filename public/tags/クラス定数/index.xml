@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>クラス定数 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9A%E6%95%B0/</link>
+    <description>Recent content in クラス定数 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 15 Nov 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%82%AF%E3%83%A9%E3%82%B9%E5%AE%9A%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>クラス定数を動的に指定する</title>
+      <link>http://1000k.github.io/2010/11/15/define-class-constant-dynamically/</link>
+      <pubDate>Mon, 15 Nov 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/11/15/define-class-constant-dynamically/</guid>
+      <description>&lt;p&gt;PHP で可変変数を使えば、動的に変数名や関数名を指定できます。簡単な例だと、下のようなことができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$a = &#39;hello&#39;;
+${$a} = &#39; world!&#39;;  // $hello 変数に &#39; world!&#39;; が格納される
+echo $a . $hello;   // &#39;hello world!&#39; と出力される
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で、これを使って const で指定したクラス定数を動的に読み込みたかったのですが、なかなかうまく行きませんでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+class Uso {
+    const PRODUCTION_VALUE = 1;
+    const DEVELOP_VALUE = 2;
+}
+
+$uso = new Uso();
+$environment = $argv[1];
+
+echo $uso::${$environment}_VALUE;   // Parse Error
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+  理由は、そもそもクラス**定数**であって**変数**ではないからでしょうか。
+&lt;/p&gt;
+
+&lt;p&gt;
+  とりあえず、**constant(定数名)**関数を使うことでうまくクラス定数を指定できました。
+&lt;/p&gt;
+
+&lt;p&gt;
+  
+&lt;/p&gt;
+
+&lt;p&gt;
+  使用例&lt;br /&gt;
+  --------&lt;br /&gt;
+  なんでこんな記事を書いたかというと、開発環境と本番環境の DB を簡単に接続しわけるクラスを作りたかったからです。&lt;br /&gt;
+  以下のクラスをrequireして、「MyConnections::get_connection(&#34;production&#34;)」と呼べば本番環境に接続したPDOオブジェクトを取得できます。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+&amp;lt;?php
+/**
+ * DBに接続するクラス
+ */
+
+class MyConnections
+{
+    /** @var 本番環境の設定 */
+    const PRODUCTION_DSN      = &amp;quot;mysql:host=productiondb; port=3306; dbname=uso_db&amp;quot;;
+    const PRODUCTION_USERNAME = &amp;quot;uso&amp;quot;;
+    const PRODUCTION_PASSWORD = &amp;quot;800&amp;quot;;
+
+    /** @var ローカル開発環境の設定 */
+    const LOCAL_DSN      = &amp;quot;mysql:host=localhost; port=3306; dbname=uso_db;&amp;quot;;
+    const LOCAL_USERNAME = &amp;quot;root&amp;quot;;
+    const LOCAL_PASSWORD = &amp;quot;&amp;quot;;
+
+    /**
+     * DBに接続し、PDOオブジェクトを返す
+     *
+     * @param  string  $target  接続先 (production|local)
+     * @return PDO
+     */
+    public static function get_connections($target)
+    {
+        $env = strtoupper($target);
+
+        $dsn      = constant(&amp;quot;self::&amp;quot; . &amp;quot;{$env}_DSN&amp;quot;);
+        $username = constant(&amp;quot;self::&amp;quot; . &amp;quot;{$env}_USERNAME&amp;quot;);
+        $password = constant(&amp;quot;self::&amp;quot; . &amp;quot;{$env}_PASSWORD&amp;quot;);
+
+        try {
+            return new pdo($dsn, $username, $password);
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;
+  参考
+&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;a href=&#34;http://jp.php.net/manual/ja/language.variables.variable.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jp.php.net/manual/ja/language.variables.variable.php&#39;, &#39;PHP: 可変変数 - Manual&#39;]);&#34; title=&#34;PHP: 可変変数 - Manual&#34;&gt;PHP: 可変変数 - Manual&lt;/a&gt;
+  &lt;/li&gt;
+
+
+  &lt;li&gt;
+    &lt;a href=&#34;http://php.net/manual/ja/function.constant.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://php.net/manual/ja/function.constant.php&#39;, &#39;PHP: constant - Manual&#39;]);&#34; title=&#34;PHP: constant - Manual&#34;&gt;PHP: constant - Manual&lt;/a&gt;
+  &lt;/li&gt;
+
+
+  &lt;li&gt;
+    &lt;a href=&#34;http://www.shigeweb.jp/php/project_p/?page=static&amp;section=php5oop&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.shigeweb.jp/php/project_p/?page=static&amp;section=php5oop&#39;, &#39;【 ほでなすPHP 】 PHP5の基本 -&gt; スタティックメンバ／クラス定数&#39;]);&#34; title=&#34;【 ほでなすPHP 】 PHP5の基本 -&gt; スタティックメンバ／クラス定数&#34;&gt;【 ほでなすPHP 】 PHP5の基本 -&gt; スタティックメンバ／クラス定数&lt;/a&gt;
+  &lt;/li&gt;
+
+
+  &lt;li&gt;
+    &lt;a href=&#34;http://masha.maakikaku.jp/2008/03/php.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://masha.maakikaku.jp/2008/03/php.php&#39;, &#39;[PHP][可変変数] 変数名や関数名を動的に指定する (masha.webTechLog)&#39;]);&#34; title=&#34;[PHP][可変変数] 変数名や関数名を動的に指定する (masha.webTechLog)&#34;&gt;[PHP][可変変数] 変数名や関数名を動的に指定する (masha.webTechLog)&lt;/a&gt;
+  &lt;/li&gt;
+
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

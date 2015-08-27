@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>レビュー on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/</link>
+    <description>Recent content in レビュー on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 24 May 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Scrum失敗例 楽天の場合</title>
+      <link>http://1000k.github.io/2012/05/24/why-scrum-failed-in-rakuten/</link>
+      <pubDate>Thu, 24 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/05/24/why-scrum-failed-in-rakuten/</guid>
+      <description>
+
+&lt;p&gt;楽天のあるプロジェクトが「Scrumをやったもののうまくいかなかった」という経験談をスライドにまとめていました。&lt;/p&gt;
+
+&lt;p&gt;概要と感想を書きます。&lt;/p&gt;
+
+&lt;div style=&#34;width:425px&#34; id=&#34;__ss_13014872&#34;&gt;
+  &lt;strong style=&#34;display:block;margin:12px 0 4px&#34;&gt;&lt;a href=&#34;http://www.slideshare.net/TakaoOyobe/20120521-13014872&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/TakaoOyobe/20120521-13014872&#39;, &#39;私がスクラムをやめた理由 &amp;#8211; 全員スクラムマスター。＠DevLove &amp;#8211;&#39;]);&#34; title=&#34;私がスクラムをやめた理由 - 全員スクラムマスター。＠DevLove -&#34; target=&#34;_blank&#34;&gt;私がスクラムをやめた理由 &amp;#8211; 全員スクラムマスター。＠DevLove &amp;#8211;&lt;/a&gt;&lt;/strong&gt; 
+  
+  &lt;div style=&#34;padding:5px 0 12px&#34;&gt;
+    View more &lt;a href=&#34;http://www.slideshare.net/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/&#39;, &#39;presentations&#39;]);&#34; target=&#34;_blank&#34;&gt;presentations&lt;/a&gt; from &lt;a href=&#34;http://www.slideshare.net/TakaoOyobe&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/TakaoOyobe&#39;, &#39;Takao Oyobe&#39;]);&#34; target=&#34;_blank&#34;&gt;Takao Oyobe&lt;/a&gt;
+  &lt;/div&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;スライド概要:62eb8597331ebd06c39f006707b078a1&#34;&gt;スライド概要&lt;/h2&gt;
+
+&lt;p&gt;Scrumを導入したが、下記の問題により挫折。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;人が選べない&lt;/li&gt;
+&lt;li&gt;プラクティスに従ってくれない人がいる&lt;/li&gt;
+&lt;li&gt;切符を切る人（正しくバスに乗っているか確かめる人）がいない&lt;/li&gt;
+&lt;li&gt;役割は決められない&lt;/li&gt;
+&lt;li&gt;結局新たな滝（ウォーターフォール）ができただけ&lt;/li&gt;
+&lt;li&gt;教育が難しい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;スライドを見て思ったこと:62eb8597331ebd06c39f006707b078a1&#34;&gt;スライドを見て思ったこと&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;根本的にスクラムマスターの権限が弱すぎる？
+
+&lt;ul&gt;
+&lt;li&gt;プラクティスを周知し、従わせる&lt;/li&gt;
+&lt;li&gt;合わない場合はプラクティスを軽量化するか捨てる&lt;/li&gt;
+&lt;li&gt;どうしても従わないメンバーがいる場合、入れ替えられる機構が必要&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;結局スモールウォーターフォールになるのは自分も経験済み。恐らく「スモールリリース」に誤解
+
+&lt;ul&gt;
+&lt;li&gt;1スプリント毎に必ず成果をコミットする（タイムボックス化）&lt;/li&gt;
+&lt;li&gt;優先度の高いストーリーから消化する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;メンバーをバスに乗せるのは本当に難しい
+
+&lt;ul&gt;
+&lt;li&gt;「アジャイル開発のプラクティスをやれば良くなる」という自発的な動機がなければ、大量のプラクティスの学習で脱落する人が続出しそう&lt;/li&gt;
+&lt;li&gt;スクラムマスターはここでも継続的・漸進的な推進をする必要がありそう&lt;/li&gt;
+&lt;li&gt;最初の2～4スプリントはふつうスパイクや調査の期間なので、ここで徐々に教育すれば良さそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;総じて、メンバーをプラクティスに従わせるのに苦労している印象を受けました。&lt;/p&gt;
+
+&lt;p&gt;アジャイル開発には自律的なプラクティスが多く、自ら行ってもらえるようにならないとうまく回りません。&lt;/p&gt;
+
+&lt;p&gt;メリットが実感できればもっと積極的になってくれるかもしれませんが。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.ryuzee.com/contents/blog/?s=%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.ryuzee.com/contents/blog/?s=%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97&#39;, &#39;プラクティスの意義を実感するためのワークショップ&#39;]);&#34; title=&#34;ワークショップ | Ryuzee.com&#34;&gt;プラクティスの意義を実感するためのワークショップ&lt;/a&gt;（短時間でできるゲーム）が多数あるので、これをまず体験させるのも効果的でしょう。&lt;/p&gt;
+
+&lt;p&gt;あとこれは私の経験則ですが、開発メンバーの主力がスクラムマスターを兼任すると、開発も指揮も中途半端になるのでオススメしません。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

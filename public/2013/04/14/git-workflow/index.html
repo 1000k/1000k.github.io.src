@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> git ワークフロー &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/04/14/git-workflow/">git ワークフロー</a></h2>
+        <div class="post-content">
+          
+
+<p>実際のプロジェクトを git で運用する時のよくある流れをまとめました。</p>
+
+<h2 id="前準備:c200c94cf5af25837ca230fae46d8045">前準備</h2>
+
+<h3 id="git-push-コマンドのデフォルトの挙動を変更する:c200c94cf5af25837ca230fae46d8045">git push コマンドのデフォルトの挙動を変更する</h3>
+
+<p>git push コマンドのデフォルトの挙動では、引数を指定しないとローカルにある全てのブランチを push してしまいます。そのため、リモートとローカルに同名のブランチがある場合、リモートブランチを同名のローカルブランチで意図せず上書きしてしまう危険があります。</p>
+
+<p>そこで、引数なしの git push を実行した時は、現在編集中のブランチのみ push するようにします。</p>
+
+<pre><code>$ git config  --global push.default current
+</code></pre>
+
+<h2 id="新しいブランチを作成して作業する:c200c94cf5af25837ca230fae46d8045">新しいブランチを作成して作業する</h2>
+
+<p>以下の流れを行う時のコマンドです。</p>
+
+<ol>
+<li>mojamoja リポジトリに新しいブランチを作成する</li>
+<li>変更をリモートに push する</li>
+<li>変更点を master ブランチにマージする</li>
+<li>変更したバージョンをタグにする</li>
+</ol>
+
+<pre><code># mojamoja リポジトリをローカルに clone する
+$ git clone git@bitbucket.org:1000k/mojamoja
+$ cd mojamoja
+
+# 現在ローカルにあるブランチを確認する
+$ git branch -l
+
+# 作業用ブランチ (例として 'feature-branch' という名前) を作成する
+$ git branch feature-branch
+
+# 作業用ブランチに切り替える
+$ git checkout feature-branch
+
+# 編集
+$ vim ...
+$ vim ...
+
+# 変更のあったファイルを確認する
+$ git status
+
+# 変更したファイルを全てコミット対象に入れる
+# 個別に登録したい場合は &quot;git add {ファイルパス}&quot;
+$ git add -A
+
+$ git commit -m &quot;Foo クラスを作成。&quot;
+
+# 変更したファイルをリモートにプッシュする
+$ git push
+
+# master ブランチにマージする
+$ git checkout master
+$ git merge feature-branch
+$ git push
+
+# 既存のタグを確認
+$ git tag -l
+
+# ローカルにタグを作成する
+$ git tag 0.0.1 -m &quot;First tag&quot;
+
+# リモートに push する
+$ git push --tags
+
+# 使わなくなったローカルブランチを削除する
+$ git branch -d feature-branch
+
+# 使わなくなったリモートブランチを削除する
+# ブランチ名の前に &quot;:&quot; を付け忘れると動かないので注意
+$ git push origin :feature-branch
+</code></pre>
+
+<h2 id="ローカルをリモートの状態に合わせる:c200c94cf5af25837ca230fae46d8045">ローカルをリモートの状態に合わせる</h2>
+
+<p>異なるマシンから同じリモートブランチに変更を加えると、それぞれのマシン間で差異が出てしまいます。以下の手順で、ローカルのブランチをリモートにあるブランチと同期させることが可能です。</p>
+
+<pre><code># リモートの最新のデータを取得する
+$ git fetch origin master
+
+# ローカルのバージョンの向き先を最新に変える
+$ git reset --hard FETCH_HEAD
+
+# ローカルの管理外ファイルを消す
+$ git clean -df
+</code></pre>
+
+<p>これでリモートとローカルでファイルの中身が同一になりました。</p>
+
+<h2 id="リモートブランチをローカルで編集する:c200c94cf5af25837ca230fae46d8045">リモートブランチをローカルで編集する</h2>
+
+<p>リモートにのみ 0.2.0 ブランチがあり、ローカルにはまだ無い場合、以下のコマンドでローカルにコピーすることができます。</p>
+
+<pre><code># ローカルにあるブランチの一覧を確認する
+$ git branch -r
+
+# ローカルの 0.2.0 ブランチにリモートの 0.2.0 をチェックアウトする
+$ git checkout -b 0.2.0 origin/0.2.0
+</code></pre>
+
+<h2 id="間違ったコミットを取り消す:c200c94cf5af25837ca230fae46d8045">間違ったコミットを取り消す</h2>
+
+<p>2つの考え方があるので注意。</p>
+
+<p>ここは git の内部構造を理解していないと飲み込めないかもしれません。</p>
+
+<p><a href="http://www.slideshare.net/matsukaz/git-17499005" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.slideshare.net/matsukaz/git-17499005', 'いつやるの？Git入門']);" >いつやるの？Git入門</a> が簡潔に内部構造を説明しているので、目を通すことをオススメします。</p>
+
+<h3 id="commit-8211-amend:c200c94cf5af25837ca230fae46d8045">commit &#8211;amend</h3>
+
+<p>後から前回のコミットに追加して変更をするやり方です。</p>
+
+<pre><code># わざと間違ったコミットをする
+$ git commit -m &quot;Failure commit&quot;
+
+# これまでのコミットの一覧を確認する
+$ git log
+
+# さっきコミットし忘れたファイルをステージングする
+$ git add foo.php
+
+# 先ほどコミットした部分と合わせて新たなコミットを行う
+git commit --amend -m &quot;Successful commit&quot;
+</code></pre>
+
+<p>これにより、1回目の間違ったコミットは無効化され、2回目のコミットが利用されます。</p>
+
+<h3 id="git-reset:c200c94cf5af25837ca230fae46d8045">git reset</h3>
+
+<p>前回のコミットそのものを取り消す (無かったことにする) コマンドです。</p>
+
+<p>コミットしたファイルを残すか消すかで、オプションの値を変える必要があります。</p>
+
+<p>コミットだけを取り消して、変更したファイルはそのままで、1つ手前の状態に戻すには、<code>--soft</code> オプションを付けます。</p>
+
+<pre><code>git reset --soft HEAD^
+</code></pre>
+
+<p>コミットを取り消し、ワークディレクトリの中身も1つ前の状態に置き換える (= 変更も全て元に戻る) には、<code>--hard</code> オプションを付けます。</p>
+
+<pre><code>git reset --hard HEAD^
+</code></pre>
+
+<h2 id="参考:c200c94cf5af25837ca230fae46d8045">参考</h2>
+
+<ul>
+<li><a href="http://d.hatena.ne.jp/nayutaya/20090519/1242701594" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/nayutaya/20090519/1242701594', 'gitのリモートブランチを使って作業を行う流れのメモ &#8211; 那由多屋 開発日誌']);" >gitのリモートブランチを使って作業を行う流れのメモ &#8211; 那由多屋 開発日誌</a></li>
+<li><a href="http://stackoverflow.com/questions/948354/git-push-current-branch" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/948354/git-push-current-branch', 'git push current branch &#8211; Stack Overflow']);" >git push current branch &#8211; Stack Overflow</a></li>
+<li><a href="http://transitive.info/article/git/command/tag/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://transitive.info/article/git/command/tag/', 'transitive.info &#8211; git tag 使い方']);" >transitive.info &#8211; git tag 使い方</a></li>
+<li><a href="http://qiita.com/items/e082d64f3f8b424e9b7d" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/items/e082d64f3f8b424e9b7d', 'fetch と pullの違い #git &#8211; Qiita']);" >fetch と pullの違い #git &#8211; Qiita</a></li>
+<li><a href="http://dqn.sakusakutto.jp/2012/11/git_pull.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dqn.sakusakutto.jp/2012/11/git_pull.html', 'Git pullを使うべきでない３つの理由 &#8211; DQNEO起業日記']);" >Git pullを使うべきでない３つの理由 &#8211; DQNEO起業日記</a></li>
+<li><a href="http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468', 'git commitをやり直しする＆取り消しする(「get commit &#8211;amend」と「git reset」) &#8211; hogehoge foobar Blog Style5']);" >git commitをやり直しする＆取り消しする(「get commit &#8211;amend」と「git reset」) &#8211; hogehoge foobar Blog Style5</a></li>
+<li><a href="http://www.slideshare.net/matsukaz/git-17499005" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.slideshare.net/matsukaz/git-17499005', 'いつやるの？Git入門']);" >いつやるの？Git入門</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

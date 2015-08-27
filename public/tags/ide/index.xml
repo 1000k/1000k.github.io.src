@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ide on 1000g</title>
+    <link>http://1000k.github.io/tags/ide/</link>
+    <description>Recent content in Ide on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 26 May 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/ide/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[開発環境]NetBeans 6.8 に Zen-Coding を導入する</title>
+      <link>http://1000k.github.io/2010/05/26/implement-zen-coding-to-netbeans-68/</link>
+      <pubDate>Wed, 26 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/26/implement-zen-coding-to-netbeans-68/</guid>
+      <description>
+
+&lt;p&gt;もうZen-Coding無しではHTMLを打てない体になっています。PHPのWEBアプリ開発時にはNetBeansを使うことが多いので、Zen-Codingプラグインを導入してみました。&lt;/p&gt;
+
+&lt;p&gt;※ただし、NetBeansではスニペット（単語補完）しか用意されていないようで、liタグのネストなどは使えないようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;導入手順:36e8d758c47104094651fcffcdfb9662&#34;&gt;導入手順&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://code.google.com/p/zen-coding/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://code.google.com/p/zen-coding/&#39;, &#39;zen-coding &amp;#8211; Project Hosting on Google Code&#39;]);&#34; title=&#34;zen-coding - Project Hosting on Google Code&#34;&gt;zen-coding &amp;#8211; Project Hosting on Google Code&lt;/a&gt; からNetBeans用プラグインをダウンロードする
+
+&lt;ul&gt;
+&lt;li&gt;執筆時のバージョンは「NetBeans.Zen.HTML.1.2.zip」&lt;/li&gt;
+&lt;li&gt;ZIPファイルのまま取り込むので、解凍する必要は無いです&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;NetBeansのメニューバーから、 &lt;strong&gt;ツール &amp;gt; オプション&lt;/strong&gt; を選択&lt;/li&gt;
+&lt;li&gt;オプションウインドウ左下にある &lt;strong&gt;インポート&lt;/strong&gt; をクリック&lt;/li&gt;
+&lt;li&gt;ダウンロードしたZIPファイルを参照する&lt;/li&gt;
+&lt;li&gt;「使用可能なオプション」に &lt;strong&gt;すべて&lt;/strong&gt; をチェックして &lt;strong&gt;了解&lt;/strong&gt; をクリック。&lt;/li&gt;
+&lt;li&gt;「今すぐIDEを再起動」にチェックをつけたままクリック（再起動）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;あとはHTMLのソースを開いて、「html:xt」→TABキー などやればスルスルとコードが書けます。&lt;/p&gt;
+
+&lt;h3 id=&#34;少し改良:36e8d758c47104094651fcffcdfb9662&#34;&gt;少し改良&lt;/h3&gt;
+
+&lt;p&gt;HTMLへのPHP出力として「＜?php ?＞」ブロックを頻繁に使うので、それもスニペットに追加します。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;メニューバー &amp;gt; オプション &amp;gt; エディタ &amp;gt; コードテンプレート &amp;gt; 言語:HTML&lt;/li&gt;
+&lt;li&gt;「新規」ボタンをクリック&lt;/li&gt;
+&lt;li&gt;下記項目を登録&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;省略名「php」、展開されるテキスト「&amp;lt;?php ${cursor} ?&amp;gt;」
+省略名「phpe」、展開されるテキスト「
+
+&amp;lt;?php echo ${cursor}; ?&amp;gt;」
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上です。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:36e8d758c47104094651fcffcdfb9662&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.mizoshiri.com/archives/863&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.mizoshiri.com/archives/863&#39;, &#39;Netbeans(windows環境)にZen-Codingを導入&#39;]);&#34; title=&#34;Netbeans(windows環境)にZen-Codingを導入&#34;&gt;Netbeans(windows環境)にZen-Codingを導入&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

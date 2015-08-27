@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> vfsStream の使い方 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/03/27/usage-of-vfsstream/">vfsStream の使い方</a></h2>
+        <div class="post-content">
+          
+
+<p>PHPUnit でファイルシステムのテストを行うとき便利な <a href="http://vfs.bovigo.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://vfs.bovigo.org/', 'vfsStream']);" >vfsStream</a> ですが、簡単なサンプルがあまり無かったので書いてみました。</p>
+
+<h2 id="vfsstream-とは:1bb7a2da6956cd5c18323dac9c2045f6">vfsStream とは？</h2>
+
+<ul>
+<li>ファイルの読み書きをテストする時に使うフレームワーク。</li>
+<li>仮想ファイルシステムを作成し、その中でディレクトリやファイルを操作できる。
+
+<ul>
+<li>実ファイルシステム: <em>file://&#8230;</em></li>
+<li>仮想ファイルシステム: <em>vfs://&#8230;</em></li>
+</ul></li>
+<li>実ファイルを作成せずにテストできるので、テストファイルが散らばる可能性が無く、前回のテストのゴミを意識せずに済む。</li>
+<li>ディレクトリやファイルの権限/ユーザー/オーナーも再現可能。</li>
+</ul>
+
+<h2 id="インストール方法:1bb7a2da6956cd5c18323dac9c2045f6">インストール方法</h2>
+
+<p>詳しくは以前書いた <a href="http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2012/09/04/vfsstream%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B/', 'vfsStreamをインストールする | 1000g']);" >vfsStreamをインストールする | 1000g</a> を参照。</p>
+
+<h3 id="php-5-3-の場合:1bb7a2da6956cd5c18323dac9c2045f6">PHP &lt; 5.3 の場合</h3>
+
+<pre><code>$ pear channel-discover pear.bovigo.org
+$ pear install bovigo/vfsStream-beta
+</code></pre>
+
+<h3 id="php-5-3-の場合-1:1bb7a2da6956cd5c18323dac9c2045f6">PHP &gt;= 5.3 の場合</h3>
+
+<p>composer.json に以下のように書く。</p>
+
+<pre><code>&quot;mikey179/vfsStream&quot;: &quot;v1.1.0&quot;
+</code></pre>
+
+<p>利用可能なバージョンは <a href="https://packagist.org/packages/mikey179/vfsStream" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://packagist.org/packages/mikey179/vfsStream', 'mikey179/vfsStream &#8211; Packagist']);" >mikey179/vfsStream &#8211; Packagist</a> を参照。</p>
+
+<h2 id="サンプルコード:1bb7a2da6956cd5c18323dac9c2045f6">サンプルコード</h2>
+
+<p>単純にファイルにテキストを追記するだけのロガーをテストしてみます。</p>
+
+<p>なお、vfsStream 0.12 を利用しています。</p>
+
+<p><em>Logger.php</em></p>
+
+<pre><code>Class Logger {
+  public static function log($str, $path) {
+    return file_put_contents($path, $str);
+  }
+}
+</code></pre>
+
+<p><em>LoggerTest.php</em></p>
+
+<pre><code>require_once 'Logger.php';
+require_once 'vfsStream/vfsStream.php';
+
+class LoggerTest extends PHPUnit_Framework_Test {
+    /**
+     * @var vfsStreamDirectory
+     */
+    private $root;
+
+    protected function setUp() {
+        // 仮想ファイルシステムにルートディレクトリを作る。
+        $this-&gt;root = vfsStream::setup();     // &quot;vfs://root&quot; ディレクトリが作成される
+
+        // ファイルのパスは vfsStream::url() で取得する。
+        var_dump(vfsStream::url('root'));         // =&gt; vfs://root
+        var_dump(is_dir(vfsStream::url('root'))); // =&gt; true
+    }
+
+    /**
+     * @covers Logger::log
+     */
+    public function testLog() {
+        $str = 'Lorem ipsum';
+        $path = vfsStream::url('root/foo.txt');
+
+        $this-&gt;assertGreaterThan(0, Logger::log($str, $path));
+        $this-&gt;assertEquals($str, file_get_contents($path));
+    }
+}
+</code></pre>
+
+<h2 id="参考:1bb7a2da6956cd5c18323dac9c2045f6">参考</h2>
+
+<ul>
+<li><a href="http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://tech.vg.no/2011/03/09/mocking-the-file-system-using-phpunit-and-vfsstream/', 'Mocking the file system using PHPUnit and vfsStream – VG Tech']);" >Mocking the file system using PHPUnit and vfsStream – VG Tech</a>
+
+<ul>
+<li>vfsStream を使った様々なテストのサンプルがあります。</li>
+</ul></li>
+<li><a href="https://github.com/mikey179/vfsStream/wiki" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/mikey179/vfsStream/wiki', 'Home · mikey179/vfsStream Wiki']);" >Home · mikey179/vfsStream Wiki</a>
+
+<ul>
+<li>作成元の GitHub ページ。</li>
+</ul></li>
+<li><a href="http://www.phpunit.de/manual/current/ja/test-doubles.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/current/ja/test-doubles.html', '第10章 テストダブル']);" >第10章 テストダブル</a>
+
+<ul>
+<li>PHPUnit のドキュメント内にある解説。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

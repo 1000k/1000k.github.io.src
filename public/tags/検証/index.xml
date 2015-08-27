@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>検証 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E6%A4%9C%E8%A8%BC/</link>
+    <description>Recent content in 検証 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 13 Oct 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E6%A4%9C%E8%A8%BC/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>jQuery Mobileのページ遷移時にイベントが発火する順番</title>
+      <link>http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/</link>
+      <pubDate>Sat, 13 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/</guid>
+      <description>
+
+&lt;p&gt;ページ遷移持のイベントの発火タイミングをよくよく理解しておかなければ、jQuery Mobile を使いこなすことはできません。&lt;/p&gt;
+
+&lt;p&gt;単純なページ間の遷移で発生するイベントの順番を確認しておきます。&lt;/p&gt;
+
+&lt;p&gt;なお、イベント一覧は &lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Events&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Events&lt;/a&gt; に記されています。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証コード:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;検証コード&lt;/h2&gt;
+
+&lt;p&gt;コードはgistにも公開してあります。→&lt;a href=&#34;https://gist.github.com/3886193&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://gist.github.com/3886193&#39;, &#39;Verify the event firing timings of jQuery Mobile — Gist&#39;]);&#34; &gt;Verify the event firing timings of jQuery Mobile — Gist&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;page1-html:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;page1.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;page2.html&amp;quot; data-role=&amp;quot;button&amp;quot;&amp;gt;Go to page2.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;page2-html:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;page2.html&lt;/h3&gt;
+
+&lt;p&gt;page1 とほぼ同じなので、[data-role=&amp;#8221;page&amp;#8221;]ブロック内だけ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;e&amp;quot; id=&amp;quot;page2&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;page1.html&amp;quot; data-role=&amp;quot;button&amp;quot;&amp;gt;Back to page1.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;transition-js:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;transition.js&lt;/h3&gt;
+
+&lt;p&gt;イベント発火時にコンソールにイベント名が出るようにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Page load events
+$(document).bind(&amp;quot;pagebeforeload&amp;quot;, function(e, data) {
+  console.log(&amp;quot;pagebeforeload: &amp;quot; + data.url);
+});
+$(document).bind(&amp;quot;pageload&amp;quot;, function(e, data) {
+  console.log(&amp;quot;pageload: &amp;quot; + data.url);
+});
+$(document).bind(&amp;quot;pageloadfailed&amp;quot;, function() { console.log(&amp;quot;pageloadfailed&amp;quot;); });
+
+// Page change events
+$(document).bind(&amp;quot;pagebeforechange&amp;quot;, function() { console.log(&amp;quot;pagebeforechange&amp;quot;); });
+$(document).bind(&amp;quot;pagechange&amp;quot;, function() { console.log(&amp;quot;pagechange&amp;quot;); });
+$(document).bind(&amp;quot;pagechangefailed&amp;quot;, function() { console.log(&amp;quot;pagechangefailed&amp;quot;); });
+
+// Page transition events
+$(document).bind(&amp;quot;pagebeforeshow&amp;quot;, function() { console.log(&amp;quot;pagebeforeshow&amp;quot;); });
+$(document).bind(&amp;quot;pagebeforehide&amp;quot;, function() { console.log(&amp;quot;pagebeforehide&amp;quot;); });
+$(document).bind(&amp;quot;pageshow&amp;quot;, function() { console.log(&amp;quot;pageshow&amp;quot;); });
+$(document).bind(&amp;quot;pagehide&amp;quot;, function() { console.log(&amp;quot;pagehide&amp;quot;); });
+
+// Page initialization events
+$(document).bind(&amp;quot;pagebeforecreate&amp;quot;, function() { console.log(&amp;quot;pagebeforecreate&amp;quot;); });
+$(document).bind(&amp;quot;pagecreate&amp;quot;, function() { console.log(&amp;quot;pagecreate&amp;quot;); });
+$(document).bind(&amp;quot;pageinit&amp;quot;, function() { console.log(&amp;quot;pageinit&amp;quot;); });
+
+// Page remove events
+$(document).bind(&amp;quot;pageremove&amp;quot;, function() { console.log(&amp;quot;pageremove&amp;quot;); });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;実験:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;実験&lt;/h2&gt;
+
+&lt;p&gt;「page1.html -&amp;gt; page2.html -&amp;gt; page1.html -&amp;gt; page2.html」という遷移をした時のコンソールログは以下です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// page1.html にアクセス
+pagebeforechange
+pagebeforecreate
+pagecreate
+pageinit
+pagebeforeshow
+pageshow
+pagechange
+
+// 「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+
+// 「Back to page1.html」をクリック
+pagebeforechange
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pageremove
+pagehide
+pageshow
+pagechange
+
+// もう一度「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;考察:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;考察&lt;/h2&gt;
+
+&lt;p&gt;気付いた点をメモします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pagechange は全ての遷移の最後で発生する。&lt;/li&gt;
+&lt;li&gt;page2.html に遷移するたびに pageinit が発火している。&lt;/li&gt;
+&lt;li&gt;逆に、page1.html で pageinit が発火するのは最初のアクセス時のみ。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Scripting pages&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Scripting pages&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Events&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Events&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/Naotsugu/20120103/1325568080&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/Naotsugu/20120103/1325568080&#39;, &#39;はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &amp;#8211; etc9&#39;]);&#34; &gt;はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &amp;#8211; etc9&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bzip2 on 1000g</title>
+    <link>http://1000k.github.io/tags/bzip2/</link>
+    <description>Recent content in Bzip2 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 15 Jan 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/bzip2/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CentOSでbzip2が解凍できないエラー</title>
+      <link>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</guid>
+      <description>
+
+&lt;p&gt;bzip2ファイルを解凍しようと思ったら、見慣れないエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# tar xvf paco-2.0.9.tar.bz2
+tar: bzip2: exec 不能: そのようなファイルやディレクトリはありません
+tar: エラーを回復できません: 直ちに終了します
+tar: Child returned status 2
+tar: 処理中にエラーが起きましたが、最後まで処理してからエラー終了させました
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただ単にbzip2がインストールされていなかったのが原因でした。yumで入れて即解決です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install bzip2
+...
+Installed:
+  bzip2.x86_64 0:1.0.3-6.el5_5
+
+Complete!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CloudCore VPSでこのエラーに遭遇しました。&lt;/p&gt;
+
+&lt;p&gt;CentOSの最小構成でインストールされているようで、ごく普通のコマンドが使えないことが多いです。&lt;/p&gt;
+
+&lt;p&gt;パッケージが不足していないか注意が必要ですね。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:b209194a963523f744e005b58f948c6d&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiroponz/20070205&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiroponz/20070205&#39;, &#39;2007-02-05 &amp;#8211; プチ技術メモ&#39;]);&#34; &gt;2007-02-05 &amp;#8211; プチ技術メモ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

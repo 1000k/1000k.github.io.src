@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Markdown on 1000g</title>
+    <link>http://1000k.github.io/tags/markdown/</link>
+    <description>Recent content in Markdown on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 05 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/markdown/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Markdown記法で連番リストを無視したい</title>
+      <link>http://1000k.github.io/2010/07/05/escape-ordered-list-in-markdown-syntax/</link>
+      <pubDate>Mon, 05 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/05/escape-ordered-list-in-markdown-syntax/</guid>
+      <description>
+
+&lt;p&gt;Markdown記法では、行頭に「1.」「2.」などと書くと、勝手に連番リストにされてしまいます。&lt;/p&gt;
+
+&lt;p&gt;それが嫌な場合は、「&lt;strong&gt;999&amp;#92;.&lt;/strong&gt;」というように、「&amp;#92;.」でエスケープしてやるとリストになりません。ただのパラグラフになります。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:31b7ef85b6c305128f2ae063440e0547&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://daringfireball.net/projects/markdown/syntax&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://daringfireball.net/projects/markdown/syntax&#39;, &#39;Daring Fireball: Markdown Syntax Documentation&#39;]);&#34; title=&#34;Daring Fireball: Markdown Syntax Documentation&#34;&gt;Daring Fireball: Markdown Syntax Documentation&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

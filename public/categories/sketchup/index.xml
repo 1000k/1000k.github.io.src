@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sketchup on 1000g</title>
+    <link>http://1000k.github.io/categories/sketchup/</link>
+    <description>Recent content in Sketchup on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 02 Feb 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/sketchup/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Sketchup で Google Earth の地形データをインポートする手順</title>
+      <link>http://1000k.github.io/2014/02/02/importing-geometrical-data-of-google-earth-in-sketchup/</link>
+      <pubDate>Sun, 02 Feb 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/02/02/importing-geometrical-data-of-google-earth-in-sketchup/</guid>
+      <description>
+
+&lt;p&gt;Google Earth の 3D の地形データを Sketchup にインポートするチュートリアルです。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順:ada0c3665685f49ff08fee8d194494a8&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;場所のインポート:ada0c3665685f49ff08fee8d194494a8&#34;&gt;場所のインポート&lt;/h3&gt;
+
+&lt;p&gt;&amp;ldquo;ファイル &amp;gt; ジオロケーション &amp;gt; 場所を追加&amp;rdquo; をクリック。&lt;/p&gt;
+
+&lt;p&gt;
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://1000k.github.io/img/su_tutorial_001.png&#34;  /&gt;
+    
+    
+    &lt;figcaption&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Google Maps が開くので、地名を検索する。&lt;/p&gt;
+
+&lt;p&gt;&amp;ldquo;地域を選択&amp;rdquo; をクリック。&lt;/p&gt;
+
+&lt;p&gt;矩形の範囲を設定し、&amp;rdquo;グラブ&amp;rdquo; をクリック。&lt;/p&gt;
+
+&lt;p&gt;
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://1000k.github.io/img/su_tutorial_002-300x224.png&#34;  /&gt;
+    
+    
+    &lt;figcaption&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;これで地形データが Sketchup にインポートされます。&lt;/p&gt;
+
+&lt;p&gt;
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://1000k.github.io/img/su_tutorial_003-1024x680.jpg&#34;  /&gt;
+    
+    
+    &lt;figcaption&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;3d-モデルを表示する:ada0c3665685f49ff08fee8d194494a8&#34;&gt;3D モデルを表示する&lt;/h3&gt;
+
+&lt;p&gt;この時点では 2D の画像しかありませんが、3D のデータも非表示のレイヤーで取り込まれています。&lt;/p&gt;
+
+&lt;p&gt;表示するには次の手順に従います。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&amp;ldquo;ウィンドウ &amp;gt; レイヤ&amp;rdquo; をクリックして、レイヤパネルを開く。&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Google Earth Terrain&amp;rdquo; の &amp;ldquo;可視&amp;rdquo; チェックボックスをクリック。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://1000k.github.io/img/su_tutorial_004.png&#34;  /&gt;
+    
+    
+    &lt;figcaption&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;これで 3D のデータが取り込まれました。&lt;/p&gt;
+
+&lt;h3 id=&#34;編集可能にする:ada0c3665685f49ff08fee8d194494a8&#34;&gt;編集可能にする&lt;/h3&gt;
+
+&lt;p&gt;さらにこの時点ではエンティティにロックがかかっているため、編集できません。&lt;/p&gt;
+
+&lt;p&gt;編集したい場合はエンティティを選択し、&amp;rdquo;エンティティ情報&amp;rdquo; パネルの &amp;ldquo;ロック&amp;rdquo; チェックボックスを外します。&lt;/p&gt;
+
+&lt;p&gt;
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://1000k.github.io/img/su_tutorial_005.png&#34;  /&gt;
+    
+    
+    &lt;figcaption&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;これでエンティティが編集可能になります。&lt;/p&gt;
+
+&lt;p&gt;
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://1000k.github.io/img/su_tutorial_006-1024x496.png&#34;  /&gt;
+    
+    
+    &lt;figcaption&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;表面の 2D 画像を消したければ、エンティティを選択して &amp;ldquo;サーフェス&amp;rdquo; をデフォルトにすれば OK。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:ada0c3665685f49ff08fee8d194494a8&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://productforums.google.com/forum/#!topic/sketchup/Crl5SFcyRo0&#34;&gt;How do I import terrain from Google Earth? - Google プロダクト フォーラム&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SketchUpの活用例: Randy Wilkins</title>
+      <link>http://1000k.github.io/2011/03/18/randy-wilkins/</link>
+      <pubDate>Fri, 18 Mar 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/03/18/randy-wilkins/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://sketchupdate.blogspot.com/2011/03/sketchup-pro-case-study-randy-wilkins.html?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+OfficialGoogleSketchupBlog+%28Official+Google+SketchUp+Blog%29&amp;utm_content=Google+Reader&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sketchupdate.blogspot.com/2011/03/sketchup-pro-case-study-randy-wilkins.html?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+OfficialGoogleSketchupBlog+%28Official+Google+SketchUp+Blog%29&amp;utm_content=Google+Reader&#39;, &#39;SketchUp Pro Case Study: Randy Wilkins&#39;]);&#34; &gt;SketchUp Pro Case Study: Randy Wilkins&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;SketchUp Pro + LayOutを使い、&amp;#8221;TRON: Legacy&amp;#8221;, &amp;#8220;The Social Network&amp;#8221;, &amp;#8220;Catch Me if You Can&amp;#8221;などの映画のセットデザインをしている、Randy Wilkins氏のケーススタディ。&lt;/p&gt;
+
+&lt;p&gt;どのようにSketchUpを活用しているかが具体的に語られています。&lt;/p&gt;
+
+&lt;p&gt;また、後半では公式プラグインの「Advanced Camera Tools」を賞賛しています。&lt;/p&gt;
+
+&lt;p&gt;作成したセットが実際の撮影機材でどのように見えるか把握できる、と語っており、欠かせないツールになっているようです。&lt;/p&gt;
+
+&lt;p&gt;改めてSketchUpのメリットを感じられる記事です。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>複雑な形状の窓を作成できるプラグイン: Latticeizer</title>
+      <link>http://1000k.github.io/2011/03/13/sketchup-plugin-latticeizer/</link>
+      <pubDate>Sat, 12 Mar 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/03/13/sketchup-plugin-latticeizer/</guid>
+      <description>&lt;p&gt;DL先: &lt;a href=&#34;http://www.cad-addict.com/2009/08/sketchup-plugins-create-custom-windows.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cad-addict.com/2009/08/sketchup-plugins-create-custom-windows.html&#39;, &#39;CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls&#39;]);&#34; &gt;CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自由な形の窓を作成するプラグイン&lt;/li&gt;
+&lt;li&gt;上の動画の通り、使い方は超簡単&lt;/li&gt;
+&lt;li&gt;Windowizer3では作れない複雑な窓が作成可能&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>屋根を瞬時に作成するプラグイン: Instant Roof</title>
+      <link>http://1000k.github.io/2011/03/06/sketchup-plugin-instant-roof/</link>
+      <pubDate>Sun, 06 Mar 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/03/06/sketchup-plugin-instant-roof/</guid>
+      <description>
+
+&lt;p&gt;屋根を作るのはかなり作業量が多いルーチンワークです。Instant Roofプラグインを使って楽をしましょう。&lt;/p&gt;
+
+&lt;p&gt;シンプルなものから複雑なものまで、数クリックで作成できます。これが無料で使えるとはちょっと信じられません。&lt;/p&gt;
+
+&lt;p&gt;以下、ダウンロード方法、簡単なチュートリアル、建築用語解説をします。&lt;/p&gt;
+
+&lt;h2 id=&#34;dl先:794e3a1036f089c1fc145590ea252d48&#34;&gt;DL先&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.valiarchitects.com/system/files/programs/suscripts/InstantRoof.rbs?download=1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.valiarchitects.com/system/files/programs/suscripts/InstantRoof.rbs?download=1&#39;, &#39;Instant Roof | Vali Architects | Instant Scripts&#39;]);&#34; &gt;Instant Roof | Vali Architects | Instant Scripts&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;上記サイトからFree版をダウンロードしましょう。&lt;/p&gt;
+
+&lt;p&gt;有料のPro版もありますが、違いは屋根の傾斜を細かく設定できるぐらい？のようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;チュートリアル:794e3a1036f089c1fc145590ea252d48&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;p&gt;公式サイトに3種類のムービーが用意されており、見ているだけでだいたいの機能は把握できると思います。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.valiarchitects.com/tutorials/model-8-min&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.valiarchitects.com/tutorials/model-8-min&#39;, &#39;Model this in 8 min | Vali Architects | Instant Scripts&#39;]);&#34; &gt;Model this in 8 min | Vali Architects | Instant Scripts&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;3分程度で機能概要を紹介&lt;/li&gt;
+&lt;li&gt;選択範囲によって屋根の向きが変わることが確認できます&lt;/li&gt;
+&lt;li&gt;ムービー2:15あたりで使っている窓などのコンポーネントを配置するテクニックも勉強になります&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.valiarchitects.com/tutorials/introducing-instant-roof-primitives&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.valiarchitects.com/tutorials/introducing-instant-roof-primitives&#39;, &#39;Introducing Instant Roof-Primitives | Vali Architects | Instant Scripts&#39;]);&#34; &gt;Introducing Instant Roof-Primitives | Vali Architects | Instant Scripts&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;基本的な屋根の作り方&lt;/li&gt;
+&lt;li&gt;武家屋敷のような入り母屋屋根の使い方も出てきます (2:45-)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.valiarchitects.com/tutorials/some-simple-roofs&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.valiarchitects.com/tutorials/some-simple-roofs&#39;, &#39;Some Simple Roofs | Vali Architects | Instant Scripts&#39;]);&#34; &gt;Some Simple Roofs | Vali Architects | Instant Scripts&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;より詳しい屋根の作成方法&lt;/li&gt;
+&lt;li&gt;選択する線によってどう屋根の向きが変わるのかを1個ずつ紹介しています&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;単語解説:794e3a1036f089c1fc145590ea252d48&#34;&gt;単語解説&lt;/h2&gt;
+
+&lt;p&gt;Instant Roofは設定パラメーターが豊富で、専門用語も満載なので、素人(私)にはわかりづらいです。&lt;/p&gt;
+
+&lt;p&gt;和訳などを書いておきます。&lt;/p&gt;
+
+&lt;p&gt;ビジュアルで把握したければ、&lt;a href=&#34;http://www.valiarchitects.com/sites/default/files/tutorials/pdf/Roof-parameters.pdf&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;,&#39;download&#39;,&#39;http://www.valiarchitects.com/sites/default/files/tutorials/pdf/Roof-parameters.pdf&#39;]);&#34; &gt;Roof Parameters&lt;/a&gt;がわかりやすいです。&lt;/p&gt;
+
+&lt;p&gt;eave
+:   軒、ひさし。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;屋根の外壁から外側に出ている部分。
+
+なんと言えばいいのか・・・雨宿りするとき避難するところ。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;fascia
+:   鼻隠し (軒先の垂木先端の木口を隠すための板)。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;参考: &amp;lt;a href=&amp;quot;http://ja.wikipedia.org/wiki/%E9%BC%BB%E9%9A%A0&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E9%BC%BB%E9%9A%A0&#39;, &#39;鼻隠 &amp;amp;#8211; Wikipedia&#39;]);&amp;quot; &amp;gt;鼻隠 &amp;amp;#8211; Wikipedia&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;gable
+:   切妻 (きりづま)、破風 (はふ)。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;「へ」の字型の屋根のこと。
+
+参考: &amp;lt;a href=&amp;quot;http://ja.wikipedia.org/wiki/%E5%88%87%E5%A6%BB%E9%80%A0&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E5%88%87%E5%A6%BB%E9%80%A0&#39;, &#39;切妻造 &amp;amp;#8211; Wikipedia&#39;]);&amp;quot; &amp;gt;切妻造 &amp;amp;#8211; Wikipedia&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;hips
+:   隅棟 (寄せ棟などの屋根同士が接合する隅の部分)。&lt;/p&gt;
+
+&lt;p&gt;mansard
+:   マンサード屋根、二重勾配の屋根。&lt;/p&gt;
+
+&lt;p&gt;rafter
+:   屋根の垂木 (たるき)。&lt;/p&gt;
+
+&lt;p&gt;shed
+:   納屋、上屋。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:794e3a1036f089c1fc145590ea252d48&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;公式マニュアルが充実しているので、これだけ見れば十分だと思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.valiarchitects.com/sketchup_scripts/instant-roof&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.valiarchitects.com/sketchup_scripts/instant-roof&#39;, &#39;Instant Roof | Vali Architects | Instant Scripts&#39;]);&#34; &gt;Instant Roof | Vali Architects | Instant Scripts&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Google Sketchupの便利なプラグインまとめ</title>
+      <link>http://1000k.github.io/2011/03/05/colleciton-of-sketchup-plugin/</link>
+      <pubDate>Sat, 05 Mar 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/03/05/colleciton-of-sketchup-plugin/</guid>
+      <description>
+
+&lt;p&gt;便利なプラグインをまとめて紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;centerpoint:6fbc729b3a070f608b3949c7715b4806&#34;&gt;CenterPoint&lt;/h2&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://www.smustard.com/script/CenterPoint&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.smustard.com/script/CenterPoint&#39;, &#39;Smustard(TM) &amp;#8211; the Companion to Sketchup(TM) &amp;#8211; CenterPoint&#39;]);&#34; &gt;Smustard&amp;trade; &amp;#8211; the Companion to Sketchup&amp;trade; &amp;#8211; CenterPoint&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;選択したオブジェクトの中心点を作成するプラグイン&lt;/li&gt;
+&lt;li&gt;選択後、[プラグイン] &amp;gt; [Set Center Point]をクリックすると中心に点が作成される&lt;/li&gt;
+&lt;li&gt;円などの図形の中心点や、2オブジェクトの中点を知りたいときに便利&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;hole-punching-tool:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Hole Punching Tool&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg&#34; alt=&#34;&#34; title=&#34;hall_panching_tool_5&#34; width=&#34;400&#34; height=&#34;221&#34; class=&#34;alignnone size-full wp-image-598&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=726&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=726&#39;, &#39;Hole Punching Tool (SU Plugin) &amp;#8211; Ruby Library Depot&#39;]);&#34; title=&#34;Hole Punching Tool (SU Plugin) - Ruby Library Depot&#34;&gt;Hole Punching Tool (SU Plugin) &amp;#8211; Ruby Library Depot&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;壁面に簡単に穴を開けるプラグイン&lt;/li&gt;
+&lt;li&gt;窓やドアの形のコンポーネントを作って「Punch」すれば穴が開く&lt;/li&gt;
+&lt;li&gt;コンポーネントを移動させれば穴も追従する&lt;/li&gt;
+&lt;li&gt;穴をふさぐときは「Undo Punch」するだけなので簡単&lt;/li&gt;
+&lt;li&gt;解説ページ: &lt;a href=&#34;http://blog.1000k.net/2010/12/25/%E5%A3%81%E3%81%AB%E7%A9%B4%E3%82%92%E9%96%8B%E3%81%91%E3%82%8B%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3-hole-punchin-tool/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2010/12/25/%E5%A3%81%E3%81%AB%E7%A9%B4%E3%82%92%E9%96%8B%E3%81%91%E3%82%8B%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3-hole-punchin-tool/&#39;, &#39;壁に穴を開けるプラグイン: Hole Punching Tool | 1000g&#39;]);&#34; &gt;壁に穴を開けるプラグイン: Hole Punching Tool | 1000g&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;instant-roof:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Instant Roof&lt;/h2&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://www.valiarchitects.com/system/files/programs/suscripts/InstantRoof.rbs?download=1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.valiarchitects.com/system/files/programs/suscripts/InstantRoof.rbs?download=1&#39;, &#39;Instant Roof | Vali Architects | Instant Scripts&#39;]);&#34; &gt;Instant Roof | Vali Architects | Instant Scripts&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;面と線を選択するだけで多彩な屋根が作成できる高機能プラグイン&lt;/li&gt;
+&lt;li&gt;Free版とPro版の違いは屋根のスロープの数だけ？（Freeで十分）&lt;/li&gt;
+&lt;li&gt;私が書いた簡単な解説: &lt;a href=&#34;http://blog.1000k.net/2011/03/06/%e5%b1%8b%e6%a0%b9%e3%82%92%e7%9e%ac%e6%99%82%e3%81%ab%e4%bd%9c%e6%88%90%e3%81%99%e3%82%8b%e3%83%97%e3%83%a9%e3%82%b0%e3%82%a4%e3%83%b3-instant-roof/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2011/03/06/%e5%b1%8b%e6%a0%b9%e3%82%92%e7%9e%ac%e6%99%82%e3%81%ab%e4%bd%9c%e6%88%90%e3%81%99%e3%82%8b%e3%83%97%e3%83%a9%e3%82%b0%e3%82%a4%e3%83%b3-instant-roof/&#39;, &#39;屋根を瞬時に作成するプラグイン: Instant Roof | 1000g&#39;]);&#34; &gt;屋根を瞬時に作成するプラグイン: Instant Roof | 1000g&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;latticeizer:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Latticeizer&lt;/h2&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://www.cad-addict.com/2009/08/sketchup-plugins-create-custom-windows.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cad-addict.com/2009/08/sketchup-plugins-create-custom-windows.html&#39;, &#39;CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls&#39;]);&#34; &gt;CAD addict: SketchUp Plugins: Create Custom Windows / Curtain Walls&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自由な形の窓を作成するプラグイン&lt;/li&gt;
+&lt;li&gt;上の動画の通り、使い方は超簡単&lt;/li&gt;
+&lt;li&gt;Windowizer3では作れない複雑な窓が作成可能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;line2walls:6fbc729b3a070f608b3949c7715b4806&#34;&gt;line2walls&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/line2walls.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/line2walls.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/line2walls.png&#34; alt=&#34;&#34; title=&#34;line2walls&#34; width=&#34;600&#34; height=&#34;212&#34; class=&#34;alignnone size-full wp-image-700&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://modelisation.nancy.archi.fr/rld/plugin_details.php?id=227&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://modelisation.nancy.archi.fr/rld/plugin_details.php?id=227&#39;, &#39;lines2walls 13 (SU Plugin) &amp;#8211; Ruby Library Depot&#39;]);&#34; &gt;lines2walls 13 (SU Plugin) &amp;#8211; Ruby Library Depot&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;直線or弧から壁を作成できるプラグイン&lt;/li&gt;
+&lt;li&gt;壁の高さ/厚さ、壁を作る向きを設定可能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;remove-materials:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Remove Materials&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/remove_all_materials.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/remove_all_materials.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/remove_all_materials.png&#34; alt=&#34;&#34; title=&#34;Remove Materials&#34; width=&#34;400&#34; height=&#34;338&#34; class=&#34;alignnone size-full wp-image-697&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://www.smustard.com/script/RemoveMaterials&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.smustard.com/script/RemoveMaterials&#39;, &#39;Smustard(TM) &amp;#8211; the Companion to Sketchup(TM) &amp;#8211; RemoveMaterials&#39;]);&#34; &gt;Smustard&amp;trade; &amp;#8211; the Companion to Sketchup&amp;trade; &amp;#8211; RemoveMaterials&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;選択したすべてのオブジェクトのマテリアルを削除するプラグイン&lt;/li&gt;
+&lt;li&gt;オブジェクトを選択して[プラグイン] &amp;gt; [Remove All Materials]を選択するだけ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;round-corner:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Round Corner&lt;/h2&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://forums.sketchucation.com/viewtopic.php?f=180&amp;t=20485&amp;p=171721#p171721&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://forums.sketchucation.com/viewtopic.php?f=180&amp;t=20485&amp;p=171721#p171721&#39;, &#39;View topic &amp;#8211; [Plugin] RoundCorner &amp;#8211; v2.2c &amp;#8211; 23 Feb 11 • SketchUcation Community Forums&#39;]);&#34; &gt;View topic &amp;#8211; [Plugin] RoundCorner &amp;#8211; v2.2c &amp;#8211; 23 Feb 11 • SketchUcation Community Forums&lt;/a&gt;&amp;#8221;&amp;#8217;（※無料登録＆ログインが必要）&amp;#8221;&amp;#8217;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&amp;#8221;&amp;#8217;動作のために&lt;a href=&#34;http://forums.sketchucation.com/viewtopic.php?f=323&amp;t=17947#p144178&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://forums.sketchucation.com/viewtopic.php?f=323&amp;t=17947#p144178&#39;, &#39;LibFredo6&#39;]);&#34; &gt;LibFredo6&lt;/a&gt;も必要&amp;#8221;&amp;#8217;&lt;/li&gt;
+&lt;li&gt;角を丸めるためのプラグイン&lt;/li&gt;
+&lt;li&gt;角の取り方の設定が多様&lt;/li&gt;
+&lt;li&gt;紹介記事: &lt;a href=&#34;http://sketchupdate.blogspot.com/2010/07/take-edge-off-roundcorners.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sketchupdate.blogspot.com/2010/07/take-edge-off-roundcorners.html&#39;, &#39;Official Google SketchUp Blog: Take the edge off: RoundCorner&#39;]);&#34; &gt;Official Google SketchUp Blog: Take the edge off: RoundCorner&lt;/a&gt;（英語）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;selecto:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Selecto&lt;/h2&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://www.smustard.com/script/Selecto&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.smustard.com/script/Selecto&#39;, &#39;Smustard(TM) &amp;#8211; the Companion to Sketchup(TM) &amp;#8211; Selecto&#39;]);&#34; &gt;Smustard&amp;trade; &amp;#8211; the Companion to Sketchup&amp;trade; &amp;#8211; Selecto&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;エッジだけを選択可能にするプラグイン&lt;/li&gt;
+&lt;li&gt;[プラグイン] &amp;gt; [Selecto]をチェック後、選択ツールの要領でドラッグ＆ドロップすると線だけ選択される&lt;/li&gt;
+&lt;li&gt;Altとの組み合わせて選択追加、Ctrlとの組み合わせで選択解除も可能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;soap-skin-bubble-tool:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Soap Skin Bubble Tool&lt;/h2&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://www.tensile-structures.de/sb_software.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.tensile-structures.de/sb_software.html&#39;, &#39;www.tensile-structures.de/sb_software.html&#39;]);&#34; &gt;www.tensile-structures.de/sb_software.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;閉空間を曲面で閉じるプラグイン&lt;/li&gt;
+&lt;li&gt;東京ドームの屋根のように膨らんだ形状や、垂れ幕のような形状が作成可能&lt;/li&gt;
+&lt;li&gt;紹介記事: &lt;a href=&#34;http://sketchuppluginreviews.com/2010/02/02/soap-skin-bubble-tool-google-sketchup-review/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sketchuppluginreviews.com/2010/02/02/soap-skin-bubble-tool-google-sketchup-review/&#39;, &#39;Soap Skin Bubble Tool Google SketchUp Review | Sketchup Plugin Reviews&#39;]);&#34; &gt;Soap Skin Bubble Tool Google SketchUp Review | Sketchup Plugin Reviews&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;windowizer3:6fbc729b3a070f608b3949c7715b4806&#34;&gt;Windowizer3&lt;/h2&gt;
+
+&lt;p&gt;DL先: &lt;a href=&#34;http://www.smustard.com/script/Windowizer3&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.smustard.com/script/Windowizer3&#39;, &#39;Smustard(TM) &amp;#8211; the Companion to Sketchup(TM) &amp;#8211; Windowizer3&#39;]);&#34; &gt;Smustard&amp;trade; &amp;#8211; the Companion to Sketchup&amp;trade; &amp;#8211; Windowizer3&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;窓（や棚）を作成する定番プラグイン&lt;/li&gt;
+&lt;li&gt;解説ページ
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.goo.ne.jp/fkeebie/e/57810f78e1da41eac98ef04b336ba33b&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.goo.ne.jp/fkeebie/e/57810f78e1da41eac98ef04b336ba33b&#39;, &#39;（続）Windowizer3 (SketchUp Ruby Scripts) &amp;#8211; SketchUp (r) を楽しむ&#39;]);&#34; &gt;（続）Windowizer3 (SketchUp Ruby Scripts) &amp;#8211; SketchUp &amp;reg; を楽しむ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://hanagoromosimizu.blog109.fc2.com/blog-entry-375.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hanagoromosimizu.blog109.fc2.com/blog-entry-375.html&#39;, &#39;大阪上本町　貸衣装　花ごろも清水　別館 Windowizer3 v.3.000（windowizer30b5.zip）&#39;]);&#34; &gt;大阪上本町　貸衣装　花ごろも清水　別館 Windowizer3 v.3.000（windowizer30b5.zip）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://rensyutyu.seesaa.net/article/72047666.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rensyutyu.seesaa.net/article/72047666.html&#39;, &#39;練習中: プラグイン　windowizer&#39;]);&#34; &gt;練習中: プラグイン　windowizer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>壁に穴を開けるプラグイン: Hole Punching Tool</title>
+      <link>http://1000k.github.io/2010/12/25/sketchup-plugin-hole-punchin-tool/</link>
+      <pubDate>Sat, 25 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/25/sketchup-plugin-hole-punchin-tool/</guid>
+      <description>
+
+&lt;p&gt;厚みのある壁に穴を開けるのは結構面倒です。壁面に平面を描いて[プッシュ/プル]ツールを使うだけですが、大量に同じような穴を開けるのは時間がかかります。また、一度開けた穴を塞ぐ場合も余計な線が残ってしまい、とにかく手間がかかります。&lt;/p&gt;
+
+&lt;p&gt;そんなとき、この「&lt;a href=&#34;http://forums.sketchucation.com/viewtopic.php?f=323&amp;t=30846&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://forums.sketchucation.com/viewtopic.php?f=323&amp;t=30846&#39;, &#39;Hole Punching Tool&#39;]);&#34; title=&#34;View topic - [Plugin] Hole Punching Tool v1.3 20101002 • SketchUcation Community Forums&#34;&gt;Hole Punching Tool&lt;/a&gt;」（穴開けツール）プラグインが役に立ちます。コンポーネントを壁面に配置し、右クリックから「Punch」を選ぶだけで、その形に壁が貫通します。&lt;/p&gt;
+
+&lt;p&gt;このプラグインが優れているのは穴を開けるだけでなく、元に戻すのも簡単ということです。穴自身とコンポーネントがリンクを保っており、「Undo Punch」をすることで穴が消えて元の壁に戻すことができます。&lt;/p&gt;
+
+&lt;p&gt;特に窓やドアを配置する際に有用です。&lt;/p&gt;
+
+&lt;p&gt;以下、使い方をメモします。&lt;/p&gt;
+
+&lt;h2 id=&#34;dl先:ade9815a232e73a75d73508fc9ac5215&#34;&gt;DL先&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=726&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=726&#39;, &#39;Hole Punching Tool (SU Plugin) &amp;#8211; Ruby Library Depot&#39;]);&#34; title=&#34;Hole Punching Tool (SU Plugin) - Ruby Library Depot&#34;&gt;Hole Punching Tool (SU Plugin) &amp;#8211; Ruby Library Depot&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール方法:ade9815a232e73a75d73508fc9ac5215&#34;&gt;インストール方法&lt;/h2&gt;
+
+&lt;p&gt;プラグインフォルダに HolePunchTool.rb を入れるだけです。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:ade9815a232e73a75d73508fc9ac5215&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;同梱されている HolePunchTool_documentation.txt に基本的な使い方が書いてあります。&lt;/p&gt;
+
+&lt;p&gt;たとえば以下のような窓を壁に配置し、窓の形に壁面に穴を開ける（パンチする）場合を考えます。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/cutting_windows_1.jpg&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/cutting_windows_1.jpg&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/cutting_windows_1.jpg&#34; alt=&#34;&#34; title=&#34;hall_panching_tool_1&#34; width=&#34;400&#34; height=&#34;221&#34; class=&#34;alignnone size-full wp-image-594&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;壁面にコンポーネントを配置します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_2.jpg&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_2.jpg&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_2.jpg&#34; alt=&#34;&#34; title=&#34;hall_panching_tool_2&#34; width=&#34;400&#34; height=&#34;221&#34; class=&#34;alignnone size-full wp-image-595&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;この時点ではもちろん穴は開いていません。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_3.jpg&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_3.jpg&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_3.jpg&#34; alt=&#34;&#34; title=&#34;hall_panching_tool_3&#34; width=&#34;400&#34; height=&#34;221&#34; class=&#34;alignnone size-full wp-image-596&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;窓を右クリックし、[Hole Punching&amp;#8230;] &amp;gt; [Punch]を選択します。これで、壁に穴が開きました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_5.jpg&#34; alt=&#34;&#34; title=&#34;hall_panching_tool_5&#34; width=&#34;400&#34; height=&#34;221&#34; class=&#34;alignnone size-full wp-image-598&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_4.jpg&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_4.jpg&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_4.jpg&#34; alt=&#34;&#34; title=&#34;hall_panching_tool_4&#34; width=&#34;400&#34; height=&#34;221&#34; class=&#34;alignnone size-full wp-image-597&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;移動ツールを使うと、穴ごと移動するのがわかります。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_6.jpg&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_6.jpg&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/hall_panching_tool_6.jpg&#34; alt=&#34;&#34; title=&#34;hall_panching_tool_6&#34; width=&#34;400&#34; height=&#34;221&#34; class=&#34;alignnone size-full wp-image-599&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;注意:ade9815a232e73a75d73508fc9ac5215&#34;&gt;注意&lt;/h2&gt;
+
+&lt;p&gt;うまくパンチできない場合、コンポーネントの軸または貼り付け平面が正しく設定されていない可能性があります。貼り付け平面が壁面と平行になるように設定しないと失敗するようです。&lt;/p&gt;
+
+&lt;p&gt;詳しい設定方法は以下の公式マニュアルを参照してください。（正直言って意味がわかりにくい説明ですが）&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://sketchup.google.com/support/bin/answer.py?hl=jp&amp;answer=114526&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sketchup.google.com/support/bin/answer.py?hl=jp&amp;answer=114526&#39;, &#39;[コンポーネントを作成] ダイアログ ボックス &amp;#8211; SketchUp ヘルプ&#39;]);&#34; title=&#34;[コンポーネントを作成] ダイアログ ボックス - SketchUp ヘルプ&#34;&gt;[コンポーネントを作成] ダイアログ ボックス &amp;#8211; SketchUp ヘルプ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;チュートリアルムービー:ade9815a232e73a75d73508fc9ac5215&#34;&gt;チュートリアルムービー&lt;/h2&gt;
+
+&lt;p&gt;以下のムービーではプラグインのダウンロード～Hole Punching方法を一通り紹介しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:ade9815a232e73a75d73508fc9ac5215&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://forums.sketchucation.com/viewtopic.php?f=323&amp;t=30846&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://forums.sketchucation.com/viewtopic.php?f=323&amp;t=30846&#39;, &#39;View topic &amp;#8211; [Plugin] Hole Punching Tool v1.3 20101002 • SketchUcation Community Forums&#39;]);&#34; title=&#34;View topic - [Plugin] Hole Punching Tool v1.3 20101002 • SketchUcation Community Forums&#34;&gt;View topic &amp;#8211; [Plugin] Hole Punching Tool v1.3 20101002 • SketchUcation Community Forums&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;プラグイン作成者のページ兼フォーラム。問題があった場合読んでみると参考になります。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>室内をいじるときのTIPS</title>
+      <link>http://1000k.github.io/2010/12/14/tips-for-build-room/</link>
+      <pubDate>Tue, 14 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/14/tips-for-build-room/</guid>
+      <description>
+
+&lt;p&gt;SketchUp で室内をいじるとき、カメラを移動するとすぐに壁にぶつかってしまい、操作しづらいです。&lt;/p&gt;
+
+&lt;p&gt;上のビデオではそんなときの対策を二つ紹介しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;断面-ツールを使う:e9f0ca86109d91329ad503edf61b0d0a&#34;&gt;[断面]ツールを使う&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[断面]ツールと[移動]ツールで室内が切れるまで断面を移動する&lt;/li&gt;
+&lt;li&gt;[ビュー] &amp;gt; [断面平面] をオフにすると元に戻る&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;ルック-アラウンド-ツールを使う:e9f0ca86109d91329ad503edf61b0d0a&#34;&gt;[ルック・アラウンド]ツールを使う&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自分の立ち位置を元に視点を回転できるので、壁にぶつかる心配がない&lt;/li&gt;
+&lt;li&gt;広い視野で見たいときは[ズーム]ツールを選択し、大きめの視野角を入力して[Enter]
+
+&lt;ul&gt;
+&lt;li&gt;デフォルトは35度。ゆがみが少ないので、外装をいじるときなど使う。&lt;/li&gt;
+&lt;li&gt;60度ぐらいだと視点が広くなるが、代わりにゆがみが生じる。内装をいじるときだけ使う。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>階段の作り方いろいろ</title>
+      <link>http://1000k.github.io/2010/12/13/how-to-draw-steps/</link>
+      <pubDate>Mon, 13 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/13/how-to-draw-steps/</guid>
+      <description>
+
+&lt;p&gt;SketchUp で階段を作るのは結構面倒くさいです。以下にいくつかのやり方をメモします。&lt;/p&gt;
+
+&lt;h2 id=&#34;the-subdivided-rectangles-method:3571f686719a045de95d57fb6a9c6c1b&#34;&gt;The Subdivided Rectangles method&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ベースとなる長方形を作る&lt;/li&gt;
+&lt;li&gt;長方形を1ステップぶん刻み、直線をコピーして段数ぶんの切り込みを作る&lt;/li&gt;
+&lt;li&gt;鉛直方向に直線を引き、1段ぶんの高さで刻む&lt;/li&gt;
+&lt;li&gt;[プッシュ/プルツール]で&lt;strong&gt;高い方から順に&lt;/strong&gt;ガイドを使って盛り上げる
+
+&lt;ul&gt;
+&lt;li&gt;低い方から作ると、1段ごとに「オフセットの限界」と言われてしまう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;the-copied-profile-method:3571f686719a045de95d57fb6a9c6c1b&#34;&gt;The Copied Profile method&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;直方体を作る&lt;/li&gt;
+&lt;li&gt;側面に「┌」という傾けたL字を作る&lt;/li&gt;
+&lt;li&gt;傾けたL字をコピーして、1個目の右上の点が2個目の左下の点になるようにする&lt;/li&gt;
+&lt;li&gt;「*n」(nは整数)を入力すれば、n段の階段ができる&lt;/li&gt;
+&lt;li&gt;[プッシュ/プルツール]で側面から反対面まで押して削ってやれば階段ができる
+
+&lt;ul&gt;
+&lt;li&gt;2.で作る1段目を工夫すれば、切り込みのある階段なども作成可能&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;the-treads-are-components-method:3571f686719a045de95d57fb6a9c6c1b&#34;&gt;The Treads are Components method&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;1ステップぶんの直方体を作り、コンポーネント化する&lt;/li&gt;
+&lt;li&gt;2段目の左下角が1段目の右上角に当たるようにコピーする&lt;/li&gt;
+&lt;li&gt;「*n」(nは整数)を入力すれば、n段の階段ができる&lt;/li&gt;
+&lt;li&gt;コンポーネント編集に移り、薄さを変えたり、手すりを付けたりする
+
+&lt;ul&gt;
+&lt;li&gt;全段が同時に編集できるので追跡しやすく便利&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>複数面を同時にプッシュ／プルできるプラグイン</title>
+      <link>http://1000k.github.io/2010/12/08/sketchup-plugin-face-pusher/</link>
+      <pubDate>Tue, 07 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/08/sketchup-plugin-face-pusher/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=141&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=141&#39;, &#39;FacePusher (SU Plugin) &amp;#8211; Ruby Library Depot&#39;]);&#34; title=&#34;FacePusher (SU Plugin) - Ruby Library Depot&#34;&gt;FacePusher (SU Plugin) &amp;#8211; Ruby Library Depot&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;非常に便利です。標準で搭載されていてほしい機能。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:5683a228e3a5b961dcc8430221de4ef4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[選択]ツールで複数面の面を選択する&lt;/li&gt;
+&lt;li&gt;[プラグイン &amp;gt; Push Faces] をクリック&lt;/li&gt;
+&lt;li&gt;表示されるダイアログで、距離(Distance)とプッシュ／プル後のマテリアルを選択して、OKをクリック
+
+&lt;ul&gt;
+&lt;li&gt;Distanceはマイナスも入力可能&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SketchupとCADの連携</title>
+      <link>http://1000k.github.io/2010/12/06/cooperation-of-skethup-and-cad/</link>
+      <pubDate>Mon, 06 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/06/cooperation-of-skethup-and-cad/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://sketchup.google.com/intl/ja/training/videos/expert_to_gsu.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sketchup.google.com/intl/ja/training/videos/expert_to_gsu.html&#39;, &#39;公式チュートリアル(上級)&#39;]);&#34; title=&#34;Google SketchUp&#34;&gt;公式チュートリアル(上級)&lt;/a&gt;で紹介されているシリーズ。&lt;/p&gt;
+
+&lt;p&gt;AutoCADで作成した図面を元にSketchupで書き起こすチュートリアルです（英語）。Sketchup単体で素早く作るヒントも学べます。&lt;/p&gt;
+
+&lt;p&gt;以下に簡単な要約を書いておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;importing-and-preparations-cadデータのインポートと下準備:ddf7456dcf05c475f511e9d1d9e9c608&#34;&gt;Importing and Preparations: CADデータのインポートと下準備&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;バラバラになって邪魔なレイヤーはLayer0に集約する
+
+&lt;ul&gt;
+&lt;li&gt;[レイヤーウインドウ]で不要なレイヤーを選択して、「-」アイコン&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;レイヤーとシーンを連動させ、フロアプラン図のON/OFFを切り替えるようにするとかなり便利
+
+&lt;ol&gt;
+&lt;li&gt;フロアプラン図が描いてある「Floorplan」レイヤーを作成する&lt;/li&gt;
+&lt;li&gt;「Floorplan」レイヤーを非表示にする&lt;/li&gt;
+&lt;li&gt;「Floorplan ON」シーンを新規作成
+
+&lt;ul&gt;
+&lt;li&gt;プロパティは「レイヤー表示」以外のチェックボックスをすべてOFFにする&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;「Flooplan」レイヤーを表示する&lt;/li&gt;
+&lt;li&gt;「Floorplan OFF」シーンを新規作成&lt;/li&gt;
+&lt;li&gt;完了。これでシーンを切り替えるとレイヤーのON/OFFが切り替わる&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;creating-walls-壁を仕切る:ddf7456dcf05c475f511e9d1d9e9c608&#34;&gt;Creating Walls: 壁を仕切る&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;トレース対象のレイヤーをロックしておいて、[長方形]ツールをいくつもつなげることで簡単に外装を作ることが出来る
+
+&lt;ul&gt;
+&lt;li&gt;不要な線は後で[消しゴム]ツールで消す&lt;/li&gt;
+&lt;li&gt;下書きがロックしてあるので、消しゴムツールをいくらかけても消えない。安心&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;部屋割りは[直線]ツールで行う
+
+&lt;ul&gt;
+&lt;li&gt;壁同士の境界線は消しておく&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;[プッシュ・プル]ツールで壁を持ち上げ、完成&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;doors-and-windows-ドアと窓の作り方:ddf7456dcf05c475f511e9d1d9e9c608&#34;&gt;Doors and Windows: ドアと窓の作り方&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[長方形ツール]をドアの位置に配置する
+
+&lt;ul&gt;
+&lt;li&gt;最初の1個を配置したら、あとはそれをコピー＆ペーストしていくと早い&lt;/li&gt;
+&lt;li&gt;サイズの違うドアは[縮尺]ツールで調整&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;長方形を[プッシュ・プルツール]で押し出すことで、ドアがはめ込む穴が出来る&lt;/li&gt;
+&lt;li&gt;同じ要領で窓を配置していく
+
+&lt;ul&gt;
+&lt;li&gt;ドアと違い地面から離れているため、設置する高さを調整する必要がある&lt;/li&gt;
+&lt;li&gt;1個目の窓を正確に設置したら、あとはマウス操作だけでガイドを使ってその高さに合わせることができる
+
+&lt;ul&gt;
+&lt;li&gt;長方形のドラッグ＆ドロップ中に1個目の窓の1辺にカーソルを合わせれば、高さのガイドが出る&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GSUで家を作るときのメモ</title>
+      <link>http://1000k.github.io/2010/07/25/notes-for-buiding-house-in-skethup/</link>
+      <pubDate>Sat, 24 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/25/notes-for-buiding-house-in-skethup/</guid>
+      <description>
+
+&lt;p&gt;何となくGoogle Sketch Upで家を作ることがあります。現実感をもたせるために実際の建築と同じ縮尺で作りたいと思い、いろいろな規格を調べてみました。せっかくなのでメモしておきます。建築家に求められるほど厳密なものではないですが、趣味で使うには充分だと思います。&lt;/p&gt;
+
+&lt;p&gt;平均的な値と、簡略化した値（だいたい0.1m単位）を書いておきます。ミリ単位の細かい値だと操作が面倒なので。&lt;/p&gt;
+
+&lt;p&gt;ちなみに家とマンションとでは基準が異なるようです。以下は一戸建ての家のケースです。&lt;/p&gt;
+
+&lt;h3 id=&#34;壁-床の厚さ:0ee8e7b25bacd79bcc92d786b6d5e0d0&#34;&gt;壁・床の厚さ&lt;/h3&gt;
+
+&lt;p&gt;| 部位 | 平均的な値       | 簡略化する場合    |
+| &amp;ndash; | &amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; | &amp;mdash;&amp;mdash;&amp;mdash;- |
+| 壁  | 145mm-200mm | 0.1m, 0.2m |
+| 床  | 150mm-300mm | 0.2m, 0.3m |&lt;/p&gt;
+
+&lt;h3 id=&#34;ドアのサイズ:0ee8e7b25bacd79bcc92d786b6d5e0d0&#34;&gt;ドアのサイズ&lt;/h3&gt;
+
+&lt;p&gt;玄関、居室、リビング、トイレといった用途毎にサイズが違うようです。また、ドアを販売しているメーカー等もありますが、明確に規格が決まっているわけではないようです。YKK AP株式会社のホームページにはいろいろなドアのカタログがあって面白かったです。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;部位&lt;/th&gt;
+&lt;th&gt;平均的な値&lt;/th&gt;
+&lt;th&gt;簡略化する場合&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;玄関&lt;/td&gt;
+&lt;td&gt;780mm, 922mm&lt;/td&gt;
+&lt;td&gt;0.8m, 0.9m&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;居室&lt;/td&gt;
+&lt;td&gt;684mm, 764mm, 812mm&lt;/td&gt;
+&lt;td&gt;0.7m, 0.8m&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;トイレ&lt;/td&gt;
+&lt;td&gt;606mm&lt;/td&gt;
+&lt;td&gt;0.6m&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;トイレのドアは小さいようです。我が家も計ってみたらそうでした。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:0ee8e7b25bacd79bcc92d786b6d5e0d0&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.210310453.com/jissen/chousa/post_13/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.210310453.com/jissen/chousa/post_13/&#39;, &#39;床厚と壁厚 : 不動産投資入門講座　～0からの知識武装～&#39;]);&#34; title=&#34;床厚と壁厚 : 不動産投資入門講座　～0からの知識武装～&#34;&gt;床厚と壁厚 : 不動産投資入門講座　～0からの知識武装～&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.37sumai.com/life/shimazu/2008/03/post_163.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.37sumai.com/life/shimazu/2008/03/post_163.html&#39;, &#39;扉の規格サイズと使われ方・使い方 &amp;#8211; 楽して楽しい sumaiクリエイション&#39;]);&#34; title=&#34;扉の規格サイズと使われ方・使い方 - 楽して楽しい sumaiクリエイション&#34;&gt;扉の規格サイズと使われ方・使い方 &amp;#8211; 楽して楽しい sumaiクリエイション&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oshiete.homes.jp/qa2449319.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://oshiete.homes.jp/qa2449319.html&#39;, &#39;おしえて！HOME&amp;#8217;Sくん &amp;#8211; 新築マンションの壁と床・天井の厚さについて&#39;]);&#34; title=&#34;おしえて！HOME&#39;Sくん - 新築マンションの壁と床・天井の厚さについて&#34;&gt;おしえて！HOME&amp;#8217;Sくん &amp;#8211; 新築マンションの壁と床・天井の厚さについて&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1215784657&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1215784657&#39;, &#39;木造住宅の壁の厚さは？ 近々、新築住宅を考えておりまして、住宅ソフト等を使っ&amp;#8230; &amp;#8211; Yahoo!知恵袋&#39;]);&#34; title=&#34;木造住宅の壁の厚さは？ 近々、新築住宅を考えておりまして、住宅ソフト等を使っ... - Yahoo!知恵袋&#34;&gt;木造住宅の壁の厚さは？ 近々、新築住宅を考えておりまして、住宅ソフト等を使っ&amp;#8230; &amp;#8211; Yahoo!知恵袋&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/%E6%9C%A8%E9%80%A0%E6%9E%A0%E7%B5%84%E5%A3%81%E6%A7%8B%E6%B3%95&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E6%9C%A8%E9%80%A0%E6%9E%A0%E7%B5%84%E5%A3%81%E6%A7%8B%E6%B3%95&#39;, &#39;木造枠組壁構法 &amp;#8211; Wikipedia&#39;]);&#34; title=&#34;木造枠組壁構法 - Wikipedia&#34;&gt;木造枠組壁構法 &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.pasar.jp/door/door_type.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.pasar.jp/door/door_type.html&#39;, &#39;ドアタイプのご紹介&#39;]);&#34; title=&#34;ドアタイプのご紹介&#34;&gt;ドアタイプのご紹介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://okwave.jp/qa/q3852153.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://okwave.jp/qa/q3852153.html&#39;, &#39;室内扉の寸法 | OKWave&#39;]);&#34; title=&#34;室内扉の寸法 | OKWave&#34;&gt;室内扉の寸法 | OKWave&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ykkap.co.jp/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.ykkap.co.jp/&#39;, &#39;YKK AP株式会社－住まいの窓やドアからビルのファサードまで。快適な住空間、美しい都市景観を創造します。&#39;]);&#34; title=&#34;YKK AP株式会社－住まいの窓やドアからビルのファサードまで。快適な住空間、美しい都市景観を創造します。&#34;&gt;YKK AP株式会社－住まいの窓やドアからビルのファサードまで。快適な住空間、美しい都市景観を創造します。&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[SketchUp] 円の中心をマークする</title>
+      <link>http://1000k.github.io/2010/05/17/mark-center-of-the-circle/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/17/mark-center-of-the-circle/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;&lt;img alt=&#34;メジャーツール&#34; src=&#34;http://download.sketchup.com/OnlineDoc/gsu6_win/Content/Z-images/I-Construction_Tools/const-ToolMeasureLarge.png&#34; title=&#34;メジャーツール&#34; class=&#34;alignnone&#34; width=&#34;24&#34; height=&#34;24&#34; /&gt;メジャーツールを選択する
+
+&lt;ol&gt;
+&lt;li&gt;[Ctrl]キーを押しながら円周をクリックする&lt;/li&gt;
+&lt;li&gt;円の中心当たりにカーソルを移動すると、中心でスナップされるのでクリックする&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[SketchUp] 回転ツールで回転軸を指定する</title>
+      <link>http://1000k.github.io/2010/05/17/specify-rotation-axis-in-rotate-tool/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/17/specify-rotation-axis-in-rotate-tool/</guid>
+      <description>&lt;p&gt;参考：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://obuno.exblog.jp/10940828/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://obuno.exblog.jp/10940828/&#39;, &#39;現場施工図とSketchUｐ : 「回転ツール」基準軸方向の決め方&#39;]);&#34; &gt;現場施工図とSketchUｐ : 「回転ツール」基準軸方向の決め方&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sketchup.google.com/support/bin/answer.py?answer=94887&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sketchup.google.com/support/bin/answer.py?answer=94887&#39;, &#39;[回転] ツール &amp;#8211; SketchUp ヘルプ&#39;]);&#34; &gt;[回転] ツール &amp;#8211; SketchUp ヘルプ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;やり方：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;img alt=&#34;回転ツール&#34; src=&#34;http://sketchup.google.com/crimages/ja/mod-ToolRotateLarge-ja.png&#34; title=&#34;回転ツール&#34; class=&#34;alignnone&#34; width=&#34;24&#34; height=&#34;24&#34; /&gt;回転ツールを選択&lt;/li&gt;
+&lt;li&gt;回転させたいオブジェクトの一点をクリックしたら、そのまま別の一点までドラッグする（この時ガイド線と分度器が表示される）&lt;/li&gt;
+&lt;li&gt;回転の腕となるガイド線（点線）がカーソルに追従するので、好きな点をクリックする&lt;/li&gt;
+&lt;li&gt;カーソルに合わせてオブジェクトが回転するので、好きな角度でクリックするか、数値を入力してEnterキー&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

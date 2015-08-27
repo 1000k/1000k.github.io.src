@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> McAfee MySQL Audit Plugin の負荷検証 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2014/05/13/estimate-load-of-mcafee-mysql-audit-plugin/">McAfee MySQL Audit Plugin の負荷検証</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="http://blog.1000k.net/?p=1837" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/?p=1837', '前の記事']);" >前の記事</a> で McAfee MySQL Audit Plugin を使うと簡単に監査ログが取れることを紹介しましたが、性能劣化はどれくらいあるのか心配になったので検証してみました。</p>
+
+<h2 id="audit-プラグインの設定値:ca0842c38bf6f0227cc53f5afc5d2b62">Audit プラグインの設定値</h2>
+
+<p>以下の通り、ほぼインストールしたままの状態です。</p>
+
+<pre><code>mysql&gt; SHOW VARIABLES LIKE 'audit_%';
++---------------------------------+----------------------------+
+| Variable_name                   | Value                      |
++---------------------------------+----------------------------+
+| audit_checksum                  |                            |
+| audit_delay_cmds                |                            |
+| audit_delay_ms                  | 0                          |
+| audit_json_file                 | OFF                        | &amp;lt;- Audit 有効時は ON にする
+| audit_json_file_flush           | OFF                        |
+| audit_json_file_sync            | 0                          |
+| audit_json_log_file             | mysql-audit.json           |
+| audit_json_socket               | OFF                        |
+| audit_json_socket_name          | /tmp/mysql-audit.json.sock |
+| audit_offsets                   |                            |
+| audit_offsets_by_version        | ON                         |
+| audit_record_cmds               |                            |
+| audit_record_objs               |                            |
+| audit_uninstall_plugin          | OFF                        |
+| audit_validate_checksum         | ON                         |
+| audit_validate_offsets_extended | ON                         |
+| audit_whitelist_users           |                            |
++---------------------------------+----------------------------+
+</code></pre>
+
+<h2 id="ベンチマークの条件:ca0842c38bf6f0227cc53f5afc5d2b62">ベンチマークの条件</h2>
+
+<p>mysqlslap なら簡単にベンチマークが取れます。詳しい使い方は <a href="http://blog.1000k.net/?p=1847" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/?p=1847', 'mysqlslap で MySQL の負荷テストをする方法']);" >mysqlslap で MySQL の負荷テストをする方法</a> をご覧ください。</p>
+
+<pre><code>mysqlslap \
+  --no-defaults \
+  --concurrency=100 \
+  --iterations=5 \
+  --number-int-cols=2 \
+  --number-char-cols=3 \
+  --engine=innodb \
+  --auto-generate-sql \
+  --auto-generate-sql-add-autoincrement \
+  --auto-generate-sql-load-type=key \
+  --auto-generate-sql-write-number=1000 \
+  --number-of-queries=100000 \
+  --host=localhost \
+  --port=3306 \
+  --user=root
+</code></pre>
+
+<h2 id="結果:ca0842c38bf6f0227cc53f5afc5d2b62">結果</h2>
+
+<h3 id="audit-無効時:ca0842c38bf6f0227cc53f5afc5d2b62">Audit 無効時</h3>
+
+<pre><code>Running for engine innodb
+Average number of seconds to run all queries: 15.935 seconds
+Minimum number of seconds to run all queries: 15.487 seconds
+Maximum number of seconds to run all queries: 16.717 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1000
+</code></pre>
+
+<h3 id="audit-有効時:ca0842c38bf6f0227cc53f5afc5d2b62">Audit 有効時</h3>
+
+<pre><code>Running for engine innodb
+Average number of seconds to run all queries: 19.083 seconds
+Minimum number of seconds to run all queries: 18.763 seconds
+Maximum number of seconds to run all queries: 19.902 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1000
+</code></pre>
+
+<p>若干の性能劣化 (10%～20% 程度) が見られます。カツカツのシステムで使う場合は注意が必要かもしれません。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

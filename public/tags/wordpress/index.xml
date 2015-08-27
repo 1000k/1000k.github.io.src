@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wordpress on 1000g</title>
+    <link>http://1000k.github.io/tags/wordpress/</link>
+    <description>Recent content in Wordpress on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 19 May 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/wordpress/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[WordPress] WordPressでwiki記法を有効にする</title>
+      <link>http://1000k.github.io/2010/05/19/enable-wiki-markup-in-wordpress/</link>
+      <pubDate>Wed, 19 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/19/enable-wiki-markup-in-wordpress/</guid>
+      <description>
+
+&lt;h1 id=&#34;きっかけ:98dfd3c78aef4b2602956cc8387353ab&#34;&gt;きっかけ&lt;/h1&gt;
+
+&lt;p&gt;WordPressデフォルトのテキストエディタは以下の理由で使いづらいです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ビジュアルエディタは重い＆ときどき妙なブロックを作る&lt;/li&gt;
+&lt;li&gt;シンプルエディタは入力が面倒&lt;/li&gt;
+&lt;li&gt;特に見出しやリストを気軽に作れないのが面倒&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;wiki記法なら多少は楽になるだろうと思い、「WP MarkItUp! WordPress plugin」プラグインを導入してみました。&lt;/p&gt;
+
+&lt;h1 id=&#34;導入環境:98dfd3c78aef4b2602956cc8387353ab&#34;&gt;導入環境&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;WordPress 2.9.2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;手順:98dfd3c78aef4b2602956cc8387353ab&#34;&gt;手順&lt;/h1&gt;
+
+&lt;p&gt;WordPress内のプラグインインストーラーだけで完結します。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;WordPress管理画面にて、 [プラグイン]-&amp;gt;画面の上の方にある[新規追加] をクリック&lt;/li&gt;
+&lt;li&gt;「プラグインのインストール」画面の検索窓で、「MarkItUp」で検索&lt;/li&gt;
+&lt;li&gt;検索結果に「WP MarkItUp!」が出てくるので、テーブル一番右の「インストール」をクリック&lt;/li&gt;
+&lt;li&gt;同様の手順で、「MarkDown」で検索→「Markdown for WordPress and bbPress」プラグインをインストール
+
+&lt;ul&gt;
+&lt;li&gt;※今回はMarkDown記法を使いたいので、このプラグインも必要になります&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;両方のプラグインを有効化したら、 管理画面で[設定]-&amp;gt;[WP MarkItUp!] を開く&lt;/li&gt;
+&lt;li&gt;「Tag set to use:」は「MarkDown」を、「Skin:」と「Editor Default Height:」は好きなやつを選んで [Save Changes]ボタンをクリック&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;あとはいつもの編集画面がMarkDown用に変わっているので、好きに書けばいいでしょう。&lt;/p&gt;
+
+&lt;p&gt;初めてMarkDown記法を使ってみましたが、悪くないです。記法の詳細は &lt;a href=&#34;http://bono.s206.xrea.com/2007/01/312-markdown_syntax/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bono.s206.xrea.com/2007/01/312-markdown_syntax/&#39;, &#39;power source* » WP: PHP Markdown 記法早見表（的なもの）&#39;]);&#34; title=&#34;power source* » WP: PHP Markdown 記法早見表（的なもの）&#34;&gt;power source* » WP: PHP Markdown 記法早見表（的なもの）&lt;/a&gt; あたりを見れば十分です。&lt;/p&gt;
+
+&lt;h1 id=&#34;トラブルシューティング:98dfd3c78aef4b2602956cc8387353ab&#34;&gt;トラブルシューティング&lt;/h1&gt;
+
+&lt;h2 id=&#34;syntax-highlighter-と競合する場合:98dfd3c78aef4b2602956cc8387353ab&#34;&gt;「Syntax Highlighter」と競合する場合&lt;/h2&gt;
+
+&lt;p&gt;このブログでは「Syntax Highlighter for WordPress」を入れていますが、&amp;#91;code]～[/code]ブロック内までMarkDown記法と解釈され、おかしな表示になることがあります。&lt;/p&gt;
+
+&lt;p&gt;そんなときは、&amp;#91;code]～[/code] をdivブロックで囲ってやると、MarkDownが無視して正常に表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;hellip; ```&lt;/p&gt;
+
+&lt;p&gt;
+  参考: &lt;a href=&#34;http://wordpress.org/support/topic/293458&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://wordpress.org/support/topic/293458&#39;, &#39;WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin&#39;]);&#34; title=&#34;WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin&#34;&gt;WordPress › Support » [Plugin: SyntaxHighlighter Evolved] Conflict with Markdown Extra plugin&lt;/a&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

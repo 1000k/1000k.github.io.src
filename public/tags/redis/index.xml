@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Redis on 1000g</title>
+    <link>http://1000k.github.io/tags/redis/</link>
+    <description>Recent content in Redis on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 03 Apr 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Redis 2.6 のインストール手順</title>
+      <link>http://1000k.github.io/2013/04/03/installing-redis-2-6/</link>
+      <pubDate>Wed, 03 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/03/installing-redis-2-6/</guid>
+      <description>
+
+&lt;p&gt;なぜか&lt;a href=&#34;http://redis.io/download&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://redis.io/download&#39;, &#39;公式サイトのインストール手順&#39;]);&#34; &gt;公式サイトのインストール手順&lt;/a&gt;はコンパイルまでで終わっているので、完全な手順をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;ダウンロード:d385bf451ffc60def1f51e177c3e1b7c&#34;&gt;ダウンロード&lt;/h2&gt;
+
+&lt;p&gt;最新のソースを &lt;a href=&#34;http://redis.io/download&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://redis.io/download&#39;, &#39;Download – Redis&#39;]);&#34; &gt;Download – Redis&lt;/a&gt; からダウンロードします。&lt;/p&gt;
+
+&lt;p&gt;以下、執筆時のバージョン (2.6.12) で話を進めます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ wget http://redis.googlecode.com/files/redis-2.6.12.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;コンパイル:d385bf451ffc60def1f51e177c3e1b7c&#34;&gt;コンパイル&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tar xzf redis-2.6.12.tar.gz
+$ cd redis-2.6.12
+$ make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※32bit版OSの場合、そのまま make するとエラーが出るので、以下のコマンドを実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ export CFLAGS=-march=i686
+$ make distclean
+$ make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.eschrade.com/page/undefined-reference-to-__sync_add_and_fetch_4/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.eschrade.com/page/undefined-reference-to-__sync_add_and_fetch_4/&#39;, &#39;undefined reference to `__sync_add_and_fetch_4′ when compiling Redis | ESchrade&#39;]);&#34; &gt;undefined reference to `__sync_add_and_fetch_4′ when compiling Redis | ESchrade&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール:d385bf451ffc60def1f51e177c3e1b7c&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;インストール後は対話式インストーラーを使って、各種ファイルを設置します。&lt;/p&gt;
+
+&lt;p&gt;基本的にはそのまま Enter でOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo make install
+$ cd utils
+$ sudo ./install_server.sh
+
+Welcome to the redis service installer
+This script will help you easily set up a running redis server
+
+
+Please select the redis port for this instance: [6379]
+Selecting default: 6379
+Please select the redis config file name [/etc/redis/6379.conf]
+Selected default - /etc/redis/6379.conf
+Please select the redis log file name [/var/log/redis_6379.log]
+Selected default - /var/log/redis_6379.log
+Please select the data directory for this instance [/var/lib/redis/6379]
+Selected default - /var/lib/redis/6379
+Please select the redis executable path [/usr/local/bin/redis-server]
+s#^port [0-9]{4}$#port 6379#;s#^logfile .+$#logfile /var/log/redis_6379.log#;s#^dir .+$#dir /var/lib/redis/6379#;s#^pidfile .+$#pidfile /var/run/redis_6379.pid#;s#^daemonize no$#daemonize yes#;
+Copied /tmp/6379.conf =&amp;gt; /etc/init.d/redis_6379
+Installing service...
+Installation successful!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;起動スクリプトの修正:d385bf451ffc60def1f51e177c3e1b7c&#34;&gt;起動スクリプトの修正&lt;/h2&gt;
+
+&lt;p&gt;ここまでで &lt;strong&gt;/etc/init.d/redis_6379&lt;/strong&gt; に起動スクリプトが追加されますが、なぜか1行目のコメント行がバグっていて変数がすべてコメントアウトされています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#/bin/sh\n #Configurations injected by install_server below....\n\n EXEC=/usr/local/bin/redis-server\n CLIEXEC=/usr/local/bin/redis-cli\n PIDFILE=/var/run/redis_6379.pid\n CONF=&amp;quot;/etc/redis/6379.conf&amp;quot;\n\n REDISPORT=&amp;quot;6379&amp;quot;\n\n ###############\n\n
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なので、1行目の「\n」をすべて改行コードに置換します。修正後は以下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!sh
+#/bin/sh
+#Configurations injected by install_server below....
+
+EXEC=/usr/local/bin/redis-server
+CLIEXEC=/usr/local/bin/redis-cli
+PIDFILE=/var/run/redis_6379.pid
+CONF=&amp;quot;/etc/redis/6379.conf&amp;quot;
+REDISPORT=&amp;quot;6379&amp;quot;
+###############
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;vimなら「[ESC]キー」-&amp;gt; 「:%s/&amp;#92;n/^M/g」を入力すれば一発です。（改行文字「^M」は「Ctrl+V Ctrl+M」で入力可能）&lt;/p&gt;
+
+&lt;h2 id=&#34;起動テスト:d385bf451ffc60def1f51e177c3e1b7c&#34;&gt;起動テスト&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo /etc/init.d/redis_6379 start
+$ ps -ef | grep redis
+$ sudo /etc/init.d/redis_6379 stop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で完了です。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

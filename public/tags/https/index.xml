@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Https on 1000g</title>
+    <link>http://1000k.github.io/tags/https/</link>
+    <description>Recent content in Https on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 25 Nov 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/https/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>HTTP_Request2でhttps接続できない場合の対策</title>
+      <link>http://1000k.github.io/2011/11/25/http_request2-cannot-connect-https/</link>
+      <pubDate>Fri, 25 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/11/25/http_request2-cannot-connect-https/</guid>
+      <description>
+
+&lt;p&gt;HTTP_Request2::send()でhttpsサイトに接続しようとしたら、下記のようなエラーが返ってきました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Malformed response:
+Unable to connect to ssl://www.google.com:443.
+stream_socket_client(): unable to connect to ssl://www.google.com:443 (Unknown error)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unknown errorというのが一番タチが悪い。エラーが追えません。&lt;/p&gt;
+
+&lt;p&gt;検証のためcurlコマンドで同じURLに接続を試みると、ちゃんとレスポンスが返ってきます。何か設定をし忘れているに違いない。&lt;/p&gt;
+
+&lt;h1 id=&#34;原因:718cece10d0369f9449331b24890587d&#34;&gt;原因&lt;/h1&gt;
+
+&lt;p&gt;どうやら HTTP_Request::setConfig() で正しい接続設定を行えていない場合、&amp;#8221;Malformed response&amp;#8221; というエラーが出るようです。&lt;/p&gt;
+
+&lt;p&gt;私の場合、オレオレ証明書の許可と社内プロキシの設定を行っていなかったためにはまってしまったようです。&lt;/p&gt;
+
+&lt;h1 id=&#34;対応:718cece10d0369f9449331b24890587d&#34;&gt;対応&lt;/h1&gt;
+
+&lt;p&gt;オレオレ証明書を持ったサイトを許可するために、setConfig() で &lt;strong&gt;ssl_verify_peer&lt;/strong&gt; と &lt;strong&gt;ssl_verify_host&lt;/strong&gt; を false に設定してやります。&lt;/p&gt;
+
+&lt;p&gt;また、プロキシの設定も行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+require_once(&#39;HTTP/Request2.php&#39;);
+$req = new HTTP_Request2();
+
+$req-&amp;gt;setConfig(array(
+    &#39;ssl_verify_host&#39; =&amp;gt; false,
+    &#39;ssl_verify_peer&#39; =&amp;gt; false,
+    &#39;proxy_host&#39; =&amp;gt; &#39;uso.proxy.jp&#39;,
+    &#39;proxy_port&#39; =&amp;gt; &#39;8080&#39;,
+));
+
+$response = $req-&amp;gt;setUrl(&amp;quot;https://www.google.com/&amp;quot;)-&amp;gt;send();
+print_r($response);     // HTTPレスポンスが出力される
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ほかにも設定項目はあるので、&lt;a href=&#34;http://pear.php.net/manual/en/package.http.http-request2.config.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pear.php.net/manual/en/package.http.http-request2.config.php&#39;, &#39;マニュアル&#39;]);&#34; &gt;マニュアル&lt;/a&gt;を参考に設定を疑ってみてはどうでしょうか。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:718cece10d0369f9449331b24890587d&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://pear.php.net/manual/en/package.http.http-request2.config.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pear.php.net/manual/en/package.http.http-request2.config.php&#39;, &#39;Manual :: Configuration parameters for HTTP_Request2&#39;]);&#34; &gt;Manual :: Configuration parameters for HTTP_Request2&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;setConfigで設定できる項目一覧&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/vivid_skid/20110822/1314013148&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/vivid_skid/20110822/1314013148&#39;, &#39;HTTP_Request2 でのSSL通信でのPOST送信 &amp;#8211; クマーのえんじにありんぐ&#39;]);&#34; &gt;HTTP_Request2 でのSSL通信でのPOST送信 &amp;#8211; クマーのえんじにありんぐ&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;オレオレ証明書の許可ではまってしまった方はこちら&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> pear installできない問題はpear clear-cacheで解決する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2011/11/21/pear-clear-cache-before-pear-install/">pear installできない問題はpear clear-cacheで解決する</a></h2>
+        <div class="post-content">
+          
+
+<p>pear installでパッケージをインストールしようと思いましたが、身に覚えのないエラーが出て困りました。</p>
+
+<p>インストールエラーの原因と、解決法をメモしておきます。</p>
+
+<p>出てきたエラーメッセージは以下。</p>
+
+<pre><code>$ pear install HTTP_Request2
+PHP_PEAR_PHP_BIN is not set correctly.
+Please fix it using your environment variable or modify
+the default value in pear.bat
+The current value is:
+.\php.exe
+
+$ pear install Net_URL2-2.0.0
+SECURITY ERROR: Will not write to C:\DOCUME~1\keijiro\LOCALS~1\Temp\pear\cache\ee3f372dc6f69cdae3c6b0c2a0d1098erest.cacheid as it is symlinked to C:\DOCUME~1\keijiro\LOCALS~1\Temp\pear\cache\ee3f372dc6f69cdae3c6b0c2a0d1098erest.cacheid - Possible symlink attack
+install failed
+</code></pre>
+
+<p>「PHP_PEAR_PHP_BINが間違ってる」「一時ファイルが書き込めない」など言われていますが、どちらも正常に設定できています。</p>
+
+<p>はてどうしたことか。</p>
+
+<p>と思いましたが、<strong>pear clear-cache</strong>を実行したらコマンドが通るようになりました。</p>
+
+<pre><code>$ pear clear-cache
+reading directory C:\DOCUME~1\keijiro\LOCALS~1\Temp\pear\cache
+1024 cache entries cleared
+
+$ pear install Net_URL2-2.0.0
+
+Notice: fwrite(): send of 189 bytes failed with errno=10054 既存の接続はリモート ホストに強制的に切断されました。
+ in PEAR\Downloader.php on line 1664
+downloading Net_URL2-2.0.0.tgz ...
+Starting to download Net_URL2-2.0.0.tgz (11,325 bytes)
+.....done: 11,325 bytes
+install ok: channel://pear.php.net/Net_URL2-2.0.0
+
+$ pear install HTTP_Request2-2.0.0
+
+Notice: fwrite(): send of 189 bytes failed with errno=10054 既存の接続はリモート ホストに強制的に切断されました。
+ in PEAR\Downloader.php on line 1664
+pear/HTTP_Request2 can optionally use PHP extension &quot;curl&quot;
+pear/HTTP_Request2 can optionally use PHP extension &quot;fileinfo&quot;
+downloading HTTP_Request2-2.0.0.tgz ...
+Starting to download HTTP_Request2-2.0.0.tgz (97,476 bytes)
+......................done: 97,476 bytes
+install ok: channel://pear.php.net/HTTP_Request2-2.0.0
+</code></pre>
+
+<p>Noticeが出ていますが、パッケージは問題無く利用できました。</p>
+
+<p>でたらめなエラーメッセージはやめていただきたいですね。</p>
+
+<h2 id="参考:ffbf1c0b8401971288a56b58bcdcb029">参考</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/6442187/security-error-while-installing-phing-using-pear" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/6442187/security-error-while-installing-phing-using-pear', 'Security Error while installing phing using pear &#8211; Stack Overflow']);" >Security Error while installing phing using pear &#8211; Stack Overflow</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Phactory on 1000g</title>
+    <link>http://1000k.github.io/tags/phactory/</link>
+    <description>Recent content in Phactory on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 30 May 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/phactory/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Phactoryで単数形のテーブルをテストする</title>
+      <link>http://1000k.github.io/2012/05/30/how-to-test-singular-named-table-by-phacory/</link>
+      <pubDate>Wed, 30 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/05/30/how-to-test-singular-named-table-by-phacory/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://phactory.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phactory.org/&#39;, &#39;Phactory&#39;]);&#34; title=&#34;Phactory - A Database Factory for PHP Unit Tests&#34;&gt;Phactory&lt;/a&gt;はRoRライクな設計思想のため、テーブル名を勝手に複数形に変換（pluralize）します。&lt;/p&gt;
+
+&lt;p&gt;このせいで単数形のテーブル名がテストできない場合、下記のようにdefine()の前に&lt;strong&gt;setInflector()&lt;/strong&gt;を使えば直ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// dtb_shopというテーブルをテストしたい
+    protected function setUp() {
+        $pdo = new PDO(DB_TYPE . &#39;:dbname=&#39; . DB_NAME . &#39;;host=&#39; . DB_SERVER . &#39;;port=&#39; . DB_PORT, DB_USER, DB_PASSWORD);
+        $pdo-&amp;gt;exec(&#39;CREATE TABLE dtb_shop (shop_id INTEGER, shop_key TEXT)&#39;);
+
+        Phactory::setConnection($pdo);
+        Phactory::reset();
+        Phactory::setInflection(&#39;dtb_shop&#39;, &#39;dtb_shop&#39;);    // 勝手に「dtb_shops」にされるのを防ぐ
+        Phactory::define(&#39;dtb_shop&#39;, array(&#39;shop_id&#39; =&amp;gt; &#39;$n&#39;, &#39;shop_key&#39; =&amp;gt; &#39;test shop $n&#39;));
+
+        $this-&amp;gt;object = new ShopModel;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;https://github.com/chriskite/phactory/issues/3&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/chriskite/phactory/issues/3&#39;, &#39;Issue #3: Can&amp;#8217;t create singular tables · chriskite/phactory · GitHub&#39;]);&#34; title=&#34;Issue #3: Can&#39;t create singular tables · chriskite/phactory · GitHub&#34;&gt;Issue #3: Can&amp;#8217;t create singular tables · chriskite/phactory · GitHub&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1537 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javascript on 1000g</title>
+    <link>http://1000k.github.io/categories/javascript/</link>
+    <description>Recent content in Javascript on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 16 Jan 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/javascript/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>JavaScript で Chrome のウィンドウを閉じる方法</title>
+      <link>http://1000k.github.io/2015/01/16/close-popup-window-on-chrome/</link>
+      <pubDate>Fri, 16 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/01/16/close-popup-window-on-chrome/</guid>
+      <description>
+
+&lt;p&gt;以前リリースしたあるサービスで、「一部の入力フォームを別ウィンドウをポップアップして入力させ、終わったらリンクをクリックして閉じる」という JavaScript の処理を入れていたのですが、なぜか最近の Chrome で画面が固まってしまう不具合が発生しました。2014年の春にテストした時は問題なく動いていたのですが。&lt;/p&gt;
+
+&lt;h2 id=&#34;再現方法:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;再現方法&lt;/h2&gt;
+
+&lt;p&gt;不具合は以下の流れで発生します。確認したブラウザは 39.0.2171.99m です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;親ウィンドウにある &lt;code&gt;&amp;lt;a onClick=&amp;quot;window.open()&amp;quot;&amp;gt;&lt;/code&gt; リンクを叩き、子ウィンドウをポップアップさせる。&lt;/li&gt;
+&lt;li&gt;子ウィンドウにある &lt;code&gt;&amp;lt;a onClick=&amp;quot;window.open(&#39;about:blank&#39;,&#39;_self&#39;).close()&amp;quot;&amp;gt;&lt;/code&gt; リンクを叩く。&lt;/li&gt;
+&lt;li&gt;親・子ウィンドウ両方が固まってしまう。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ウィンドウを閉じる時に単純な &lt;code&gt;window.close()&lt;/code&gt; ではなく &lt;code&gt;window.open(&#39;about:blank&#39;,&#39;_self&#39;).close()&lt;/code&gt; を使っているのは、IE/FF/Chrome いずれのブラウザーでも綺麗に閉じるための有名な Hack だったからです。詳細は &lt;a href=&#34;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#39;, &#39;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&#39;]);&#34; &gt;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&lt;/a&gt; がわかりやすいです。&lt;/p&gt;
+
+&lt;p&gt;どうやらブラウザーのバージョンアップに伴い、このあたりの事情が変わってきてたようです。&lt;/p&gt;
+
+&lt;p&gt;今なら子ウィンドウを消す JavaScript をどう実装するべきなのかを、少し検証してみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;検証&lt;/h2&gt;
+
+&lt;p&gt;以下の2つの HTML を用意します。&lt;/p&gt;
+
+&lt;p&gt;popup_parent.html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;Parent&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;window.open(&#39;popup_child.html&#39;, &#39;child&#39;, &#39;width=300,height=300&#39;);&amp;quot;&amp;gt;Open popup window&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;popup_child.html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;Child&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;window.open(&#39;about:blank&#39;, &#39;_self&#39;).close()&amp;quot;&amp;gt;Close window 1&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;window.close();&amp;quot;&amp;gt;Close window 2&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;検証手順は以下の通り。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;popup_parent.html にアクセスし、&lt;code&gt;Open popup window&lt;/code&gt; リンクを叩く。&lt;/li&gt;
+&lt;li&gt;子ウィンドウが開くので、&lt;code&gt;Close window 1&lt;/code&gt; (ハック版) と &lt;code&gt;Close window 2&lt;/code&gt; (単純版) の2つのリンクをそれぞれ叩き、正しく閉じられるかどうかを記録する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;検証結果は次のようになりました。「o」は閉じられた場合、「x」は閉じられなかった場合です。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;ブラウザー&lt;/th&gt;
+&lt;th&gt;Close window 1&lt;/th&gt;
+&lt;th&gt;Close window 2&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;IE 10&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Chrome 39.0.2171.99m&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;FireFox 34.0.5&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Safari 5.1.7&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Chrome だけハック版がうまく動かないという結果になりました。&lt;/p&gt;
+
+&lt;p&gt;悪さをしているのは WebKit か検証するため、一応 Safari でも実験しましたが、問題はありませんでした。今のところは Chrome だけ処理を分けるようにすれば良さそうです。ただ、Safari の WebKit は若干バージョンが古い (Safari = WebKit/534.57.2, Chrome = Webkit/537.36) ので、今後のバージョンアップでどうなるかは不明です。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決策:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;解決策&lt;/h2&gt;
+
+&lt;p&gt;検証結果から、全て Close window 2 (単純版) の書き方にすれば解決するように見えますが、一応古いブラウザーとの互換性を考えて、Chrome だけ単純版に分岐するような JS にしました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;if (/Chrome/i.test(navigator.userAgent)) { window.close(); } else { window.open(&#39;about:blank&#39;, &#39;_self&#39;).close(); }&amp;quot;&amp;gt;Close window 3&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでどのブラウザーでも閉じられるようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome&#39;, &#39;javascript - window.close and self.close do not close the window in Chrome - Stack Overflow&#39;]);&#34; &gt;javascript - window.close and self.close do not close the window in Chrome - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit&#39;, &#39;javascript - How to detect chrome and safari browser (webkit) - Stack Overflow&#39;]);&#34; &gt;javascript - How to detect chrome and safari browser (webkit) - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#39;, &#39;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&#39;]);&#34; &gt;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Protractor が動かなくてハマった</title>
+      <link>http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/</link>
+      <pubDate>Thu, 22 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/angular/angular-seed&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/angular/angular-seed&#39;, &#39;angular-seed&#39;]);&#34; &gt;angular-seed&lt;/a&gt; を使って Angular.js の開発環境を作成していたのですが、どうにもこうにも e2e テストが動かなくてハマりました。&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージは以下のとおり。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm run protractor
+
+&amp;gt; angular-seed@0.0.0 preprotractor /var/www
+&amp;gt; npm run update-webdriver
+
+
+&amp;gt; angular-seed@0.0.0 preupdate-webdriver /var/www
+&amp;gt; npm install
+
+
+&amp;gt; angular-seed@0.0.0 postinstall /var/www
+&amp;gt; bower install
+
+
+&amp;gt; angular-seed@0.0.0 update-webdriver /var/www
+&amp;gt; webdriver-manager update
+
+selenium standalone is up to date.
+chromedriver is up to date.
+
+&amp;gt; angular-seed@0.0.0 protractor /var/www
+&amp;gt; protractor test/protractor-conf.js
+
+
+------------------------------------
+PID: 2314 (capability: chrome #1)
+------------------------------------
+
+Starting selenium standalone server...
+
+events.js:72
+        throw er; // Unhandled &#39;error&#39; event
+              ^
+Error: spawn ENOENT
+    at errnoException (child_process.js:998:11)
+    at Process.ChildProcess._handle.onexit (child_process.js:789:34)
+[launcher] Runner Process Exited With Error Code: 8
+
+npm ERR! angular-seed@0.0.0 protractor: `protractor test/protractor-conf.js`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the angular-seed@0.0.0 protractor script.
+npm ERR! This is most likely a problem with the angular-seed package,
+npm ERR! not with npm itself.
+npm ERR! Tell the author that this fails on your system:
+npm ERR!     protractor test/protractor-conf.js
+npm ERR! You can get their info via:
+npm ERR!     npm owner ls angular-seed
+npm ERR! There is likely additional logging output above.
+npm ERR! System Linux 3.13.0-24-generic
+npm ERR! command &amp;quot;node&amp;quot; &amp;quot;/usr/bin/npm&amp;quot; &amp;quot;run&amp;quot; &amp;quot;protractor&amp;quot;
+npm ERR! cwd /var/www
+npm ERR! node -v v0.10.28
+npm ERR! npm -v 1.4.10
+npm ERR! code ELIFECYCLE
+npm ERR!
+npm ERR! Additional logging details can be found in:
+npm ERR!     /var/www/npm-debug.log
+npm ERR! not ok code 0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;code ELIFECYCLE&lt;/code&gt; が何を意味しているのかさっぱりわからず途方に暮れていましたが、結局のところ Java に PATH が通っていなかったのが原因だったようです。&lt;/p&gt;
+
+&lt;p&gt;e2e テストは内部で Selenium Standalone Server を呼んでいますが、そこに Java が必要でした。&lt;/p&gt;
+
+&lt;p&gt;単純に OpenJDK をパッケージインストールするだけで解決しました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo apt-get install openjdk-7-jre-headless
+$ java -version
+(バージョンが表示されれば PATH が通ってるので OK)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Node.js はデバッグメッセージが雑なことが多いので苦手です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:44911033301877b7be87059dd5b5c5f6&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014&#39;, &#39;angularjs &amp;#8211; How to run protractor? &amp;#8211; Stack Overflow&#39;]);&#34; &gt;angularjs &amp;#8211; How to run protractor? &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ヘッダーとフッターを固定しつつ高さ100% の Google Maps を描画する方法</title>
+      <link>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</link>
+      <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/893s2/2/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/893s2/2/&#39;, &#39;このデモ&#39;]);&#34; &gt;このデモ&lt;/a&gt;を見れば、何をやりたいかすぐ把握できると思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_1.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_1.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_1-300x225.png&#34; alt=&#34;map_1&#34; width=&#34;300&#34; height=&#34;225&#34; class=&#34;alignnone size-medium wp-image-1683&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_2.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_2.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_2-190x300.png&#34; alt=&#34;map_2&#34; width=&#34;190&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-1684&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ウィンドウの幅や高さを変えても、ヘッダーとフッターは常に同じ高さのままで、マップの部分はウィンドウサイズに合うように伸縮しています。&lt;/p&gt;
+
+&lt;p&gt;以下、このようなコードの実装方法を書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード:58e354fc35f3ca4266379278104f5f1b&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;まずはお決まりの Google Maps 呼び出しコードと、HTML の構造です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div id=&amp;quot;container&amp;quot;&amp;gt;
+  &amp;amp;lt;header&amp;gt;header&amp;amp;lt;/header&amp;gt;
+
+
+
+  &amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;map_canvas&amp;quot; style=&amp;quot;width: 100%; height: 100%;&amp;quot;&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+      &amp;amp;lt;footer&amp;gt;This footer is absolutely positioned&amp;amp;lt;/footer&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+&amp;lt;!-- /#container --&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これについては説明は不要でしょう。ページ全体を覆う &lt;code&gt;#container&lt;/code&gt; の中に、ヘッダーとコンテンツとフッターがあります。&lt;/p&gt;
+
+&lt;p&gt;次に、ポイントとなる CSS は以下のとおりです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;html,body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* needed for container min-height */
+  background: #300;
+}
+
+#container {
+  background: #ccc;
+  height: 100%;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  /*height:auto !important;  real browsers */
+  height:100%; /* IE6: treaded as min-height*/
+
+  min-height:100%; /* real browsers */
+}
+
+header {
+  height: 108px;
+  position: relative;
+  background: #0ff;
+}
+
+#content{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  margin-top: 108px;    /* header&#39;s height */
+  width: 100%;
+}
+
+footer {
+  position: absolute;
+  clear: both;
+  width: 100%;
+  height: 40px;
+  bottom: 0;        /* stick to bottom */
+  background: #ff0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;全体を覆う &lt;code&gt;#container&lt;/code&gt; には &lt;code&gt;min-height: 100%;&lt;/code&gt; を指定し、ブラウザの高さいっぱいに描画するようにしています。また、&lt;code&gt;position: relative;&lt;/code&gt; を指定することで、その内部で自由に要素を配置できるようにしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;header&lt;/code&gt; に関しては特にコメントは不要ですね。ただ高さを指定しているだけです。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;#content&lt;/code&gt; にはいくつか工夫があります。まず、&lt;code&gt;position: absolute; top: 0; bottom: 0;&lt;/code&gt; によって、要素の高さを 100% にしています。次に、&lt;code&gt;margin-top: 108px;&lt;/code&gt; というように header と同じ高さでマージンを作ることで、ヘッダーとマップを隙間なく描画しています。&lt;/p&gt;
+
+&lt;p&gt;最後に &lt;code&gt;footer&lt;/code&gt; ですが、&lt;code&gt;position: absolute; bottom: 0;&lt;/code&gt; によって、常に &lt;code&gt;#container&lt;/code&gt; の最下部に貼り付くようにしています。&lt;/p&gt;
+
+&lt;p&gt;実現したいことはシンプルですが、実装するのに結構工夫が必要だったのでメモしておきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:58e354fc35f3ca4266379278104f5f1b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#39;, &#39;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&#39;]);&#34; &gt;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;今回のデモは、この Q&amp;amp;A に書かれているコードをシンプルにしただけです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Grunt で JS/CSS を自動ビルドする</title>
+      <link>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</guid>
+      <description>
+
+&lt;h2 id=&#34;grunt-とは:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;Grunt とは？&lt;/h2&gt;
+
+&lt;p&gt;JS/CSS のビルド自動化ツール。&lt;/p&gt;
+
+&lt;p&gt;JS のユニットテスト、ファイルの結合＆難読化＆最小化などの様々なタスクを自動で行うことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;まず、node.js と npm をインストールします。&lt;/p&gt;
+
+&lt;p&gt;やり方は以下の記事あたりを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#39;, &#39;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&#39;]);&#34; &gt;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に grunt-cli をグローバルにインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo npm install -g grunt-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、プロジェクトのトップに &lt;code&gt;package.json&lt;/code&gt; を作成します。&lt;/p&gt;
+
+&lt;p&gt;この中には、使用したい Grunt ライブラリを列挙します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;mojamoja-project&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;0.1.0&amp;quot;,
+  &amp;quot;devDependencies&amp;quot;: {
+    &amp;quot;grunt&amp;quot;: &amp;quot;~0.4.1&amp;quot;,
+    &amp;quot;grunt-contrib-sass&amp;quot;: &amp;quot;~0.3.0&amp;quot;,
+    &amp;quot;grunt-contrib-jshint&amp;quot;: &amp;quot;~0.6.3&amp;quot;,
+    &amp;quot;grunt-contrib-nodeunit&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-compass&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-concat&amp;quot;: &amp;quot;~0.1.2&amp;quot;,
+    &amp;quot;grunt-contrib-qunit&amp;quot;: &amp;quot;~0.1.1&amp;quot;,
+    &amp;quot;grunt-contrib-uglify&amp;quot;: &amp;quot;~0.2.2&amp;quot;,
+    &amp;quot;grunt-contrib-watch&amp;quot;: &amp;quot;~0.2.0&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで &lt;code&gt;npm install grunt --save-dev&lt;/code&gt; を叩くと、package.json に書かれたパッケージが一気にインストールされます。&lt;/p&gt;
+
+&lt;p&gt;以上で前準備は完了です。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;プロジェクトのルートに &lt;code&gt;Gruntfile.js&lt;/code&gt; を書いて、実行したいタスクを列挙するだけです。&lt;/p&gt;
+
+&lt;p&gt;※ grunt &amp;lt; 0.4 では &lt;code&gt;grunt.js&lt;/code&gt; というファイル名でした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports = function(grunt) {
+  grunt.initConfig({
+    pkg: grunt.file.readJSON(&#39;package.json&#39;),
+    concat: {
+      options: {
+        separator: &#39;;&#39;
+      },
+      dist: {
+        src: [
+          &#39;app/webroot/js/vendor/jquery/jquery.js&#39;,
+          &#39;app/webroot/js/vendor/jquery-mousewheel/jquery.mousewheel.js&#39;,
+          &#39;app/webroot/js/vendor/underscore/underscore.js&#39;,
+          &#39;app/webroot/js/vendor/backbone/backbone.js&#39;,
+          &#39;app/webroot/js/vendor/backbone.localStorage/backbone.localStorage.js&#39;,
+          &#39;app/webroot/js/vendor/hook/hook.js&#39;,
+          &#39;app/webroot/js/vendor/mobify-modules/carousel/src/carousel.js&#39;,
+          &#39;app/webroot/js/vendor/snap/snap.js&#39;,
+          &#39;app/webroot/js/app.js&#39;
+        ],
+        dest: &#39;app/webroot/js/merged.js&#39;
+      }
+    },
+    uglify: {
+      options: {
+        banner: &#39;/*! &amp;amp;lt;%= pkg.name %&amp;gt; &amp;amp;lt;%= grunt.template.today(&amp;quot;dd-mm-yyyy&amp;quot;) %&amp;gt; */\n&#39;
+      },
+      dist: {
+        files: {
+          &#39;app/webroot/js/merged.min.js&#39;: [&#39;&amp;amp;lt;%= concat.dist.dest %&amp;gt;&#39;]
+        }
+      }
+    },
+    jshint: {
+      files: [&#39;gruntfile.js&#39;, &#39;app/webroot/js/**/*.js&#39;],
+      options: {
+        // options here to override JSHint defaults
+        globals: {
+          jQuery: true,
+          console: true,
+          module: true,
+          document: true
+        }
+      }
+    },
+    watch: {
+      files: [&#39;&amp;amp;lt;%= jshint.files %&amp;gt;&#39;],
+      tasks: [&#39;concat&#39;, &#39;uglify&#39;]
+    }
+  });
+
+  grunt.loadNpmTasks(&#39;grunt-contrib-uglify&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-qunit&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-concat&#39;);
+
+  grunt.registerTask(&#39;test&#39;, [&#39;jshint&#39;]);
+  grunt.registerTask(&#39;default&#39;, [&#39;jshint&#39;, &#39;concat&#39;, &#39;uglify&#39;]);
+  grunt.registerTask(&#39;merge&#39;, [&#39;concat&#39;, &#39;uglify&#39;]);
+
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳しい記述方法は公式のガイドを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/configuring-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/configuring-tasks&#39;, &#39;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/creating-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/creating-tasks&#39;, &#39;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;あとは &lt;code&gt;grunt {タスク名}&lt;/code&gt; と叩くだけで、指定したタスクが動きます。&lt;/p&gt;
+
+&lt;p&gt;例えば上で定義 (&lt;code&gt;grunt.registerTask()&lt;/code&gt; )したタスクから merge を実行したければ、&lt;code&gt;grunt merge&lt;/code&gt; と叩けば OK です。。&lt;/p&gt;
+
+&lt;h2 id=&#34;変更の監視-自動タスク実行:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;変更の監視＆自動タスク実行&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;grunt watch&lt;/code&gt; を叩くことで、指定した js ファイルを監視し、変更があったら自動で指定したタスクを実行してくれます。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#39;, &#39;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&#39;]);&#34; &gt;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/getting-started&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/getting-started&#39;, &#39;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#39;, &#39;Sample Gruntfile · gruntjs/grunt Wiki&#39;]);&#34; &gt;Sample Gruntfile · gruntjs/grunt Wiki&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Gruntfile のサンプル。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/plugins/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/plugins/&#39;, &#39;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;grunt プラグインの一覧。&lt;/li&gt;
+&lt;li&gt;公式のものは &amp;#8216;Show contrib plugins first&amp;#8217; にチェックを入れれば出てくる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#39;, &#39;npm / package.json | Public Draft | Outlining and Researching for the Presentation&#39;]);&#34; &gt;npm / package.json | Public Draft | Outlining and Researching for the Presentation&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;package.json の基本。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Bower で JavaScript パッケージを管理する</title>
+      <link>http://1000k.github.io/2013/05/04/managing-js-packages-by-bower/</link>
+      <pubDate>Sat, 04 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/05/04/managing-js-packages-by-bower/</guid>
+      <description>
+
+&lt;h2 id=&#34;bower-とは:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;Bower とは？&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://bower.io/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bower.io/&#39;, &#39;BOWER: A package manager for the web&#39;]);&#34; &gt;BOWER: A package manager for the web&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Twitter 製の JavaScript パッケージ管理ライブラリ。Ruby の Gem, PHP の Composer みたいなもの。&lt;/p&gt;
+
+&lt;p&gt;プロジェクトで使用する JS ライブラリとバージョンをファイルに記述して管理できるため、バージョン管理が容易になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6 でインストールする手順です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;node.js をインストールする。
+
+&lt;ul&gt;
+&lt;li&gt;EPEL が使えれば &lt;code&gt;yum install nodejs&lt;/code&gt; で一発。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;npm をインストールする。
+
+&lt;ul&gt;
+&lt;li&gt;パッケージが公開されていないので、ソースからインストールまたは &lt;code&gt;curl http://npmjs.org/install.sh | sh&lt;/code&gt; (Fancy install) で。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;npm で bower をインストールする。
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sudo npm install -g bower&lt;/code&gt; で終わり。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;使い方:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;プロジェクトのルートに &lt;code&gt;bower.json&lt;/code&gt; を作り、パッケージ情報を記述し、&lt;code&gt;bower install&lt;/code&gt; を叩くのが基本です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# カレントディレクトリの bower.json を参照してパッケージをインストールする
+bower install
+
+# パッケージを指定してインストールする
+bower install &amp;amp;lt;package&amp;gt;
+
+# git にタグ付けされたバージョンを元にインストールする
+bower install &amp;amp;lt;package&amp;gt;#&amp;amp;lt;version&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bower.json のサンプルは下記の通り。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;wpn&amp;quot;
+  , &amp;quot;version&amp;quot;: &amp;quot;1.0.0&amp;quot;
+  , &amp;quot;main&amp;quot;: &amp;quot;app/webroot/js/main.js&amp;quot;
+  , &amp;quot;ignore&amp;quot;: [
+    &amp;quot;.jshintrc&amp;quot;
+    ,&amp;quot;**/*.txt&amp;quot;
+  ]
+  , &amp;quot;dependencies&amp;quot;: {
+    &amp;quot;backbone&amp;quot;: &amp;quot;1.0.0&amp;quot;
+    , &amp;quot;underscore&amp;quot;: &amp;quot;1.4.4&amp;quot;
+    , &amp;quot;jquery&amp;quot;: &amp;quot;&amp;amp;lt; 2.0.0&amp;quot;
+    , &amp;quot;jquery-mousewheel&amp;quot;: &amp;quot;latest&amp;quot;
+    , &amp;quot;snap&amp;quot;: &amp;quot;git://github.com/jakiestfu/Snap.js.git&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ごらんのように、Bower リポジトリに登録されているパッケージは柔軟なバージョン指定ができます。&lt;/p&gt;
+
+&lt;p&gt;登録されていないパッケージも、GitHub の URL を直接指定することで管理ができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;好きなディレクトリにコンポーネントをインストールする:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;好きなディレクトリにコンポーネントをインストールする&lt;/h2&gt;
+
+&lt;p&gt;デフォルトだと bower.json と同じ階層に components/ というディレクトリを作られてしまいます。これを変えるには、bower.json と同じ階層に &amp;lsquo;.bowerrc` を作成し、以下のように書けば OK です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;directory&amp;quot;: &amp;quot;app/webroot/js&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで &lt;code&gt;bower install&lt;/code&gt; を実行すると、コンポーネントは &lt;code&gt;app/webroot/js/&amp;lt;package&amp;gt;&lt;/code&gt; にインストールされます。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://bower.io/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bower.io/&#39;, &#39;BOWER: A package manager for the web&#39;]);&#34; &gt;BOWER: A package manager for the web&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/bower/bower&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/bower/bower&#39;, &#39;bower/bower · GitHub&#39;]);&#34; &gt;bower/bower · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://uzulla.hateblo.jp/entry/2013/04/28/143507&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://uzulla.hateblo.jp/entry/2013/04/28/143507&#39;, &#39;bowerでつまづいた事のメモなど - uzullaがブログ&#39;]);&#34; &gt;bowerでつまづいた事のメモなど - uzullaがブログ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.mach3.jp/2013/01/bower.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.mach3.jp/2013/01/bower.html&#39;, &#39;パッケージマネージャー「Bower」が大変便利で捗りそうです | Mach3.laBlog&#39;]);&#34; &gt;パッケージマネージャー「Bower」が大変便利で捗りそうです | Mach3.laBlog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/items/ba952bdade627af99e93&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/items/ba952bdade627af99e93&#39;, &#39;なにはともあれ入れてみるぜ。バウワー。(bower) #Node.js #JavaScript #twitter - Qiita [キータ]&#39;]);&#34; &gt;なにはともあれ入れてみるぜ。バウワー。(bower) #Node.js #JavaScript #twitter - Qiita [キータ]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://net.tutsplus.com/tutorials/tools-and-tips/meet-bower-a-package-manager-for-the-web/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://net.tutsplus.com/tutorials/tools-and-tips/meet-bower-a-package-manager-for-the-web/&#39;, &#39;Meet Bower: A Package Manager For The Web | Nettuts+&#39;]);&#34; &gt;Meet Bower: A Package Manager For The Web | Nettuts+&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQMでアクセス中のページがトップページかどうか判別する</title>
+      <link>http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/</link>
+      <pubDate>Sat, 20 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/</guid>
+      <description>
+
+&lt;p&gt;現在アクセスしているURLがアプリのトップページか否かを判断するには、どうすればいいでしょうか？&lt;/p&gt;
+
+&lt;p&gt;jQuery Mobile では id 属性を使ってページを識別するため、簡単に判断できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;今アクセスしているURLが、アプリのトップページかどうか判別する関数を作る。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;トップページなら true&lt;/li&gt;
+&lt;li&gt;それ以外なら false&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;コード:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;トップページの id 属性が「top」という想定で進めます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div data-role=&amp;quot;page&amp;quot; id=&amp;quot;top&amp;quot; data-title=&amp;quot;top page&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;header&amp;quot;&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jQuery Mobile はページにアクセス時、画面を描画する前にページの構造を取得します。&lt;/p&gt;
+
+&lt;p&gt;つまり、今アクセスしているページの id 属性を取得できるので、これが top かそうでないかを判別すればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * アクセスしたページがトップページかどうか判別する
+ *
+ * @return {boolean} トップページなら true
+ */
+function isTop() {
+    return $(&amp;quot;:jqmData(role=&#39;page&#39;)&amp;quot;).attr(&amp;quot;id&amp;quot;) === &amp;quot;top&amp;quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jQuery Mobile では data-* 属性を取得する時にはカスタムセレクタの jqmData() を使うのが作法なので、このような書き方になります。（下記の参考リンク内の「$.fn.jqmData()」参照）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:0a67ae7ca7c840717b36a9958e52a0df&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/api/methods.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/methods.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Methods&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Methods&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQM &#43; Google Maps でマップが表示されない時の対処法</title>
+      <link>http://1000k.github.io/2012/10/14/jqm-remedy-when-the-map-does-not-appear-in-google-maps/</link>
+      <pubDate>Sun, 14 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/jqm-remedy-when-the-map-does-not-appear-in-google-maps/</guid>
+      <description>
+
+&lt;p&gt;jQuery Mobile 1.2.0 Final での不具合です。&lt;/p&gt;
+
+&lt;p&gt;jQuery Mobile と Google Maps API の相性がいまいち良くないようで、いろいろな所で不具合が出ます。&lt;/p&gt;
+
+&lt;p&gt;今回発見したのは、フォーム画面から戻ってくるとマップが表示されない問題です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;マップが設置されたページからフォーム画面へ遷移する&lt;/li&gt;
+&lt;li&gt;フォームの値をPOSTして元のページへ戻る&lt;/li&gt;
+&lt;li&gt;マップが表示されない&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Google Maps と統合するサービスには致命的になりかねない不具合です。&lt;/p&gt;
+
+&lt;p&gt;以下に不具合の検証用コードと、かなり妥協した解決案を記します。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証用コード:463549662c038eb75ba927c71eba6045&#34;&gt;検証用コード&lt;/h2&gt;
+
+&lt;h3 id=&#34;gmap1-html:463549662c038eb75ba927c71eba6045&#34;&gt;gmap1.html&lt;/h3&gt;
+
+&lt;p&gt;マップを表示するページです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;map_canvas&amp;quot;&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+
+    &amp;lt;a href=&amp;quot;gmap2.html&amp;quot; data-role=&amp;quot;button&amp;quot; data-rel=&amp;quot;dialog&amp;quot;&amp;gt;Go to gmap2.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gmap2-html:463549662c038eb75ba927c71eba6045&#34;&gt;gmap2.html&lt;/h3&gt;
+
+&lt;p&gt;フォーム画面。今回は dialog を使いました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;dialog&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page2&amp;quot;&amp;gt;
+  &amp;amp;lt;/form&amp;gt;
+
+          &amp;lt;a href=&amp;quot;gmap1.html&amp;quot; data-role=&amp;quot;button&amp;quot; data-rel=&amp;quot;back&amp;quot;&amp;gt;back to gmap1.html&amp;lt;/a&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これらのページを設置し、「gmap1.html -&amp;gt; gmap2.html -&amp;gt; gmap1.html」という遷移をすると、2回目の gmap1.html でマップが表示されません。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決案:463549662c038eb75ba927c71eba6045&#34;&gt;解決案&lt;/h2&gt;
+
+&lt;p&gt;jQuery Mobile が内部で Ajax をガチャガチャやっているのが悪影響を及ぼしているようなので、Ajaxをオフにすれば治りました。&lt;/p&gt;
+
+&lt;p&gt;上記のコードで、「// $.mobile.ajaxEnabled = false;」となっている部分をコメントアウトすればOKです。&lt;/p&gt;
+
+&lt;h3 id=&#34;gmap1-html-1:463549662c038eb75ba927c71eba6045&#34;&gt;gmap1.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.mobile.ajaxEnabled = false;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gmap2-html-1:463549662c038eb75ba927c71eba6045&#34;&gt;gmap2.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$.mobile.ajaxEnabled = false;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この対応によりマップは表示されるようになりますが、画面遷移時のエフェクトを始めとしたもろもろの機能が使えなくなります。&lt;/p&gt;
+
+&lt;p&gt;非常に心苦しい対応ですが、今のところこれぐらいしか思いつきませんでした。&lt;/p&gt;
+
+&lt;p&gt;なお、全ページにこの1行を書くのは面倒なので、外部JSファイルに以下の指定をして全ページのhead内で読み込むようにすれば楽です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(document).bind(&amp;quot;pageinit&amp;quot;, function() {
+  $.mobile.ajaxEnabled = false;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:463549662c038eb75ba927c71eba6045&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/api/globalconfig.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/globalconfig.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Configuring default settings&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Configuring default settings&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;$.mobile.ajaxEnabled のリファレンス。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://code.google.com/p/jquery-ui-map/wiki/jquery_ui_map_v_3_tutorial&#39;, &#39;jquery_ui_map_v_3_tutorial &amp;#8211; jquery-ui-map &amp;#8211; Google map v3 plugin for jQuery and jQuery Mobile &amp;#8211; Google Project Hosting&#39;]);&#34; &gt;jquery_ui_map_v_3_tutorial &amp;#8211; jquery-ui-map &amp;#8211; Google map v3 plugin for jQuery and jQuery Mobile &amp;#8211; Google Project Hosting&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;「Help, my map is rendered incorrectly! (jQM)」に同じ不具合の対処法が書いてありました。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQuery Mobileでリストビューを動的に挿入する方法</title>
+      <link>http://1000k.github.io/2012/10/14/how-to-dynamically-insert-the-list-view-in-the-jquery-mobile/</link>
+      <pubDate>Sun, 14 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/how-to-dynamically-insert-the-list-view-in-the-jquery-mobile/</guid>
+      <description>
+
+&lt;p&gt;jQuery Mobile 1.2 を使ってリストビューを動的に挿入する手順を紹介します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;公式マニュアル&#39;]);&#34; title=&#34;jQuery Mobile Docs - Dynamically Injecting Pages&#34;&gt;公式マニュアル&lt;/a&gt;にもやり方は書いてあるのですが、本題と関係ない部分（リンクをクリックしたらその取得先を正規表現で取得するなど）が長く読みづらいので、もっと簡単なバージョンを書きました。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;「Inject!」ボタンを押す&lt;/li&gt;
+&lt;li&gt;「data-role=&amp;#8221;content&amp;#8221;」内にリストビューを挿入する&lt;/li&gt;
+&lt;li&gt;画面遷移せずに表示する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;画面イメージはこんな感じです。↓&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/dynamic_injection1.png&#34; alt=&#34;&#34; title=&#34;before&#34; width=&#34;444&#34; height=&#34;296&#34; class=&#34;alignnone size-full wp-image-1173&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;「Inject!」をクリックすると、ヘッダとコンテンツが書き換えられます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/dynamic_injection2.png&#34; alt=&#34;&#34; title=&#34;after&#34; width=&#34;444&#34; height=&#34;248&#34; class=&#34;alignnone size-full wp-image-1174&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;サンプルコード:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;サンプルコード&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;header&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;
+      Dynamic Injection
+    &amp;lt;/h1&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+
+
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;#&amp;quot; data-role=&amp;quot;button&amp;quot; id=&amp;quot;inject&amp;quot;&amp;gt;Inject!&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;処理の内容を細かく見てみましょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;クリックイベントをバインドする:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;クリックイベントをバインドする&lt;/h3&gt;
+
+&lt;p&gt;はじめに、「Inject!」ボタンをクリックした時に showList() 関数を呼び出すようにバインドします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(&amp;quot;#inject&amp;quot;).live(&amp;quot;click&amp;quot;, function() {
+  showList();
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に showList() の中身を見てみます。&lt;/p&gt;
+
+&lt;h3 id=&#34;dom要素を格納する:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;DOM要素を格納する&lt;/h3&gt;
+
+&lt;p&gt;まずはページ内の各要素のDOM要素を変数に格納しておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var $page = $(&amp;quot;#page1&amp;quot;),
+      $header = $page.children(&amp;quot;:jqmData(role=header)&amp;quot;),
+      $content = $page.children(&amp;quot;:jqmData(role=content)&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみにこの「:jqmData()」はjQuery Mobile 用のカスタムセレクタです。&lt;/p&gt;
+
+&lt;p&gt;意味は「$page.childern(&amp;#8220;[data-role=header]&amp;#8221;)」と同じなのですが、jQM独自の「data-*」という要素をセレクトしたい場合はこちらを使う方が良いそうです。&lt;/p&gt;
+
+&lt;p&gt;詳しくは下記のマニュアルを参照してください。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#39;, &#39;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&#34; &gt;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;リストビューを生成する:83f3cc2b588221556f2cadc603a0bf3c&#34;&gt;リストビューを生成する&lt;/h3&gt;
+
+&lt;p&gt;続いてリストビューのDOM要素を生成します。&lt;/p&gt;
+
+&lt;p&gt;jQueryのメソッドチェーンを使って作成すると楽です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var $listview = $(&amp;quot;
+
+&amp;lt;ul&amp;gt;
+  &amp;quot;).attr({&amp;quot;data-role&amp;quot;:&amp;quot;listview&amp;quot;, &amp;quot;data-inset&amp;quot;:&amp;quot;true&amp;quot;})
+      .append(
+        $(&amp;quot;
+
+  &amp;lt;li&amp;gt;
+    &amp;quot;).attr({&amp;quot;data-wrapperrels&amp;quot;:&amp;quot;div&amp;quot;, &amp;quot;data-iconpos&amp;quot;:&amp;quot;right&amp;quot;, &amp;quot;data-icon&amp;quot;:&amp;quot;arrow-l&amp;quot;})
+            .append($(&amp;quot;&amp;lt;a&amp;gt;&amp;quot;).attr({&amp;quot;href&amp;quot;:&amp;quot;#&amp;quot;, &amp;quot;title&amp;quot;:&amp;quot;Home&amp;quot;, &amp;quot;data-rel&amp;quot;:&amp;quot;back&amp;quot;})
+              .append($(&amp;quot;
+
+    &amp;lt;h3&amp;gt;
+      &amp;quot;).text(&amp;quot;FOO&amp;quot;))
+                .append($(&amp;quot;&amp;quot;).attr({&amp;quot;class&amp;quot;:&amp;quot;ui-li-aside ui-li-desc&amp;quot;}).text(&amp;quot;BAR&amp;quot;))
+              )
+          ).appendTo(&amp;quot;:jqmData(role=content)&amp;quot;);
+      ```
+
+
+
+      &amp;lt;p&amp;gt;
+        見慣れないと読みにくいかもしれませんが、インデントで階層構造が表現できて楽です。&amp;lt;br /&amp;gt;
+        これで実際に作成されるHTMLは以下のようになります。
+      &amp;lt;/p&amp;gt;
+
+
+      ```
+
+
+
+&amp;lt;ul data-role=&amp;quot;listview&amp;quot; data-inset=&amp;quot;true&amp;quot;&amp;gt;
+  &amp;lt;li data-icon=&amp;quot;arrow-r&amp;quot; data-iconpos=&amp;quot;right&amp;quot; data-wrapperrels=&amp;quot;div&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;
+
+
+    &amp;lt;h3&amp;gt;
+      FOO
+    &amp;lt;/h3&amp;gt;
+
+
+    &amp;lt;p class=&amp;quot;ui-li-aside ui-li-desc&amp;quot;&amp;gt;
+      BAR
+              &amp;lt;/a&amp;gt;
+          &amp;lt;/li&amp;gt;
+      &amp;lt;/ul&amp;gt;
+      ```
+
+
+
+      &amp;lt;p&amp;gt;
+        なお、この形式のリストは公式ドキュメントでは「Formatted content」と呼ばれています。説明ページは下記。
+      &amp;lt;/p&amp;gt;
+
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/lists/lists-inset.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/lists/lists-inset.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Lists with Form Controls&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Lists with Form Controls&amp;lt;/a&amp;gt;
+      &amp;lt;/p&amp;gt;
+
+
+      &amp;lt;h3&amp;gt;
+        DOM要素を変更＆挿入する
+      &amp;lt;/h3&amp;gt;
+
+
+      &amp;lt;p&amp;gt;
+        ページの要素を書き換えます。
+      &amp;lt;/p&amp;gt;
+
+
+      ```
+
+  $header.find(&amp;quot;h1&amp;quot;).html(&amp;quot;Injected&amp;quot;);
+  $content.html($listview);
+
+  $page.page();
+  $content.find(&amp;quot;:jqmData(role=listview)&amp;quot;).listview();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;p&amp;gt;
+    「$page.page()」は、遅延してページ要素を編集した後には必ず呼び出さねばならないようです。&amp;lt;br /&amp;gt;
+    その後、「$content.find(&amp;amp;#8220;:jqmData(role=listview)&amp;amp;#8221;).listview();」でリストビューをスタイリングしています。
+  &amp;lt;/p&amp;gt;
+
+
+  &amp;lt;h3&amp;gt;
+    ページを表示する
+  &amp;lt;/h3&amp;gt;
+
+
+  &amp;lt;p&amp;gt;
+    最後にページ遷移を手動で発生させます。&amp;lt;br /&amp;gt;
+    これまでに編集したDOM要素が表示されます。
+  &amp;lt;/p&amp;gt;
+
+
+  ```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$.mobile.changePage($page);
+```&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;h2&amp;gt;
+    補足
+  &amp;lt;/h2&amp;gt;
+
+
+  &amp;lt;p&amp;gt;
+    &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/pages/page-dynamic.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;公式ドキュメントのチュートリアル&#39;]);&amp;quot; title=&amp;quot;jQuery Mobile Docs - Dynamically Injecting Pages&amp;quot;&amp;gt;公式ドキュメントのチュートリアル&amp;lt;/a&amp;gt;ではここで紹介した内容にプラスして、「クリックしたボタンのhref属性を解析してデータ取得先を分ける」手順が説明されています。むしろその部分が長すぎて理解しづらくなっている気がします。
+  &amp;lt;/p&amp;gt;
+
+
+  &amp;lt;h2&amp;gt;
+    参考
+  &amp;lt;/h2&amp;gt;
+
+
+  &amp;lt;ul&amp;gt;
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/pages/page-dynamic.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/pages/page-dynamic.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Dynamically Injecting Pages&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Dynamically Injecting Pages&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          公式のチュートリアル。長い。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://jquerymobile.com/test/docs/api/methods.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/test/docs/api/methods.html&#39;, &#39;jQuery Mobile Docs &amp;amp;#8211; Methods&#39;]);&amp;quot; &amp;gt;jQuery Mobile Docs &amp;amp;#8211; Methods&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          $.mobile.changePage() のリファレンス。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/api/methods_utilities/methods/jqmData/&#39;, &#39;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&amp;quot; &amp;gt;jqmData | jQuery Mobile 1.1.0 日本語リファレンス&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          カスタムセレクタ「jqmData」の説明。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.screw-axis.com/doc/jquery_mobile/components/lists/docs/&#39;, &#39;リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス&#39;]);&amp;quot; &amp;gt;リストビューについて | jQuery Mobile 1.1.0 日本語リファレンス&amp;lt;/a&amp;gt;
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.packtpub.com/article/jquery-mobile-organizing-information-with-list-views&#39;, &#39;jQuery Mobile: Organizing Information with List Views | Packt Publishing&#39;]);&amp;quot; &amp;gt;jQuery Mobile: Organizing Information with List Views | Packt Publishing&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          公式ドキュメントのリストビューの解説ではコードが書いてありませんが、このページには書いています。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+
+    &amp;lt;li&amp;gt;
+      &amp;lt;a href=&amp;quot;http://stackoverflow.com/questions/805159/building-html-dom-using-jquery&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/805159/building-html-dom-using-jquery&#39;, &#39;Building HTML (~= DOM) using jQuery &amp;amp;#8211; Stack Overflow&#39;]);&amp;quot; &amp;gt;Building HTML (~= DOM) using jQuery &amp;amp;#8211; Stack Overflow&amp;lt;/a&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;
+          jQueryのメソッドチェーンを使ってDOMを組み立てる方法。
+        &amp;lt;/li&amp;gt;
+
+      &amp;lt;/ul&amp;gt;
+
+    &amp;lt;/li&amp;gt;
+
+  &amp;lt;/ul&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jQuery Mobileのページ遷移時にイベントが発火する順番</title>
+      <link>http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/</link>
+      <pubDate>Sat, 13 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/</guid>
+      <description>
+
+&lt;p&gt;ページ遷移持のイベントの発火タイミングをよくよく理解しておかなければ、jQuery Mobile を使いこなすことはできません。&lt;/p&gt;
+
+&lt;p&gt;単純なページ間の遷移で発生するイベントの順番を確認しておきます。&lt;/p&gt;
+
+&lt;p&gt;なお、イベント一覧は &lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Events&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Events&lt;/a&gt; に記されています。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証コード:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;検証コード&lt;/h2&gt;
+
+&lt;p&gt;コードはgistにも公開してあります。→&lt;a href=&#34;https://gist.github.com/3886193&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://gist.github.com/3886193&#39;, &#39;Verify the event firing timings of jQuery Mobile — Gist&#39;]);&#34; &gt;Verify the event firing timings of jQuery Mobile — Gist&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;page1-html:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;page1.html&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;a&amp;quot; id=&amp;quot;page1&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;page2.html&amp;quot; data-role=&amp;quot;button&amp;quot;&amp;gt;Go to page2.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;page2-html:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;page2.html&lt;/h3&gt;
+
+&lt;p&gt;page1 とほぼ同じなので、[data-role=&amp;#8221;page&amp;#8221;]ブロック内だけ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div data-role=&amp;quot;page&amp;quot; data-theme=&amp;quot;e&amp;quot; id=&amp;quot;page2&amp;quot;&amp;gt;
+  &amp;lt;div data-role=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;page1.html&amp;quot; data-role=&amp;quot;button&amp;quot;&amp;gt;Back to page1.html&amp;lt;/a&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;transition-js:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;transition.js&lt;/h3&gt;
+
+&lt;p&gt;イベント発火時にコンソールにイベント名が出るようにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Page load events
+$(document).bind(&amp;quot;pagebeforeload&amp;quot;, function(e, data) {
+  console.log(&amp;quot;pagebeforeload: &amp;quot; + data.url);
+});
+$(document).bind(&amp;quot;pageload&amp;quot;, function(e, data) {
+  console.log(&amp;quot;pageload: &amp;quot; + data.url);
+});
+$(document).bind(&amp;quot;pageloadfailed&amp;quot;, function() { console.log(&amp;quot;pageloadfailed&amp;quot;); });
+
+// Page change events
+$(document).bind(&amp;quot;pagebeforechange&amp;quot;, function() { console.log(&amp;quot;pagebeforechange&amp;quot;); });
+$(document).bind(&amp;quot;pagechange&amp;quot;, function() { console.log(&amp;quot;pagechange&amp;quot;); });
+$(document).bind(&amp;quot;pagechangefailed&amp;quot;, function() { console.log(&amp;quot;pagechangefailed&amp;quot;); });
+
+// Page transition events
+$(document).bind(&amp;quot;pagebeforeshow&amp;quot;, function() { console.log(&amp;quot;pagebeforeshow&amp;quot;); });
+$(document).bind(&amp;quot;pagebeforehide&amp;quot;, function() { console.log(&amp;quot;pagebeforehide&amp;quot;); });
+$(document).bind(&amp;quot;pageshow&amp;quot;, function() { console.log(&amp;quot;pageshow&amp;quot;); });
+$(document).bind(&amp;quot;pagehide&amp;quot;, function() { console.log(&amp;quot;pagehide&amp;quot;); });
+
+// Page initialization events
+$(document).bind(&amp;quot;pagebeforecreate&amp;quot;, function() { console.log(&amp;quot;pagebeforecreate&amp;quot;); });
+$(document).bind(&amp;quot;pagecreate&amp;quot;, function() { console.log(&amp;quot;pagecreate&amp;quot;); });
+$(document).bind(&amp;quot;pageinit&amp;quot;, function() { console.log(&amp;quot;pageinit&amp;quot;); });
+
+// Page remove events
+$(document).bind(&amp;quot;pageremove&amp;quot;, function() { console.log(&amp;quot;pageremove&amp;quot;); });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;実験:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;実験&lt;/h2&gt;
+
+&lt;p&gt;「page1.html -&amp;gt; page2.html -&amp;gt; page1.html -&amp;gt; page2.html」という遷移をした時のコンソールログは以下です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// page1.html にアクセス
+pagebeforechange
+pagebeforecreate
+pagecreate
+pageinit
+pagebeforeshow
+pageshow
+pagechange
+
+// 「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+
+// 「Back to page1.html」をクリック
+pagebeforechange
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pageremove
+pagehide
+pageshow
+pagechange
+
+// もう一度「Go to page2.html」をクリック
+pagebeforechange
+pagebeforeload: http://localhost/page2.html
+pagebeforecreate
+pagecreate
+pageinit
+pageload: http://localhost/page2.html
+pagebeforechange
+pagebeforehide
+pagebeforeshow
+pagehide
+pageshow
+pagechange
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;考察:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;考察&lt;/h2&gt;
+
+&lt;p&gt;気付いた点をメモします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pagechange は全ての遷移の最後で発生する。&lt;/li&gt;
+&lt;li&gt;page2.html に遷移するたびに pageinit が発火している。&lt;/li&gt;
+&lt;li&gt;逆に、page1.html で pageinit が発火するのは最初のアクセス時のみ。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考:c15683fca1bbc196b47070ebbf2c2463&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/pages/page-scripting.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Scripting pages&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Scripting pages&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jquerymobile.com/demos/1.2.0/docs/api/events.html&#39;, &#39;jQuery Mobile Docs &amp;#8211; Events&#39;]);&#34; &gt;jQuery Mobile Docs &amp;#8211; Events&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/Naotsugu/20120103/1325568080&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/Naotsugu/20120103/1325568080&#39;, &#39;はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &amp;#8211; etc9&#39;]);&#34; &gt;はじめての jQuery Mobile 1.0 ～その2：ページ遷移～ &amp;#8211; etc9&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Safari 5.xのユーザーをJavaScriptで判別する</title>
+      <link>http://1000k.github.io/2012/07/02/how-to-detect-safari-5-x-in-javascript/</link>
+      <pubDate>Mon, 02 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/07/02/how-to-detect-safari-5-x-in-javascript/</guid>
+      <description>
+
+&lt;p&gt;Safari 5.x系のみ発生する不具合があったため、JavaScriptで個別に分岐する必要がありました。&lt;/p&gt;
+
+&lt;p&gt;UserAgentがChromeと微妙に似ていて書きにくかったので、メモを残しておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:5c20e64dfc0ac35ddade7fa8fcd267b4&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;JavaScriptでSafari 5.x系のユーザーを判別する。&lt;/p&gt;
+
+&lt;h2 id=&#34;スクリプト:5c20e64dfc0ac35ddade7fa8fcd267b4&#34;&gt;スクリプト&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;window.onload = function() {
+    var ua = navigator.userAgent.toLowerCase();
+    var is_safari = ua.indexOf(&#39;safari&#39;) &amp;gt; -1 &amp;amp;#038;&amp;amp;#038; ua.indexOf(&#39;version&#39;) &amp;gt; -1;
+    var version = is_safari ? ua.match(/version\/([\d\.]+)/i)[1].substr(0,1) : null;
+
+    if (is_safari &amp;amp;#038;&amp;amp;#038; version == &#39;5&#39;) {
+        // Safari 5.xユーザー向けの処理
+        alert(&#39;You use Safari 5.x&#39;);
+    } else {
+        // それ以外のユーザー向けの処理
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:5c20e64dfc0ac35ddade7fa8fcd267b4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentstring.com/pages/useragentstring.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentstring.com/pages/useragentstring.php&#39;, &#39;UserAgentString.com &amp;#8211; List of User Agent Strings&#39;]);&#34; title=&#34;UserAgentString.com - List of User Agent Strings&#34;&gt;UserAgentString.com &amp;#8211; List of User Agent Strings&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;各ブラウザのUserAgent文字列の一覧。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentstring.com/pages/Safari/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentstring.com/pages/Safari/&#39;, &#39;Safari&#39;]);&#34; title=&#34;UserAgentString.com - List of Safari User Agent Strings&#34;&gt;Safari&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentstring.com/pages/Chrome/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentstring.com/pages/Chrome/&#39;, &#39;Chrome&#39;]);&#34; title=&#34;UserAgentString.com - List of Chrome User Agent Strings&#34;&gt;Chrome&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Safari 5系で、JavaScriptでformの値をsubmitできない不具合の対策</title>
+      <link>http://1000k.github.io/2012/06/29/safari-5-x-cannot-submit-form-values-by-javascript/</link>
+      <pubDate>Fri, 29 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/06/29/safari-5-x-cannot-submit-form-values-by-javascript/</guid>
+      <description>&lt;p&gt;Safari 5.x系では、JavaScriptで window.onload を使って自動でフォームの内容を送信（submit）しても、正しく値を渡せないバグがあります。&lt;/p&gt;
+
+&lt;p&gt;現象と対策を整理しました。&lt;/p&gt;
+
+&lt;p&gt;具体的には下記のようなコードがうまくいきません。&lt;/p&gt;
+
+&lt;p&gt;page1.php -&amp;gt; page2.php -&amp;gt; page3.php の順に、usoFormの値をJSで自動でPOSTしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;page1.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;page2.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;page3.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;lt;?php print_r($_POST); ?&amp;gt;```&lt;/p&gt;
+
+&lt;p&gt;
+  正常なブラウザなら page3.php で表示される uso の値は「801」ですが、Safari 5.xの場合「800」が表示されます。&lt;br /&gt;
+  page2でPOSTしている値が、page1のもので上書きされてしまっているようです。
+&lt;/p&gt;
+
+&lt;h2&gt;
+  原因
+&lt;/h2&gt;
+
+&lt;p&gt;
+  下記のスレッドの内容は私が遭遇したケースと全く同じでした。&lt;br /&gt;
+  どうやら原因はSafariの自動補完機能のようです。
+&lt;/p&gt;
+
+&lt;p&gt;
+  &lt;a href=&#34;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#39;, &#39;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&#39;]);&#34; title=&#34;What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow&#34;&gt;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Safari is filling in the form field using autofill behaviour. You probably have the &amp;#8220;Other forms&amp;#8221; option enabled in your preferences. Even Apple recommend you turn this feature off since it can be used for stealing private information.
+
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2&gt;
+  対策
+&lt;/h2&gt;
+
+&lt;p&gt;
+  上記のベストアンサーでは、&lt;strong&gt;formタグにautocomplete=&amp;#8221;off&amp;#8221;を指定してやれば直る&lt;/strong&gt;とアドバイスされています。&lt;br /&gt;
+  実際に試してみたところ、正しくPOSTできるようになりました。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;
+  余談（文句）
+&lt;/h2&gt;
+
+&lt;p&gt;
+  問題が確認できたバージョンは、5.0.1, 5.1.4, 5.1.5 でした。&lt;br /&gt;
+  一度直ったバグが再発しているところを見ると、Safariの開発体制ではバグを正しく管理できていないようです。&lt;br /&gt;
+  フォーム送信が失敗するなんて、ブラウザとして致命的のバグなのですが。
+&lt;/p&gt;
+
+&lt;h2&gt;
+  参考
+&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;a href=&#34;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#39;, &#39;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&#39;]);&#34; title=&#34;What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow&#34;&gt;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&lt;/a&gt;
+  &lt;/li&gt;
+
+
+  &lt;li&gt;
+    &lt;a href=&#34;http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html&#39;, &#39;Safari 5.1.7 &amp;#8211; Changelog &amp;#8211; Softpedia&#39;]);&#34; title=&#34;Safari 5.1.7 - Changelog - Softpedia&#34;&gt;Safari 5.1.7 &amp;#8211; Changelog &amp;#8211; Softpedia&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        Safariの更新履歴一覧。
+      &lt;/li&gt;
+
+    &lt;/ul&gt;
+
+&lt;p&gt;&lt;/li&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/ul&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>デコード/エンコードを1ファイルで行うPHP</title>
+      <link>http://1000k.github.io/2011/09/01/php-script-to-decode-and-encode/</link>
+      <pubDate>Thu, 01 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/09/01/php-script-to-decode-and-encode/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco-278x300.png&#34; alt=&#34;&#34; title=&#34;エンコード/デコードフォーム&#34; width=&#34;278&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-805&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;URLエンコード/デコード、HTMLエンティティエンコード/デコードを行うとき便利なフォームを作成しました。&lt;/p&gt;
+
+&lt;p&gt;PHP+jQueryで実装されており、このファイルをPHPの動くWebサーバーに置けばすぐに使えます。&lt;/p&gt;
+
+&lt;h1 id=&#34;できること:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;できること&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;URLエンコード/デコード&lt;/li&gt;
+&lt;li&gt;HTMLエンティティエンコード/デコード&lt;/li&gt;
+&lt;li&gt;PHPの配列のシリアライズ/アンシリアライズ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;必要な環境:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;必要な環境&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PHPの動作するWebサーバー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;ソースコード:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;ソースコード&lt;/h1&gt;
+
+&lt;p&gt;初めてコードをgistに公開してみました。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>「要素をクリックする」命令をjQueryで書く</title>
+      <link>http://1000k.github.io/2011/06/22/click-specific-element-by-jquery/</link>
+      <pubDate>Wed, 22 Jun 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/06/22/click-specific-element-by-jquery/</guid>
+      <description>
+
+&lt;p&gt;LightBoxのように、リンクをクリックするとアクションが発生するスクリプトは数多く存在します。&lt;/p&gt;
+
+&lt;p&gt;任意の場所をクリックした時にそのアクションを起動したい場合は、jQueryの&lt;strong&gt;click()&lt;/strong&gt;メソッドを使うと簡単に実現できます。&lt;/p&gt;
+
+&lt;h1 id=&#34;例:8f479fe2b847018d9162cbf4baf74733&#34;&gt;例&lt;/h1&gt;
+
+&lt;p&gt;classが&amp;#8221;uso&amp;#8221;のaリンクをクリックした時に &amp;#8220;a#mojamoja&amp;#8221; をクリックした時のアクション起動したい場合は、下記のように書けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(function() {
+    $(&amp;quot;a.uso&amp;quot;).click(function(e) {
+        e.preventDefault();
+        $(&amp;quot;a#mojamoja&amp;quot;).eq(0).click();
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;応用-悪用:8f479fe2b847018d9162cbf4baf74733&#34;&gt;応用（悪用？）&lt;/h1&gt;
+
+&lt;p&gt;FirebugやChromeのスクリプト入力ボックスに下記のコードを書き込むと、button#usoを永遠に毎秒10回叩き続けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;setInterval(function() {$(&amp;quot;button#uso&amp;quot;).eq(0).click();}, 100);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「どうしてもボタンが連打したい。でも指が折れて動かせない…。」という名人にお勧めです。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8f479fe2b847018d9162cbf4baf74733&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://semooh.jp/jquery/api/events/click/_/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://semooh.jp/jquery/api/events/click/_/&#39;, &#39;click() &amp;#8211; jQuery 日本語リファレンス&#39;]);&#34; title=&#34;click() - jQuery 日本語リファレンス&#34;&gt;click() &amp;#8211; jQuery 日本語リファレンス&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://semooh.jp/jquery/api/events/click/fn/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://semooh.jp/jquery/api/events/click/fn/&#39;, &#39;click(fn) &amp;#8211; jQuery 日本語リファレンス&#39;]);&#34; title=&#34;click(fn) - jQuery 日本語リファレンス&#34;&gt;click(fn) &amp;#8211; jQuery 日本語リファレンス&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tobysoft.net/wiki/index.php?JavaScript%2FjQuery%2Fready%A4%B8%A4%E3%A4%CA%A4%AF%A4%C6onload%A5%A4%A5%D9%A5%F3%A5%C8%A4%CB%B4%D8%BF%F4%A4%F2%C4%C9%B2%C3%A4%B7%A4%BF%A4%A4&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tobysoft.net/wiki/index.php?JavaScript%2FjQuery%2Fready%A4%B8%A4%E3%A4%CA%A4%AF%A4%C6onload%A5%A4%A5%D9%A5%F3%A5%C8%A4%CB%B4%D8%BF%F4%A4%F2%C4%C9%B2%C3%A4%B7%A4%BF%A4%A4&#39;, &#39;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい &amp;#8211; TOBY SOFT wiki&#39;]);&#34; title=&#34;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい - TOBY SOFT wiki&#34;&gt;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい &amp;#8211; TOBY SOFT wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[JavaScript] 画像の実際のサイズを取得する (jQuery使用)</title>
+      <link>http://1000k.github.io/2010/05/16/get-image-size-using-jquery/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/get-image-size-using-jquery/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;imgタグのwidth/height要素を指定していない場合、イメージがどう表示されるかはブラウザによって異なる。
+
+&lt;ul&gt;
+&lt;li&gt;すべてのブラウザで画像オリジナルのwidth/heightを取得しようとしても、ブラウザ毎にパラメータやメソッドが異なる&lt;/li&gt;
+&lt;li&gt;jQueryを利用すると、下記コードで画像の実際のサイズを取得できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+ * 画像の実際のサイズを取得する
+ *
+ * @param  string  image  img要素
+ */
+function getActualDimension(image) {
+    var run, mem, w, h, key = &amp;quot;actual&amp;quot;;
+
+    // for Firefox, Safari, Google Chrome
+    if (&amp;quot;naturalWidth&amp;quot; in image) {
+        return {width: image.naturalWidth, height: image.naturalHeight};
+    }
+    if (&amp;quot;src&amp;quot; in image) { // HTMLImageElement
+        if (image[key] &amp;amp;#038;&amp;amp;#038; image[key].src === image.src) {return  image[key];}
+
+        if (document.uniqueID) { // for IE
+            w = $(image).css(&amp;quot;width&amp;quot;);
+            h = $(image).css(&amp;quot;height&amp;quot;);
+        } else { // for Opera and Other
+            mem = {w: image.width, h: image.height}; // keep current style
+            $(this).removeAttr(&amp;quot;width&amp;quot;).removeAttr(&amp;quot;height&amp;quot;).css({width:&amp;quot;&amp;quot;,  height:&amp;quot;&amp;quot;});    // Remove attributes in case img-element has set width  and height (for webkit browsers)
+            w = image.width;
+            h = image.height;
+            image.width  = mem.w; // restore
+            image.height = mem.h;
+        }
+        return image[key] = {width: w, height: h, src: image.src}; // bond
+    }
+
+    // HTMLCanvasElement
+    return {width: image.width, height: image.height};
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[jQuery] セレクタで「&lt;」「&gt;」が選択できない</title>
+      <link>http://1000k.github.io/2010/05/16/cannot-select-gt-and-lt-with-jquery/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/cannot-select-gt-and-lt-with-jquery/</guid>
+      <description>
+
+&lt;h1 id=&#34;症状:fef478bcfeefba53d74161fd20826e36&#34;&gt;症状&lt;/h1&gt;
+
+&lt;p&gt;JavaScriptにおいて、「&amp;lt;」「&amp;gt;」は基本的にダメ文字（使用不可）だが、jQueryのセレクタ内で使用すると選択できたりできなかったりすることがある。&lt;/p&gt;
+
+&lt;h1 id=&#34;原因:fef478bcfeefba53d74161fd20826e36&#34;&gt;原因&lt;/h1&gt;
+
+&lt;p&gt;そもそも、XHTMLの仕様では「&amp;lt;」「&amp;gt;」は属性値に使ってはいけない。&lt;/p&gt;
+
+&lt;p&gt;たまに仕様で許可されてない記号も使えるが、そうしたものが選択できるのはブラウザ依存の偶然でしかない。&lt;/p&gt;
+
+&lt;h1 id=&#34;対策:fef478bcfeefba53d74161fd20826e36&#34;&gt;対策&lt;/h1&gt;
+
+&lt;p&gt;こういう文字を使うときは、別の文字に置換でもしないとダメ。例えばDOMロード後に全角の「＜」「＞」に置換するとか。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:fef478bcfeefba53d74161fd20826e36&#34;&gt;参考&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010&#39;, &#39;\nSelector problem: $(\&#39;#&amp;#092;&lt;foo\&#39;) and $(\&#39;#bar&amp;#092;&gt;\&amp;lsquo;) works, but $(\&amp;lsquo;#&amp;#092;&lt;buz&amp;#092;&gt;\&amp;lsquo;) doesn\&amp;rsquo;t. &amp;#8211; jQuery Forum&amp;rsquo;]);&amp;rdquo; &amp;gt;&lt;br /&gt; Selector problem: $(&amp;lsquo;#&amp;#92;&lt;foo&#39;) and $(&#39;#bar&amp;#92;&gt;&amp;rsquo;) works, but $(&amp;lsquo;#&amp;#92;&lt;buz&amp;#92;&gt;&amp;rsquo;) doesn&amp;rsquo;t. &amp;#8211; jQuery Forum&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

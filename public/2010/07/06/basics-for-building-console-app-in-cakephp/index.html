@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHPでコンソールアプリを作るときの基本 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/06/basics-for-building-console-app-in-cakephp/">CakePHPでコンソールアプリを作るときの基本</a></h2>
+        <div class="post-content">
+          
+
+<p>コンソールアプリケーションの保存先: /app/vendors/shell</p>
+
+<p>基本的な構造</p>
+
+<pre><code>// /app/vendors/shell/uso.php
+&lt;?php
+class UsoShell extends Shell {
+    // モデルを使う場合、配列$usesで指定する
+    var $uses = array(&quot;Post&quot;);
+
+    function main() {
+        // ここに命令を記述する
+        // ...
+
+        // 標準出力 (自動改行する)
+        $this-&gt;out('hige');
+
+        // 標準出力 (自動改行しない)
+        $this-&gt;out('moja', false);
+
+        // 標準エラー出力
+        $this-&gt;err('bosa');
+
+        // 区切り線
+        $this-&gt;hr();
+
+        // 異常終了させる
+        $this-&gt;error(&quot;異常発見&quot;, &quot;異常終了します&quot;);
+    }
+}
+?&gt;
+</code></pre>
+
+<p>実行方法</p>
+
+<pre><code>cd /app
+../cake/console/cake uso
+</code></pre>
+
+<p>出力結果</p>
+
+<pre><code>$ ../cake/console/cake uso
+
+
+Welcome to CakePHP v1.3.2 Console
+---------------------------------------------------------------
+App : uso
+Path: c:\xampp\htdocs\cake\app
+---------------------------------------------------------------
+hige
+mojabosa
+---------------------------------------------------------------
+Error: 異常発見
+異常終了します
+</code></pre>
+
+<h3 id="参考:bdb7996c2533e0f70688b6e9484f46be">参考</h3>
+
+<ul>
+<li><a href="http://d.hatena.ne.jp/brtRiver/20090427/1240802118" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/brtRiver/20090427/1240802118', 'CakePHPコンソールのシェルを作るときのメモ &#8211; ぷぎがぽぎ']);" title="CakePHPコンソールのシェルを作るときのメモ - ぷぎがぽぎ">CakePHPコンソールのシェルを作るときのメモ &#8211; ぷぎがぽぎ</a></li>
+<li><a href="http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks', 'シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook']);" title="シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook">シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

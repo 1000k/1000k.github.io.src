@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> 依存性注入の解説とやり方 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/10/24/lecture-of-dependency-injection/">依存性注入の解説とやり方</a></h2>
+        <div class="post-content">
+          
+
+<p><strong>依存性注入 (Dependency Injection)</strong> は、クラスを単体テスト可能にするために使われるテクニックです。</p>
+
+<p>これが意識されていないが故に単体テストが全くできないコードをよく見かけます。</p>
+
+<p>単体テストの際には必ず必要になる知識なので、解説しておきます。</p>
+
+<p>以下のサンプルでは <a href="http://www.phpunit.de/manual/3.8/ja/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.8/ja/index.html', 'PHPUnit']);" >PHPUnit</a> を利用しています。</p>
+
+<h2 id="単体テストができないケース:d011759973daaf90efe485c60339885a">単体テストができないケース</h2>
+
+<p>例えば以下のメソッド Foo::play() は単体テストケースが書けません。</p>
+
+<pre><code>class Foo {
+    public function play() {
+        $bar = new Bar();
+
+        if ($bar-&gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+</code></pre>
+
+<p>play() 内で外部クラス Bar をインスタンス化しています。つまり Foo::play() メソッドは Bar クラスに<strong>依存</strong>しており、単体テストができません。</p>
+
+<p>このまま無理矢理テストケースを書くと、以下のようになります。</p>
+
+<pre><code>class FooTest {
+    /**
+     * @covers Foo::play
+     */
+    public function testPlay() {
+        $foo = new Foo;
+        $this-&gt;assertTrue($this-&gt;foo-&gt;play());
+    }
+}
+</code></pre>
+
+<p>何が問題かわかるでしょうか？Foo クラスのテスト結果は Bar クラスに依存してしまっています。つまり、Foo は何も変更していなくても、Bar を変更したタイミングで Foo の単体テストが壊れてしまう可能性があります。これでは結合テストであり、単体テストになっていません。</p>
+
+<p>そのため、通常は Bar クラスを<strong>モック化</strong>し、Bar クラスの実装を無視できるようにします。</p>
+
+<h2 id="モック化とは:d011759973daaf90efe485c60339885a">モック化とは？</h2>
+
+<p>モック化とは、クラスの挙動を置き換えることです。例えば特定のメソッドの戻り値を好きな値に指定することができます。</p>
+
+<p>今回のケースでは、Bar::getSomething() が常に 1 を返すようにすれば、「return true」の行が実行されることをテストできますし、1 以外を返すようにすれば「return false」の行が実行されることをテストできます。</p>
+
+<p>しかし先述のコードのままでは、テスト対象のメソッド内で Bar をインスタンス化しているため、モックを注入する手段がありません。</p>
+
+<p>まだピンと来ない方も、この先の具体例を見ればイメージが掴めると思います。</p>
+
+<h2 id="メソッドを単体テスト可能にする:d011759973daaf90efe485c60339885a">メソッドを単体テスト可能にする</h2>
+
+<p>もしメソッドが下記のようになっていればどうでしょうか？</p>
+
+<pre><code>public function play(Bar $bar) {     // Bar クラスのインスタンスを受け取るようにした。
+        if ($bar-&gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+</code></pre>
+
+<p>メソッド内で Bar クラスを new するのでなく、Bar インスタンスを引数に受け取って利用するだけにしました。これならテストケースでモックを注入することができます。</p>
+
+<pre><code>public function testPlay() {
+        $foo = new Foo;
+
+        $bar = $this-&gt;getMock('Bar');         // Bar クラスのモックを作成する。
+        $bar-&gt;expects($this-&gt;any())
+            -&gt;method('getSomething')
+            -&gt;will($this-&gt;returnValue(1));    // Bar::getSomething() の戻り値が 1 になるよう設定する。
+
+        $this-&gt;assertTrue($foo-&gt;play($bar));  // Foo::play() に注入
+    }
+</code></pre>
+
+<p>Foo::play() メソッドは Bar クラスとの依存が解消され、単体テストが可能になりました。これでもう Bar クラスの実装を変更しても Foo クラスのテストが壊れることはありません。これが<strong>依存性注入</strong>です。</p>
+
+<p>これはメソッドの引数にオブジェクトを渡せるようにする手法で、<strong>インターフェース・インジェクション</strong> (Interface Injection) と呼ばれます。</p>
+
+<p>（※厳密なインターフェース・インジェクションでは、まずクラスの interface を作成し、それを委譲したメソッドを実装する必要があります。上記の例では簡略化のため interface は作成していません。）</p>
+
+<h2 id="コンストラクター-インジェクション:d011759973daaf90efe485c60339885a">コンストラクター・インジェクション</h2>
+
+<p>依存性注入は以下のようなやり方でも実現が可能です。</p>
+
+<pre><code>class Foo {
+    /** @var Bar */
+    protected $bar;
+
+    public function __constructor(Bar $bar = null) {
+        // メンバ変数として Bar インスタンスを作成しておく。
+        $this-&gt;bar = $bar ? $bar : new Bar;
+    }
+
+    public function play() {
+        // メンバ変数の Bar インスタンスからメソッドを呼び出す。
+        if ($this-&gt;bar-&gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+</code></pre>
+
+<p>このケースでは、Foo クラスのコンストラクタに Bar クラスのオブジェクトを渡せるようにしています。これは<strong>コンストラクター・インジェクション</strong> (Constructor Injection) と呼ばれるテクニックです。</p>
+
+<p>この場合のテストケースは以下のようになります。</p>
+
+<pre><code>public function testPlay() {
+        // Bar クラスのモックを作成する。
+        $bar = $this-&gt;getMock('Bar');
+        $bar-&gt;expects($this-&gt;any())
+            -&gt;method('getSomething')
+            -&gt;will($this-&gt;returnValue(1));
+
+        $foo = new Foo($bar);   // Constructor Injection でモックを注入する。
+
+        $this-&gt;assertTrue($foo-&gt;play($bar));
+    }
+</code></pre>
+
+<p>※コンストラクタ内の3項演算子について補足。</p>
+
+<pre><code>public function __constructor(Bar $bar = null) {
+        $this-&gt;bar = $bar ? $bar : new Bar;
+    }
+</code></pre>
+
+<p>コンストラクタの引数に $bar が渡されなかった時はデフォルトの Bar クラスを new するようにしています。これにより、テストの時はモックを注入して使うようにし、本番コードではパラメータを何も指定しないことでデフォルトの Foo クラスを使うようにしています。</p>
+
+<h2 id="セッター-インジェクション:d011759973daaf90efe485c60339885a">セッター・インジェクション</h2>
+
+<p>別のアプローチとして、クラスにオブジェクトを注入するためセッターメソッドを用意する方法もあります。</p>
+
+<pre><code>class Foo {
+    /** @var Bar */
+    protected $bar;
+
+    /**
+     * セッターメソッド
+     *
+     * @param Bar $bar
+     */
+    public function setBar(Bar $bar) {
+        $this-&gt;bar = $bar;
+    }
+
+    public function play() {
+        if ($this-&gt;bar-&gt;getSomething() === 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+</code></pre>
+
+<p>コンストラクターで Bar インスタンスを注入するのでなく、setBar() メソッドで Bar オブジェクトを注入しています。</p>
+
+<p>この場合のテストケースは以下のようになるでしょう。</p>
+
+<pre><code>public function testPlay() {
+        // Bar クラスのモックを作成する。
+        $bar = $this-&gt;getMock('Bar');
+        $bar-&gt;expects($this-&gt;any())
+            -&gt;method('getSomething')
+            -&gt;will($this-&gt;returnValue(1));
+
+        $foo = new Foo;
+        $foo-&gt;setBar($bar);     // セッター経由でモックを注入する。
+
+        $this-&gt;assertTrue($foo-&gt;play($bar));
+    }
+</code></pre>
+
+<p>これが<strong>セッター・インジェクション</strong> (Setter Injection) です。</p>
+
+<h2 id="まとめ:d011759973daaf90efe485c60339885a">まとめ</h2>
+
+<ul>
+<li>単体テストしたければ、メソッド内で外部クラスを new してはいけない。</li>
+<li>モックを注入可能にするためには、以下のいずれか手法を採る。
+
+<ul>
+<li>メソッドの引数に使いたいオブジェクトを渡せるようにする。 (Interface Injection)</li>
+<li>使う予定のオブジェクトをコンストラクタに渡せるようにする。(Constructor Injection)</li>
+<li>オブジェクトを setter メソッドで渡せるようにする。(Setter Injection)</li>
+</ul></li>
+</ul>
+
+<h2 id="補足1-runkitで強引にメソッドの挙動を変える方法:d011759973daaf90efe485c60339885a">補足1: runkitで強引にメソッドの挙動を変える方法</h2>
+
+<p>PHPにおいては <a href="http://php.net/manual/ja/book.runkit.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://php.net/manual/ja/book.runkit.php', 'runkit']);" >runkit</a> を使うことで、モック化をしなくてもメソッドの挙動を強引に変えることが可能です。ただし破壊的な手段であり、これが必要な時点でオブジェクト指向的な設計ができていない疑いが非常に強いです。</p>
+
+<p>できるだけ Constructor Injection 等の方法を用い、テスト可能になるようリファクタリングをしましょう。リファクタリング中はコードが醜くなるかもしれませんが、最終的に設計が改善できるならば結果OKです。美しさよりも安全性が何より重要です。</p>
+
+<h2 id="補足2-constructor-injection-vs-setter-injection:d011759973daaf90efe485c60339885a">補足2: Constructor Injection vs Setter Injection</h2>
+
+<p><a href="http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2012/10/23/%e6%8a%84%e8%a8%b3-constructor-injection-vs-setter-injection/', '抄訳: Constructor Injection vs. Setter Injection | 1000g']);" >抄訳: Constructor Injection vs. Setter Injection | 1000g</a> にて、コンストラクター・インジェクションとセッター・インジェクションのどちらが良いかを考察しています。結論としてはコンストラクター・インジェクションがベターです。</p>
+
+<h2 id="参考:d011759973daaf90efe485c60339885a">参考</h2>
+
+<ul>
+<li><a href="http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E3%81%AE%E6%B3%A8%E5%85%A5', '依存性の注入 &#8211; Wikipedia']);" >依存性の注入 &#8211; Wikipedia</a></li>
+<li><a href="http://d.hatena.ne.jp/m-hiyama/20060926/1159253903" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/m-hiyama/20060926/1159253903', 'DI（依存性注入）を白紙から説明してみる &#8211; 檜山正幸のキマイラ飼育記']);" >DI（依存性注入）を白紙から説明してみる &#8211; 檜山正幸のキマイラ飼育記</a></li>
+<li><a href="http://martinfowler.com/articles/injection.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://martinfowler.com/articles/injection.html', 'Inversion of Control Containers and the Dependency Injection pattern']);" >Inversion of Control Containers and the Dependency Injection pattern</a>
+
+<ul>
+<li>リファクタリング界の大御所、Martin Fowler氏の考察。</li>
+</ul></li>
+<li><a href="http://www.techscore.com/tech/Java/Others/Spring/1-3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.techscore.com/tech/Java/Others/Spring/1-3/', 'Dependency Injection のタイプ | TECHSCORE(テックスコア)']);" >Dependency Injection のタイプ | TECHSCORE(テックスコア)</a></li>
+<li><a href="http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.7/ja/test-doubles.html#test-doubles.mock-objects', '第10章 テストダブル']);" >第10章 テストダブル</a>
+
+<ul>
+<li>PHPUnit 公式マニュアルによるモックの使い方。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

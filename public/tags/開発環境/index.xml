@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>開発環境 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/</link>
+    <description>Recent content in 開発環境 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 11 Mar 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>tmuxはじめました</title>
+      <link>http://1000k.github.io/2015/03/11/introducing-to-tmux/</link>
+      <pubDate>Wed, 11 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/03/11/introducing-to-tmux/</guid>
+      <description>
+
+&lt;p&gt;とあるきっかけで開発効率強化ウィークに入りました。まずはターミナルをもっと効率的にすべく、tmux を習得することにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;tumxとは:a506571e48bbc5459d921757c1950894&#34;&gt;tumxとは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ターミナルマルチプレクサ (端末多重化ソフトウェア, 仮想端末マネージャー) のひとつ
+
+&lt;ul&gt;
+&lt;li&gt;ほかには GNU screen が有名&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;読み方は &amp;#8220;ティーマックス&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;できること:a506571e48bbc5459d921757c1950894&#34;&gt;できること&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1つの端末で複数の仮想端末を起動できる&lt;/li&gt;
+&lt;li&gt;仮想端末の画面を自由に分割・統合できる&lt;/li&gt;
+&lt;li&gt;マウスを使わずキーボードだけでコピペできる&lt;/li&gt;
+&lt;li&gt;デタッチ(切り離し)とアタッチ(接続)により、ネットワークが切れても同じセッションを再開できる&lt;/li&gt;
+&lt;li&gt;ステータスバーなどでターミナルの情報をリッチにできる
+
+&lt;ul&gt;
+&lt;li&gt;現在時刻、Wi-Fi接続強度、バッテリー残量なども表示できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;設定ファイルで高度にカスタマイズできる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;tmuxの構成:a506571e48bbc5459d921757c1950894&#34;&gt;tmuxの構成&lt;/h3&gt;
+
+&lt;p&gt;tmuxはサーバー/クライアント構成を取る。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tmuxサーバー(セッション)
+
+&lt;ul&gt;
+&lt;li&gt;tmux起動時に生成される&lt;/li&gt;
+&lt;li&gt;セッションを管理するプロセス&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;tmuxクライアント(pty; 仮想端末)
+
+&lt;ul&gt;
+&lt;li&gt;tmuxセッションへ接続(アタッチ)しているプロセス(pty)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;画面の内包関係:a506571e48bbc5459d921757c1950894&#34;&gt;画面の内包関係&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;セッション &amp;gt; ウィンドウ &amp;gt; ペイン&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;セッション: ウィンドウの集まり。&lt;/li&gt;
+&lt;li&gt;ウィンドウ: ペインを管理する領域。タブのイメージ。&lt;/li&gt;
+&lt;li&gt;ペイン: ウィンドウを分割した領域。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール:a506571e48bbc5459d921757c1950894&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;yum ユーザーは EPEL リポジトリからインストールが可能。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo yum install -y tmux
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;チュートリアル:a506571e48bbc5459d921757c1950894&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;h3 id=&#34;起動:a506571e48bbc5459d921757c1950894&#34;&gt;起動&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;tmux&lt;/code&gt; または &lt;code&gt;tmux new-session&lt;/code&gt; で新規セッションを起動すると、新しい仮想端末が開く。&lt;/p&gt;
+
+&lt;h3 id=&#34;ペインの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;C-b %&lt;/code&gt; でペインを分割し、&lt;code&gt;C-b n&lt;/code&gt; で次のウィンドウに移動します。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;C-b ?&lt;/code&gt; でヘルプが開くので、片方のペインにヘルプを表示した状態で、もう片方でいろいろ実験してみると理解が進みます。&lt;/p&gt;
+
+&lt;h3 id=&#34;デタッチ:a506571e48bbc5459d921757c1950894&#34;&gt;デタッチ&lt;/h3&gt;
+
+&lt;p&gt;仮想端末上で &lt;code&gt;C-b d&lt;/code&gt; で、端末がセッションからデタッチされます。&lt;/p&gt;
+
+&lt;p&gt;デタッチ状態ではセッションは残っているので、再度 &lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; と入力すれば、最後の画面から再開できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本操作:a506571e48bbc5459d921757c1950894&#34;&gt;基本操作&lt;/h2&gt;
+
+&lt;h3 id=&#34;セッションの操作:a506571e48bbc5459d921757c1950894&#34;&gt;セッションの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;セッションの作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux&lt;/code&gt; or &lt;code&gt;tmux new-session&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-sessions&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;接続されているクライアントの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-client&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションのアタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; or &lt;code&gt;tmux a&lt;/code&gt; (&lt;code&gt;-d&lt;/code&gt; を指定すると、そのセッションに接続しているほかのクライアントはデタッチされる)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-session [-t セッション番号]&lt;/code&gt; (引数を指定しなければ直近のセッションが削除される)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;全セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-server&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ウィンドウの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ウィンドウの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ヘルプ表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ?&lt;/code&gt; (閉じるには &lt;code&gt;q&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b c&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;amp;&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ名変更&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ,&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ一覧表示/移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b w&lt;/code&gt; (カーソルキーで選択、[Enter] で表示)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;前のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b p&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;次のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b n&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b l&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ウィンドウ番号&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;デタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b d&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ペインの操作-1:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ペイン番号表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q&lt;/code&gt; or &lt;code&gt;C-b :display-panes&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q ペイン番号&lt;/code&gt; (インジケーターが表示されている間に番号を入力する)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (水平方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;quot;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (垂直方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b %&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割解除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b !&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン強制終了&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b x&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン間移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b o&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン入れ替え&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b {&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;カスタマイズ:a506571e48bbc5459d921757c1950894&#34;&gt;カスタマイズ&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;~/.tmux.conf&lt;/code&gt; にカスタマイズ設定を書き込むことができます。&lt;/p&gt;
+
+&lt;p&gt;yum でインストールした場合は &lt;code&gt;/usr/share/doc/tmux-1.6/examples/&lt;/code&gt; 配下にサンプルファイルがあります。vimmer は &lt;a href=&#34;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#39;, &#39;vim-keys.conf&#39;]);&#34; &gt;vim-keys.conf&lt;/a&gt; を設定するとペイン操作が楽になるかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:a506571e48bbc5459d921757c1950894&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#39;, &#39;OpenBSD manual pages&#39;]);&#34; &gt;OpenBSD manual pages&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;公式マニュアル。英語。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#39;, &#39;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&#39;]);&#34; &gt;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;概念図やスクリーンショット満載でわかりやすいです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://room6933.com/mymemo/tmux/tmux-basic.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://room6933.com/mymemo/tmux/tmux-basic.html&#39;, &#39;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&#39;]);&#34; &gt;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#39;, &#39;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&#39;]);&#34; &gt;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使えるカスタマイズの例。zsh と連携して、ログイン時にいきなり tmux セッションにアタッチする方法など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[開発環境]NetBeans 6.8 に Zen-Coding を導入する</title>
+      <link>http://1000k.github.io/2010/05/26/implement-zen-coding-to-netbeans-68/</link>
+      <pubDate>Wed, 26 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/26/implement-zen-coding-to-netbeans-68/</guid>
+      <description>
+
+&lt;p&gt;もうZen-Coding無しではHTMLを打てない体になっています。PHPのWEBアプリ開発時にはNetBeansを使うことが多いので、Zen-Codingプラグインを導入してみました。&lt;/p&gt;
+
+&lt;p&gt;※ただし、NetBeansではスニペット（単語補完）しか用意されていないようで、liタグのネストなどは使えないようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;導入手順:36e8d758c47104094651fcffcdfb9662&#34;&gt;導入手順&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://code.google.com/p/zen-coding/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://code.google.com/p/zen-coding/&#39;, &#39;zen-coding &amp;#8211; Project Hosting on Google Code&#39;]);&#34; title=&#34;zen-coding - Project Hosting on Google Code&#34;&gt;zen-coding &amp;#8211; Project Hosting on Google Code&lt;/a&gt; からNetBeans用プラグインをダウンロードする
+
+&lt;ul&gt;
+&lt;li&gt;執筆時のバージョンは「NetBeans.Zen.HTML.1.2.zip」&lt;/li&gt;
+&lt;li&gt;ZIPファイルのまま取り込むので、解凍する必要は無いです&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;NetBeansのメニューバーから、 &lt;strong&gt;ツール &amp;gt; オプション&lt;/strong&gt; を選択&lt;/li&gt;
+&lt;li&gt;オプションウインドウ左下にある &lt;strong&gt;インポート&lt;/strong&gt; をクリック&lt;/li&gt;
+&lt;li&gt;ダウンロードしたZIPファイルを参照する&lt;/li&gt;
+&lt;li&gt;「使用可能なオプション」に &lt;strong&gt;すべて&lt;/strong&gt; をチェックして &lt;strong&gt;了解&lt;/strong&gt; をクリック。&lt;/li&gt;
+&lt;li&gt;「今すぐIDEを再起動」にチェックをつけたままクリック（再起動）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;あとはHTMLのソースを開いて、「html:xt」→TABキー などやればスルスルとコードが書けます。&lt;/p&gt;
+
+&lt;h3 id=&#34;少し改良:36e8d758c47104094651fcffcdfb9662&#34;&gt;少し改良&lt;/h3&gt;
+
+&lt;p&gt;HTMLへのPHP出力として「＜?php ?＞」ブロックを頻繁に使うので、それもスニペットに追加します。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;メニューバー &amp;gt; オプション &amp;gt; エディタ &amp;gt; コードテンプレート &amp;gt; 言語:HTML&lt;/li&gt;
+&lt;li&gt;「新規」ボタンをクリック&lt;/li&gt;
+&lt;li&gt;下記項目を登録&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;省略名「php」、展開されるテキスト「&amp;lt;?php ${cursor} ?&amp;gt;」
+省略名「phpe」、展開されるテキスト「
+
+&amp;lt;?php echo ${cursor}; ?&amp;gt;」
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上です。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:36e8d758c47104094651fcffcdfb9662&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.mizoshiri.com/archives/863&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.mizoshiri.com/archives/863&#39;, &#39;Netbeans(windows環境)にZen-Codingを導入&#39;]);&#34; title=&#34;Netbeans(windows環境)にZen-Codingを導入&#34;&gt;Netbeans(windows環境)にZen-Codingを導入&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

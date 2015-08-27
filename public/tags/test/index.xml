@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Test on 1000g</title>
+    <link>http://1000k.github.io/tags/test/</link>
+    <description>Recent content in Test on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 07 Apr 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>スタブとモック</title>
+      <link>http://1000k.github.io/2011/04/07/what-is-stub-and-mock/</link>
+      <pubDate>Thu, 07 Apr 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/04/07/what-is-stub-and-mock/</guid>
+      <description>
+
+&lt;p&gt;今までモックをほとんど使ったことがなかったので、勉強してみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;スタブとは:64967b015e52257cb9a199be0513508e&#34;&gt;スタブとは&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%96&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%96&#39;, &#39;スタブ &amp;#8211; Wikipedia&#39;]);&#34; title=&#34;スタブ - Wikipedia&#34;&gt;スタブ &amp;#8211; Wikipedia&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;呼び出す側（上位）のモジュールを検査する場合に、呼び出される側（下位）の部品モジュールが未完成であることがある。このとき、呼び出される側の部品モジュールの代用とする仮のモジュールを、「スタブ」と呼ぶ。スタブモジュールは設計仕様に定義されている全ての関数を実装してあるが、関数内部は正規の動作をする事無く適当な定数を返すというような作りになっている事が多い。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;「必ずfalseを返すスタブ」「ランダムな整数を返すスタブ」なんて言葉はよく聞きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;モックとは:64967b015e52257cb9a199be0513508e&#34;&gt;モックとは&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://d.hatena.ne.jp/sekom/20090702/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/sekom/20090702/p1&#39;, &#39;スタブとモックの違い &amp;#8211; ソフト開発お仕事メモ&#39;]);&#34; title=&#34;スタブとモックの違い - ソフト開発お仕事メモ&#34;&gt;スタブとモックの違い &amp;#8211; ソフト開発お仕事メモ&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;モック戦略を使用する際には、3つの手順を踏むことになります。&lt;/p&gt;
+
+&lt;p&gt;| No | 手順名                  | 説明                                                                           |
+| &amp;ndash; | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- |
+| 1  | 期待値の設定               | モックオブジェクトに対して、メソッドが呼び出されるべき順序を記録します。その際に、期待される引数、モックオブジェクトのメソッドが返す戻り値も設定します。 |
+| 2  | テスト条件下でのモックオブジェクトの使用 | モックオブジェクトを使用したテストを実施します。                                                     |
+| 3  | 結果の検証                | モックオブジェクトに対し、期待されたとおりにモックオブジェクトが使用されたか問い合わせます。                               |&lt;/p&gt;
+
+&lt;h2 id=&#34;スタブやモックが必要になる理由:64967b015e52257cb9a199be0513508e&#34;&gt;スタブやモックが必要になる理由&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://www39.atwiki.jp/startruby/pages/23.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www39.atwiki.jp/startruby/pages/23.html&#39;, &#39;Start! Ruby &amp;#8211; RSpecの構文&#39;]);&#34; title=&#34;Start! Ruby - RSpecの構文&#34;&gt;Start! Ruby &amp;#8211; RSpecの構文&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;全てを「本物」でテストしようとすると、「全てが揃わないとテストできない」という本末転倒な事が起こりかねない。&lt;/li&gt;
+&lt;li&gt;たとえば時刻に関するオブジェクトのように、システムの構成によって変化してしまうオブジェクトがあると、テスト環境によって差異ができてしまう。&lt;/li&gt;
+&lt;li&gt;UnitTestが大きな問題に移ると段々と結合テスト化してしまう、という問題がある。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;※ ただし、スタブ/モックを多用し過ぎると、今度はインタフェース不一致の発見を先送りにする、という状況にもなりかねない。このあたりはさじ加減が必要。&lt;/p&gt;
+
+&lt;h2 id=&#34;モックでできること:64967b015e52257cb9a199be0513508e&#34;&gt;モックでできること&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://gihyo.jp/dev/feature/01/php-test/0004&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gihyo.jp/dev/feature/01/php-test/0004&#39;, &#39;PHPUnit3で始めるユニットテスト：第4回　モックオブジェクトを使ったテスト｜gihyo.jp … 技術評論社&#39;]);&#34; title=&#34;PHPUnit3で始めるユニットテスト：第4回　モックオブジェクトを使ったテスト｜gihyo.jp … 技術評論社&#34;&gt;PHPUnit3で始めるユニットテスト：第4回　モックオブジェクトを使ったテスト｜gihyo.jp … 技術評論社&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;生成されるオブジェクトにメソッドを定義する&lt;/li&gt;
+&lt;li&gt;そのメソッドの振る舞いを指定する
+
+&lt;ul&gt;
+&lt;li&gt;実行回数の制約を設ける
+
+&lt;ul&gt;
+&lt;li&gt;たとえば「1回のみ呼び出される」や「0回以上呼び出される」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;メソッド名を指定する&lt;/li&gt;
+&lt;li&gt;具体的な振る舞いを記述する
+
+&lt;ul&gt;
+&lt;li&gt;メソッドの戻り値&lt;/li&gt;
+&lt;li&gt;メソッドが投げる例外&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;スタブとモックの違い:64967b015e52257cb9a199be0513508e&#34;&gt;スタブとモックの違い&lt;/h2&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://www.ibm.com/developerworks/jp/web/library/wa-mockrails/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.ibm.com/developerworks/jp/web/library/wa-mockrails/index.html&#39;, &#39;Ruby on Rails でのモックとスタブの作成&#39;]);&#34; title=&#34;Ruby on Rails でのモックとスタブの作成&#34;&gt;Ruby on Rails でのモックとスタブの作成&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;「&lt;a href=&#34;http://d.hatena.ne.jp/devbankh/20100210&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/devbankh/20100210&#39;, &#39;モックとスタブの違い &amp;#8211; [lib]&#39;]);&#34; title=&#34;モックとスタブの違い - [lib]&#34;&gt;モックとスタブの違い &amp;#8211; [lib]&lt;/a&gt;」&lt;/p&gt;
+
+&lt;p&gt;モック・オブジェクトは一種のスタブです。モック・オブジェクトは、テスト対象のオブジェクトを使用するクライアント・コードを置き換えます。しかしモック・オブジェクトはそれ以上のことを行い、テスト対象のオブジェクトがクライアント・コードを実際にどう使うかを測定するのです。&lt;/p&gt;
+
+&lt;p&gt;インターフェースの使い方をテストする場合にはモックを、インターフェースの使い方をまったく気にしない場合にはスタブを使う必要があります。&lt;/p&gt;
+
+&lt;p&gt;モック・オブジェクトの作成は、スタブの作成とよく似ています。違いは、スタブは受動的であるということです。スタブは、スタブの作成対象のメソッドに対して呼び出しを行う実在のソリューションを単にシミュレーションするにすぎません。一方モックは能動的であり、モック・オブジェクトを使って行うその方法を実際にテストします。想定の動作と一致する方法でモックを使わないと、テストは失敗します。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://capsctrl.que.jp/kdmsnr/wiki/bliki/?TestDouble&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://capsctrl.que.jp/kdmsnr/wiki/bliki/?TestDouble&#39;, &#39;Martin Fowler&amp;#8217;s Bliki in Japanese &amp;#8211; テストダブル&#39;]);&#34; title=&#34;Martin Fowler&#39;s Bliki in Japanese - テストダブル&#34;&gt;Martin Fowler&amp;#8217;s Bliki in Japanese &amp;#8211; テストダブル&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;スタブは、テスト時の呼び出しに対して、あらかじめ用意された結果を返す。通常、テスト用にプログラムされたところ以外には応答しない。スタブは呼び出しの情報を記録することもある。例えば、Eメールゲートウェイスタブは「送られた」メッセージを記録するような場合だ。単に「送られた」メールの数を記録する場合もあるだろう。&lt;/p&gt;
+
+&lt;p&gt;モックは、エクスペクテーションが事前にプログラムされたものである。エクスペクテーションとは、受信する一連の呼び出しの仕様を表わしたものである。期待されない呼び出しが行なわれた場合は例外をスローする。また、テスト実行後の検証(verification)で、期待された呼び出しがすべてきちんと行われたかどうかを確認する。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Selenium IDE &#43; Pearl Crescent Page Saver で複数画面のキャプチャを自動化する</title>
+      <link>http://1000k.github.io/2010/06/11/automate-screen-capture-using-selenium-ide-pearl-crescent-page-saver/</link>
+      <pubDate>Fri, 11 Jun 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/06/11/automate-screen-capture-using-selenium-ide-pearl-crescent-page-saver/</guid>
+      <description>
+
+&lt;p&gt;多くの画面があるサイトで、すべてのページを、スクロール領域すべてを含めてキャプチャしなければならない。&lt;/p&gt;
+
+&lt;p&gt;こんなこと手動でやっていては大変です。しかも画面修正が入って「もう一回全部撮り直せ」と言われたらもう死ぬしかないですね。&lt;/p&gt;
+
+&lt;p&gt;早まる前に、この記事のやり方で自動化してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;必要なもの:462da812d7d4ed2797cfbcdf095e949a&#34;&gt;必要なもの&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;FireFox 3.x&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://seleniumhq.org/download/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://seleniumhq.org/download/&#39;, &#39;Selenium IDE&#39;]);&#34; title=&#34;Selenium IDE&#34;&gt;Selenium IDE&lt;/a&gt; (執筆時 バージョン1.0.7)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://pearlcrescent.com/products/pagesaver/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pearlcrescent.com/products/pagesaver/&#39;, &#39;Pearl Crescent Page Saver&#39;]);&#34; title=&#34;Pearl Crescent Page Saver&#34;&gt;Pearl Crescent Page Saver&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;手順:462da812d7d4ed2797cfbcdf095e949a&#34;&gt;手順&lt;/h2&gt;
+
+&lt;p&gt;まず、Pearl Crescent Page Saver のショートカット設定をします。「Page Saverオプション」から、下記の通り設定します。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;「全般」タブ
+
+&lt;ul&gt;
+&lt;li&gt;「キーボードショートカットかツールバーのボタンがクリックされた時:」 &amp;#8211; &lt;strong&gt;ページ全体&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;「キーボードショートカット:」 &amp;#8211; &lt;strong&gt;Alt+w&lt;/strong&gt; (好きなキーで構わないですが、下記はこの設定でやります)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;「画像のキャプチャー」タブ
+
+&lt;ul&gt;
+&lt;li&gt;「ファイルの保存名:」 &amp;#8211; &lt;strong&gt;%t %u&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;「次のフォルダに保存する」 &amp;#8211; 好きなフォルダ&lt;/li&gt;
+&lt;li&gt;「同じ名前のファイルがあるときは上書きする」 &amp;#8211; &lt;strong&gt;チェックする&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に、Selenium IDEのテストケースを作成します。Selenium IDEの基本的な使い方は 「&lt;a href=&#34;http://www.atmarkit.co.jp/fjava/rensai4/devtool07/devtool07_2.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/fjava/rensai4/devtool07/devtool07_2.html&#39;, &#39;ブラウザを選ばずWebテストを自動化するSelenium (2/3) &amp;#8211; ＠IT&#39;]);&#34; title=&#34;ブラウザを選ばずWebテストを自動化するSelenium (2/3) - ＠IT&#34;&gt;ブラウザを選ばずWebテストを自動化するSelenium (&lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt;) &amp;#8211; ＠IT&lt;/a&gt;」 が詳しいです。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;
+      コマンド
+    &lt;/th&gt;
+    
+    &lt;th&gt;
+      対象
+    &lt;/th&gt;
+    
+    &lt;th&gt;
+      値
+    &lt;/th&gt;
+  &lt;/tr&gt;
+  
+  &lt;tr&gt;
+    &lt;td&gt;
+      open
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+      /index.php
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  
+  &lt;tr&gt;
+    &lt;td&gt;
+      windowFocus
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  
+  &lt;tr&gt;
+    &lt;td&gt;
+      altKeyDown
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  
+  &lt;tr&gt;
+    &lt;td&gt;
+      keyPress
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+      //
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+      \119
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  
+  &lt;tr&gt;
+    &lt;td&gt;
+      altKeyUp
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+    &lt;/td&gt;
+    
+    &lt;td&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これが1ページぶんのオープン～キャプチャの流れです。&lt;/p&gt;
+
+&lt;p&gt;ここまで設定したら、Selenium IDEの「現在のテストケースを実行」をクリックしてください。指定したURLが開き、先ほど指定したフォルダに画像が出力されていればOKです。&lt;/p&gt;
+
+&lt;p&gt;あとは上記の要領で、「open」コマンドの対象を撮影したいページのアドレスに変更しながらコピペを繰り返してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;日本語を含むテストケースファイルが読み込めない場合:462da812d7d4ed2797cfbcdf095e949a&#34;&gt;日本語を含むテストケースファイルが読み込めない場合&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;XHTMLのヘッダを「xml:lang=&amp;#8221;en&amp;#8221; lang=&amp;#8221;en&amp;#8221;」から「xml:lang=&amp;#8221;ja&amp;#8221; lang=&amp;#8221;ja&amp;#8221;」に直す&lt;/li&gt;
+&lt;li&gt;ファイル保存形式を「UTF-8 BOM無し」にする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;tips:462da812d7d4ed2797cfbcdf095e949a&#34;&gt;TIPS&lt;/h2&gt;
+
+&lt;p&gt;カテゴリ毎に多くのコンテンツがあるようなページを連続キャプチャする場合、カテゴリ毎にテストケースを作成し、それをテストスイートに読み込ませると管理が便利（だと思います）。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:462da812d7d4ed2797cfbcdf095e949a&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://d.hatena.ne.jp/szk-takanori/20071104/1194181489&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/szk-takanori/20071104/1194181489&#39;, &#39;Seleniumでキャプチャを取得する拡張コマンド:captureScreenshot &amp;#8211; 現場のためのソフトウェア開発プロセス &amp;#8211; たかのり日記&#39;]);&#34; title=&#34;Seleniumでキャプチャを取得する拡張コマンド:captureScreenshot - 現場のためのソフトウェア開発プロセス - たかのり日記&#34;&gt;Seleniumでキャプチャを取得する拡張コマンド:captureScreenshot &amp;#8211; 現場のためのソフトウェア開発プロセス &amp;#8211; たかのり日記&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

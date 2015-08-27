@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CloudCore VPS初期設定 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/">CloudCore VPS初期設定</a></h2>
+        <div class="post-content">
+          
+
+<p>高スペック＆安価＆国産で話題のCloudCore VPSをレンタルしてみました。</p>
+
+<p>ざっとスペックを確認すると、以下のようになりました。これで月980円はたしかにお得です。</p>
+
+<pre><code># cat /etc/redhat-release
+CentOS release 5.6 (Final)
+
+# df -h
+Filesystem          サイズ  使用  残り 使用% マウント位置
+/dev/vda1              97G  5.0G   87G   6% /
+tmpfs                1003M     0 1003M   0% /dev/shm
+
+# cat /proc/cpuinfo
+processor       : 0
+vendor_id       : AuthenticAMD
+cpu family      : 16
+model           : 2
+model name      : AMD Phenom(tm) 9550 Quad-Core Processor
+stepping        : 3
+cpu MHz         : 2199.998
+cache size      : 512 KB
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 5
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1gb lm up pni cx16 popcnt lahf_lm cmp_legacy svm cr8_legacy altmovcr8 abm sse4a misalignsse
+bogomips        : 4399.99
+TLB size        : 1024 4K pages
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 48 bits virtual
+power management:
+
+# cat /proc/meminfo
+MemTotal:      2053764 kB
+MemFree:       1859380 kB
+</code></pre>
+
+<p>今後利用するかもしれないので、初期設定メモを残しておきます。</p>
+
+<h1 id="よく使うパッケージのインストール:7a522374c61fbafc7888cdbb99c2c3ca">よく使うパッケージのインストール</h1>
+
+<p>CentOS最小構成でインストールされているらしく、よく使うパッケージが全然入っていません。入れておきましょう。</p>
+
+<pre><code># yum -y install sudo vim-enhanced iptables vsftpd bzip2 gcc gcc-c++ make automake mlocate
+</code></pre>
+
+<p>導入しているパッケージの説明は下記の通り。</p>
+
+<table>
+<thead>
+<tr>
+<th>パッケージ名</th>
+<th>説明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>sudo</td>
+<td>sudoコマンド</td>
+</tr>
+
+<tr>
+<td>vim-enhanced</td>
+<td>標準で入っているviの高機能版</td>
+</tr>
+
+<tr>
+<td>iptables</td>
+<td>ファイアーウォール</td>
+</tr>
+
+<tr>
+<td>vsftpd</td>
+<td>FTPデーモン</td>
+</tr>
+
+<tr>
+<td>bzip2</td>
+<td>bzip2圧縮・解凍</td>
+</tr>
+
+<tr>
+<td>gcc, gcc-c++</td>
+<td>コンパイル時に必要</td>
+</tr>
+
+<tr>
+<td>make, automake</td>
+<td>ソースからインストールする時必要</td>
+</tr>
+
+<tr>
+<td>mlocate</td>
+<td>locate &amp; updatedbコマンド</td>
+</tr>
+
+<tr>
+<td>vixie-cron</td>
+<td>crontabコマンド &amp; cronデーモン</td>
+</tr>
+</tbody>
+</table>
+
+<p>crondは起動し、自動起動をオンにしておきます。</p>
+
+<pre><code># /etc/rc.d/init.d/crond start
+# chkconfig crond on
+</code></pre>
+
+<p>また、インストール済みのパッケージを更新しましょう。</p>
+
+<p>私の場合100パッケージ(129MB)ありました。</p>
+
+<pre><code># yum update
+</code></pre>
+
+<h1 id="作業用ユーザー追加:7a522374c61fbafc7888cdbb99c2c3ca">作業用ユーザー追加</h1>
+
+<p>rootでの作業はリスク上よろしくないので、作業用ユーザーを追加します。</p>
+
+<p>wheelグループに追加することで、su権限が得られます。</p>
+
+<pre><code># useradd mojamoja
+# usermod -G wheel mojamoja
+</code></pre>
+
+<p>wheelグループのユーザーがsudoを実行できるよう設定します。</p>
+
+<pre><code># visudo
+
+----
+## Allows people in group wheel to run all commands
+%wheel  ALL=(ALL)       ALL
+↑この行のコメントアウトを外す。
+</code></pre>
+
+<h1 id="sshポートの変更:7a522374c61fbafc7888cdbb99c2c3ca">sshポートの変更</h1>
+
+<p>sshポートデフォルトの22番ではポートスキャンの標的になりやすいので、変更します。</p>
+
+<pre><code>#vim /etc/ssh/sshd_config
+
+以下の行を変更。
+
+#port 22
+port 10022
+</code></pre>
+
+<p>sshデーモンを再起動して変更を反映します。</p>
+
+<p>これで22番ポートではsshログインできなくなっています。</p>
+
+<pre><code># /etc/init.d/sshd restart
+</code></pre>
+
+<h1 id="不要なデーモンの停止:7a522374c61fbafc7888cdbb99c2c3ca">不要なデーモンの停止</h1>
+
+<p>初期状態では4つのデーモンしか自動起動設定になっておらず、特に停止するようなデーモンはありません。</p>
+
+<p>参考: <a href="http://www.cloudcore.jp/vps/spec/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.cloudcore.jp/vps/spec/', 'スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ']);" >スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ</a></p>
+
+<h1 id="ファイアーウォールの構築:7a522374c61fbafc7888cdbb99c2c3ca">ファイアーウォールの構築</h1>
+
+<p>ssh(10022), FTP, HTTPで接続できるようポートを開放してやります。</p>
+
+<p>下記シェルファイルを作成し、実行してください。</p>
+
+<p>※コンソールから1行ずつ打つと、「/sbin/iptables -P INPUT DROP」設定直後にコンソールが操作不能になります。</p>
+
+<p>その場合、コントロールパネルから再起動することで再度ログイン可能になります。</p>
+
+<pre><code>#!/bin/sh
+
+/sbin/iptables -F
+/sbin/iptables -X
+
+/sbin/iptables -P INPUT DROP
+/sbin/iptables -P OUTPUT ACCEPT
+/sbin/iptables -P FORWARD DROP
+
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j DROP
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j DROP
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j DROP
+
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+/sbin/iptables -A INPUT -p tcp --dport 10022 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+/sbin/iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+/etc/rc.d/init.d/iptables save
+
+/sbin/service iptables restart
+</code></pre>
+
+<p>設定が終わったら実行します。</p>
+
+<pre><code># chmod +x set_iptables.sh
+# ./set_iptables.sh
+ファイアウォールのルールを /etc/sysconfig/iptables に保存中[  OK  ]
+ファイアウォールルールを適用中:                            [  OK  ]
+チェインポリシーを ACCEPT に設定中filter                   [  OK  ]
+iptables モジュールを取り外し中                            [  OK  ]
+iptables ファイアウォールルールを適用中:                   [  OK  ]
+</code></pre>
+
+<p>無事設定できたら、サーバー起動時にサービスが開始するよう設定します。設定が間違ったままこれをonにすると、コントロールパネルから再起動してもログイン不能になるので注意してください。</p>
+
+<pre><code># chkconfig iptables on
+</code></pre>
+
+<h1 id="ftpを接続可能にする:7a522374c61fbafc7888cdbb99c2c3ca">FTPを接続可能にする</h1>
+
+<p><strong>/etc/vsftpd/vsftpd.conf</strong> を以下のように設定します。</p>
+
+<pre><code>以下の既存の行を修正する。
+
+# 匿名ユーザーのログインを禁止
+anonymous_enable=NO
+
+# asciiモードでファイルを転送可能にする
+ascii_upload_enable=YES
+ascii_download_enable=YES
+
+以下の行を追加。
+
+# ファイル所有者を数字ではなくユーザー名で表示する
+text_userdb_names=YES
+
+# ファイルの上書き時間が日本時間になる
+use_localtime=YES
+</code></pre>
+
+<p>設定が終わったら起動し、自動起動もオンにしましょう。</p>
+
+<pre><code># /etc/rc.d/init.d/vsftpd start
+vsftpd 用の vsftpd を起動中:                               [  OK  ]
+# chkconfig vsftpd on
+</code></pre>
+
+<p>FTPクライアントで10022番ポートにSFTP接続可能になっていることを確認してください。</p>
+
+<h1 id="参考:7a522374c61fbafc7888cdbb99c2c3ca">参考</h1>
+
+<ul>
+<li><a href="http://tanaka.sakura.ad.jp/archives/001065.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://tanaka.sakura.ad.jp/archives/001065.html', 'CentOSをサーバーとして活用するための基本的な設定 &#8211; さくらインターネット創業日記']);" >CentOSをサーバーとして活用するための基本的な設定 &#8211; さくらインターネット創業日記</a>
+
+<ul>
+<li>さくらの社長による、自社のVPSの初期設定方法</li>
+</ul></li>
+<li><a href="http://d.hatena.ne.jp/a__z/20071011" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/a__z/20071011', 'CentOS:sudo を設定する &#8211; 日々のメモ']);" >CentOS:sudo を設定する &#8211; 日々のメモ</a></li>
+<li><a href="http://weble.org/2011/05/16/sakura-vps-and-centos" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://weble.org/2011/05/16/sakura-vps-and-centos', 'はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル']);" >はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル</a>
+
+<ul>
+<li>LAMP環境の構築手順も</li>
+</ul></li>
+<li><a href="http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/', 'さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ']);" >さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ</a></li>
+<li><a href="http://www.searchman.info/linux/1070.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.searchman.info/linux/1070.html', 'クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。']);" >クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。</a>
+
+<ul>
+<li>vsftpdの設定方法</li>
+</ul></li>
+<li><a href="http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html', '評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント']);" >評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント</a></li>
+<li><a href="http://www.cloudcore.jp/vps/spec/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.cloudcore.jp/vps/spec/', 'スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ']);" >スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

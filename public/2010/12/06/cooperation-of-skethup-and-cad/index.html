@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> SketchupとCADの連携 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/12/06/cooperation-of-skethup-and-cad/">SketchupとCADの連携</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="http://sketchup.google.com/intl/ja/training/videos/expert_to_gsu.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://sketchup.google.com/intl/ja/training/videos/expert_to_gsu.html', '公式チュートリアル(上級)']);" title="Google SketchUp">公式チュートリアル(上級)</a>で紹介されているシリーズ。</p>
+
+<p>AutoCADで作成した図面を元にSketchupで書き起こすチュートリアルです（英語）。Sketchup単体で素早く作るヒントも学べます。</p>
+
+<p>以下に簡単な要約を書いておきます。</p>
+
+<h2 id="importing-and-preparations-cadデータのインポートと下準備:ddf7456dcf05c475f511e9d1d9e9c608">Importing and Preparations: CADデータのインポートと下準備</h2>
+
+<ul>
+<li>バラバラになって邪魔なレイヤーはLayer0に集約する
+
+<ul>
+<li>[レイヤーウインドウ]で不要なレイヤーを選択して、「-」アイコン</li>
+</ul></li>
+<li>レイヤーとシーンを連動させ、フロアプラン図のON/OFFを切り替えるようにするとかなり便利
+
+<ol>
+<li>フロアプラン図が描いてある「Floorplan」レイヤーを作成する</li>
+<li>「Floorplan」レイヤーを非表示にする</li>
+<li>「Floorplan ON」シーンを新規作成
+
+<ul>
+<li>プロパティは「レイヤー表示」以外のチェックボックスをすべてOFFにする</li>
+</ul></li>
+<li>「Flooplan」レイヤーを表示する</li>
+<li>「Floorplan OFF」シーンを新規作成</li>
+<li>完了。これでシーンを切り替えるとレイヤーのON/OFFが切り替わる</li>
+</ol></li>
+</ul>
+
+<h2 id="creating-walls-壁を仕切る:ddf7456dcf05c475f511e9d1d9e9c608">Creating Walls: 壁を仕切る</h2>
+
+<ol>
+<li>トレース対象のレイヤーをロックしておいて、[長方形]ツールをいくつもつなげることで簡単に外装を作ることが出来る
+
+<ul>
+<li>不要な線は後で[消しゴム]ツールで消す</li>
+<li>下書きがロックしてあるので、消しゴムツールをいくらかけても消えない。安心</li>
+</ul></li>
+<li>部屋割りは[直線]ツールで行う
+
+<ul>
+<li>壁同士の境界線は消しておく</li>
+</ul></li>
+<li>[プッシュ・プル]ツールで壁を持ち上げ、完成</li>
+</ol>
+
+<h2 id="doors-and-windows-ドアと窓の作り方:ddf7456dcf05c475f511e9d1d9e9c608">Doors and Windows: ドアと窓の作り方</h2>
+
+<ol>
+<li>[長方形ツール]をドアの位置に配置する
+
+<ul>
+<li>最初の1個を配置したら、あとはそれをコピー＆ペーストしていくと早い</li>
+<li>サイズの違うドアは[縮尺]ツールで調整</li>
+</ul></li>
+<li>長方形を[プッシュ・プルツール]で押し出すことで、ドアがはめ込む穴が出来る</li>
+<li>同じ要領で窓を配置していく
+
+<ul>
+<li>ドアと違い地面から離れているため、設置する高さを調整する必要がある</li>
+<li>1個目の窓を正確に設置したら、あとはマウス操作だけでガイドを使ってその高さに合わせることができる
+
+<ul>
+<li>長方形のドラッグ＆ドロップ中に1個目の窓の1辺にカーソルを合わせれば、高さのガイドが出る</li>
+</ul></li>
+</ul></li>
+</ol>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

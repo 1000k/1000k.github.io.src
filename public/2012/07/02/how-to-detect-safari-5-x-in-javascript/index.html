@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Safari 5.xのユーザーをJavaScriptで判別する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/07/02/how-to-detect-safari-5-x-in-javascript/">Safari 5.xのユーザーをJavaScriptで判別する</a></h2>
+        <div class="post-content">
+          
+
+<p>Safari 5.x系のみ発生する不具合があったため、JavaScriptで個別に分岐する必要がありました。</p>
+
+<p>UserAgentがChromeと微妙に似ていて書きにくかったので、メモを残しておきます。</p>
+
+<h2 id="やりたいこと:5c20e64dfc0ac35ddade7fa8fcd267b4">やりたいこと</h2>
+
+<p>JavaScriptでSafari 5.x系のユーザーを判別する。</p>
+
+<h2 id="スクリプト:5c20e64dfc0ac35ddade7fa8fcd267b4">スクリプト</h2>
+
+<pre><code>window.onload = function() {
+    var ua = navigator.userAgent.toLowerCase();
+    var is_safari = ua.indexOf('safari') &gt; -1 &amp;#038;&amp;#038; ua.indexOf('version') &gt; -1;
+    var version = is_safari ? ua.match(/version\/([\d\.]+)/i)[1].substr(0,1) : null;
+
+    if (is_safari &amp;#038;&amp;#038; version == '5') {
+        // Safari 5.xユーザー向けの処理
+        alert('You use Safari 5.x');
+    } else {
+        // それ以外のユーザー向けの処理
+    }
+}
+</code></pre>
+
+<h2 id="参考:5c20e64dfc0ac35ddade7fa8fcd267b4">参考</h2>
+
+<ul>
+<li><a href="http://www.useragentstring.com/pages/useragentstring.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentstring.com/pages/useragentstring.php', 'UserAgentString.com &#8211; List of User Agent Strings']);" title="UserAgentString.com - List of User Agent Strings">UserAgentString.com &#8211; List of User Agent Strings</a>
+
+<ul>
+<li>各ブラウザのUserAgent文字列の一覧。</li>
+<li><a href="http://www.useragentstring.com/pages/Safari/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentstring.com/pages/Safari/', 'Safari']);" title="UserAgentString.com - List of Safari User Agent Strings">Safari</a></li>
+<li><a href="http://www.useragentstring.com/pages/Chrome/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentstring.com/pages/Chrome/', 'Chrome']);" title="UserAgentString.com - List of Chrome User Agent Strings">Chrome</a></li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

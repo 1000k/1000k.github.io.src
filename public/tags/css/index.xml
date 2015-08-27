@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Css on 1000g</title>
+    <link>http://1000k.github.io/tags/css/</link>
+    <description>Recent content in Css on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 18 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/css/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>残り時間をプログレスバーで表示するチュートリアル</title>
+      <link>http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/</link>
+      <pubDate>Wed, 18 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://e.ggtimer.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://e.ggtimer.com/&#39;, &#39;E.gg Timer&#39;]);&#34; &gt;E.gg Timer&lt;/a&gt; のようなタイマーアプリを作りたかったので、プログレスバーの作り方を調べました。タイマーそのものより、progress タグのスタイルシートをクロスブラウザ対応させるのに苦労しました。&lt;/p&gt;
+
+&lt;p&gt;今回作ったのは下の画像のような簡単なタイマーです。経過時間に合わせてプログレスバーが赤くなります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/timer.png&#34; alt=&#34;timer&#34; width=&#34;585&#34; height=&#34;81&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/tcxx9/3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/tcxx9/3/&#39;, &#39;デモはこちら。&#39;]);&#34; &gt;デモはこちら。&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;なお、IE11, Firefox26, Chrome31 で動作を確認しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;実装コード:2853c5683734ff1185ea9e66d817967b&#34;&gt;実装コード&lt;/h2&gt;
+
+&lt;h3 id=&#34;html:2853c5683734ff1185ea9e66d817967b&#34;&gt;HTML&lt;/h3&gt;
+
+&lt;p&gt;プログレスバー、時間入力欄、開始/停止ボタンがあるだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&amp;quot;progressWrapper&amp;quot;&amp;gt;
+  &amp;amp;lt;progress id=&amp;quot;bar&amp;quot; value=&amp;quot;0&amp;quot; max=&amp;quot;1000&amp;quot; min=&amp;quot;0&amp;quot;&amp;gt;&amp;amp;lt;/progress&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+
+&amp;lt;fieldset&amp;gt;
+  Time (msec): &amp;lt;input type=&amp;quot;text&amp;quot; value=&amp;quot;5000&amp;quot; id=&amp;quot;time&amp;quot; /&amp;gt;
+
+    &amp;lt;button id =&amp;quot;start&amp;quot;&amp;gt;start&amp;lt;/button&amp;gt;
+    &amp;lt;button id =&amp;quot;stop&amp;quot;&amp;gt;stop&amp;lt;/button&amp;gt;
+
+&amp;lt;/fieldset&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;javascript:2853c5683734ff1185ea9e66d817967b&#34;&gt;JavaScript&lt;/h3&gt;
+
+&lt;p&gt;jQuery 1.10.2 で試しました。経過時間に合わせて progress タグの value 要素を増やしていくだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var timer,
+  limitMs = 0,
+  restMs = 0,
+  resolutionMs = 50,    /* NOTE: Too small value does not work on IE11. */
+  maxBar;
+
+var countdown = function() {
+  restMs -= resolutionMs;
+
+  var restRate = (limitMs - restMs) / limitMs;
+  var restBarLength = maxBar * restRate
+
+  $(&#39;#bar&#39;).attr(&#39;value&#39;, restBarLength);
+
+  if (restMs &amp;amp;lt; 0) {
+    resetTimer();
+    alert(&#39;time expired&#39;);
+  }
+};
+
+var resetTimer = function() {
+  clearInterval(timer);
+  limitMs = restMs = $(&#39;#time&#39;).val();
+  $(&#39;#bar&#39;).attr(&#39;value&#39;, 0);
+};
+
+$(function() {
+  maxBar = $(&#39;#bar&#39;).attr(&#39;max&#39;);
+
+  $(&#39;#start&#39;).on(&#39;click&#39;, function() {
+    resetTimer();
+    timer = setInterval(&#39;countdown()&#39;, resolutionMs);
+  });
+
+  $(&#39;#stop&#39;).on(&#39;click&#39;, function() {
+    resetTimer();
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ひとつだけ IE11 でバグがありました。&lt;code&gt;resolutionMs&lt;/code&gt; (タイマーを更新する間隔) を10ミリ秒以下にすると、赤いバーが全く表示されなくなりました。50ミリ秒ならなんとか描画されました。&lt;/p&gt;
+
+&lt;p&gt;どうも IE11 ではバーの表示を勝手に加速度を付けて滑らかにする機能が付いているのですが、これが悪さをしているようです。デバッグしてみると value 属性は間違いなく増加しているのですが、画面には反映されませんでした。IE ユーザーはご注意ください。&lt;/p&gt;
+
+&lt;h3 id=&#34;css:2853c5683734ff1185ea9e66d817967b&#34;&gt;CSS&lt;/h3&gt;
+
+&lt;p&gt;progress 要素はブラウザ毎に属性の解釈が結構異なります。Opera は面倒なので試してません。すいません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.progressWrapper {
+  width: 100%;
+}
+
+progress {
+  /* Turn off default styling. */
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+
+  height: 10px;
+  width: 100%;
+  color: red;       /* IE */
+  background: navy; /* Firefox */
+}
+
+/* Chrome needs &#39;-webkit-progress-value&#39; and &#39;-webkit-progress-bar&#39; attributes. */
+progress::-webkit-progress-value {
+  background: red;
+}
+
+progress::-webkit-progress-bar {
+  background: navy;
+}
+
+/* Firefox needs only &#39;-moz-progress-bar&#39; attiribute. */
+progress::-moz-progress-bar {
+  background: red;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:2853c5683734ff1185ea9e66d817967b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.hongkiat.com/blog/html5-progress-bar/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.hongkiat.com/blog/html5-progress-bar/&#39;, &#39;Creating &amp; Styling Progress Bar With HTML5&#39;]);&#34; &gt;Creating &amp;amp; Styling Progress Bar With HTML5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.pori2.net/js/timer/6.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.pori2.net/js/timer/6.html&#39;, &#39;カウントダウンタイマー－JavaScript入門&#39;]);&#34; &gt;カウントダウンタイマー－JavaScript入門&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/&#39;, &#39;Cross Browser HTML5 Progress Bars In Depth&#39;]);&#34; &gt;Cross Browser HTML5 Progress Bars In Depth&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;カウントダウンに合わせて動くサルのアニメや、スピードメーターの書き方など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://css-tricks.com/html5-progress-element/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://css-tricks.com/html5-progress-element/&#39;, &#39;The HTML5 progress Element | CSS-Tricks&#39;]);&#34; &gt;The HTML5 progress Element | CSS-Tricks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar&#39;, &#39;::-moz-progress-bar - CSS | MDN&#39;]);&#34; &gt;::-moz-progress-bar - CSS | MDN&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CSS3でスクロールしても背景のグラデーションは固定したままにする方法</title>
+      <link>http://1000k.github.io/2011/02/24/fix-background-gradient-by-css3/</link>
+      <pubDate>Thu, 24 Feb 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/02/24/fix-background-gradient-by-css3/</guid>
+      <description>
+
+&lt;p&gt;縦長のページをスクロールしても、背景のグラデーションは固定したままにする方法です。&lt;/p&gt;
+
+&lt;p&gt;実行サンプルは下記 URL で確認できます。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/SWMME/1/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/SWMME/1/&#39;, &#39;Fixed Gradient Background &amp;#8211; jsFiddle&#39;]);&#34; &gt;Fixed Gradient Background &amp;#8211; jsFiddle&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;html:b37f2ac83cd0af6aaa66faa99f2f63dc&#34;&gt;HTML&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div id=&amp;quot;container&amp;quot;&amp;gt;
+  &amp;lt;h1&amp;gt;
+    Fixed Gradient Background
+  &amp;lt;/h1&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;css:b37f2ac83cd0af6aaa66faa99f2f63dc&#34;&gt;CSS&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;h1 { color: #fff; }
+
+#container {
+    height: 2000px;
+    background: #202a2e;
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, rgb(34,39,45)),
+        color-stop(1, rgb(11,63,61))
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(34,39,45) 0%,
+        rgb(11,63,61) 100%
+    );
+    background-attachment: fixed !important;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:b37f2ac83cd0af6aaa66faa99f2f63dc&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/5024143/filter-gradient-and-background-fixed&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/5024143/filter-gradient-and-background-fixed&#39;, &#39;css &amp;#8211; filter: gradient and background: fixed &amp;#8211; Stack Overflow&#39;]);&#34; &gt;css &amp;#8211; filter: gradient and background: fixed &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

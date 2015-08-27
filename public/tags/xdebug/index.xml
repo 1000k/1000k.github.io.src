@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xdebug on 1000g</title>
+    <link>http://1000k.github.io/tags/xdebug/</link>
+    <description>Recent content in Xdebug on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 27 Apr 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/xdebug/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Xdebug 使用時に var_dump の出力が省略されないようにする</title>
+      <link>http://1000k.github.io/2013/04/27/suppress-omitting-var-dump-output-of-xdebug/</link>
+      <pubDate>Sat, 27 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/27/suppress-omitting-var-dump-output-of-xdebug/</guid>
+      <description>
+
+&lt;p&gt;Xdebug をインストールしていると、var_dump() した変数が全て表示されずに省略されてしまうことがあります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array(1187) {
+  [0] =&amp;gt;
+  string(19) &amp;quot;ALICE IN WONDERLAND&amp;quot;
+  :
+  :
+  [127] =&amp;gt;
+  string(4) &amp;quot;OLEO&amp;quot;
+
+  (more elements)...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;全て表示するには、&lt;code&gt;/etc/php.ini&lt;/code&gt; に以下の行を追加すれば OK です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;; 表示する子要素の最大数 (default: 128)
+xdebug.var_display_max_children = -1
+
+; 表示する要素の最大数 (default: 512)
+xdebug.var_display_max_data = -1
+
+; 表示する最大の階層 (default: 3)
+xdebug.var_display_max_depth = -1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:4a6779c3da90459c9dffed130ddd9ac1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://xdebug.org/docs/all_settings#var_display_max_depth&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://xdebug.org/docs/all_settings#var_display_max_depth&#39;, &#39;Xdebug: Documentation&#39;]);&#34; &gt;Xdebug: Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.kantenna.com/info/2012/02/xdebug_vardump.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.kantenna.com/info/2012/02/xdebug_vardump.php&#39;, &#39;[PHP]Xdebugでvar_dump()の出力が省略されて困る場合の対応 | 情報備忘録&#39;]);&#34; &gt;[PHP]Xdebugでvar_dump()の出力が省略されて困る場合の対応 | 情報備忘録&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.crossl.net/blog/php_xdebug_vardump_size/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.crossl.net/blog/php_xdebug_vardump_size/&#39;, &#39;PHPでvar_dump時に数が多いと省略されてしまう現象&#39;]);&#34; &gt;PHPでvar_dump時に数が多いと省略されてしまう現象&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP1.3 &#43; XAMPP 1.7.3でコードカバレッジを取得できるようにする</title>
+      <link>http://1000k.github.io/2010/07/16/enable-to-get-code-coverage-in-cakephp-13/</link>
+      <pubDate>Fri, 16 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/16/enable-to-get-code-coverage-in-cakephp-13/</guid>
+      <description>
+
+&lt;p&gt;CakePHPでは「http://{アプリURL}/test.php」で単体テスト用ページを表示できます。ここに「Analyze Code Coverage」なんてリンクがあるのですが、私の環境ではここをクリックするとApacheが強制終了させられて、コードカバレッジを取得できませんでした。&lt;/p&gt;
+
+&lt;p&gt;どうやらXAMPP 1.7.3に含まれているxDebugのバージョンが原因のようでした(v2.0.6 rc)。そこで最新のxDebug 2.1.0 を入れたところ、無事取得できるようになりました。&lt;/p&gt;
+
+&lt;p&gt;xDebugの入れ替え方ですが、&lt;a href=&#34;http://www.xdebug.org/find-binary.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.xdebug.org/find-binary.php&#39;, &#39;Xdebug: Support; Tailored Installation Instructions&#39;]);&#34; title=&#34;Xdebug: Support; Tailored Installation Instructions&#34;&gt;Xdebug: Support; Tailored Installation Instructions&lt;/a&gt;にしたがってやるのが一番わかりやすいです。ここのフォームにphpinfoの結果をまるごとコピペするだけで、DLするファイルからphp.iniの設定まですべてやり方を出してくれます。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:95dfb16aee8c1717a3a185c8f8b9f562&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ryuzee.com/contents/blog/2430&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.ryuzee.com/contents/blog/2430&#39;, &#39;[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com&#39;]);&#34; title=&#34;[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com&#34;&gt;[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.xdebug.org/find-binary.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.xdebug.org/find-binary.php&#39;, &#39;Xdebug: Support; Tailored Installation Instructions&#39;]);&#34; title=&#34;Xdebug: Support; Tailored Installation Instructions&#34;&gt;Xdebug: Support; Tailored Installation Instructions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

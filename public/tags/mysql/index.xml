@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mysql on 1000g</title>
+    <link>http://1000k.github.io/tags/mysql/</link>
+    <description>Recent content in Mysql on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 13 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>McAfee MySQL Audit Plugin で MySQL の監査ログを採取する</title>
+      <link>http://1000k.github.io/2014/05/13/collect-audit-log-with-mcafee-mysql-audit-plugin/</link>
+      <pubDate>Tue, 13 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/13/collect-audit-log-with-mcafee-mysql-audit-plugin/</guid>
+      <description>
+
+&lt;p&gt;McAfee が作った MySQL プラグイン &amp;#8220;&lt;a href=&#34;https://github.com/mcafee/mysql-audit&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mcafee/mysql-audit&#39;, &#39;McAfee MySQL Audit Plugin&#39;]);&#34; &gt;McAfee MySQL Audit Plugin&lt;/a&gt;&amp;#8221; を使うと、MySQL の監査ログが取得できるようになります。&lt;/p&gt;
+
+&lt;p&gt;会社のセキュリティ要件で監査が必要になったので、検証してみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;特徴:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;特徴&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;監査対象の DB やテーブルを細かく指定できる。&lt;/li&gt;
+&lt;li&gt;監査を除外するユーザーも指定可能。&lt;/li&gt;
+&lt;li&gt;JSON 形式でログが出る。&lt;/li&gt;
+&lt;li&gt;無停止でインストールや設定変更が可能。&lt;/li&gt;
+&lt;li&gt;MySQL &amp;gt;= 5.1 に対応。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール手順:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;インストール手順&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 (64bit) 上に MySQL 5.6 をインストールしている環境を想定しています。&lt;/p&gt;
+
+&lt;p&gt;まず、&lt;a href=&#34;https://bintray.com/mcafee/mysql-audit-plugin/release&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://bintray.com/mcafee/mysql-audit-plugin/release&#39;, &#39;Plugin のダウンロードページ&#39;]);&#34; &gt;Plugin のダウンロードページ&lt;/a&gt; から最新のバイナリをダウンロードし、MySQL のプラグインディレクトリに解凍します。MySQL のバージョンと OS の bit を間違えないように。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ wget http://dl.bintray.com/mcafee/mysql-audit-plugin/1.0.4/audit-plugin-mysql-5.6-1.0.4-459-linux-x86_64.zip
+$ unzip audit-plugin-mysql-5.6-1.0.4-459-linux-x86_64.zip
+$ sudo mv audit-plugin-mysql-5.6/lib/libaudit_plugin.so /usr/lib64/mysql/plugin/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※MySQL のプラグインディレクトリが不明な場合、MySQL クライアントから以下のクエリを叩くことで確認できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; show global variables like &#39;plugin_dir&#39;;
++---------------+--------------------------+
+| Variable_name | Value                    |
++---------------+--------------------------+
+| plugin_dir    | /usr/lib64/mysql/plugin/ |
++---------------+--------------------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、Audit プラグインを MySQL クライアントからインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; INSTALL PLUGIN AUDIT SONAME &#39;libaudit_plugin.so&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※my.cnf に以下の設定を書いて mysqld を再起動してもインストールできます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[mysqld]
+plugin-load=AUDIT=libaudit_plugin.so
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以下のようにコマンドを叩いた結果が出ればインストール成功です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; show plugins;
++----------------------------+----------+--------------------+--------------------+---------+
+| Name                       | Status   | Type               | Library            | License |
++----------------------------+----------+--------------------+--------------------+---------+
+| binlog                     | ACTIVE   | STORAGE ENGINE     | NULL               | GPL     |
+...
+| AUDIT                      | ACTIVE   | AUDIT              | libaudit_plugin.so | GPL     |
++----------------------------+----------+--------------------+--------------------+---------+
+
+mysql&amp;gt; show global status like &#39;AUDIT_version&#39;;
++---------------+-----------+
+| Variable_name | Value     |
++---------------+-----------+
+| Audit_version | 1.0.4-459 |
++---------------+-----------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;プラグインを有効にする:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;プラグインを有効にする&lt;/h2&gt;
+
+&lt;p&gt;インストールしただけでは Audit Plugin はまだ有効になっていないので、設定する必要があります。設定方法は以下の2通り。&lt;/p&gt;
+
+&lt;h3 id=&#34;my-cnf-に書き込む場合:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;my.cnf に書き込む場合&lt;/h3&gt;
+
+&lt;p&gt;my.cnf の &lt;code&gt;[mysqld]&lt;/code&gt; セクションに書き込んで、mysqld を再起動する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[mysqld]
+audit_json_file = On
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;mysql-クライアントから有効にする場合:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;MySQL クライアントから有効にする場合&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;SET&lt;/code&gt; ステートメントを使います。この方法なら無停止で動的に設定変更ができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SET GLOBAL audit_json_file = &#39;On&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;プラグインの設定:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;プラグインの設定&lt;/h2&gt;
+
+&lt;p&gt;設定パラメータを全部書くのは面倒なので主要なものだけ。詳しくは &lt;a href=&#34;https://github.com/mcafee/mysql-audit/wiki/Configuration&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mcafee/mysql-audit/wiki/Configuration&#39;, &#39;Configuration · mcafee/mysql-audit Wiki&#39;]);&#34; &gt;Configuration · mcafee/mysql-audit Wiki&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;変数名&lt;/th&gt;
+&lt;th&gt;内容&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;audit_json_file&lt;/td&gt;
+&lt;td&gt;Audit を有効にするか。`[On&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;audit_json_log_file&lt;/td&gt;
+&lt;td&gt;Audit ログの保存場所。絶対パスか、data-dir からの相対パスで記述。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;audit_record_cmds&lt;/td&gt;
+&lt;td&gt;どのコマンドをロギングするか。カンマ区切り。空白なら全てのコマンドを記録。(e.g.: &lt;code&gt;insert,update,delete&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;audit_record_objs&lt;/td&gt;
+&lt;td&gt;ロギングしたいオブジェクト (テーブル)。カンマ区切り。空白なら全てのオブジェクトを記録。 (e.g.: &lt;code&gt;mydb.*,database.table&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;audit_whitelist_users&lt;/td&gt;
+&lt;td&gt;ここに指定したユーザーのクエリはロギングしない。カンマ区切り。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;設定値は以下のコマンドで確認できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SHOW VARIABLES LIKE &#39;audit_%&#39;;
++---------------------------------+----------------------------+
+| Variable_name                   | Value                      |
++---------------------------------+----------------------------+
+| audit_checksum                  |                            |
+| audit_delay_cmds                |                            |
+| audit_delay_ms                  | 0                          |
+| audit_json_file                 | OFF                        |
+| audit_json_file_flush           | OFF                        |
+| audit_json_file_sync            | 0                          |
+| audit_json_log_file             | mysql-audit.json           |
+| audit_json_socket               | OFF                        |
+| audit_json_socket_name          | /tmp/mysql-audit.json.sock |
+| audit_offsets                   |                            |
+| audit_offsets_by_version        | ON                         |
+| audit_record_cmds               |                            |
+| audit_record_objs               |                            |
+| audit_uninstall_plugin          | OFF                        |
+| audit_validate_checksum         | ON                         |
+| audit_validate_offsets_extended | ON                         |
+| audit_whitelist_users           |                            |
++---------------------------------+----------------------------+
+17 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;注意:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;注意&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MySQL 5.1 では boolean 型は `&lt;code&gt;か&lt;/code&gt;1&lt;code&gt;で指定しないとエラーになります。(&lt;/code&gt;On&lt;code&gt;or&lt;/code&gt;Off` ではダメ)&lt;/li&gt;
+&lt;li&gt;MariaDB や Percona MySQL などの MySQL の派生バイナリにインストールすると、デフォルトではエラーが出て動かせないそうです。この場合、&lt;code&gt;audit_offset&lt;/code&gt; の設定が必要です。詳しくは以下の記事を参照。
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mcafee/mysql-audit/wiki/Troubleshooting#offset-extraction&#34;&gt;https://github.com/mcafee/mysql-audit/wiki/Troubleshooting#offset-extraction&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;取得できる値の例:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;取得できる値の例&lt;/h2&gt;
+
+&lt;p&gt;正しく設定できていると、クエリを投げるたびに以下のような値がログに吐かれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;msg-type&amp;quot;: &amp;quot;activity&amp;quot;,
+  &amp;quot;date&amp;quot;: &amp;quot;1398043832028&amp;quot;,
+  &amp;quot;thread-id&amp;quot;: &amp;quot;8&amp;quot;,
+  &amp;quot;query-id&amp;quot;: &amp;quot;11436&amp;quot;,
+  &amp;quot;user&amp;quot;: &amp;quot;root&amp;quot;,
+  &amp;quot;priv_user&amp;quot;: &amp;quot;root&amp;quot;,
+  &amp;quot;host&amp;quot;: &amp;quot;localhost&amp;quot;,
+  &amp;quot;ip&amp;quot;: &amp;quot;&amp;quot;,
+  &amp;quot;cmd&amp;quot;: &amp;quot;update&amp;quot;,
+  &amp;quot;objects&amp;quot;: [
+    {
+      &amp;quot;db&amp;quot;: &amp;quot;crechu&amp;quot;,
+      &amp;quot;name&amp;quot;: &amp;quot;sessions&amp;quot;,
+      &amp;quot;obj_type&amp;quot;: &amp;quot;TABLE&amp;quot;
+    }
+  ],
+  &amp;quot;query&amp;quot;: &amp;quot;UPDATE `crechu`.`sessions` SET `status` = &#39;card_not_registered&#39;, `need_mail` = &#39;0&#39;, `merchant_id` = 1, `modified` = &#39;2014-04-21 10:30:32&#39;  WHERE `crechu`.`sessions`.`id` = &#39;1&#39;&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;それぞれの値の意味は下記。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;キー&lt;/th&gt;
+&lt;th&gt;中身&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;msg_type&lt;/td&gt;
+&lt;td&gt;「activity」固定&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;date&lt;/td&gt;
+&lt;td&gt;コマンドが実行された日時のUNIXTIME。単位はミリ秒。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;thread-id&lt;/td&gt;
+&lt;td&gt;スレッドID。コネクション毎のユニークなID。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;query-id&lt;/td&gt;
+&lt;td&gt;クエリID。クエリ毎のユニークなID。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;user&lt;/td&gt;
+&lt;td&gt;ユーザ名。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;priv_user&lt;/td&gt;
+&lt;td&gt;ユーザ名。LDAP認証を使っている場合はuserと異なるユーザ名になるケースがある。基本はpriv_userを見れば良い。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;host&lt;/td&gt;
+&lt;td&gt;アクセス元ホスト名。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ip&lt;/td&gt;
+&lt;td&gt;アクセス元IP。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;cmd&lt;/td&gt;
+&lt;td&gt;実行したコマンド。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;objects&lt;/td&gt;
+&lt;td&gt;対処のオブジェクト。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;query&lt;/td&gt;
+&lt;td&gt;実行したクエリー全体。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;まとめ:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;インストールは非常に簡単ですし、動的に ON/OFF の切り替えや設定パラメータの変更が可能です。ログは JSON で出力されるので、fluentd などに食わせて管理するのも楽です。&lt;/p&gt;
+
+&lt;p&gt;この記事には書きませんでしたが、監査対象のユーザーやテーブルの指定も簡単でした。&lt;/p&gt;
+
+&lt;p&gt;MySQL の監査ログを取りたければ、これを使っておけばひとまず十分ではないでしょうか。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:c6474aa8b06dbbdfd3d89714dc33b5d2&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mcafee/mysql-audit/wiki&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mcafee/mysql-audit/wiki&#39;, &#39;Home · mcafee/mysql-audit Wiki&#39;]);&#34; &gt;Home · mcafee/mysql-audit Wiki&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;公式の Wiki。これを見ればだいたい大丈夫。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.majide.com/2012/10/mysql-mcafee-audit-plugin/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.majide.com/2012/10/mysql-mcafee-audit-plugin/&#39;, &#39;McAfeeのおかげでMySQLで監査ログが取れるようになった&#39;]);&#34; &gt;McAfeeのおかげでMySQLで監査ログが取れるようになった&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インストール手順や設定項目が詳しい。プラグインが読み込めないエラーの直し方も。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>McAfee MySQL Audit Plugin の負荷検証</title>
+      <link>http://1000k.github.io/2014/05/13/estimate-load-of-mcafee-mysql-audit-plugin/</link>
+      <pubDate>Tue, 13 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/13/estimate-load-of-mcafee-mysql-audit-plugin/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/?p=1837&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/?p=1837&#39;, &#39;前の記事&#39;]);&#34; &gt;前の記事&lt;/a&gt; で McAfee MySQL Audit Plugin を使うと簡単に監査ログが取れることを紹介しましたが、性能劣化はどれくらいあるのか心配になったので検証してみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;audit-プラグインの設定値:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;Audit プラグインの設定値&lt;/h2&gt;
+
+&lt;p&gt;以下の通り、ほぼインストールしたままの状態です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SHOW VARIABLES LIKE &#39;audit_%&#39;;
++---------------------------------+----------------------------+
+| Variable_name                   | Value                      |
++---------------------------------+----------------------------+
+| audit_checksum                  |                            |
+| audit_delay_cmds                |                            |
+| audit_delay_ms                  | 0                          |
+| audit_json_file                 | OFF                        | &amp;amp;lt;- Audit 有効時は ON にする
+| audit_json_file_flush           | OFF                        |
+| audit_json_file_sync            | 0                          |
+| audit_json_log_file             | mysql-audit.json           |
+| audit_json_socket               | OFF                        |
+| audit_json_socket_name          | /tmp/mysql-audit.json.sock |
+| audit_offsets                   |                            |
+| audit_offsets_by_version        | ON                         |
+| audit_record_cmds               |                            |
+| audit_record_objs               |                            |
+| audit_uninstall_plugin          | OFF                        |
+| audit_validate_checksum         | ON                         |
+| audit_validate_offsets_extended | ON                         |
+| audit_whitelist_users           |                            |
++---------------------------------+----------------------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ベンチマークの条件:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;ベンチマークの条件&lt;/h2&gt;
+
+&lt;p&gt;mysqlslap なら簡単にベンチマークが取れます。詳しい使い方は &lt;a href=&#34;http://blog.1000k.net/?p=1847&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/?p=1847&#39;, &#39;mysqlslap で MySQL の負荷テストをする方法&#39;]);&#34; &gt;mysqlslap で MySQL の負荷テストをする方法&lt;/a&gt; をご覧ください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysqlslap \
+  --no-defaults \
+  --concurrency=100 \
+  --iterations=5 \
+  --number-int-cols=2 \
+  --number-char-cols=3 \
+  --engine=innodb \
+  --auto-generate-sql \
+  --auto-generate-sql-add-autoincrement \
+  --auto-generate-sql-load-type=key \
+  --auto-generate-sql-write-number=1000 \
+  --number-of-queries=100000 \
+  --host=localhost \
+  --port=3306 \
+  --user=root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;結果:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;結果&lt;/h2&gt;
+
+&lt;h3 id=&#34;audit-無効時:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;Audit 無効時&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;Running for engine innodb
+Average number of seconds to run all queries: 15.935 seconds
+Minimum number of seconds to run all queries: 15.487 seconds
+Maximum number of seconds to run all queries: 16.717 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;audit-有効時:ca0842c38bf6f0227cc53f5afc5d2b62&#34;&gt;Audit 有効時&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;Running for engine innodb
+Average number of seconds to run all queries: 19.083 seconds
+Minimum number of seconds to run all queries: 18.763 seconds
+Maximum number of seconds to run all queries: 19.902 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;若干の性能劣化 (10%～20% 程度) が見られます。カツカツのシステムで使う場合は注意が必要かもしれません。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>mysqlslap で MySQL の負荷テストをする方法</title>
+      <link>http://1000k.github.io/2014/05/13/load-test-with-mysqlslap/</link>
+      <pubDate>Tue, 13 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/13/load-test-with-mysqlslap/</guid>
+      <description>
+
+&lt;p&gt;mysqlslap は MySQL の負荷テストに使えるツールです。MySQL &amp;gt;= 5.1.4 からはデフォルトで提供されています。&lt;/p&gt;
+
+&lt;p&gt;テスト中は &lt;code&gt;mysqlslap&lt;/code&gt; という DB を自動で作って、そこにクエリを投げまくります。&lt;/p&gt;
+
+&lt;p&gt;以下に基本的な使い方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:c586e0247ceee441e4b1b150e9d62fd0&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;mysqlslap -?&lt;/code&gt; で詳しいヘルプが見られます。典型的な例は下記。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysqlslap \
+  --no-defaults \
+  --concurrency=50 \
+  --iterations=1 \
+  --number-int-cols=2 \
+  --number-char-cols=3 \
+  --engine=innodb \
+  --auto-generate-sql \
+  --auto-generate-sql-add-autoincrement \
+  --auto-generate-sql-load-type=key \
+  --auto-generate-sql-write-number=1000 \
+  --number-of-queries=100000 \
+  --host=localhost \
+  --port=3306 \
+  --user=root \
+  --csv=/tmp/bench_result.csv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;パラメータ&lt;/th&gt;
+&lt;th&gt;意味&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;no-defaults&lt;/td&gt;
+&lt;td&gt;my.cnf に書かれたデフォルト値を無視する。このオプションは先頭に付ける必要がある&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;concurrency&lt;/td&gt;
+&lt;td&gt;同時に接続してくるクライアントの数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;iterations&lt;/td&gt;
+&lt;td&gt;テストの試行回数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;number-int-cols&lt;/td&gt;
+&lt;td&gt;テストテーブルに作る INT 型カラムの数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;number-char-cols&lt;/td&gt;
+&lt;td&gt;テストテーブルに作る VARCHAR 型カラムの数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;engine&lt;/td&gt;
+&lt;td&gt;使用する DB エンジン&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql&lt;/td&gt;
+&lt;td&gt;テストで使用する SQL 文を自動で生成する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql-add-autoincrement&lt;/td&gt;
+&lt;td&gt;自動で作ったテーブルに AUTO_INCREMENT カラムを追加する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql-load-type&lt;/td&gt;
+&lt;td&gt;クエリのタイプ。`[mixed&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;auto-generate-sql-write-number&lt;/td&gt;
+&lt;td&gt;スレッド毎の INSERT 文の発行数。デフォルトは 100&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;number-of-queries&lt;/td&gt;
+&lt;td&gt;各クライアントが投げるクエリの上限数。正確にこの値にはならない&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;host&lt;/td&gt;
+&lt;td&gt;ホスト&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;port&lt;/td&gt;
+&lt;td&gt;ポート番号&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;user&lt;/td&gt;
+&lt;td&gt;ベンチマークを実行するユーザー。DB 作成権限が無いユーザーを指定するとテストできないので注意！&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;csv&lt;/td&gt;
+&lt;td&gt;結果を CSV 形式で取得したい時は、ここに出力先のパスを書く&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;結果は以下のように出力されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Benchmark
+        Running for engine innodb
+        Average number of seconds to run all queries: 16.086 seconds
+        Minimum number of seconds to run all queries: 16.086 seconds
+        Maximum number of seconds to run all queries: 16.086 seconds
+        Number of clients running queries: 50
+        Average number of queries per client: 2000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:c586e0247ceee441e4b1b150e9d62fd0&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション&#39;]);&#34; &gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/tetsuyai/20110209/1297253834&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/tetsuyai/20110209/1297253834&#39;, &#39;MySQL標準 負荷測定ツール mysqlslap &amp;#8211; 祈れ、そして働け ～ Ora et labora&#39;]);&#34; &gt;MySQL標準 負荷測定ツール mysqlslap &amp;#8211; 祈れ、そして働け ～ Ora et labora&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MySQLのINTEGER型カラムに0を入れると予期しないWHERE句にヒットする</title>
+      <link>http://1000k.github.io/2012/07/25/implicit-convension-of-integer-column-in-mysql/</link>
+      <pubDate>Wed, 25 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/07/25/implicit-convension-of-integer-column-in-mysql/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;「MySQLの暗黙の型変換には気をつけろ！」&lt;/strong&gt;というお話です。&lt;/p&gt;
+
+&lt;p&gt;下記のように、INTEGER型のカラムと、TEXT型のカラムを持つ簡単なテーブルがある場合を考えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| id    | int(11) | YES  |     | NULL    |       |
+| name  | text    | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;入力したレコードは下記の通り。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; INSERT INTO users VALUES(0, &amp;quot;name0&amp;quot;);
+mysql&amp;gt; INSERT INTO users VALUES(0, &amp;quot;name1&amp;quot;);
+
++------+-------+
+| id   | name  |
++------+-------+
+|    0 | name0 |
+|    1 | name1 |
++------+-------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここで、下記のようなクエリを投げてみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SELECT * FROM users WHERE id = &#39;mojamoja&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;普通に考えれば、何もヒットするはずはありません。&lt;/p&gt;
+
+&lt;p&gt;ところが結果は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+------+-------+
+| id   | name  |
++------+-------+
+|    0 | name0 |
++------+-------+
+
+1 row in set, 1 warning (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜか「id = 0」のカラムにヒットします。&lt;/p&gt;
+
+&lt;p&gt;絶対ヒットしてほしくないのですが。&lt;/p&gt;
+
+&lt;p&gt;よく見ると、「1 warning」と書いてあります。&lt;/p&gt;
+
+&lt;p&gt;SHOW WARNINGSコマンドで確かめてみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SHOW WARNINGS;
++---------+------+--------------------------------------------+
+| Level   | Code | Message                                    |
++---------+------+--------------------------------------------+
+| Warning | 1292 | Truncated incorrect DOUBLE value: &#39;uhouho&#39; |
++---------+------+--------------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「不正なDOUBLE型の値&amp;#8217;uhouho&amp;#8217;を切り捨てました」と書いてあります。どうやら、MySQLの_暗黙の型変換_が悪さをしているようです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#39;]);&#34; title=&#34;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#34;&gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&lt;/a&gt; に淡々と箇条書きされていることを引用します。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;比較の演算の両方の引数がストリングの場合、それらはストリングとして比較されます。&lt;/li&gt;
+&lt;li&gt;両方の引数が整数の場合、それらは整数として比較されます。&lt;/li&gt;
+&lt;li&gt;&amp;#8230; 中略 &amp;#8230;&lt;/li&gt;
+&lt;li&gt;他のすべてのケースでは、引数は浮動少数点 ( 実 ) 数として比較されます。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SELECT 1 &amp;gt; &#39;6x&#39;;
+        -&amp;gt; 0
+mysql&amp;gt; SELECT 7 &amp;gt; &#39;6x&#39;;
+        -&amp;gt; 1
+mysql&amp;gt; SELECT 0 &amp;gt; &#39;x6&#39;;
+        -&amp;gt; 0
+mysql&amp;gt; SELECT 0 = &#39;x6&#39;;
+        -&amp;gt; 1                -- 文字列「&#39;x6&#39;」が実数「0」に変換されてしまっている
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この被害に遭いたくなければ、まずは&lt;strong&gt;カラムの型と違う型をWHERE句に指定しない&lt;/strong&gt;ようにしましょう。&lt;/p&gt;
+
+&lt;p&gt;そのほかの対策としては、MySQLのSQLモードを設定することで、型チェックを厳格にすることもできるようです（未検証）。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:6f5857c1e488bfc7db27046670c471b9&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hnw/20120405&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hnw/20120405&#39;, &#39;MySQLの文字列型から数値型への自動型変換が意味不明すぎる &amp;#8211; hnwの日記&#39;]);&#34; title=&#34;MySQLの文字列型から数値型への自動型変換が意味不明すぎる - hnwの日記&#34;&gt;MySQLの文字列型から数値型への自動型変換が意味不明すぎる &amp;#8211; hnwの日記&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;文字列が浮動小数点に切り替えられる問題を詳しく解説。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.tokumaru.org/d/20090924.html#p01&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.tokumaru.org/d/20090924.html#p01&#39;, &#39;undefined &amp;#8211; 徳丸浩の日記(2009-09-24)&#39;]);&#34; title=&#34;undefined - 徳丸浩の日記(2009-09-24)&#34;&gt;undefined &amp;#8211; 徳丸浩の日記(2009-09-24)&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SQLインジェクション対策時にはまりやすいことの説明。値を文字列にキャストしているときに遭遇しうる不具合について解説。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード&#39;]);&#34; title=&#34;MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード&#34;&gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;値チェックのモード。不正な日付や0除算などのチェックを厳格にできる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#39;]);&#34; title=&#34;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#34;&gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MySQL 5.1 の boolean 型を検証</title>
+      <link>http://1000k.github.io/2010/11/15/anatomy-of-mysql-boolean-type/</link>
+      <pubDate>Mon, 15 Nov 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/11/15/anatomy-of-mysql-boolean-type/</guid>
+      <description>
+
+&lt;p&gt;MySQL にて BOOLEAN 型のフィールドを作りたいと思ったのですが、Googleで調べると「MySQL の BOOLEAN 型は実質 tinyint(1) と同じ」といったことが書いてありました。&lt;/p&gt;
+
+&lt;p&gt;また、「MySQL で厳密な BOOLEAN 型を表現したければ、ENUM(&amp;#8216;TRUE&amp;#8217;, &amp;#8216;FALSE&amp;#8217;) を使った方がいい」とも書いてありました。&lt;/p&gt;
+
+&lt;p&gt;個人的には SQL 文に「WHERE flag IS TRUE」と書いて SELECT できれば文句ありません。そういった挙動ができるのか確認しました。&lt;/p&gt;
+
+&lt;p&gt;実験した環境の MySQL バージョンは 5.1.41 です。&lt;/p&gt;
+
+&lt;h2 id=&#34;データはどのように格納されるのか:fac054033163afd225cf9e287567f3c9&#34;&gt;データはどのように格納されるのか？&lt;/h2&gt;
+
+&lt;p&gt;以下のように、連番とブール値を対に持つテーブルを作りました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CREATE TABLE boolean_test (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `flag` BOOLEAN,
+    PRIMARY KEY (`id`)
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;テストデータは下記の通りです。ブーリアン（TRUE/FALSE）のほか、整数値や NULL でもどうなるのか実験します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INSERT INTO boolean_test VALUES (1, TRUE);
+INSERT INTO boolean_test VALUES (2, FALSE);
+INSERT INTO boolean_test VALUES (3, 1);
+INSERT INTO boolean_test VALUES (4, 0);
+INSERT INTO boolean_test VALUES (5, NULL);
+INSERT INTO boolean_test VALUES (6, 127);
+INSERT INTO boolean_test VALUES (7, 128);
+INSERT INTO boolean_test VALUES (8, 2147483647); -- 4 byteの最大値
+INSERT INTO boolean_test VALUES (9, 2147483648); -- 4 byteの最大値+1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;作成結果は下のようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SELECT * FROM boolean_test;
++----+------+
+| id | flag |
++----+------+
+|  1 |    1 |
+|  2 |    0 |
+|  3 |    1 |
+|  4 |    0 |
+|  5 | NULL |
+|  6 |  127 |
+|  7 |  127 |
+|  8 |  127 |
+|  9 |  127 |
++----+------+
+9 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この時点で、TRUE は 1 として、FALSE は 0 として格納されています。&lt;/p&gt;
+
+&lt;p&gt;また、どんなに大きな値を入れても 127 で止まっています。&lt;/p&gt;
+
+&lt;p&gt;確かに MySQL 内部では tinyint(1) として管理されているのがわかります。&lt;/p&gt;
+
+&lt;p&gt;実際、テーブルを DESCRIBE すると、型は tinyint(1) と表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; DESCRIBE boolean_test;
++-------+------------+------+-----+---------+----------------+
+| Field | Type       | Null | Key | Default | Extra          |
++-------+------------+------+-----+---------+----------------+
+| id    | int(11)    | NO   | PRI | NULL    | auto_increment |
+| flag  | tinyint(1) | YES  |     | NULL    |                |
++-------+------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;boolean型としてselectできるか:fac054033163afd225cf9e287567f3c9&#34;&gt;BOOLEAN型としてSELECTできるか？&lt;/h2&gt;
+
+&lt;h3 id=&#34;検索条件を-で指定してみる:fac054033163afd225cf9e287567f3c9&#34;&gt;検索条件を「=」で指定してみる&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT * FROM boolean_test WHERE flag = TRUE;  -- id:1, 3 がヒット
+SELECT * FROM boolean_test WHERE flag = FALSE; -- id:2, 4 がヒット
+SELECT * FROM boolean_test WHERE flag = 1;     -- id:1, 3 がヒット
+SELECT * FROM boolean_test WHERE flag = 0;     -- id:2, 4 がヒット
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「TRUE = 1」「FALSE = 0」と扱っているようです。その証拠に、値が127のレコードは「flag = TRUE」でもヒットしません。&lt;/p&gt;
+
+&lt;p&gt;→&lt;strong&gt;「flag = TRUE」という条件は、「flag = 1」と同値。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;検索条件を-is-で指定してみる:fac054033163afd225cf9e287567f3c9&#34;&gt;検索条件を「IS」で指定してみる&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT * FROM boolean_test WHERE flag IS TRUE;  -- id:1, 3, 6, 7, 8, 9 がヒット
+SELECT * FROM boolean_test WHERE flag IS FALSE; -- id:2, 4 がヒット
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;0 より大きい値は TRUE として、0 は FALSE として判別される模様。&lt;/p&gt;
+
+&lt;p&gt;→&lt;strong&gt;「flag = TRUE」と「flag IS TRUE」は全く別の結果を返す。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;unknown-はどういう扱いになる:fac054033163afd225cf9e287567f3c9&#34;&gt;UNKNOWN はどういう扱いになる？&lt;/h2&gt;
+
+&lt;p&gt;SQL-99 の定義によると、「BOOLEAN 型は TRUE/FALSE/UNKNOWN の3値で表現される」ようです。&lt;/p&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#39;, &#39;新しい業界標準「SQL99」詳細解説&#39;]);&#34; &gt;新しい業界標準「SQL99」詳細解説&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;SQL99では本来の意味であるTRUE（真）とFALSE（偽）およびUNKNOWN（不明）を値として持つ真理値型が提供される。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;SQL 標準の BOOLEAN カラムには NULL は無いんですね。&lt;/p&gt;
+
+&lt;p&gt;MySQL ではどういう風に呼び出せるのか確かめてみました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT * FROM boolean_test WHERE flag IS UNKNOWN;  -- id: 5 がヒット
+SELECT * FROM boolean_test WHERE flag = UNKNOWN;   -- NG: #1054 - Unknown column &#39;UNKNOWN&#39; in &#39;where clause&#39;
+SELECT * FROM boolean_test WHERE flag = &#39;UNKNOWN&#39;; -- ???: id:2, 4 がヒット
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;NULL のフィールドが UNKNOWN として表現されているようです。&lt;/p&gt;
+
+&lt;p&gt;また、2行目のように「= UNKNOWN」と指定するとエラーが出ました。「IS UNKNOWN」で指定しなければならないようです。&lt;/p&gt;
+
+&lt;p&gt;よくわからないのが3行目。id:2, 4はFALSEのレコードなので、全くヒットしてほしくないのですが。&lt;/p&gt;
+
+&lt;p&gt;このあたりは MySQL の仕様をよく確認しないとわかりませんが、まず入力しないだろうということで、この際無視します。&lt;/p&gt;
+
+&lt;h2 id=&#34;考察:fac054033163afd225cf9e287567f3c9&#34;&gt;考察&lt;/h2&gt;
+
+&lt;p&gt;やはり MySQL の BOOLEAN 型は tinyint(1) と同じようです。&lt;/p&gt;
+
+&lt;p&gt;Boolean 型と思ってクエリを投げると意図しない結果が返ってきてしまう危険性があるので、注意が必要です。&lt;/p&gt;
+
+&lt;p&gt;また、ENUM 型は検証していませんが、SQL標準（SQL99）ではサポートされていないため、プログラムの互換性を考えると積極的に使う気が起きません。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:fac054033163afd225cf9e287567f3c9&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;MySQL で Boolean 型を表したければ、少し気持ち悪いですが tinyint(1) でカラムを作った方が良いようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:fac054033163afd225cf9e287567f3c9&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://slashdot.jp/comments.pl?threshold=0&amp;mode=thread&amp;commentsort=1&amp;sid=446159&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://slashdot.jp/comments.pl?threshold=0&amp;mode=thread&amp;commentsort=1&amp;sid=446159&#39;, &#39;コメント: mySQLには、boolean型が無いなんて・・ &amp;#8211; スラッシュドット・ジャパン&#39;]);&#34; title=&#34;コメント: mySQLには、boolean型が無いなんて・・ - スラッシュドット・ジャパン&#34;&gt;コメント: mySQLには、boolean型が無いなんて・・ &amp;#8211; スラッシュドット・ジャパン&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#39;, &#39;新しい業界標準「SQL99」詳細解説&#39;]);&#34; title=&#34;新しい業界標準「SQL99」詳細解説&#34;&gt;新しい業界標準「SQL99」詳細解説&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.geocities.jp/ky_webid/c/010.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.geocities.jp/ky_webid/c/010.html&#39;, &#39;Ｃ言語編　第１０章　変数のサイズ&#39;]);&#34; title=&#34;Ｃ言語編　第１０章　変数のサイズ&#34;&gt;Ｃ言語編　第１０章　変数のサイズ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nslabs.jp/book2-sql-types.rhtml&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.nslabs.jp/book2-sql-types.rhtml&#39;, &#39;追補: SQLデータ型の一覧 | Netsphere Laboratories&#39;]);&#34; &gt;追補: SQLデータ型の一覧 | Netsphere Laboratories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

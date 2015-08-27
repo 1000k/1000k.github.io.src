@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Windows 7上にAndroid開発環境を構築する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/01/09/set-up-android-development-environment-on-windows7/">Windows 7上にAndroid開発環境を構築する</a></h2>
+        <div class="post-content">
+          
+
+<p>「Androidは簡単に開発が可能ですよ！」と言われてる割に導入がかなり面倒でした。</p>
+
+<p>必要なパッケージとインストールからエミュレーターの起動まで、やり方をメモしておきます。</p>
+
+<h2 id="手順:13bda493a2eaedf1be0894608e95258e">手順</h2>
+
+<h3 id="1-必要ファイルのダウンロード:13bda493a2eaedf1be0894608e95258e">1. 必要ファイルのダウンロード</h3>
+
+<p>Windows 7 64bitの場合、下記アプリをダウンロードしました。</p>
+
+<ul>
+<li>Eclipse 3.7 (Indigo) Java Developer Edition
+
+<ul>
+<li><a href="http://www.eclipse.org/downloads/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.eclipse.org/downloads/', 'Eclipse Downloads']);" >Eclipse Downloads</a></li>
+<li>Eclips IDE for Java Developers</li>
+</ul></li>
+<li>Java 6 JDK
+
+<ul>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.oracle.com/technetwork/java/javase/downloads/index.html', 'Java SE Downloads']);" >Java SE Downloads</a></li>
+<li>JREではなくJDK！</li>
+<li>執筆時バージョンは Java SE 6 Update 30</li>
+</ul></li>
+<li>Android SDK
+
+<ul>
+<li><a href="http://developer.android.com/sdk/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://developer.android.com/sdk/index.html', 'Android SDK | Android Developers']);" >Android SDK | Android Developers</a></li>
+<li>installer_r16-windows.exe (Recommended)</li>
+</ul></li>
+</ul>
+
+<h3 id="2-java-6-jdkの設定:13bda493a2eaedf1be0894608e95258e">2. Java 6 JDKの設定</h3>
+
+<p>インストールしたファイルを実行して、画面に従うだけです。</p>
+
+<h3 id="3-android-sdkの設定:13bda493a2eaedf1be0894608e95258e">3. Android SDKの設定</h3>
+
+<ol>
+<li>ダウンロードしたファイルを解凍orインストーラー実行</li>
+<li>Android SDKのインストールが完了後、Managerが起動するので、使いたいAPIにチェックして[Install * Packages]
+
+<ul>
+<li>2.1を選べば97%のAndroidユーザーをカバーできるらしいので、チェック</li>
+<li>必要に応じて別のバージョンもインストールする</li>
+</ul></li>
+</ol>
+
+<h3 id="4-eclipseの設定:13bda493a2eaedf1be0894608e95258e">4. Eclipseの設定</h3>
+
+<h4 id="android-developer-tools-adt-のインストール:13bda493a2eaedf1be0894608e95258e">Android Developer Tools (ADT)のインストール</h4>
+
+<ol>
+<li>ダウンロードしたファイルを解凍し、eclipse.exeを実行</li>
+<li>Eclipseを起動し、[Help] &#8211; [Install software]</li>
+<li>[Work with:]の隣にある[Add]をクリック。完了したら[OK]
+
+<ul>
+<li>Name: Android Plugin</li>
+<li>Location: <a href="http://dl-ssl.google.com/android/eclipse/">http://dl-ssl.google.com/android/eclipse/</a></li>
+<li>「https」を指定すると途中でエラーが出て止まる</li>
+</ul></li>
+<li>[Work with:]に今入力した項目を選択。数十秒「Pending&#8230;」が表示された後、[Developer Tools]が出てきたらチェックを付けて[Next]</li>
+<li>インストールされるパッケージ一覧が出るので、[Finish]</li>
+<li>途中「Security Warning」が出るが、[OK]</li>
+<li>長時間インストール完了を待ち、完了したら[Restart Now]</li>
+<li>Eclipse再起動後、「Welcome to Android Development」が表示されるので、[Use existing SDKs]にチェック</li>
+<li>SDKのインストール先を指定して[Next]
+
+<ul>
+<li>デフォルトなら &#8220;C:\Program Files (x86)\Android\android-sdk&#8221;</li>
+</ul></li>
+<li>統計データをGoogleに送るかどうか選択して[Finish]</li>
+</ol>
+
+<h4 id="avdの作成:13bda493a2eaedf1be0894608e95258e">AVDの作成</h4>
+
+<ol>
+<li>[Window] &#8211; [AVD Manager]</li>
+<li>[New]</li>
+<li>下記項目を入力して[Create AVD]
+
+<ul>
+<li>[Name]: 機器名。好きな名前でOK</li>
+<li>[Target]: Androidのバージョン</li>
+<li>[SD Card]: エミュレータが使用するSDカード容量。32MBもあれば十分</li>
+<li>[Skin]: 画面解像度</li>
+<li>[Hardware]: エミュレータのハード。GPSなど、開発しようとするアプリに合わせて選択</li>
+</ul></li>
+<li>[Start]をクリックして、エミュレータが起動したらOK
+
+<ul>
+<li>日本語化したい場合</li>
+<li>起動後にホーム画面でメニューボタンクリック</li>
+<li>[Settings] &gt; [Language &amp; keyboard]</li>
+<li>[Select locale］から日本語を選択</li>
+</ul></li>
+</ol>
+
+<p>設定は以上で完了です。</p>
+
+<h3 id="5-サンプルアプリのビルド:13bda493a2eaedf1be0894608e95258e">5. サンプルアプリのビルド</h3>
+
+<p>ここまででビルド可能になっているので、試してみましょう。</p>
+
+<ol>
+<li>[File] &#8211; [New] &#8211; [Other&#8230;]</li>
+<li>Android Project を選択して[Next]</li>
+<li>以下のように設定して[Next]
+
+<ul>
+<li>Project Name: SampleApp</li>
+<li>&#8220;Create projects from existing source&#8221;にチェック</li>
+<li>Location: &#8220;C:\Program Files (x86)\Android\android-sdk\samples\android-7\SkeletonApp&#8221;</li>
+</ul></li>
+<li>Build Targetは&#8221;Android 2.1&#8243;にチェックして[Next]</li>
+<li>Minumum SDKを&#8221;7&#8243;にして[Finish]</li>
+<li>[Run] &#8211; [Run Configurations&#8230;]</li>
+<li>[New launch configuration]アイコンをクリック</li>
+<li>[Project:]に&#8221;SampleApp&#8221;を指定して[Run]</li>
+<li>エミュレーター上に&#8221;Hello there, you Activity!&#8221;と表示されれば成功</li>
+</ol>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/android_tutorial.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/android_tutorial.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/android_tutorial-300x293.png" alt="" title="ビルド完了" width="300" height="293" class="alignnone size-medium wp-image-937" /></a></p>
+
+<p>なお、ビルドされたアプリはbinディレクトリの下に「SampleApp.apk」という名前で入っています。これをAndroidに転送すれば実機で実行できます。</p>
+
+<p>（ただし「提供元不明のアプリ」を使用可能にしておくこと）</p>
+
+<h2 id="参考:13bda493a2eaedf1be0894608e95258e">参考</h2>
+
+<ul>
+<li><a href="http://gihyo.jp/dev/serial/01/androidapp/0002" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gihyo.jp/dev/serial/01/androidapp/0002', '世界を目指せ！Androidアプリ開発入門：第2回　Androidアプリ開発のための環境構築｜gihyo.jp … 技術評論社']);" >世界を目指せ！Androidアプリ開発入門：第2回　Androidアプリ開発のための環境構築｜gihyo.jp … 技術評論社</a>
+
+<ul>
+<li>2010年の記事なので少し古い部分もありますが、基本的に最新バージョンで読み替えればOK</li>
+</ul></li>
+<li><a href="http://gihyo.jp/dev/serial/01/androidapp/0003" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://gihyo.jp/dev/serial/01/androidapp/0003', '世界を目指せ！Androidアプリ開発入門：第3回　Android SDKでサンプルアプリを使ってみる｜gihyo.jp … 技術評論社']);" >世界を目指せ！Androidアプリ開発入門：第3回　Android SDKでサンプルアプリを使ってみる｜gihyo.jp … 技術評論社</a></li>
+<li><a href="http://sky.geocities.jp/izeefss/develop/android/env_eclipse.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://sky.geocities.jp/izeefss/develop/android/env_eclipse.html', 'Android開発環境の構築 Eclipse編']);" >Android開発環境の構築 Eclipse編</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

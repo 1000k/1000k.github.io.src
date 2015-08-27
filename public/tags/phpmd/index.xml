@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Phpmd on 1000g</title>
+    <link>http://1000k.github.io/tags/phpmd/</link>
+    <description>Recent content in Phpmd on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 26 Nov 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/phpmd/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PHPMD の頭がかなり messy</title>
+      <link>http://1000k.github.io/2013/11/26/phpmd-is-messy/</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/11/26/phpmd-is-messy/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://phpmd.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpmd.org/&#39;, &#39;PHPMD (PHP Mess Detector)&#39;]);&#34; &gt;PHPMD (PHP Mess Detector)&lt;/a&gt; は、PHP のコードを静的解析して、潜在的なバグや無意味なブロックを発見してくれるツールです。&lt;/p&gt;
+
+&lt;p&gt;が、しばしば問題ないブロックにもケチをつけてきます。&lt;/p&gt;
+
+&lt;p&gt;たとえばこんなコード。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function setUp() {
+    // 警告: Avoid using static access to class &#39;parent&#39; in method &#39;setUp&#39;.
+    parent::setUp();
+
+    $this-&amp;gt;Account = ClassRegistry::init(&#39;Account&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;親クラスの setUp() メソッドを呼んだけで、「静的アクセスするな」と怒られます。じゃあどうやってオーバーライドすればいいんだよ、と思います。メンバ定数にアクセスしようと &lt;code&gt;self::&lt;/code&gt; を使っても出ます。オブジェクト指向を否定してんのか。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;@SuppressWarnings&lt;/code&gt; アノテーションをクラスの PHPDoc に書くことでこの警告は出なくなりますが、本当に間違った静的アクセスを行っていても無視されるようになってしまいます。困ったもんです。&lt;/p&gt;
+
+&lt;p&gt;ほかにも、if-else を使うと下のような警告を出します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function step() {
+    if ($this-&amp;gt;find(&#39;count&#39;) &amp;amp;lt; 1) {
+        $this-&amp;gt;foo();
+    } else {
+        // 警告: The method step uses an else expression. Else is never necessary and you can simplify the code to work without else.
+        $this-&amp;gt;bar();
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「else なんて必要ねえよ。else の必要ない書き方しろよ。」と言ってきます。言いたいことはわかりますが、リファクタリングした結果最もメンテナンス性が高くなるなら、if-else 構文を使っても全然問題ないはずです。else を使うだけで警告レベル High で糾弾するのはいかがなものでしょうか。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:fa9ca428d896ab32fcf9e86dc6eea620&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;PHPMD はヒステリー気味なので、レポート結果をあまり深刻に受け取らないようにしましょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:fa9ca428d896ab32fcf9e86dc6eea620&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://phpmd.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpmd.org/&#39;, &#39;PHPMD &amp;#8211; PHP Mess Detector&#39;]);&#34; &gt;PHPMD &amp;#8211; PHP Mess Detector&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/18604179/phpmd-avoid-static-access-to-parent&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/18604179/phpmd-avoid-static-access-to-parent&#39;, &#39;php &amp;#8211; PHPMD avoid static access to parent &amp;#8211; Stack Overflow&#39;]);&#34; &gt;php &amp;#8211; PHPMD avoid static access to parent &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

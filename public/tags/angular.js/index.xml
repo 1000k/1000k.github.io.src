@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Angular.Js on 1000g</title>
+    <link>http://1000k.github.io/tags/angular/index.js/</link>
+    <description>Recent content in Angular.Js on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 22 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/angular.js/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Protractor が動かなくてハマった</title>
+      <link>http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/</link>
+      <pubDate>Thu, 22 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/angular/angular-seed&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/angular/angular-seed&#39;, &#39;angular-seed&#39;]);&#34; &gt;angular-seed&lt;/a&gt; を使って Angular.js の開発環境を作成していたのですが、どうにもこうにも e2e テストが動かなくてハマりました。&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージは以下のとおり。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm run protractor
+
+&amp;gt; angular-seed@0.0.0 preprotractor /var/www
+&amp;gt; npm run update-webdriver
+
+
+&amp;gt; angular-seed@0.0.0 preupdate-webdriver /var/www
+&amp;gt; npm install
+
+
+&amp;gt; angular-seed@0.0.0 postinstall /var/www
+&amp;gt; bower install
+
+
+&amp;gt; angular-seed@0.0.0 update-webdriver /var/www
+&amp;gt; webdriver-manager update
+
+selenium standalone is up to date.
+chromedriver is up to date.
+
+&amp;gt; angular-seed@0.0.0 protractor /var/www
+&amp;gt; protractor test/protractor-conf.js
+
+
+------------------------------------
+PID: 2314 (capability: chrome #1)
+------------------------------------
+
+Starting selenium standalone server...
+
+events.js:72
+        throw er; // Unhandled &#39;error&#39; event
+              ^
+Error: spawn ENOENT
+    at errnoException (child_process.js:998:11)
+    at Process.ChildProcess._handle.onexit (child_process.js:789:34)
+[launcher] Runner Process Exited With Error Code: 8
+
+npm ERR! angular-seed@0.0.0 protractor: `protractor test/protractor-conf.js`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the angular-seed@0.0.0 protractor script.
+npm ERR! This is most likely a problem with the angular-seed package,
+npm ERR! not with npm itself.
+npm ERR! Tell the author that this fails on your system:
+npm ERR!     protractor test/protractor-conf.js
+npm ERR! You can get their info via:
+npm ERR!     npm owner ls angular-seed
+npm ERR! There is likely additional logging output above.
+npm ERR! System Linux 3.13.0-24-generic
+npm ERR! command &amp;quot;node&amp;quot; &amp;quot;/usr/bin/npm&amp;quot; &amp;quot;run&amp;quot; &amp;quot;protractor&amp;quot;
+npm ERR! cwd /var/www
+npm ERR! node -v v0.10.28
+npm ERR! npm -v 1.4.10
+npm ERR! code ELIFECYCLE
+npm ERR!
+npm ERR! Additional logging details can be found in:
+npm ERR!     /var/www/npm-debug.log
+npm ERR! not ok code 0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;code ELIFECYCLE&lt;/code&gt; が何を意味しているのかさっぱりわからず途方に暮れていましたが、結局のところ Java に PATH が通っていなかったのが原因だったようです。&lt;/p&gt;
+
+&lt;p&gt;e2e テストは内部で Selenium Standalone Server を呼んでいますが、そこに Java が必要でした。&lt;/p&gt;
+
+&lt;p&gt;単純に OpenJDK をパッケージインストールするだけで解決しました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo apt-get install openjdk-7-jre-headless
+$ java -version
+(バージョンが表示されれば PATH が通ってるので OK)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Node.js はデバッグメッセージが雑なことが多いので苦手です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:44911033301877b7be87059dd5b5c5f6&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014&#39;, &#39;angularjs &amp;#8211; How to run protractor? &amp;#8211; Stack Overflow&#39;]);&#34; &gt;angularjs &amp;#8211; How to run protractor? &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

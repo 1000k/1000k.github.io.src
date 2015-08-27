@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>レポート on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%83%AC%E3%83%9D%E3%83%BC%E3%83%88/</link>
+    <description>Recent content in レポート on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 18 Jan 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%83%AC%E3%83%9D%E3%83%BC%E3%83%88/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Jutta Eckstein への質問</title>
+      <link>http://1000k.github.io/2014/01/19/questions-to-jutta-eckstein/</link>
+      <pubDate>Sat, 18 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/19/questions-to-jutta-eckstein/</guid>
+      <description>
+
+&lt;p&gt;Jutta Eckstein 氏の基調講演&lt;a href=&#34;http://blog.1000k.net/2014/01/18/sgt2014-%e5%9f%ba%e8%aa%bf%e8%ac%9b%e6%bc%942/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2014/01/18/sgt2014-%e5%9f%ba%e8%aa%bf%e8%ac%9b%e6%bc%942/&#39;, &#39;「組織にアジリティを取り入れる – どうすればアジャイルになれる？」&#39;]);&#34; &gt;「組織にアジリティを取り入れる – どうすればアジャイルになれる？」&lt;/a&gt; の後に行われた質疑応答です。&lt;/p&gt;
+
+&lt;h2 id=&#34;変化のために必要な3つのロールが揃わない場合は:a3e13834c7e6dd718e478ab87401cef7&#34;&gt;変化のために必要な3つのロールが揃わない場合は？&lt;/h2&gt;
+
+&lt;p&gt;※3つのロール: プロジェクトリーダー、情熱のあるチェンジ・エージェント、アーキテクト / 技術リーダー&lt;/p&gt;
+
+&lt;p&gt;Q: 変化のために必要な3つのロールが揃わない場合はどうすればいいか？掛け持ちしてもいい？現場では情熱のある人が技術リードを兼任していることも多い。&lt;/p&gt;
+
+&lt;p&gt;A: 技術リードがいなければ組織は当然変化できない。しかし、ロールを兼任すると負担が大きすぎる。一人だけでも始めることは可能だが、仲間は必要。そういう仲間を見つけなければならない。&lt;/p&gt;
+
+&lt;p&gt;なお、「(変化に費やす) 時間が無い」という声をよく耳にする。その場合、とにかくそういう状況を改善すること。「なぜ忙しいのか」を発見し、改善する。「時間がないからテストコードが書けない」なら、何らかのテストを自動で実行できるようにすればいい。&lt;/p&gt;
+
+&lt;h2 id=&#34;どうすれば-離-に達することができる:a3e13834c7e6dd718e478ab87401cef7&#34;&gt;どうすれば「離」に達することができる？&lt;/h2&gt;
+
+&lt;p&gt;Q: いつまで経っても守破離の「守」から抜け出せないケースが多い。アジャイルプラクティスを実施しているだけで「我々はアジャイルだ！」と思っている人が非常に多い。どうやってその段階を抜け出せるか？気づきを与えるにはどうすればいい？&lt;/p&gt;
+
+&lt;p&gt;A: 確かにこれは非常に難しい。たとえば私は趣味のテニスにおいて「守」のレベルを抜け出せないが、プロじゃないので別にいいと思っている。ひょっとしたら周りの人たちも前に進みたいと思っていないのでは？質問してみるといい。&lt;/p&gt;
+
+&lt;p&gt;変化のモデルにおける「アトラクタ」という要素がないか探してみる。次のレベルに行ってみたくなるような要素はないか聞いてみる。全員のふりかえりだけでなく、一対一で聞いてみるのも良い。&lt;/p&gt;
+
+&lt;p&gt;Q: 本人が気づいていない問題を発見して提示してあげてもいい？&lt;/p&gt;
+
+&lt;p&gt;A: 効果的かもしれない。ひょっとしたら (集団でのふりかえりでは話せないような) 個人的な問題が隠れている可能性がある。&lt;/p&gt;
+
+&lt;h2 id=&#34;組織内の別の変化とアジャイル化が衝突していたらどうすればいい:a3e13834c7e6dd718e478ab87401cef7&#34;&gt;組織内の別の変化とアジャイル化が衝突していたらどうすればいい？&lt;/h2&gt;
+
+&lt;p&gt;Q: 「現場では複数の変化が同時に起きていることもある」という話だったが、ある変化と別の変化が衝突するケースもある。例えば「品質が低いのはプロセスが未熟なせいだから、きっちりした監査を導入しよう」という変化と、アジャイルを求める変化は衝突している。この場合はどうすればいい？&lt;/p&gt;
+
+&lt;p&gt;具体的に言うと、全社共通の品質管理チームのボスが指揮統制型で押しつけてくるので困っている。&lt;/p&gt;
+
+&lt;p&gt;A: 大組織では確かにそういうことがある。早い段階でアジャイル開発のプロセスに参加してもらって、要望を聞いてみると良い。ユーザーストーリーを作る手助けをしてやったり、質問をしてみること。「なぜそのプロセスを適用する価値があるのか？ビジネス上の価値はあるのか？」と。また、その質問の意味を知ってもらう。もしボスの言い分が役に立つとわかれば、適用してもいいかもしれない。&lt;/p&gt;
+
+&lt;p&gt;まずは要求を確立すること。本当は何が必要なのかを聞き出すと良い。&lt;/p&gt;
+
+&lt;p&gt;重要なポイントは、チームがその人に対してどのような態度をとるべきかということ。彼は利害関係者である。これまでの議論のレビュー結果を示すなどして、話し合いを続ける。恐らく時間をかける必要があるだろう。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SGT2014 基調講演2 「組織にアジリティを取り入れる – どうすればアジャイルになれる？」</title>
+      <link>http://1000k.github.io/2014/01/18/sgt2014-keynote2/</link>
+      <pubDate>Sat, 18 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/18/sgt2014-keynote2/</guid>
+      <description>
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jutta_eckstein-300x198.jpg&#34; alt=&#34;Jutta Eckstein&#34; width=&#34;300&#34; height=&#34;198&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/2014/01/17/sgt2014-%e5%9f%ba%e8%aa%bf%e8%ac%9b%e6%bc%94%e3%80%8c%e3%82%a8%e3%83%b3%e3%82%bf%e3%83%bc%e3%83%97%e3%83%a9%e3%82%a4%e3%82%ba%e3%83%bb%e3%82%b9%e3%82%af%e3%83%a9%e3%83%a0-%e4%bc%81%e6%a5%ad%e6%b4%bb/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2014/01/17/sgt2014-%e5%9f%ba%e8%aa%bf%e8%ac%9b%e6%bc%94%e3%80%8c%e3%82%a8%e3%83%b3%e3%82%bf%e3%83%bc%e3%83%97%e3%83%a9%e3%82%a4%e3%82%ba%e3%83%bb%e3%82%b9%e3%82%af%e3%83%a9%e3%83%a0-%e4%bc%81%e6%a5%ad%e6%b4%bb/&#39;, &#39;1日目の基調講演&#39;]);&#34; &gt;1日目の基調講演&lt;/a&gt; に続き、2日目の基調講演もメモします。&lt;/p&gt;
+
+&lt;p&gt;スピーカーの &lt;a href=&#34;http://www.jeckstein.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.jeckstein.com/&#39;, &#39;Jutta Eckstein 氏&#39;]);&#34; &gt;Jutta Eckstein 氏&lt;/a&gt;はもともと教師であり、その後 IT 業界に入って製品開発を通じてアジャイルプロセスを身につけました。今回の講義では、アジャイルを組織に導入する方法と変化のモデルについて、明晰な分析と的確なアドバイスをされていました。&lt;/p&gt;
+
+&lt;h2 id=&#34;アジャイルを組織に導入するための2つの典型的なアプローチ:c795c54138722eda973de47e1a73c007&#34;&gt;アジャイルを組織に導入するための2つの典型的なアプローチ&lt;/h2&gt;
+
+&lt;h3 id=&#34;ゲリラ型:c795c54138722eda973de47e1a73c007&#34;&gt;ゲリラ型&lt;/h3&gt;
+
+&lt;p&gt;自分でこっそりプロジェクトをアジャイルプロセスで回す方法。成功した後に「実はアジャイルなやり方でした」とネタばらしすることで、実績と共に導入を促すことができる。(Mike Beedle が初めてスクラムを実践した時と同じ方法)&lt;/p&gt;
+
+&lt;p&gt;このやり方は、マネジメント層が関与しないと成功しづらい。出来る限り顧客と PO を巻き込むようにしよう。&lt;/p&gt;
+
+&lt;h3 id=&#34;最高司令型-supreme-command:c795c54138722eda973de47e1a73c007&#34;&gt;最高司令型 (Supreme Command)&lt;/h3&gt;
+
+&lt;p&gt;組織上層部からトップダウンで「アジャイルをやろう」と命令して実施する方法。&lt;/p&gt;
+
+&lt;p&gt;ボトムアップで広める場合と比べると、組織全体でオープンにやれるという点ではやりやすいが、一方で以下の難点もある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;役割、組織、構造が限定されてしまうことが多い。&lt;/li&gt;
+&lt;li&gt;チーム自身がやり方を決めるわけでは無いので、自己組織化が難しい。アジャイルマインドと矛盾する。&lt;/li&gt;
+&lt;li&gt;管理職が権力を発揮すると、開発者が考える透明性に対してケチが入りやすく、信頼が確立しづらい。&lt;/li&gt;
+&lt;li&gt;開発のプラクティスを強制されることが多い。強制されたものは維持しづらい。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;いずれの場合でも、何よりまず全員が参加すること。特にふりかえり。&lt;/p&gt;
+
+&lt;p&gt;アジャイルに移行すると変化が起きる。本当に変化するのは個人。&lt;/p&gt;
+
+&lt;h2 id=&#34;変化のモデル:c795c54138722eda973de47e1a73c007&#34;&gt;変化のモデル&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.mindtools.com/pages/article/newPPM_96.htm&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.mindtools.com/pages/article/newPPM_96.htm&#39;, &#39;Elisabeth Kübler-Ross モデル&#39;]);&#34; &gt;Elisabeth Kübler-Ross モデル&lt;/a&gt; と &lt;a href=&#34;http://stevenmsmith.com/ar-satir-change-model/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stevenmsmith.com/ar-satir-change-model/&#39;, &#39;Virginia Satir モデル&#39;]);&#34; &gt;Virginia Satir モデル&lt;/a&gt; がある。後者は &lt;a href=&#34;http://www.amazon.co.jp/gp/product/462108786X/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=462108786X&amp;linkCode=as2&amp;tag=1000k-22&amp;quot;&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/462108786X/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=462108786X&amp;linkCode=as2&amp;tag=1000k-22&amp;quot;&#39;, &#39;『Fearless Change アジャイルに効く アイデアを組織に広めるための48のパターン』&#39;]);&#34; &gt;『Fearless Change アジャイルに効く アイデアを組織に広めるための48のパターン』&lt;/a&gt; に素晴らしい解説がある。&lt;/p&gt;
+
+&lt;h3 id=&#34;アジャイル導入直後に時間と共に起きること:c795c54138722eda973de47e1a73c007&#34;&gt;アジャイル導入直後に時間と共に起きること&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;まず混沌とする。多くの人は放棄したくなる。&lt;/li&gt;
+&lt;li&gt;時間と共に「やっぱりあの考えは使えるんじゃないか」という別の見方ができるようになり、良さに気付く。&lt;/li&gt;
+&lt;li&gt;うまくいけば、新しい考えが受け入れられ定着する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;なお、現場は常に変化しており、様々な変化のカーブが同時並行で存在していることも多い。同僚はアジャイル以外でも変化しているかもしれない。同僚がこのカーブのどこにいるか特定できれば、適切なサポートができるかもしれない。&lt;/p&gt;
+
+&lt;h3 id=&#34;痛みが変化をサポートする:c795c54138722eda973de47e1a73c007&#34;&gt;痛みが変化をサポートする&lt;/h3&gt;
+
+&lt;p&gt;痛みがある現場 (＝不満があちこちにある職場) の方が変化を受け入れやすい。「もっと良いやり方があれば試したい」と思っているから。しかし、実際にやってみると誰も変化を受け入れる体制が整っていないことも多い。&lt;/p&gt;
+
+&lt;p&gt;また、「新しいやり方を導入すれば新しい問題が生じる。何も良くならない。変わらない。」と言う人も多い。&lt;/p&gt;
+
+&lt;p&gt;懐疑的な人が多いのは良いことである。情熱的な人しかいない方が危ない。見落としを多くしたり、必要ないことや組織に害となる考え方もする可能性があるので。&lt;/p&gt;
+
+&lt;p&gt;いずれにせよ変化を始めたら、人々が感じている恐れや希望などの様々なことをふりかえりで確認し、吸収しなければならない。&lt;/p&gt;
+
+&lt;h2 id=&#34;パイロットプロジェクトの落とし穴:c795c54138722eda973de47e1a73c007&#34;&gt;パイロットプロジェクトの落とし穴&lt;/h2&gt;
+
+&lt;p&gt;※パイロットプロジェクト＝試験的にプロジェクトをアジャイルでやること。&lt;/p&gt;
+
+&lt;p&gt;本格的な導入の前に試しに実施されることが多いが、落とし穴がある。意欲のある優れた人材だけを集めたり、リスクの少ない簡単な案件で実施しても、「こんなベストな人材でこんな低リスクな案件なんだから、成功するのは当たり前だ」という評価に終わってしまうことが多い。&lt;/p&gt;
+
+&lt;p&gt;したがってパイロットプロジェクトは、「普通の案件」で、「普通の人達」を、「普通のサイズ」で関与させた方が良い。&lt;/p&gt;
+
+&lt;h2 id=&#34;アジャイル導入スケジュール:c795c54138722eda973de47e1a73c007&#34;&gt;アジャイル導入スケジュール&lt;/h2&gt;
+
+&lt;p&gt;アジャイルを導入するためには以下のことを順序だってやると良い。&lt;/p&gt;
+
+&lt;p&gt;この際、3つのロールが必要になる。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プロジェクトリーダー&lt;/li&gt;
+&lt;li&gt;情熱のあるチェンジ・エージェント&lt;/li&gt;
+&lt;li&gt;アーキテクト / 技術リーダー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;意識付け:c795c54138722eda973de47e1a73c007&#34;&gt;意識付け&lt;/h3&gt;
+
+&lt;p&gt;会話や読書を行い、アジャイルの進め方を伝播しておく。&lt;/p&gt;
+
+&lt;h3 id=&#34;readiness-enabling-ワークショップ:c795c54138722eda973de47e1a73c007&#34;&gt;Readiness/Enabling ワークショップ&lt;/h3&gt;
+
+&lt;p&gt;アジャイルを実施する際の困難や解決策を議論するワークショップ。以下のことを話し合う。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;これまでにやったことは？&lt;/li&gt;
+&lt;li&gt;簡単にできることは？&lt;/li&gt;
+&lt;li&gt;適用が難しいことは？&lt;/li&gt;
+&lt;li&gt;絶対に不可能なことは？ (会社や文化によってはできないこともある)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;難しいことが見つかれば、以下のことも議論する。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;それを簡単にするにはどうすればいいか？&lt;/li&gt;
+&lt;li&gt;それを変えることで良い効果を得られるか？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ふりかえり:c795c54138722eda973de47e1a73c007&#34;&gt;ふりかえり&lt;/h3&gt;
+
+&lt;p&gt;プロジェクトで行う。どうやって変化を起こしてきたのかをふりかえり、将来について話し合う。具体的には次のような内容。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;うまくいったことを、どうやって次のプロジェクトに活かすか？&lt;/li&gt;
+&lt;li&gt;何が障害になっていたか？何を変えたほうがいいのか？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;継続的に学ぶことで、必然的にアジャイルになってくる。&lt;/p&gt;
+
+&lt;p&gt;重要なのは、アジャイルを実施する人たちがふりかえりのオーナーとなること。外部のコーチがやり方を教えるだけでは意味が無い！現場の人たちが自己組織化し、自分たちで次に何をやるべきか決められるようにならなければならない。&lt;/p&gt;
+
+&lt;p&gt;なお、「グッドプラクティスを集めても意味がない」と言う人がいるが、それは間違い。どこかの組織で成功したことにはヒントがある。&lt;/p&gt;
+
+&lt;h2 id=&#34;学びのステップ-守破離:c795c54138722eda973de47e1a73c007&#34;&gt;学びのステップ: 守破離&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;守: 型を守る。学んだ通りのやり方をやってみる。&lt;/li&gt;
+&lt;li&gt;破: ふりかえりによって、意味や目的や効果を確かめる。不必要な部分も見えるかもしれない。&lt;/li&gt;
+&lt;li&gt;離: 独自の背景をベースにしたやり方ができるようになる。アジャイルになるためには、全員が「離」のやり方にならなければならない！&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;特定のレベルに達することができないと物事は変えられないかもしれない。アジャイルを本当に適用するためには、独自のアジャイル手法を考えなければならないかもしれない。&lt;/p&gt;
+
+&lt;h2 id=&#34;トレーニングをカスタマイズする:c795c54138722eda973de47e1a73c007&#34;&gt;トレーニングをカスタマイズする&lt;/h2&gt;
+
+&lt;p&gt;サンドボックスで学んだやり方では、すぐに現場で実践に移せない。カスタマイズしたトレーニングを実施し、現場に則したやり方を習得したほうが早い。例えばデイリースクラムは、実際のプロジェクトですぐに実施して学べる。&lt;/p&gt;
+
+&lt;h2 id=&#34;モニタリングとコーチング:c795c54138722eda973de47e1a73c007&#34;&gt;モニタリングとコーチング&lt;/h2&gt;
+
+&lt;p&gt;アジャイル導入には、社内に高い情熱を持った人が必要。変化の過程では必ずアップダウンがあるため、ドライバーとなるチェンジ・エージェントがいるべき。彼には次のような素質が求められる。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;困難を直視できる&lt;/li&gt;
+&lt;li&gt;実践もサポートできる&lt;/li&gt;
+&lt;li&gt;アジャイルの変化を深く信じている&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;なお、組織外部のサポート役 (メンター) がこの役割を担うことはできない。必ず内部に必要。&lt;/p&gt;
+
+&lt;h2 id=&#34;変化を維持するためにやること:c795c54138722eda973de47e1a73c007&#34;&gt;変化を維持するためにやること&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;社内にコーチを作る。&lt;/li&gt;
+&lt;li&gt;新人をメンタリングする。&lt;/li&gt;
+&lt;li&gt;成功したら（成果を上げたら）必ずお祝いをする。&lt;/li&gt;
+&lt;li&gt;絶えず学び続ける。守破離の「離」のレベルに達すること！&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;まとめ:c795c54138722eda973de47e1a73c007&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;変化は絶対にスムーズではない。カオスの中を通過する必要がある。&lt;/li&gt;
+&lt;li&gt;ふりかえりは気づきを生み出す。継続的な進化につながる。&lt;/li&gt;
+&lt;li&gt;ワークショップで全員に気付きを与えよう。&lt;/li&gt;
+&lt;li&gt;カスタマイズしたトレーニングで実践力を与えよう。&lt;/li&gt;
+&lt;li&gt;チェンジエージェントが全てをサポートする。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;質疑応答でも素晴らしい討議が行われていたので、別ページに書きました。↓&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/2014/01/19/jutta-eckstein-%e3%81%b8%e3%81%ae%e8%b3%aa%e5%95%8f/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2014/01/19/jutta-eckstein-%e3%81%b8%e3%81%ae%e8%b3%aa%e5%95%8f/&#39;, &#39;Jutta Eckstein への質問&#39;]);&#34; &gt;Jutta Eckstein への質問&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Mike Beedle への質問</title>
+      <link>http://1000k.github.io/2014/01/17/questions-to-mike-beedle/</link>
+      <pubDate>Fri, 17 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/17/questions-to-mike-beedle/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/?p=1736&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/?p=1736&#39;, &#39;Mike Beedle の基調講演&#39;]);&#34; &gt;Mike Beedle の基調講演&lt;/a&gt;の後の質疑応答では、非常に興味深いディスカッションが行われました。&lt;/p&gt;
+
+&lt;p&gt;幾つかのやりとりをメモします。&lt;/p&gt;
+
+&lt;h2 id=&#34;q-スクラムは素晴らしい考え方だと思うが-弱点は何か:22e56902b6d51e44bdd3ca7927ccaaab&#34;&gt;Q: スクラムは素晴らしい考え方だと思うが、弱点は何か？&lt;/h2&gt;
+
+&lt;p&gt;A: 文化。スクラムをやるためには文化を変えなければならない。誠実な企業体制となり、情報を共有できるようにならねばならない。それができる企業はあまりにも少ない。&lt;/p&gt;
+
+&lt;p&gt;開発現場レベルでスクラムの導入に手こずっているなら、ビジネスレベルではもっと多くの障壁が待ち受けているだろう。これが最大の問題だ。&lt;/p&gt;
+
+&lt;h2 id=&#34;q-文化を変えるには誰を説得すればいい:22e56902b6d51e44bdd3ca7927ccaaab&#34;&gt;Q: 文化を変えるには誰を説得すればいい？&lt;/h2&gt;
+
+&lt;p&gt;A: 中間管理職。現場の人間ならスクラムをやるべきだというのはすぐに理解できるはず。中間管理職は現場や最先端に遅れを取ることをいつも恐れているので、スクラムを理解できないことは無いはずだ。&lt;/p&gt;
+
+&lt;p&gt;ちなみに、ナレッジとマインドをお互い理解できるならば、開発手法はウォーターフォールでも構わない。&lt;/p&gt;
+
+&lt;h2 id=&#34;q-最初にスクラムを実践した時-スクラムを誰も知らなかったはずだが-誰をどうやって説得したのか:22e56902b6d51e44bdd3ca7927ccaaab&#34;&gt;Q: 最初にスクラムを実践した時、スクラムを誰も知らなかったはずだが、誰をどうやって説得したのか？&lt;/h2&gt;
+
+&lt;p&gt;A: 前もってスクラムを隠しプロジェクト (カバープロジェクト) で実践していた。そういうところで成功して実績を立てておき、良い噂を流した。&lt;/p&gt;
+
+&lt;p&gt;今は時代が変わったから、そんなことする必要は無い。&lt;a href=&#34;https://secure.standishgroup.com/reports/reports.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://secure.standishgroup.com/reports/reports.php&#39;, &#39;Standish Group のレポート&#39;]);&#34; &gt;Standish Group のレポート&lt;/a&gt;を買えば、マネジメントレベルの成功例がたくさん書いてある。あらゆるケーススタディや実績例を学べる。&lt;/p&gt;
+
+&lt;h2 id=&#34;q-エンタープライズスクラムのスプリントの長さはどれくらい:22e56902b6d51e44bdd3ca7927ccaaab&#34;&gt;Q: エンタープライズスクラムのスプリントの長さはどれくらい？&lt;/h2&gt;
+
+&lt;p&gt;A: 通常のスクラムと変わらない。Salesforce は1日おきにミーティングを行い、4週間のスプリントを回している。デイリースクラムに人を集めるのが難しいかもしれないが、とにかく適切な人を参加させること。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SGT2014 基調講演「エンタープライズ・スクラム: 企業活動にスクラムを」</title>
+      <link>http://1000k.github.io/2014/01/17/sgt2014-keynote1/</link>
+      <pubDate>Fri, 17 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/17/sgt2014-keynote1/</guid>
+      <description>
+
+&lt;p&gt;1/14～1/15にかけて行われた &lt;a href=&#34;http://scrumgatheringtokyo.org/2014/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://scrumgatheringtokyo.org/2014/&#39;, &#39;Regional Scrum Gathering Tokyo 2014&#39;]);&#34; &gt;Regional Scrum Gathering Tokyo 2014&lt;/a&gt; に参加してきました。素晴らしいアイディアを数多く得ることができました。&lt;/p&gt;
+
+&lt;p&gt;自分の知識の整理も兼ねて、その幾つかを共有します。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/mike_beedle_and_1000kei.jpg&#34; alt=&#34;Mike Beedle と記念写真&#34; width=&#34;400&#34; height=&#34;327&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;(↑Mike Beedle と撮った記念写真)&lt;/p&gt;
+
+&lt;p&gt;まずは1日目に行われた、&lt;a href=&#34;http://www.scrumalliance.org/community/profile/mbeedle&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.scrumalliance.org/community/profile/mbeedle&#39;, &#39;Mike Beedle&#39;]);&#34; &gt;Mike Beedle&lt;/a&gt; 氏による基調講演です。&lt;/p&gt;
+
+&lt;p&gt;Mike は2001年から &lt;a href=&#34;http://www.newgovernance.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.newgovernance.com/&#39;, &#39;New Governanace 社&#39;]);&#34; &gt;New Governanace 社&lt;/a&gt; の CEO としてエンタープライズスクラムを実践しており、全てのビジネスプロセスをスクラムで実践しています。講演ではその効果とやり方を解説されました。&lt;/p&gt;
+
+&lt;p&gt;以下に印象に残ったフレーズをメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;金言と苦言:c4a84ae4001768191e1418635d0eceeb&#34;&gt;金言と苦言&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;「唯一変わらないのは、変わること、変わり続けること、変わることは避けられないことである。これが今の社会を支配している要因なのだ。」&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&amp;#8212; アイザック・アシモフ&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;「&lt;a href=&#34;http://www.quotes.net/quote/8532&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.quotes.net/quote/8532&#39;, &#39;必ずしも変わる必要はない。生き残ることは強制ではないから&#39;]);&#34; &gt;必ずしも変わる必要はない。生き残ることは強制ではないから&lt;/a&gt;」&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&amp;#8212; エドワード・デミング&lt;/p&gt;
+
+&lt;h2 id=&#34;売上の大半は新製品から生まれている:c4a84ae4001768191e1418635d0eceeb&#34;&gt;売上の大半は新製品から生まれている&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.prod-dev.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.prod-dev.com/&#39;, &#39;Product Development Institute Inc.&#39;]);&#34; &gt;Product Development Institute Inc.&lt;/a&gt; (プロダクト開発のコンサル会社) が&lt;a href=&#34;http://www.stage-gate.net/downloads/working_papers/wp_32.pdf&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;,&#39;download&#39;,&#39;http://www.stage-gate.net/downloads/working_papers/wp_32.pdf&#39;]);&#34; &gt;2012年に発表したレポート&lt;/a&gt; によると、ビジネスの利益の比率は驚くべき結果となっている。&lt;/p&gt;
+
+&lt;p&gt;平均すると、3年以内に作った新製品が売上の27.5%を占めている。トップ20%企業ではその割合は38%になり、利益の42.4%が新製品から得られている。さらにトップ20%企業の「5年間の新製品からの利益率」を見ると、収入と利益のほぼ70%は新製品から生まれている。&lt;/p&gt;
+
+&lt;p&gt;つまり、現代では売上の多くは新製品から生まれている。逆に言うと、新製品が生み出せない場合は利益が確保できない。&lt;/p&gt;
+
+&lt;h2 id=&#34;スクラムは会社の素早い変革を可能にする:c4a84ae4001768191e1418635d0eceeb&#34;&gt;スクラムは会社の素早い変革を可能にする&lt;/h2&gt;
+
+&lt;p&gt;勝者はイノベーションを、より速く、より効率的に生み出している。利益と収入は、イノベーションの速度と効率性と柔軟性に直接リンクしている。Nokia, Motorola などはこの点で成功できなかった。&lt;/p&gt;
+
+&lt;p&gt;スクラムは高い利益を得るための、素早い変革を可能にする方法である。&lt;/p&gt;
+
+&lt;h2 id=&#34;エンタープライズスクラムとは:c4a84ae4001768191e1418635d0eceeb&#34;&gt;エンタープライズスクラムとは？&lt;/h2&gt;
+
+&lt;p&gt;パラメータ化されたスクラムの包括的な応用。様々なビジネス環境で利用できる。&lt;/p&gt;
+
+&lt;p&gt;1993年に Jeff Sutherland が組織パターン (by Jimm Coplien) と包摂アーキテクチャ (by Rod Brooks) を組み合わせて作り、実践した。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.mountaingoatsoftware.com/blog/agile-succeeds-three-times-more-often-than-waterfall&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.mountaingoatsoftware.com/blog/agile-succeeds-three-times-more-often-than-waterfall&#39;, &#39;2012年に Standish Group が発表した The CHAOS Manifesto&#39;]);&#34; &gt;2012年に Standish Group が発表した The CHAOS Manifesto&lt;/a&gt;を見ると、「プロジェクトの成功率」は、ウォーターフォールが14%なのに対して、アジャイルプロジェクトでは42%に達している。&lt;/p&gt;
+
+&lt;p&gt;伝統的な手法では分割されていた多くのプロセス (戦略設定、マーケティング、製品開発、フィードバック等)は、スクラム(&lt;a href=&#34;http://www.researchgate.net/publication/4231052_Future_of_scrum_parallel_pipelining_of_sprints_in_complex_projects/file/504635217707db28aa.pdf&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;,&#39;download&#39;,&#39;http://www.researchgate.net/publication/4231052_Future_of_scrum_parallel_pipelining_of_sprints_in_complex_projects/file/504635217707db28aa.pdf&#39;]);&#34; &gt;type C Scrum&lt;/a&gt;) においては全てが内包され同時に実行されるようになっている。また、組織体系も「戦略部署」「マーケティング部」という分け方をせず、プロダクト毎に機能横断型なチームを作っていくようになる。&lt;/p&gt;
+
+&lt;p&gt;今は分離して行っているプロセスも、これからの世界ではすべてを同時に行う必要があるのだ。&lt;/p&gt;
+
+&lt;p&gt;エンタープライズスクラムは既に数千の実績がある。IT業界だけでなく、監査、保険、製薬業界など多岐にわたる。&lt;/p&gt;
+
+&lt;h2 id=&#34;スケーリング:c4a84ae4001768191e1418635d0eceeb&#34;&gt;スケーリング&lt;/h2&gt;
+
+&lt;p&gt;スクラムチームは再帰的スクラム (Scrum of Scrum または &lt;a href=&#34;http://www.scrumalliance.org/system/slides/52/original/Scrumbrella%20-%20Scaling%20Scrum.pdf?1319033124&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.scrumalliance.org/system/slides/52/original/Scrumbrella%20-%20Scaling%20Scrum.pdf?1319033124&#39;, &#39;Scrumbrella&#39;]);&#34; &gt;Scrumbrella&lt;/a&gt;) によってスケールする。&lt;/p&gt;
+
+&lt;p&gt;スクラムチームが増えたら、階層バックログを作る。上位のバックログアイテムを個々のチームにアサインし、それぞれのチームでそれをブレークダウンしたバックログを作る。デイリースクラム等で同期を忘れずに行うこと。&lt;/p&gt;
+
+&lt;p&gt;入れ子の改善サイクルを使って、常に改善すること。具体的には、年単位、四半期単位、月単位、週単位のふりかえりを行う。&lt;/p&gt;
+
+&lt;p&gt;リリース計画作りには大部屋 (関係者一同が同じ空間に集う) が有効だが、チームの人数が増えると困難になる。従って、ハイレベルリリース計画とローレベル計画に分けて、必要な人だけで行うようにすると良い。&lt;/p&gt;
+
+&lt;p&gt;計画ができた後の見積もり方法は、ただのスクラムと同じ。&lt;/p&gt;
+
+&lt;p&gt;なお、ベロシティはチームごとのローカルベロシティと、全チーム合計のグローバルベロシティの2つを測定すること。この2つのベロシティを使って、スプリント毎に納期とスコープの再見積もりを行う。&lt;/p&gt;
+
+&lt;h2 id=&#34;大胆な予言:c4a84ae4001768191e1418635d0eceeb&#34;&gt;大胆な予言&lt;/h2&gt;
+
+&lt;p&gt;エンタープライズスクラムは、2020年までにデファクトスタンダードになり、Global 5000 企業の80%が採用するだろう。これは数年前から Jeff と野中郁次郎が述べている。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;密度が非常に高い講演でした。特に印象に残ったのは「5年間の新製品が売上の70%を占めている」という数値です。イノベーションを生み出せない企業が困窮していく根拠がわかりました。&lt;/p&gt;
+
+&lt;p&gt;エンタープライズスクラムについては前知識がありませんでしたが、この講演で概要を掴むことが出来ました。組織は Scrum of Scrum でスケーリングしつつ、多くのパラメータを使ってビジネスを計測し、方針決めに使うようです。このパラメータは発表資料には大量に書いてあるのですが、具体的にいつどうやって使うのかピンと来ませんでした。後で調査してみます。&lt;/p&gt;
+
+&lt;p&gt;なお、講演後の質疑応答も非常に良い内容だったので、&lt;a href=&#34;http://blog.1000k.net/2014/01/17/mike-beedle-%e3%81%b8%e3%81%ae%e8%b3%aa%e5%95%8f/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2014/01/17/mike-beedle-%e3%81%b8%e3%81%ae%e8%b3%aa%e5%95%8f/&#39;, &#39;Mike Beedle への質問&#39;]);&#34; &gt;Mike Beedle への質問&lt;/a&gt;にまとめました。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Agile Samurai Base Camp 2013 参加レポート</title>
+      <link>http://1000k.github.io/2013/12/16/agile-samurai-base-camp-2013-report/</link>
+      <pubDate>Mon, 16 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/16/agile-samurai-base-camp-2013-report/</guid>
+      <description>
+
+&lt;p&gt;レポートが遅れましたが、12/8 (日) に開催された &lt;a href=&#34;http://www.agilesamuraibasecamp.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.agilesamuraibasecamp.org/&#39;, &#39;Agile Samurai Base Camp&#39;]);&#34; &gt;Agile Samurai Base Camp&lt;/a&gt; に参加してきました。「テスト駆動開発コース」と「インセプションデッキコース」の2つがありましたが、私は後者に参加しました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4274068560/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4274068560&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4274068560/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4274068560&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;「アジャイルサムライ」&#39;]);&#34; &gt;「アジャイルサムライ」&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=1000k-22&amp;#038;l=as2&amp;#038;o=9&amp;#038;a=4274068560&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;の内容は1年半ほど前から実践しており、だいぶ身に付いてはいたのですが、ワークショップの中でその価値を再認識させられました。「エレベーターピッチはビジネス側のゴールを示し、パッケージデザインは顧客にとってのゴールを示す」という表現はしっくり来ました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/nawoto&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/nawoto&#39;, &#39;西村直人さん&#39;]);&#34; &gt;西村直人さん&lt;/a&gt;によるワークショップや、&lt;a href=&#34;https://twitter.com/papanda&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/papanda&#39;, &#39;市谷聡啓さん&#39;]);&#34; &gt;市谷聡啓さん&lt;/a&gt;による&lt;a href=&#34;http://www.amazon.co.jp/gp/product/427406932X/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=427406932X&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/427406932X/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=427406932X&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;「リーン開発の現場」&#39;]);&#34; &gt;「リーン開発の現場」&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=1000k-22&amp;#038;l=as2&amp;#038;o=9&amp;#038;a=427406932X&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;のエピソードなども大変参考になりましたが、特に3名のスクラム実践者が経験談を話すセッションが参考になりました。それぞれのお話の簡単なまとめを共有します。&lt;/p&gt;
+
+&lt;h3 id=&#34;中佐藤-麻記子-さん:aeb03dc5a51eccc7b018530813e3ea50&#34;&gt;中佐藤 麻記子 さん&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4798130613/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4798130613&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4798130613/ref=as_li_ss_tl?ie=UTF8&amp;#038;camp=247&amp;#038;creative=7399&amp;#038;creativeASIN=4798130613&amp;#038;linkCode=as2&amp;#038;tag=1000k-22&#39;, &#39;ディシプリンド・アジャイル・デリバリー エンタープライズ・アジャイル実践ガイド (Object Oriented SELECTION)&#39;]);&#34; &gt;ディシプリンド・アジャイル・デリバリー エンタープライズ・アジャイル実践ガイド (Object Oriented SELECTION)&lt;/a&gt; &lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=1000k-22&amp;#038;l=as2&amp;#038;o=9&amp;#038;a=4798130613&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;の翻訳者。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;どんなプロジェクトでも必ずやるべきこと:「目標を決める→最初のルールを決める→ルールの変更方法のルールを決める」
+
+&lt;ul&gt;
+&lt;li&gt;スクラムで置き換えれば、「インセプションデッキを作る→ロールを決める→いつレトロスペクティブを開催するか決める」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;どんなプロジェクト体制だろうと、定期的なふりかえりは必須！&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;しばたひろし-a-href-https-twitter-com-hsbt-onclick-gaq-push-trackevent-outbound-article-https-twitter-com-hsbt-hsbt-hsbt-a-さん:aeb03dc5a51eccc7b018530813e3ea50&#34;&gt;しばたひろし (&lt;a href=&#34;https://twitter.com/hsbt&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/hsbt&#39;, &#39;@hsbt&#39;]);&#34; &gt;@hsbt&lt;/a&gt;) さん&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;paperboy &amp;amp; co. にスクラムを普及させた時にやったこと:
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://twitter.com/hiranabe&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://twitter.com/hiranabe&#39;, &#39;平鍋健児&#39;]);&#34; &gt;平鍋健児&lt;/a&gt;さんのスクラム研修を管理職クラスに受講させた。&lt;/li&gt;
+&lt;li&gt;プロダクトオーナー研修も社内で開催した。&lt;/li&gt;
+&lt;li&gt;エレベーターピッチ、リーンキャンバス、アジャイルマニフェストなどを、社員の目につくところに貼りまくった。これによって職場の意識が変わった。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;「やらないことリスト」を作っておかないと、Web サービスの開発は永遠に終わらない。&lt;/li&gt;
+&lt;li&gt;エレベーターピッチを暗記できないサービスはやばい。
+
+&lt;ul&gt;
+&lt;li&gt;EP が無いチームに OJT を送り込むと、業務の理解に1週間以上かかる。EP があるチームなら、2～3時間で理解できる。&lt;/li&gt;
+&lt;li&gt;ビジョンがわかれば、新人でもできることはたくさん見つかる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;インセプションデッキは、意思疎通のためのコンテキストとして非常に便利。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;mti-岩崎さん:aeb03dc5a51eccc7b018530813e3ea50&#34;&gt;MTI 岩崎さん&lt;/h3&gt;
+
+&lt;p&gt;スクラムを普及する時に体験したつまづき&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;最初のつまづき:
+
+&lt;ul&gt;
+&lt;li&gt;人が集まらない。&lt;/li&gt;
+&lt;li&gt;「われわれはなぜここにいるのか？」と聞くと「仕事だから」と返される。&lt;/li&gt;
+&lt;li&gt;会議は静寂に包まれており、PO の独演会になっている。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;対策:
+
+&lt;ul&gt;
+&lt;li&gt;イベントの参加者は確実に参加させるように、2週間前から予約する。&lt;/li&gt;
+&lt;li&gt;まずはやる気のある人を対象に勉強会やワークショップを行う。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;次のつまづき:
+
+&lt;ul&gt;
+&lt;li&gt;人が集まりすぎる。&lt;/li&gt;
+&lt;li&gt;インセプションデッキの議論が白熱して作り終わらない。早くサービスを作って欲しいのに！&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;対策:
+
+&lt;ul&gt;
+&lt;li&gt;バランスを見るファシリテーターが必要。ゴールが無いのはダメだが、長時間話し合いすぎるのもダメ。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;まずは「みんなでやってみる」こと。「改善を続ける」こと。ファシリテーターを根気よく探し、育てること。&lt;/li&gt;
+&lt;li&gt;それでもダメなことはある。くじけないこと。謙虚と自省が大事。思い上がりは NG。&lt;/li&gt;
+&lt;li&gt;周囲の巻き込み方:
+
+&lt;ul&gt;
+&lt;li&gt;スクラムに興味のもってくれた人 (イノベーター、アーリーアダプター) を育てる。&lt;/li&gt;
+&lt;li&gt;周りの成功体験を増やす。&lt;/li&gt;
+&lt;li&gt;口コミが広がるように、根回しをする。&lt;/li&gt;
+&lt;li&gt;ズルく、クレバーに伝染させる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;完全なインセプションデッキを作るのは困難。効果的な議論のネタとして使うだけでも十分効果的。
+
+&lt;ul&gt;
+&lt;li&gt;「1時間でリーンキャンバスのこの部分を埋めてみよう」など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;私は半年ほど前から会社にアジャイルマインドを広めようとしており、日々苦闘しているのですが、今回のセミナーで大変元気付けられました。具体的なアイディアも仕入れることができました。登壇者の皆さん、ありがとうございました。ぜひまた開催していただきたい。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

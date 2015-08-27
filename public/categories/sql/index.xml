@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sql on 1000g</title>
+    <link>http://1000k.github.io/categories/sql/</link>
+    <description>Recent content in Sql on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 25 Jul 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/sql/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MySQLのINTEGER型カラムに0を入れると予期しないWHERE句にヒットする</title>
+      <link>http://1000k.github.io/2012/07/25/implicit-convension-of-integer-column-in-mysql/</link>
+      <pubDate>Wed, 25 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/07/25/implicit-convension-of-integer-column-in-mysql/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;「MySQLの暗黙の型変換には気をつけろ！」&lt;/strong&gt;というお話です。&lt;/p&gt;
+
+&lt;p&gt;下記のように、INTEGER型のカラムと、TEXT型のカラムを持つ簡単なテーブルがある場合を考えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| id    | int(11) | YES  |     | NULL    |       |
+| name  | text    | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;入力したレコードは下記の通り。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; INSERT INTO users VALUES(0, &amp;quot;name0&amp;quot;);
+mysql&amp;gt; INSERT INTO users VALUES(0, &amp;quot;name1&amp;quot;);
+
++------+-------+
+| id   | name  |
++------+-------+
+|    0 | name0 |
+|    1 | name1 |
++------+-------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここで、下記のようなクエリを投げてみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SELECT * FROM users WHERE id = &#39;mojamoja&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;普通に考えれば、何もヒットするはずはありません。&lt;/p&gt;
+
+&lt;p&gt;ところが結果は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+------+-------+
+| id   | name  |
++------+-------+
+|    0 | name0 |
++------+-------+
+
+1 row in set, 1 warning (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜか「id = 0」のカラムにヒットします。&lt;/p&gt;
+
+&lt;p&gt;絶対ヒットしてほしくないのですが。&lt;/p&gt;
+
+&lt;p&gt;よく見ると、「1 warning」と書いてあります。&lt;/p&gt;
+
+&lt;p&gt;SHOW WARNINGSコマンドで確かめてみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SHOW WARNINGS;
++---------+------+--------------------------------------------+
+| Level   | Code | Message                                    |
++---------+------+--------------------------------------------+
+| Warning | 1292 | Truncated incorrect DOUBLE value: &#39;uhouho&#39; |
++---------+------+--------------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「不正なDOUBLE型の値&amp;#8217;uhouho&amp;#8217;を切り捨てました」と書いてあります。どうやら、MySQLの_暗黙の型変換_が悪さをしているようです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#39;]);&#34; title=&#34;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#34;&gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&lt;/a&gt; に淡々と箇条書きされていることを引用します。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;比較の演算の両方の引数がストリングの場合、それらはストリングとして比較されます。&lt;/li&gt;
+&lt;li&gt;両方の引数が整数の場合、それらは整数として比較されます。&lt;/li&gt;
+&lt;li&gt;&amp;#8230; 中略 &amp;#8230;&lt;/li&gt;
+&lt;li&gt;他のすべてのケースでは、引数は浮動少数点 ( 実 ) 数として比較されます。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SELECT 1 &amp;gt; &#39;6x&#39;;
+        -&amp;gt; 0
+mysql&amp;gt; SELECT 7 &amp;gt; &#39;6x&#39;;
+        -&amp;gt; 1
+mysql&amp;gt; SELECT 0 &amp;gt; &#39;x6&#39;;
+        -&amp;gt; 0
+mysql&amp;gt; SELECT 0 = &#39;x6&#39;;
+        -&amp;gt; 1                -- 文字列「&#39;x6&#39;」が実数「0」に変換されてしまっている
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この被害に遭いたくなければ、まずは&lt;strong&gt;カラムの型と違う型をWHERE句に指定しない&lt;/strong&gt;ようにしましょう。&lt;/p&gt;
+
+&lt;p&gt;そのほかの対策としては、MySQLのSQLモードを設定することで、型チェックを厳格にすることもできるようです（未検証）。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:6f5857c1e488bfc7db27046670c471b9&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hnw/20120405&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hnw/20120405&#39;, &#39;MySQLの文字列型から数値型への自動型変換が意味不明すぎる &amp;#8211; hnwの日記&#39;]);&#34; title=&#34;MySQLの文字列型から数値型への自動型変換が意味不明すぎる - hnwの日記&#34;&gt;MySQLの文字列型から数値型への自動型変換が意味不明すぎる &amp;#8211; hnwの日記&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;文字列が浮動小数点に切り替えられる問題を詳しく解説。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.tokumaru.org/d/20090924.html#p01&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.tokumaru.org/d/20090924.html#p01&#39;, &#39;undefined &amp;#8211; 徳丸浩の日記(2009-09-24)&#39;]);&#34; title=&#34;undefined - 徳丸浩の日記(2009-09-24)&#34;&gt;undefined &amp;#8211; 徳丸浩の日記(2009-09-24)&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SQLインジェクション対策時にはまりやすいことの説明。値を文字列にキャストしているときに遭遇しうる不具合について解説。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード&#39;]);&#34; title=&#34;MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード&#34;&gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;値チェックのモード。不正な日付や0除算などのチェックを厳格にできる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html&#39;, &#39;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#39;]);&#34; title=&#34;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&#34;&gt;MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MySQL 5.1 の boolean 型を検証</title>
+      <link>http://1000k.github.io/2010/11/15/anatomy-of-mysql-boolean-type/</link>
+      <pubDate>Mon, 15 Nov 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/11/15/anatomy-of-mysql-boolean-type/</guid>
+      <description>
+
+&lt;p&gt;MySQL にて BOOLEAN 型のフィールドを作りたいと思ったのですが、Googleで調べると「MySQL の BOOLEAN 型は実質 tinyint(1) と同じ」といったことが書いてありました。&lt;/p&gt;
+
+&lt;p&gt;また、「MySQL で厳密な BOOLEAN 型を表現したければ、ENUM(&amp;#8216;TRUE&amp;#8217;, &amp;#8216;FALSE&amp;#8217;) を使った方がいい」とも書いてありました。&lt;/p&gt;
+
+&lt;p&gt;個人的には SQL 文に「WHERE flag IS TRUE」と書いて SELECT できれば文句ありません。そういった挙動ができるのか確認しました。&lt;/p&gt;
+
+&lt;p&gt;実験した環境の MySQL バージョンは 5.1.41 です。&lt;/p&gt;
+
+&lt;h2 id=&#34;データはどのように格納されるのか:fac054033163afd225cf9e287567f3c9&#34;&gt;データはどのように格納されるのか？&lt;/h2&gt;
+
+&lt;p&gt;以下のように、連番とブール値を対に持つテーブルを作りました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CREATE TABLE boolean_test (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `flag` BOOLEAN,
+    PRIMARY KEY (`id`)
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;テストデータは下記の通りです。ブーリアン（TRUE/FALSE）のほか、整数値や NULL でもどうなるのか実験します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INSERT INTO boolean_test VALUES (1, TRUE);
+INSERT INTO boolean_test VALUES (2, FALSE);
+INSERT INTO boolean_test VALUES (3, 1);
+INSERT INTO boolean_test VALUES (4, 0);
+INSERT INTO boolean_test VALUES (5, NULL);
+INSERT INTO boolean_test VALUES (6, 127);
+INSERT INTO boolean_test VALUES (7, 128);
+INSERT INTO boolean_test VALUES (8, 2147483647); -- 4 byteの最大値
+INSERT INTO boolean_test VALUES (9, 2147483648); -- 4 byteの最大値+1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;作成結果は下のようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SELECT * FROM boolean_test;
++----+------+
+| id | flag |
++----+------+
+|  1 |    1 |
+|  2 |    0 |
+|  3 |    1 |
+|  4 |    0 |
+|  5 | NULL |
+|  6 |  127 |
+|  7 |  127 |
+|  8 |  127 |
+|  9 |  127 |
++----+------+
+9 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この時点で、TRUE は 1 として、FALSE は 0 として格納されています。&lt;/p&gt;
+
+&lt;p&gt;また、どんなに大きな値を入れても 127 で止まっています。&lt;/p&gt;
+
+&lt;p&gt;確かに MySQL 内部では tinyint(1) として管理されているのがわかります。&lt;/p&gt;
+
+&lt;p&gt;実際、テーブルを DESCRIBE すると、型は tinyint(1) と表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; DESCRIBE boolean_test;
++-------+------------+------+-----+---------+----------------+
+| Field | Type       | Null | Key | Default | Extra          |
++-------+------------+------+-----+---------+----------------+
+| id    | int(11)    | NO   | PRI | NULL    | auto_increment |
+| flag  | tinyint(1) | YES  |     | NULL    |                |
++-------+------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;boolean型としてselectできるか:fac054033163afd225cf9e287567f3c9&#34;&gt;BOOLEAN型としてSELECTできるか？&lt;/h2&gt;
+
+&lt;h3 id=&#34;検索条件を-で指定してみる:fac054033163afd225cf9e287567f3c9&#34;&gt;検索条件を「=」で指定してみる&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT * FROM boolean_test WHERE flag = TRUE;  -- id:1, 3 がヒット
+SELECT * FROM boolean_test WHERE flag = FALSE; -- id:2, 4 がヒット
+SELECT * FROM boolean_test WHERE flag = 1;     -- id:1, 3 がヒット
+SELECT * FROM boolean_test WHERE flag = 0;     -- id:2, 4 がヒット
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「TRUE = 1」「FALSE = 0」と扱っているようです。その証拠に、値が127のレコードは「flag = TRUE」でもヒットしません。&lt;/p&gt;
+
+&lt;p&gt;→&lt;strong&gt;「flag = TRUE」という条件は、「flag = 1」と同値。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;検索条件を-is-で指定してみる:fac054033163afd225cf9e287567f3c9&#34;&gt;検索条件を「IS」で指定してみる&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT * FROM boolean_test WHERE flag IS TRUE;  -- id:1, 3, 6, 7, 8, 9 がヒット
+SELECT * FROM boolean_test WHERE flag IS FALSE; -- id:2, 4 がヒット
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;0 より大きい値は TRUE として、0 は FALSE として判別される模様。&lt;/p&gt;
+
+&lt;p&gt;→&lt;strong&gt;「flag = TRUE」と「flag IS TRUE」は全く別の結果を返す。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;unknown-はどういう扱いになる:fac054033163afd225cf9e287567f3c9&#34;&gt;UNKNOWN はどういう扱いになる？&lt;/h2&gt;
+
+&lt;p&gt;SQL-99 の定義によると、「BOOLEAN 型は TRUE/FALSE/UNKNOWN の3値で表現される」ようです。&lt;/p&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#39;, &#39;新しい業界標準「SQL99」詳細解説&#39;]);&#34; &gt;新しい業界標準「SQL99」詳細解説&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;SQL99では本来の意味であるTRUE（真）とFALSE（偽）およびUNKNOWN（不明）を値として持つ真理値型が提供される。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;SQL 標準の BOOLEAN カラムには NULL は無いんですね。&lt;/p&gt;
+
+&lt;p&gt;MySQL ではどういう風に呼び出せるのか確かめてみました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT * FROM boolean_test WHERE flag IS UNKNOWN;  -- id: 5 がヒット
+SELECT * FROM boolean_test WHERE flag = UNKNOWN;   -- NG: #1054 - Unknown column &#39;UNKNOWN&#39; in &#39;where clause&#39;
+SELECT * FROM boolean_test WHERE flag = &#39;UNKNOWN&#39;; -- ???: id:2, 4 がヒット
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;NULL のフィールドが UNKNOWN として表現されているようです。&lt;/p&gt;
+
+&lt;p&gt;また、2行目のように「= UNKNOWN」と指定するとエラーが出ました。「IS UNKNOWN」で指定しなければならないようです。&lt;/p&gt;
+
+&lt;p&gt;よくわからないのが3行目。id:2, 4はFALSEのレコードなので、全くヒットしてほしくないのですが。&lt;/p&gt;
+
+&lt;p&gt;このあたりは MySQL の仕様をよく確認しないとわかりませんが、まず入力しないだろうということで、この際無視します。&lt;/p&gt;
+
+&lt;h2 id=&#34;考察:fac054033163afd225cf9e287567f3c9&#34;&gt;考察&lt;/h2&gt;
+
+&lt;p&gt;やはり MySQL の BOOLEAN 型は tinyint(1) と同じようです。&lt;/p&gt;
+
+&lt;p&gt;Boolean 型と思ってクエリを投げると意図しない結果が返ってきてしまう危険性があるので、注意が必要です。&lt;/p&gt;
+
+&lt;p&gt;また、ENUM 型は検証していませんが、SQL標準（SQL99）ではサポートされていないため、プログラムの互換性を考えると積極的に使う気が起きません。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:fac054033163afd225cf9e287567f3c9&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;MySQL で Boolean 型を表したければ、少し気持ち悪いですが tinyint(1) でカラムを作った方が良いようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:fac054033163afd225cf9e287567f3c9&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://slashdot.jp/comments.pl?threshold=0&amp;mode=thread&amp;commentsort=1&amp;sid=446159&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://slashdot.jp/comments.pl?threshold=0&amp;mode=thread&amp;commentsort=1&amp;sid=446159&#39;, &#39;コメント: mySQLには、boolean型が無いなんて・・ &amp;#8211; スラッシュドット・ジャパン&#39;]);&#34; title=&#34;コメント: mySQLには、boolean型が無いなんて・・ - スラッシュドット・ジャパン&#34;&gt;コメント: mySQLには、boolean型が無いなんて・・ &amp;#8211; スラッシュドット・ジャパン&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/fnetwork/tokusyuu/01sql99/sql99_2a.html&#39;, &#39;新しい業界標準「SQL99」詳細解説&#39;]);&#34; title=&#34;新しい業界標準「SQL99」詳細解説&#34;&gt;新しい業界標準「SQL99」詳細解説&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.geocities.jp/ky_webid/c/010.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.geocities.jp/ky_webid/c/010.html&#39;, &#39;Ｃ言語編　第１０章　変数のサイズ&#39;]);&#34; title=&#34;Ｃ言語編　第１０章　変数のサイズ&#34;&gt;Ｃ言語編　第１０章　変数のサイズ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nslabs.jp/book2-sql-types.rhtml&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.nslabs.jp/book2-sql-types.rhtml&#39;, &#39;追補: SQLデータ型の一覧 | Netsphere Laboratories&#39;]);&#34; &gt;追補: SQLデータ型の一覧 | Netsphere Laboratories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SQLite3で現在時刻をINSERTする</title>
+      <link>http://1000k.github.io/2010/07/05/insert-current-time-in-sqlite3/</link>
+      <pubDate>Mon, 05 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/05/insert-current-time-in-sqlite3/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;datetime(&amp;#8216;now&amp;#8217;, &amp;#8216;localtime&amp;#8217;)&lt;/strong&gt;を使う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INSERT INTO posts (body, created, modified)
+VALUES (&#39;ウソ文章&#39;, datetime(&#39;now&#39;, &#39;localtime&#39;), datetime(&#39;now&#39;, &#39;localtime&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、この値はスキーマ定義時にDEFAULT値に設定することなどもできるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:f8899ebbf568af077f83512b36b60fed&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.tamandua-webtools.net/sqlite3-date.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.tamandua-webtools.net/sqlite3-date.html&#39;, &#39;SQLite3 での日付処理&#39;]);&#34; title=&#34;SQLite3 での日付処理&#34;&gt;SQLite3 での日付処理&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[SQL]SELECT文の処理の順番</title>
+      <link>http://1000k.github.io/2010/05/25/execution-order-of-select/</link>
+      <pubDate>Tue, 25 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/25/execution-order-of-select/</guid>
+      <description>
+
+&lt;p&gt;SELECT文をよく使うわりに、内部でどういう順で処理されているのか知らなかったので調べました。メモしておきます。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;FROM&lt;/li&gt;
+&lt;li&gt;WHERE&lt;/li&gt;
+&lt;li&gt;GROUP BY&lt;/li&gt;
+&lt;li&gt;HAVING&lt;/li&gt;
+&lt;li&gt;SELECT&lt;/li&gt;
+&lt;li&gt;UNION等の集合演算&lt;/li&gt;
+&lt;li&gt;ORDER BY&lt;/li&gt;
+&lt;li&gt;DISTINCT&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;参考:07ceee9a1b936a2d0a03452dc239ee08&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://java-etc.cocolog-nifty.com/blog/2007/02/post_a311.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://java-etc.cocolog-nifty.com/blog/2007/02/post_a311.html&#39;, &#39;ＳＱＬの魔術: Javaの日々&#39;]);&#34; title=&#34;ＳＱＬの魔術: Javaの日々&#34;&gt;ＳＱＬの魔術: Javaの日々&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.postgresql.jp/document/pg814doc/html/sql-select.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.postgresql.jp/document/pg814doc/html/sql-select.html&#39;, &#39;SELECT&#39;]);&#34; title=&#34;SELECT&#34;&gt;SELECT&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

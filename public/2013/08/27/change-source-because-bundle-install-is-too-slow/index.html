@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> bundle installが遅すぎたのでsourceを変えた &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/08/27/change-source-because-bundle-install-is-too-slow/">bundle installが遅すぎたのでsourceを変えた</a></h2>
+        <div class="post-content">
+          
+
+<p>Rails 4 アプリを作ろうとして <code>rails new</code> コマンドを叩いたら、<code>bundle install</code> のフェーズが永遠に終わらず老人になりそうでした。</p>
+
+<p>どうやら gem リポジトリの <a href="http://rubygems.org" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://rubygems.org', 'http://rubygems.org']);" ><a href="http://rubygems.org">http://rubygems.org</a></a> のレスポンスが遅すぎるようです。</p>
+
+<p>そこで、Rails アプリの作成時は <code>bundler install</code> を省略し、Gemfile をいじってもっと早いリポジトリを参照するように変更したら、無事インストールできました。</p>
+
+<h2 id="具体的な手順:52707943b292ea793cda924d2a6b7275">具体的な手順</h2>
+
+<pre><code>$ rails new mojamoja --skip-bundle
+$ cd mojamoja
+$ vim Gemfile
+</code></pre>
+
+<p><code>Gemfile</code> の1行目を以下のように変更する。</p>
+
+<pre><code># source 'http://rubygems.org'
+source &quot;http://bundler-api.herokuapp.com&quot;
+</code></pre>
+
+<p>これでインストールできるようになります。</p>
+
+<pre><code>$ bundle install
+</code></pre>
+
+<h2 id="2013-09-01-追加-rhel-centos-6-x-特有のバグ:52707943b292ea793cda924d2a6b7275">(2013-09-01 追加) RHEL/CentOS 6.x 特有のバグ</h2>
+
+<p>RHEL/CentOS 6.x を使っている場合、ネットワークの解決が異常に遅くなることがあります。<code>/etc/resolve.conf</code> に以下の1行を追加すると解決するようです。</p>
+
+<pre><code>options single-request-reopen
+</code></pre>
+
+<h2 id="参考:52707943b292ea793cda924d2a6b7275">参考</h2>
+
+<ul>
+<li><a href="http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb', 'Ruby &#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &#8211; Qiita [キータ]']);" >Ruby &#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &#8211; Qiita [キータ]</a></li>
+<li><a href="http://www.ideaxidea.com/archives/2013/08/resolv.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.ideaxidea.com/archives/2013/08/resolv.html', 'Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA']);" >Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

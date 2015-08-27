@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apache on 1000g</title>
+    <link>http://1000k.github.io/tags/apache/</link>
+    <description>Recent content in Apache on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 28 Jan 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/apache/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Apache2 にオレオレ証明書で HTTPS アクセスできるようにする手順</title>
+      <link>http://1000k.github.io/2014/01/28/how-to-access-apaches2-with-self-certification/</link>
+      <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/28/how-to-access-apaches2-with-self-certification/</guid>
+      <description>
+
+&lt;p&gt;よくやるけどすぐ忘れるのでメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証環境:1ec5ca8028cd506870889668379eecae&#34;&gt;検証環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 6.3&lt;/li&gt;
+&lt;li&gt;Apache 2.2.26&lt;/li&gt;
+&lt;li&gt;設定ファイルの格納フォルダ: &lt;code&gt;/usr/local/apache2/conf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;httpd.conf に &lt;code&gt;Include conf.d/*.conf&lt;/code&gt; を書き、&lt;code&gt;/usr/local/apache2/conf.d/*.conf&lt;/code&gt; を自動ロードできるようにしてあります。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;チュートリアル:1ec5ca8028cd506870889668379eecae&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;p&gt;オレオレ証明書を作る。(有効期限は10年)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /usr/local/apache2/conf/
+$ sudo mkdir ssl.crt
+$ sudo mkdir ssl.key
+$ sudo sh -c &amp;quot;openssl genrsa 2048 &amp;gt; ssl.key/server.key&amp;quot;
+$ sudo sh -c &amp;quot;openssl req -new -key ssl.key/server.key &amp;gt; server.csr&amp;quot;
+(質問は全てデフォルトのまま Enter)
+$ sudo sh -c &amp;quot;openssl x509 -days 3650 -req -signkey ssl.key/server.key &amp;amp;lt; server.csr &amp;gt; ssl.crt/server.crt&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;https アクセスを有効にする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo sh -c &amp;quot;cat &amp;amp;lt;&amp;amp;lt;EOT &amp;gt; /usr/local/apache2/conf.d/ssl.conf
+NameVirtualHost *:443
+Listen 443
+
+&amp;amp;lt;VirtualHost *:443&amp;gt;
+    DocumentRoot /var/www
+
+    SSLEngine on
+    SSLCertificateFile conf/ssl.crt/server.crt
+    SSLCertificateKeyFile conf/ssl.key/server.key
+&amp;amp;lt;/VirtualHost&amp;gt;
+EOT&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apache を再起動する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service httpd restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ダン！&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:1ec5ca8028cd506870889668379eecae&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://smokycat.info/ubuntu/440&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://smokycat.info/ubuntu/440&#39;, &#39;ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info&#39;]);&#34; &gt;ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/ozuma/20130511/1368284304&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/ozuma/20130511/1368284304&#39;, &#39;オレオレ証明書をopensslで作る（詳細版） &amp;#8211; ろば電子が詰まっている&#39;]);&#34; &gt;オレオレ証明書をopensslで作る（詳細版） &amp;#8211; ろば電子が詰まっている&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VM の共有フォルダ内の 静的ファイルが正しくロードできないときの対処方法</title>
+      <link>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</link>
+      <pubDate>Wed, 20 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</guid>
+      <description>
+
+&lt;p&gt;以下の環境でPHPアプリの開発を行っていたところ、静的コンテンツが正しく反映されない現象に陥りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Oracle VirtualBox で CentOS 6.3 VM を起動&lt;/li&gt;
+&lt;li&gt;ホストOSは Windows 7&lt;/li&gt;
+&lt;li&gt;ホストOS側の &amp;#8220;c:\www\app&amp;#8221; を VM 側の &amp;#8220;/www&amp;#8221; に共有フォルダとしてマウント&lt;/li&gt;
+&lt;li&gt;VM上は Apache 2.2 を稼働させ、PHP アプリサーバーとして利用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この状態でホストOS側で JavaScript などの静的コンテンツを編集し、ブラウザからアプリにアクセスすると、以下のようなエラーが出ました。&lt;/p&gt;
+
+&lt;p&gt;Chrome&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Uncaught SyntaxError: Unexpected end of input
+または
+Uncaught SyntaxError: Unexpected token ILLEGAL
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Firefox&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SyntaxError: unterminated string literal
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ブラウザのデバッグツールで問題のファイルを見ると、なぜか途中でコンテンツが切れていたり、末尾に謎の文字列（Chromeだと「?」で表示される）が追加されていました。&lt;/p&gt;
+
+&lt;p&gt;ただ改行を追加するだけでもこの現象が発生します。&lt;/p&gt;
+
+&lt;p&gt;原因は Apache の &lt;em&gt;EnableSendfile&lt;/em&gt; ディレクティブでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#39;, &#39;EnableSendfile ディレクティブ&#39;]);&#34; &gt;EnableSendfile ディレクティブ&lt;/a&gt; の説明には以下のように書いてあります。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;このディレクティブはクライアントにファイルの内容を送るときに httpd がカーネルの sendfile サポートを使うかどうかを制御します。デフォルトでは、 例えば静的なファイルの配送のように、リクエストの処理にファイルの 途中のデータのアクセスを必要としないときには、Apache は OS が サポートしていればファイルを読み込むことなく sendfile を使って ファイルの内容を送ります。&lt;/p&gt;
+
+&lt;p&gt;ネットワークマウントされた DocumentRoot (例えば NFS や SMB) では、カーネルは自身のキャッシュを使ってネットワークからのファイルを 送ることができないことがあります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;つまり、VirtualBox で共有フォルダが NFS としてマウントされていると、ホストOSで行った変更が正しく反映されないことがあるようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;直し方:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;直し方&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;/etc/httpd/conf/httpd.conf&lt;/em&gt; に以下の1行を追加して、Apache を再起動すればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、ホストOSで変更したファイルが、ゲストOS側のキャッシュを介することなく、正しく反映されるようになります。&lt;/p&gt;
+
+&lt;p&gt;Vagrant + Chef で環境構築が楽にできるようになったから喜んで使っていたら、こんな罠があるとは。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足-enablemmap-ディレクティブ:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;補足: EnableMMAP ディレクティブ&lt;/h2&gt;
+
+&lt;p&gt;私はまだ遭遇していないのですが、&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;EnableMMAP ディレクティブ&#39;]);&#34; &gt;&lt;em&gt;EnableMMAP&lt;/em&gt; ディレクティブ&lt;/a&gt;も Apache をクラッシュさせる危険があるので、Offにしておいた方が良いそうです。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;NFS マウントされた DocumentRoot では、httpd がメモリマップしている間にファイルが削除されたり 短くなったりしたときに起こるセグメンテーションフォールトのために httpd がクラッシュする可能性があります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;結局、httpd.conf に以下の2行を書いておけば不具合は避けられるでしょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+EnableMMAP Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#39;, &#39;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&#39;]);&#34; &gt;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tipshare.info/view/4f3481ee4b21227814000001&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tipshare.info/view/4f3481ee4b21227814000001&#39;, &#39;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&#39;]);&#34; &gt;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;core &amp;#8211; Apache HTTP サーバ&#39;]);&#34; &gt;core &amp;#8211; Apache HTTP サーバ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>XAMPPでBASIC認証を有効にする</title>
+      <link>http://1000k.github.io/2012/07/08/enable-basic-auth-in-xampp/</link>
+      <pubDate>Sun, 08 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/07/08/enable-basic-auth-in-xampp/</guid>
+      <description>
+
+&lt;p&gt;小一時間はまったのでメモ。&lt;/p&gt;
+
+&lt;p&gt;XAMPPPのApacheにBASIC認証をかけたのですが、何度やってもエラーログに下記のように「認証に失敗しました」というエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Sun Jul 08 16:51:31 2012] [error] [client ::1] user uso: authentication failure for &amp;quot;/mojamoja.php&amp;quot;: Password Mismatch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「htpasswd 生成」などでググって出てくるようなツールで作ったパスワードではなぜかダメで、Apache付属の_htpasswd_を使わねばならないようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd c:\xampp\apache\bin
+htpasswd.exe -bc {パスワード生成先のパス} {ID} {パスワード}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうして作成した .htpasswd なら正しく認証できました。&lt;/p&gt;
+
+&lt;p&gt;原因が今ひとつわからないですが、パスワードの暗号化方式がMD5でないといけないのかもしれません。&lt;/p&gt;
+
+&lt;p&gt;（上記のコマンドで生成されるパスワードはMD5）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:cf50432cf2a4769fc0daace11f9afc31&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://d.hatena.ne.jp/ise_daisuke/20080412/1207978885&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/ise_daisuke/20080412/1207978885&#39;, &#39;xamppでローカルでBasic認証 &amp;#8211; 絶対に読んではいけない日記&#39;]);&#34; &gt;xamppでローカルでBasic認証 &amp;#8211; 絶対に読んではいけない日記&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>最新のパッケージをyumでインストールする</title>
+      <link>http://1000k.github.io/2012/01/15/installing-up-to-date-package-by-yum/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/installing-up-to-date-package-by-yum/</guid>
+      <description>
+
+&lt;p&gt;yum公式リポジトリ内の古いApacheやphpではなく、最新版をrpmで入れる方法です。&lt;/p&gt;
+
+&lt;p&gt;下記に記す非公式リポジトリを参照することで、最新のパッケージをyumでインストールできます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.famillecollet.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.famillecollet.com/&#39;, &#39;Remi&#39;]);&#34; &gt;Remi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.jasonlitka.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.jasonlitka.com/&#39;, &#39;Utter Ramblings&#39;]);&#34; &gt;Utter Ramblings&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;なお、これらのサイトで配布されているパッケージの信頼性は公式のリポジトリのものより劣るので、利用の際には注意が必要です。&lt;/p&gt;
+
+&lt;h1 id=&#34;手順:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;手順&lt;/h1&gt;
+
+&lt;h2 id=&#34;remiリポジトリ追加:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;Remiリポジトリ追加&lt;/h2&gt;
+
+&lt;p&gt;RemiリポジトリはEPELリポジトリに依存しているため、両方追加する必要があります。&lt;/p&gt;
+
+&lt;p&gt;最新のダウンロード先は下記から確認してください。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Remi: &lt;a href=&#34;http://rpms.famillecollet.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rpms.famillecollet.com/&#39;, &#39;RepoView: Les RPM de Remi&#39;]);&#34; &gt;RepoView: Les RPM de Remi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;EPEL: &lt;a href=&#34;http://download.fedora.redhat.com/pub/epel/5/i386/&#34;&gt;http://download.fedora.redhat.com/pub/epel/5/i386/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# wget http://rpms.famillecollet.com/enterprise/remi-release-5.rpm
+# wget http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+# rpm -ivh epel-release-5-4.noarch.rpm remi-release-5.rpm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※以前のバージョンのrpmが入っている場合、「rpm -Uvh {パッケージ名}」でアップグレードします。&lt;/p&gt;
+
+&lt;p&gt;これでyumのリポジトリにRemiとEPELを参照できるようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ls /etc/yum.repos.d/
+CentOS-Base.repo       CentOS-Media.repo  epel-testing.repo  remi.repo
+CentOS-Debuginfo.repo  CentOS-Vault.repo  epel.repo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;utterリポジトリ追加:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;Utterリポジトリ追加&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;/etc/yum.repos.d/utter.repo&lt;/strong&gt; を開き、下記のように編集します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[utter]
+name=Jason&#39;s Utter Ramblings Repo
+baseurl=http://www.jasonlitka.com/media/EL$releasever/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=http://www.jasonlitka.com/media/RPM-GPG-KEY-jlitka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で、phpやhttpdの最新版がyumでインストールできるようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;最新パッケージのインストール:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;最新パッケージのインストール&lt;/h2&gt;
+
+&lt;p&gt;yumコマンドに「&amp;#8211;enablerepo={リポジトリ名}」オプションを付けることで、それぞれのリポジトリを参照できます。&lt;/p&gt;
+
+&lt;p&gt;PHPの場合&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum --enablerepo=remi install php
+...
+===================================================================================================================
+ Package                  Arch                 Version                                 Repository             Size
+===================================================================================================================
+Installing:
+ php                      x86_64               5.3.9-1.el5.remi                        remi                  2.8 M
+Installing for dependencies:
+ httpd                    x86_64               2.2.3-53.el5.centos.3                   updates               1.2 M
+ libedit                  x86_64               2.11-2.20080712cvs.el5                  epel                   80 k
+ php-cli                  x86_64               5.3.9-1.el5.remi                        remi                  2.6 M
+ php-common               x86_64               5.3.9-1.el5.remi                        remi                  997 k
+
+Transaction Summary
+===================================================================================================================
+Install       5 Package(s)
+Upgrade       0 Package(s)
+
+Total download size: 7.7 M
+Is this ok [y/N]:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apache2(httpd)の場合&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum --enablerepo=utter install httpd
+...
+===================================================================================================================
+ Package                       Arch                   Version                          Repository             Size
+===================================================================================================================
+Installing:
+ httpd                         x86_64                 2.2.21-jason.1                   utter                 3.2 M
+Installing for dependencies:
+ apr-util-ldap                 x86_64                 1.3.12-1.jason.1                 utter                  20 k
+Updating for dependencies:
+ apr-util                      x86_64                 1.3.12-1.jason.1                 utter                 201 k
+
+Transaction Summary
+===================================================================================================================
+Install       2 Package(s)
+Upgrade       1 Package(s)
+
+Total download size: 3.4 M
+Is this ok [y/N]:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;参考:f0d8039714e0227fd6e46c45b7c77e52&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://hoge001.exblog.jp/13982612/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hoge001.exblog.jp/13982612/&#39;, &#39;hoge001 : CentOS5.5 Apache 2.2.15 インストール&#39;]);&#34; &gt;hoge001 : CentOS5.5 Apache 2.2.15 インストール&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://fedoraproject.org/wiki/About_EPEL/ja&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://fedoraproject.org/wiki/About_EPEL/ja&#39;, &#39;About EPEL/ja &amp;#8211; FedoraProject&#39;]);&#34; &gt;About EPEL/ja &amp;#8211; FedoraProject&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EPELとは？EPELの目的など&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.goofoo.jp/2011/03/556&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.goofoo.jp/2011/03/556&#39;, &#39;yumでremiリポジトリを使えるようにする | グーフー WordPressのためのLinuxノート&#39;]);&#34; &gt;yumでremiリポジトリを使えるようにする | グーフー WordPressのためのLinuxノート&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://pentan.info/server/linux/yum_new.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pentan.info/server/linux/yum_new.html&#39;, &#39;yumで、より新しいパッケージをインストールする方法(CentOS) &amp;#8211; [yum/Linux [Red Hatなど]] ぺんたん info&#39;]);&#34; &gt;yumで、より新しいパッケージをインストールする方法(CentOS) &amp;#8211; [yum/Linux [Red Hatなど]] ぺんたん info&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>mod_rewriteでクエリ付きのURIをリダイレクトする</title>
+      <link>http://1000k.github.io/2010/07/23/redirect-keeping-query-strings-with-mod-rewrite/</link>
+      <pubDate>Fri, 23 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/23/redirect-keeping-query-strings-with-mod-rewrite/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://hige.jp/moja.php?category=1&#34;&gt;http://hige.jp/moja.php?category=1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;→&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://hige.jp/moja.php?category=999&#34;&gt;http://hige.jp/moja.php?category=999&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;というリダイレクトをApacheで実現するにはどうすればいいでしょうか？リダイレクトの方法はいろいろありますが、今回RedirectやAliasディレクティブは使えません。これらはクエリ文字列（?category=999の部分）を把握できないようです。&lt;/p&gt;
+
+&lt;p&gt;そんな時は、mod_rewriteの RewriteCond ${QUERY_STRING} を使うと良いです。具体的には以下の用にします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;IfModule mod_rewrite.c&amp;gt;
+    RewriteEngine on
+    RewriteCond %{QUERY_STRING} category=1
+    RewriteRule ^/moja.php /moja.php?category=999 [R=301,L]
+&amp;amp;lt;/IfModule&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでApacheを再起動すれば、リダイレクトが成功するようになっています。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:44dfa8f56fa655b8b85093045fdbf75d&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://muumoo.jp/news/2006/04/06/0redirect.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://muumoo.jp/news/2006/04/06/0redirect.html&#39;, &#39;URIのリダイレクト設定をやってみた(管理人日記) &amp;#8211; むぅもぉ.jp&#39;]);&#34; title=&#34;URIのリダイレクト設定をやってみた(管理人日記) - むぅもぉ.jp&#34;&gt;URIのリダイレクト設定をやってみた(管理人日記) &amp;#8211; むぅもぉ.jp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cubic9.com/Linux/Apache/%A5%E2%A5%B8%A5%E5%A1%BC%A5%EB/mod_rewrite/%B0%DC%C5%BE%A5%EA%A5%C0%A5%A4%A5%EC%A5%AF%A5%C8/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://cubic9.com/Linux/Apache/%A5%E2%A5%B8%A5%E5%A1%BC%A5%EB/mod_rewrite/%B0%DC%C5%BE%A5%EA%A5%C0%A5%A4%A5%EC%A5%AF%A5%C8/&#39;, &#39;Linux/Apache/モジュール/mod_rewrite/移転リダイレクト &amp;#8211; cubic9.com&#39;]);&#34; title=&#34;Linux/Apache/モジュール/mod_rewrite/移転リダイレクト - cubic9.com&#34;&gt;Linux/Apache/モジュール/mod_rewrite/移転リダイレクト &amp;#8211; cubic9.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[Apache] ログを$HOSTNAME毎に出し分けする</title>
+      <link>http://1000k.github.io/2010/05/19/output-apache-log-by-hostname/</link>
+      <pubDate>Wed, 19 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/19/output-apache-log-by-hostname/</guid>
+      <description>
+
+&lt;h1 id=&#34;目的:77765f74a92d10ae85948efc17fa953f&#34;&gt;目的&lt;/h1&gt;
+
+&lt;p&gt;&amp;#8220;server001&amp;#8221;, &amp;#8220;server002&amp;#8221;, &amp;#8230;, &amp;#8220;serverN&amp;#8221; すべてで共通の httpd.conf を使い、それぞれのログファイルを &amp;#8220;log/server001/access_log&amp;#8221;, &amp;#8230;, &amp;#8220;log/serverN/access_log&amp;#8221; に吐くようにしたい。&lt;/p&gt;
+
+&lt;p&gt;ノード追加の度に手動でconfファイルをいちいち書き換えるのにはもううんざり。&lt;/p&gt;
+
+&lt;p&gt;そんな人には以下の方法をおすすめします。&lt;/p&gt;
+
+&lt;h1 id=&#34;やり方:77765f74a92d10ae85948efc17fa953f&#34;&gt;やり方&lt;/h1&gt;
+
+&lt;p&gt;Apacheディレクトリ内の &lt;strong&gt;envvars&lt;/strong&gt; というファイルに記述することで、OSの環境変数を conf ファイルに渡すことができることを利用します。&lt;/p&gt;
+
+&lt;p&gt;1&amp;#46; &amp;#8220;apache2/bin/envvars&amp;#8221; に以下の2行を追加する&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;HOSTNAME=&amp;quot;$HOSTNAME&amp;quot;
+export HOSTNAME
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2&amp;#46; &amp;#8220;apache2/conf/httpd.conf&amp;#8221; のログ出力行を編集する&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#ErrorLog &amp;quot;logs/error_log&amp;quot;
+ErrorLog &amp;quot;logs/${HOSTNAME}_error_log&amp;quot;
+
+#CustomLog &amp;quot;logs/access_log&amp;quot; common
+CustomLog &amp;quot;logs/${HOSTNAME}_access_log&amp;quot; common
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3&amp;#46; Apacheを再起動する&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:77765f74a92d10ae85948efc17fa953f&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://wall-climb.com/2009/05/29/httpd-conf%E5%86%85%E3%81%A7%E5%A4%89%E6%95%B0%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://wall-climb.com/2009/05/29/httpd-conf%E5%86%85%E3%81%A7%E5%A4%89%E6%95%B0%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B/&#39;, &#39;wall-climb » httpd.conf内で変数を利用する&#39;]);&#34; title=&#34;wall-climb » httpd.conf内で変数を利用する&#34;&gt;wall-climb » httpd.conf内で変数を利用する&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://playispeace.com/blog/766/load_mod_env_for_use_setenv&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://playispeace.com/blog/766/load_mod_env_for_use_setenv&#39;, &#39;apacheのSetEnvを利用するときはmod_env.soを読み込む » pblo&#39;]);&#34; title=&#34;apacheのSetEnvを利用するときはmod_env.soを読み込む » pblo&#34;&gt;apacheのSetEnvを利用するときはmod_env.soを読み込む » pblo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

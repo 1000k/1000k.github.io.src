@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> PHPUnit の Expectation を簡潔に書く TIPS &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/">PHPUnit の Expectation を簡潔に書く TIPS</a></h2>
+        <div class="post-content">
+          
+
+<p>PHPUnit の小ネタです。</p>
+
+<p>PHPUnit でモックを使ったテストケースを書くと、以下のように記述量が多くなってうんざりします。</p>
+
+<pre><code>&lt;?php
+class FooClassTest extends PHPUnit_Framework_TestCase {
+    /**
+     * @covers FooClass::doSomething
+     */
+    public function testDoSomething() {
+        // FooClass が依存している BarClass のモックを作る。
+        // 何もしないように、__construct() と __clone() は無効化しておく。
+        $mockBar = $this-&gt;getMockBuilder('BarClass')
+            -&gt;disableOriginalConstructor()
+            -&gt;disableOriginalClone()
+            -&gt;getMock();
+
+        // BarClass::barMethod のモックの挙動を変える。
+        $mockBar-&gt;expect($this-&gt;any())
+            -&gt;method('barMethod')
+            -&gt;will($this-&gt;returnValue(true));
+
+        $object = new FooClass($mockBar);
+
+        $this-&gt;assertTrue($object-&gt;doSomething());
+    }
+}
+</code></pre>
+
+<p>長い、書きづらい、読みづらい。こんなテストケース、2つ以上書きたくないですね。もっと楽に書くための TIPS をメモしておきます。</p>
+
+<p>まず、何もしない「プレーンな」モックオブジェクトを作るメソッドを作りましょう。<code>PHPUnit_Framework_TestCase</code> を継承した <code>MyTestCase</code> に実装してやります。</p>
+
+<pre><code>class MyTestCase extends PHPUnit_Framework_TestCase {
+
+    /**
+     * 元のクラスが完全に何もしないよう擬装したモックを作成する。
+     *
+     * - コンストラクタが無効
+     * - クローンコンストラクタが無効
+     *
+     * @param string $class_name
+     * @return mixed 指定したクラスのモック
+     * @throws InvalidArgumentException 指定したクラス名が見つからない場合
+     */
+    protected function _getPlainMock($class_name) {
+        if (!class_exists($class_name)) {
+            throw new InvalidArgumentException(&quot;{$class_name} does not exist.&quot;);
+        }
+
+        return $this-&gt;getMockBuilder($class_name)
+            -&gt;disableOriginalConstructor()
+            -&gt;disableOriginalClone()
+            -&gt;getMock();
+    }
+
+}
+</code></pre>
+
+<p>また、PHPUnit の Expectation はメソッドチェーンで連続して指定できます (&#8220;-&gt;&#8221; 演算子で繋げて書ける) が、そもそも記述量が多いです。いちいち this this 書くのも煩わしい。</p>
+
+<p>そこで、Expectation をセットするためのメソッドを作ってやると楽になります。</p>
+
+<pre><code>&lt;?php
+    /**
+     * モックオブジェクトに Expectation を設定する。
+     *
+     * @param Object &amp;#038;$mock モックオブジェクト
+     * @param string $matcher マッチャー ([any|once|never|...])
+     * @param string $method メソッド名
+     * @param mixed $return_value 期待する戻り値
+     */
+    protected function _setExpectation(&amp;#038;$mock, $matcher, $method, $return_value = null) {
+        $mock-&gt;expects($this-&gt;$matcher())
+            -&gt;method($method)
+            -&gt;will($this-&gt;returnValue($return_value));
+    }
+</code></pre>
+
+<p>これを使うと、一番最初のテストケースは以下のように書き直せます。</p>
+
+<pre><code>require_once 'MyTestCase.php';
+
+class FooClassTest extends MyTestCase {
+    /**
+     * @covers FooClass::doSomething
+     * @test
+     */
+    function doSomething() {
+        $mockBar = $this-&gt;_getPlainMock('BarClass')
+        $this-&gt;_setExpectation($mockBar, 'any', 'barMethod', true);
+
+        $object = new FooClass($mockBar);
+
+        $this-&gt;assertTrue($object-&gt;doSomething());
+    }
+}
+</code></pre>
+
+<p>簡単になりましたね！9行もあったコードが4行に減りました。</p>
+
+<p>ちなみに、さり気なくテストケースの <code>public</code> は削除しています。PHP の仕様上、public なメソッドはわざわざそれを書く必要がありません。</p>
+
+<p>また、PHPDoc 部分に <code>@test</code> アノテーションを付けると、メソッド名を <code>test</code> で始めなくてもテストケースとして認識されるようになります。私はこの方が読みやすいので、最近はこう書くことが多いです。</p>
+
+<p>こういう改善をしても、Ruby に慣れているとまだ長く感じます。「$」「&#8217;」「&gt;」などの記号を打つのも煩わしいです。Ruby 使いてえなあ。</p>
+
+<h2 id="参考:66eb9e16e3cbfb7a24c972ec7c7d6f12">参考</h2>
+
+<ul>
+<li><a href="http://phpunit.de/manual/3.8/ja/test-doubles.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpunit.de/manual/3.8/ja/test-doubles.html', 'PHPUnit 公式マニュアル > 第10章 テストダブル&rsquo;]);&rdquo; &gt;PHPUnit 公式マニュアル &gt; 第10章 テストダブル</a></li>
+<li><a href="http://phpunit.de/manual/3.8/ja/appendixes.annotations.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://phpunit.de/manual/3.8/ja/appendixes.annotations.html', '付録B アノテーション']);" >付録B アノテーション</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

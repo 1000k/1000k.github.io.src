@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> vmstatの値をロギングする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2011/09/28/logging-vmstat-values/">vmstatの値をロギングする</a></h2>
+        <div class="post-content">
+          
+
+<p>vmstatの値をファイルに出力したいとき、次のコマンドが使えます。</p>
+
+<pre><code>nohup vmstat -n -S M 1 | awk '{ print strftime(&quot;%Y/%m/%d %H:%M:%S&quot;), $0 } { system(&quot;:&quot;) }' &gt;&gt; /path/to/log &amp;#038;
+</code></pre>
+
+<p>出力は下記のようになります。</p>
+
+<pre><code>2011/09/28 15:51:07 procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------
+2011/09/28 15:51:07  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+2011/09/28 15:51:07  1  0      0    251    153    358    0    0     0     9    1    0  0  0 99  0  0
+2011/09/28 15:51:08  0  0      0    251    153    358    0    0     0     0 1012   40  0  1 99  0  0
+2011/09/28 15:51:09  0  0      0    251    153    358    0    0     0     0 1004   37  0  0 100  0  0
+</code></pre>
+
+<p>このプロセスを終了したい場合は、下記のようにkillしてやればOKです。</p>
+
+<pre><code>$ pgrep vmstat      # vmstatのprocess idを取得する
+29248
+
+$ kill {上で出てきたpid}
+</code></pre>
+
+<h1 id="参考:981194324cf5b426a797d33ec4db9e80">参考</h1>
+
+<ul>
+<li><a href="http://babyp.blog55.fc2.com/blog-entry-446.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://babyp.blog55.fc2.com/blog-entry-446.html', 'サーバのリソースを定期的に出力しとく方法：なんとなしの日記']);" >サーバのリソースを定期的に出力しとく方法：なんとなしの日記</a></li>
+<li><a href="http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919', '（今さら） vmstat の結果に時間をつけてファイルに出力する &#8211; あしのあしあと']);" >（今さら） vmstat の結果に時間をつけてファイルに出力する &#8211; あしのあしあと</a></li>
+<li><a href="http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/', '【 nohup 】 ログアウトした後もコマンドを実行し続ける &#8211; Linuxコマンド集：ITpro']);" >【 nohup 】 ログアウトした後もコマンドを実行し続ける &#8211; Linuxコマンド集：ITpro</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

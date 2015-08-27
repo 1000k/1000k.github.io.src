@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> PHPUnitをアップグレードしたら動作しなくなった &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/10/19/phpunit-does-not-run-after-upgrade/">PHPUnitをアップグレードしたら動作しなくなった</a></h2>
+        <div class="post-content">
+          
+
+<p>PHPUnit を何となくアップグレードしたら動かなくなってしまいました。</p>
+
+<p>今回は pear upgrade で PHPUnit を 3.6.11 から 3.6.12 に 更新した後、phpunit コマンドを叩くと下記のようなエラーが出るようになりました。</p>
+
+<pre><code># phpunit
+
+Parse error: syntax error, unexpected T_FUNCTION, expecting ')' in /usr/local/lib/php/PHP/Timer/Autoload.php on line 47
+
+Call Stack:
+    0.0018      50328   1. {main}() /usr/local/bin/phpunit:0
+    0.0030      87992   2. require('/usr/local/lib/php/PHPUnit/Autoload.php') /usr/local/bin/phpunit:43
+</code></pre>
+
+<p>修復に小一時間かかったので、直し方をメモしておきます。</p>
+
+<h2 id="原因:50be0dd242e143a3defa66c95863f49e">原因</h2>
+
+<p>PHPUnit は PHP &gt;= 5.3 での利用を強く推奨しており、PHP &lt;= 5.2 のままだと動かない機能を盛り込んでくることがあります。</p>
+
+<p>また、本体以外にも多数の依存パッケージがあり、どれかが急に &gt;= 5.3 の機能を使い始めても動かなくなります。</p>
+
+<p>私の環境は PHP 5.2.x だったため、今回のエラーに出くわしました。原因は phpunit/PHP_Timer がバージョンアップしたせいでした。</p>
+
+<ul>
+<li><a href="https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php', 'phpunit/PHP_Timer-1.0.4']);" title="php-timer/PHP/Timer/Autoload.php at 1.0.4 · sebastianbergmann/php-timer">phpunit/PHP_Timer-1.0.4</a></li>
+<li><a href="https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php', 'phpunit/PHP_Timer-1.0.3']);" title="php-timer/PHP/Timer/Autoload.php at 1.0.3 · sebastianbergmann/php-timer">phpunit/PHP_Timer-1.0.3</a></li>
+</ul>
+
+<p>上記のソースからおわかりのように、1.0.4 から匿名関数を使っています。これは PHP &gt;= 5.3 でしか動きません。5.2系ではパースエラーになります。</p>
+
+<h2 id="対策:50be0dd242e143a3defa66c95863f49e">対策</h2>
+
+<p>PHP_Timer を再インストールすることで修正可能です。</p>
+
+<p>アンインストールの時は依存関係を無視して削除するため「-n」オプションを付けています。</p>
+
+<pre><code># pear uninstall -n phpunit/PHP_Timer
+&quot;phpunit/PHP_Timer&quot; can be optionally used by installed package pear/PHP_CodeSniffer
+warning: phpunit/PHP_Timer (version &gt;= 1.0.2) is required by installed package &quot;phpunit/phpcpd&quot;
+warning: phpunit/PHP_Timer (version &gt;= 1.0.1, version &amp;lt;= 1.0.3) is required by installed package &quot;phpunit/PHPUnit&quot;
+warning: phpunit/PHP_Timer should not be uninstalled, other installed packages depend on this package
+uninstall ok: channel://pear.phpunit.de/PHP_Timer-1.0.4
+
+#  pear install phpunit/PHP_Timer-1.0.3
+downloading PHP_Timer-1.0.3.tgz ...
+Starting to download PHP_Timer-1.0.3.tgz (3,743 bytes)
+....done: 3,743 bytes
+install ok: channel://pear.phpunit.de/PHP_Timer-1.0.3
+</code></pre>
+
+<p>以上で動作するようになりました。</p>
+
+<p>PHP 5.2系の人はうかつに 「pear upgrade phpunit/phpunit」なんてコマンドを叩かないようにしましょう。</p>
+
+<p>もしくはさっさと5.4系に移行しましょう。</p>
+
+<h2 id="参考:50be0dd242e143a3defa66c95863f49e">参考</h2>
+
+<ul>
+<li><a href="http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/', 'How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan']);" >How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan</a>
+
+<ul>
+<li>pear パッケージのダウングレード方法はこちらを参考にしました。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

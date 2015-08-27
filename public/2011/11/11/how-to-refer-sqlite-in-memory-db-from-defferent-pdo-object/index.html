@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> SQLiteのインメモリDBを異なるPDOオブジェクトから参照するには &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2011/11/11/how-to-refer-sqlite-in-memory-db-from-defferent-pdo-object/">SQLiteのインメモリDBを異なるPDOオブジェクトから参照するには</a></h2>
+        <div class="post-content">
+          
+
+<p>どうにもSQLiteのインメモリDBの値が取得できなかったので、実験してみました。</p>
+
+<p>いきなり結論を書くと、<strong>「あるPDOオブジェクトからは、別のPDOオブジェクトが作成したインメモリDBには接続できない」</strong>ようです。</p>
+
+<h1 id="テストコード:79219f7f66a89108f263ed750ab9ba1c">テストコード</h1>
+
+<pre><code>&lt;?php
+/**
+ * SQLiteのオンメモリDBにテストデータを作成し、PDOからアクセスできることを確かめる
+ */
+try {
+    $pdo1 = new PDO('sqlite::memory:', null, null);
+    $pdo1-&gt;exec('CREATE TABLE uso(id INTEGER PRIMARY KEY, name STRING)');
+    $pdo1-&gt;exec('INSERT INTO uso VALUES (1, &quot;uhouho&quot;);');
+    $pdo1-&gt;exec('INSERT INTO uso VALUES (2, &quot;mojamoja&quot;);');
+
+    // 接続済みのPDOオブジェクトからデータを取得できるか試してみる
+    $stmt = $pdo1-&gt;query('SELECT * FROM uso');
+    if (!$stmt) {
+        echo 'Cannot fetch data via $pdo1.';
+    } else {
+        print_r($stmt-&gt;fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    // 新たにPDOオブジェクトを作成し、データを取得できるか試してみる
+    $pdo2 = new PDO('sqlite::memory:');
+    $stmt = $pdo2-&gt;query('SELECT * FROM uso');
+    if (!$stmt) {
+        echo 'Cannot fetch data via $pdo2.';
+    } else {
+        print_r($stmt-&gt;fetchAll(PDO::FETCH_ASSOC));
+    }
+} catch (Exception $e) {
+    exit($e-&gt;getMessage());
+}
+</code></pre>
+
+<h1 id="結果:79219f7f66a89108f263ed750ab9ba1c">結果</h1>
+
+<pre><code>Array
+(
+    [0] =&gt; Array
+        (
+            [id] =&gt; 1
+            [name] =&gt; uhouho
+        )
+
+    [1] =&gt; Array
+        (
+            [id] =&gt; 2
+            [name] =&gt; mojamoja
+        )
+
+)
+Cannot fetch data via $pdo2.
+</code></pre>
+
+<p>$pdo1で作成したインメモリDBに、$pdo2からは接続できていません。</p>
+
+<p>どちらも同じ「sqlite::memory:」ですが、見ている領域は異なるようです。</p>
+
+<h1 id="考察:79219f7f66a89108f263ed750ab9ba1c">考察</h1>
+
+<p>インメモリDB内に作ったテーブルに、複数のPDOオブジェクトからアクセスすることはできませんでした。</p>
+
+<p>アクセスしたければ、テーブルを作ったPDOオブジェクトを使い回すしかなさそうです。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Paco on 1000g</title>
+    <link>http://1000k.github.io/tags/paco/</link>
+    <description>Recent content in Paco on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 15 Jan 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/paco/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>pacoでソースからインストールしたアプリを管理する</title>
+      <link>http://1000k.github.io/2012/01/15/managing-source-installed-packages-using-paco/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/managing-source-installed-packages-using-paco/</guid>
+      <description>
+
+&lt;p&gt;pacoは、自分でソースからインストールしたアプリでもrpmのようにパッケージ管理できるようになるツールです。&lt;/p&gt;
+
+&lt;p&gt;rpmが無いアプリの管理が楽になるのでおすすめです。&lt;/p&gt;
+
+&lt;p&gt;以下、インストール方法と使い方を簡単に記します。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール手順:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストール手順&lt;/h2&gt;
+
+&lt;p&gt;最新のソースは &lt;a href=&#34;http://paco.sourceforge.net/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://paco.sourceforge.net/&#39;, &#39;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&#39;]);&#34; &gt;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&lt;/a&gt; で確認してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# wget http://sourceforge.net/projects/paco/files/paco/2.0.9/paco-2.0.9.tar.bz2/download
+# tar xvf paco-2.0.9.tar.bz2
+# cd paco-2.0.9
+# ./configure --disable-gpaco
+# make
+# make install
+# make logme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今回はGUIを使わないので、configureオプションに「&amp;#8211;disable-gpaco」を付けています。&lt;/p&gt;
+
+&lt;p&gt;これを付けないと「No package &amp;#8216;gtkmm-2.4&amp;#8217; found」というエラーが出ます。&lt;/p&gt;
+
+&lt;p&gt;最後の「make logme」でpaco自身のインストール内容を記録しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:2e9f7bf7118303b30947563102a07bb4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;h3 id=&#34;インストールを記録する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストールを記録する&lt;/h3&gt;
+
+&lt;p&gt;今後、何らかのアプリをmake installする際には、「paco -D」を付けることでpacoに記録できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cd {インストールしたいパッケージ}
+# paco -D make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;インストール済みパッケージを確認する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;インストール済みパッケージを確認する&lt;/h3&gt;
+
+&lt;p&gt;「-a」オプションを使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# paco -a
+paco-2.0.9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;パッケージでインストールされたファイルを確認する:2e9f7bf7118303b30947563102a07bb4&#34;&gt;パッケージでインストールされたファイルを確認する&lt;/h3&gt;
+
+&lt;p&gt;「-f」オプションを使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ paco -f paco-2.0.9
+paco-2.0.9:
+/usr/local/share/paco/README
+/usr/local/lib/libpaco-log.a
+/usr/local/lib/libpaco-log.la
+/usr/local/lib/libpaco-log.so
+/usr/local/lib/libpaco-log.so.0
+/usr/local/lib/libpaco-log.so.0.0.0
+/usr/local/bin/paco
+/usr/local/etc/pacorc
+/usr/local/lib/pkgconfig/paco.pc
+/usr/local/share/man/man5/pacorc.5
+/usr/local/share/man/man8/paco.8
+/usr/local/share/man/man8/pacoball.8
+/usr/local/share/man/man8/rpm2paco.8
+/usr/local/share/man/man8/superpaco.8
+/usr/local/share/paco/faq.txt
+/usr/local/share/paco/pacorc
+/usr/local/bin/ocap
+/usr/local/bin/pacoball
+/usr/local/bin/rpm2paco
+/usr/local/bin/superpaco
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;パッケージをアンインストールする:2e9f7bf7118303b30947563102a07bb4&#34;&gt;パッケージをアンインストールする&lt;/h3&gt;
+
+&lt;p&gt;「-r」オプションです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# paco -r {アンインストールしたいパッケージ名}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:2e9f7bf7118303b30947563102a07bb4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/kasei_san/20100220/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/kasei_san/20100220/p1&#39;, &#39;さくらのユーザディレクトリにPACOをインストールしたときの手順 &amp;#8211; かせいさんとこ&#39;]);&#34; &gt;さくらのユーザディレクトリにPACOをインストールしたときの手順 &amp;#8211; かせいさんとこ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://paco.sourceforge.net/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://paco.sourceforge.net/&#39;, &#39;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&#39;]);&#34; &gt;paco &amp;#8211; a source code pacKAGE oRGANIZER for Unix/Linux&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.atmarkit.co.jp/flinux/rensai/linuxtips/886usepaco.html&#39;, &#39;ソースからインストールしたアプリを管理するには － ＠IT&#39;]);&#34; &gt;ソースからインストールしたアプリを管理するには － ＠IT&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

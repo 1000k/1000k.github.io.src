@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Redis 2.6 のインストール手順 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/04/03/installing-redis-2-6/">Redis 2.6 のインストール手順</a></h2>
+        <div class="post-content">
+          
+
+<p>なぜか<a href="http://redis.io/download" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://redis.io/download', '公式サイトのインストール手順']);" >公式サイトのインストール手順</a>はコンパイルまでで終わっているので、完全な手順をメモしておきます。</p>
+
+<h2 id="ダウンロード:d385bf451ffc60def1f51e177c3e1b7c">ダウンロード</h2>
+
+<p>最新のソースを <a href="http://redis.io/download" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://redis.io/download', 'Download – Redis']);" >Download – Redis</a> からダウンロードします。</p>
+
+<p>以下、執筆時のバージョン (2.6.12) で話を進めます。</p>
+
+<pre><code>$ wget http://redis.googlecode.com/files/redis-2.6.12.tar.gz
+</code></pre>
+
+<h2 id="コンパイル:d385bf451ffc60def1f51e177c3e1b7c">コンパイル</h2>
+
+<pre><code>$ tar xzf redis-2.6.12.tar.gz
+$ cd redis-2.6.12
+$ make
+</code></pre>
+
+<p>※32bit版OSの場合、そのまま make するとエラーが出るので、以下のコマンドを実行します。</p>
+
+<pre><code>$ export CFLAGS=-march=i686
+$ make distclean
+$ make
+</code></pre>
+
+<p>参考: <a href="http://www.eschrade.com/page/undefined-reference-to-__sync_add_and_fetch_4/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.eschrade.com/page/undefined-reference-to-__sync_add_and_fetch_4/', 'undefined reference to `__sync_add_and_fetch_4′ when compiling Redis | ESchrade']);" >undefined reference to `__sync_add_and_fetch_4′ when compiling Redis | ESchrade</a></p>
+
+<h2 id="インストール:d385bf451ffc60def1f51e177c3e1b7c">インストール</h2>
+
+<p>インストール後は対話式インストーラーを使って、各種ファイルを設置します。</p>
+
+<p>基本的にはそのまま Enter でOKです。</p>
+
+<pre><code>$ sudo make install
+$ cd utils
+$ sudo ./install_server.sh
+
+Welcome to the redis service installer
+This script will help you easily set up a running redis server
+
+
+Please select the redis port for this instance: [6379]
+Selecting default: 6379
+Please select the redis config file name [/etc/redis/6379.conf]
+Selected default - /etc/redis/6379.conf
+Please select the redis log file name [/var/log/redis_6379.log]
+Selected default - /var/log/redis_6379.log
+Please select the data directory for this instance [/var/lib/redis/6379]
+Selected default - /var/lib/redis/6379
+Please select the redis executable path [/usr/local/bin/redis-server]
+s#^port [0-9]{4}$#port 6379#;s#^logfile .+$#logfile /var/log/redis_6379.log#;s#^dir .+$#dir /var/lib/redis/6379#;s#^pidfile .+$#pidfile /var/run/redis_6379.pid#;s#^daemonize no$#daemonize yes#;
+Copied /tmp/6379.conf =&gt; /etc/init.d/redis_6379
+Installing service...
+Installation successful!
+</code></pre>
+
+<h2 id="起動スクリプトの修正:d385bf451ffc60def1f51e177c3e1b7c">起動スクリプトの修正</h2>
+
+<p>ここまでで <strong>/etc/init.d/redis_6379</strong> に起動スクリプトが追加されますが、なぜか1行目のコメント行がバグっていて変数がすべてコメントアウトされています。</p>
+
+<pre><code>#/bin/sh\n #Configurations injected by install_server below....\n\n EXEC=/usr/local/bin/redis-server\n CLIEXEC=/usr/local/bin/redis-cli\n PIDFILE=/var/run/redis_6379.pid\n CONF=&quot;/etc/redis/6379.conf&quot;\n\n REDISPORT=&quot;6379&quot;\n\n ###############\n\n
+</code></pre>
+
+<p>なので、1行目の「\n」をすべて改行コードに置換します。修正後は以下のようになります。</p>
+
+<pre><code>#!sh
+#/bin/sh
+#Configurations injected by install_server below....
+
+EXEC=/usr/local/bin/redis-server
+CLIEXEC=/usr/local/bin/redis-cli
+PIDFILE=/var/run/redis_6379.pid
+CONF=&quot;/etc/redis/6379.conf&quot;
+REDISPORT=&quot;6379&quot;
+###############
+</code></pre>
+
+<p>vimなら「[ESC]キー」-&gt; 「:%s/&#92;n/^M/g」を入力すれば一発です。（改行文字「^M」は「Ctrl+V Ctrl+M」で入力可能）</p>
+
+<h2 id="起動テスト:d385bf451ffc60def1f51e177c3e1b7c">起動テスト</h2>
+
+<pre><code>$ sudo /etc/init.d/redis_6379 start
+$ ps -ef | grep redis
+$ sudo /etc/init.d/redis_6379 stop
+</code></pre>
+
+<p>以上で完了です。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

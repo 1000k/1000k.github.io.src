@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>カスタマイズ on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA/</link>
+    <description>Recent content in カスタマイズ on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 15 Jan 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Sublime Text 2 の置換ダイアログを閉じないようにする</title>
+      <link>http://1000k.github.io/2013/01/15/suppress-closing-replace-dialog-in-sublime-text-2/</link>
+      <pubDate>Tue, 15 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/01/15/suppress-closing-replace-dialog-in-sublime-text-2/</guid>
+      <description>
+
+&lt;p&gt;最近は &lt;a href=&#34;http://www.sublimetext.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.sublimetext.com/&#39;, &#39;Sublime Text 2&#39;]);&#34; title=&#34;Sublime Text: The text editor you&#39;ll fall in love with&#34;&gt;Sublime Text 2&lt;/a&gt; をメインのエディタに使っています。しかし、ところどころ「何で？」と思うような不便な点があります。&lt;/p&gt;
+
+&lt;p&gt;「Replace All」をクリックするたびに閉じる置換ダイアログも主な不満の一つです。正規表現を連続で試したい時などはいちいち開き直さねばならず、面倒極まりないです。&lt;/p&gt;
+
+&lt;p&gt;というわけで、「Replace All」 を実行しても閉じないようにカスタマイズする方法をメモします。&lt;/p&gt;
+
+&lt;h2 id=&#34;やり方:de3f7e5a79123635b90b973ac5e3402b&#34;&gt;やり方&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Preferences -&amp;gt; Key Bindings &amp;#8211; User&lt;/em&gt; に以下の行を追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+        &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+alt+enter&amp;quot;],
+        &amp;quot;command&amp;quot;: &amp;quot;replace_all&amp;quot;,
+        &amp;quot;args&amp;quot;: {&amp;quot;close_panel&amp;quot;: false},
+        &amp;quot;context&amp;quot;: [
+            {&amp;quot;key&amp;quot;: &amp;quot;panel&amp;quot;, &amp;quot;operand&amp;quot;: &amp;quot;replace&amp;quot;},
+            {&amp;quot;key&amp;quot;: &amp;quot;panel_has_focus&amp;quot;}
+        ]
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとは置換ダイアログで「Ctrl+Alt+Enter」を叩けばOKです。置換してもダイアログは開きっぱなしになります。&lt;/p&gt;
+
+&lt;p&gt;ちなみに「&amp;#8221;keys&amp;#8221;: [&amp;#8220;enter&amp;#8221;]」にすればデフォルトでダイアログを閉じないようにもできます。そこはお好みで。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:de3f7e5a79123635b90b973ac5e3402b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://sublimetext.userecho.com/topic/45051-search-and-replace-panel-should-not-hide-when-we-click-on-replace-all/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sublimetext.userecho.com/topic/45051-search-and-replace-panel-should-not-hide-when-we-click-on-replace-all/&#39;, &#39;Search and Replace panel should &amp;#8230; / General forum / Sublime Text 2&#39;]);&#34; title=&#34;Search and Replace panel should ... / General forum / Sublime Text 2&#34;&gt;Search and Replace panel should &amp;#8230; / General forum / Sublime Text 2&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

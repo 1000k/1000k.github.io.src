@@ -1,0 +1,1525 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cakephp on 1000g</title>
+    <link>http://1000k.github.io/tags/cakephp/</link>
+    <description>Recent content in Cakephp on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 27 Jan 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/cakephp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Sublime Text 2 で CakePHP2 の CodeSniffer ルールを適用する</title>
+      <link>http://1000k.github.io/2015/01/27/validate-cakephp2-rules-with-sublime-text2-phpcs-plugin/</link>
+      <pubDate>Tue, 27 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/01/27/validate-cakephp2-rules-with-sublime-text2-phpcs-plugin/</guid>
+      <description>
+
+&lt;p&gt;Sublime Text 2 のエディタ上で PHP CodeSniffer を使い、コーディング規約をチェックする方法です。&lt;a href=&#34;http://benmatselby.github.io/sublime-phpcs/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://benmatselby.github.io/sublime-phpcs/&#39;, &#39;sublime-phpcs&#39;]);&#34; &gt;sublime-phpcs&lt;/a&gt; プラグインを導入することで、コーディング規約違反のある行がエディタ上に表示されるようになります。&lt;/p&gt;
+
+&lt;p&gt;なお、プラグインの公式ページでは phpmd も一緒に導入していますが、&lt;a href=&#34;http://blog.1000k.net/2013/11/26/phpmd-%e3%81%ae%e9%a0%ad%e3%81%8c%e3%81%8b%e3%81%aa%e3%82%8a-messy/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2013/11/26/phpmd-%e3%81%ae%e9%a0%ad%e3%81%8c%e3%81%8b%e3%81%aa%e3%82%8a-messy/&#39;, &#39;PHPMD はヒステリックすぎて個人的にお勧めしない&#39;]);&#34; &gt;PHPMD はヒステリックすぎて個人的にお勧めしない&lt;/a&gt; ので省略します。&lt;/p&gt;
+
+&lt;h2 id=&#34;チュートリアル:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;h3 id=&#34;codesniffer-をインストールする:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;CodeSniffer をインストールする&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;pear install PHP_CodeSniffer
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;cakephp-のルールセットをインストールする:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;CakePHP のルールセットをインストールする&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;pear channel-discover pear.cakephp.org
+pear install cakephp/CakePHP_CodeSniffer
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CodeSniffer のルールセットに追加されているか以下のコマンドで確認。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ phpcs -i
+The installed coding standards are CakePHP, MySource, PEAR, PHPCS, PSR1, PSR2, Squiz and Zend
+(CakePHP が含まれていれば OK)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sublime-text-2-に-codesniffer-プラグインをインストールする:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;Sublime Text 2 に CodeSniffer プラグインをインストールする&lt;/h3&gt;
+
+&lt;p&gt;&amp;#8220;Package Control: Install Package&amp;#8221; で &lt;code&gt;Phpcs&lt;/code&gt; をインストールするだけ。&lt;/p&gt;
+
+&lt;p&gt;(Package Control 自体のインストール方法は &lt;a href=&#34;https://sublime.wbond.net/installation#st2&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://sublime.wbond.net/installation#st2&#39;, &#39;Installation &amp;#8211; Package Control&#39;]);&#34; &gt;Installation &amp;#8211; Package Control&lt;/a&gt; を参照)&lt;/p&gt;
+
+&lt;h3 id=&#34;sublime-text-の設定:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;Sublime Text の設定&lt;/h3&gt;
+
+&lt;p&gt;&amp;#8220;Preferences &amp;gt; Package Settings &amp;gt; PHP Code Sniffer &amp;gt; Settings &amp;#8211; User&amp;#8221; を開き、以下のキーを設定する必要があります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;phpcs_php_path&lt;/li&gt;
+&lt;li&gt;phpcs_executable_path&lt;/li&gt;
+&lt;li&gt;php_cs_fixer_executable_path&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;記入例:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;phpcs_php_path&amp;quot;: &amp;quot;C:\xampp\php\phpcs&amp;quot;,
+    &amp;quot;phpcs_executable_path&amp;quot;: &amp;quot;C:\xampp\php\phpcs.bat&amp;quot;,
+    &amp;quot;phpcs_additional_args&amp;quot;: {
+        &amp;quot;--standard&amp;quot;: &amp;quot;CakePHP&amp;quot;
+    },
+    &amp;quot;php_cs_fixer_executable_path&amp;quot;: &amp;quot;C:Users{ユーザー名}AppDataRoamingComposervendorbin&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;windows-のみ-phpcs-py-を修正する:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;(Windows のみ) phpcs.py を修正する&lt;/h3&gt;
+
+&lt;p&gt;Windows では、このまま phpcs が実行しても何も結果が表示されません。&lt;/p&gt;
+
+&lt;p&gt;(&lt;code&gt;Ctrl + @&lt;/code&gt; でコンソールを開くと &lt;code&gt;[Windows Error]&lt;/code&gt; と出て途中で止まっている)&lt;/p&gt;
+
+&lt;p&gt;以下の手順でプラグインのコードを修正してください。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&amp;#8220;Preferences &amp;gt; Browse Packages&amp;#8230;&amp;#8221; でパッケージディレクトリを開く。&lt;/li&gt;
+&lt;li&gt;&amp;#8220;Phpcs &amp;gt; phpcs.py&amp;#8221; を開く。&lt;/li&gt;
+&lt;li&gt;169行目を以下のように修正 (パラメータに &lt;code&gt;shell=True&lt;/code&gt; を追加) する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;# proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, startupinfo=info, cwd=home)
+proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, startupinfo=info, cwd=home, shell=True)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;プラグインを実行する:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;プラグインを実行する&lt;/h3&gt;
+
+&lt;p&gt;PHP ファイルを開いたタブで &lt;code&gt;Ctrl + P &amp;gt; PHP Code Sniffer: Sniff This File&lt;/code&gt; とタイプすれば、コーディング規約違反を検知してくれます。&lt;/p&gt;
+
+&lt;p&gt;これでコーディングルール違反でチームメイトにディスられるリスクを回避できるようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;オプション:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;オプション&lt;/h2&gt;
+
+&lt;h3 id=&#34;保存時に-sniff-されるのを止める:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;保存時に Sniff されるのを止める&lt;/h3&gt;
+
+&lt;p&gt;プラグインインストール後のデフォルトだと、保存するたびに規約違反がサジェストされます。&lt;/p&gt;
+
+&lt;p&gt;鬱陶しい場合は &amp;#8220;Preferences &amp;gt; Package Settings &amp;gt; PHP Code Sniffer &amp;gt; Settings &amp;#8211; User&amp;#8221; に下記を追加することでオフにできます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;phpcs_execute_on_save&amp;quot;: false
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:0e3f1a6b553d4169127746e6faedbbcf&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://benmatselby.github.io/sublime-phpcs/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://benmatselby.github.io/sublime-phpcs/&#39;, &#39;sublime-phpcs&#39;]);&#34; &gt;sublime-phpcs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/10585274/custom-ruleset-for-phpcs-using-phpstorm&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/10585274/custom-ruleset-for-phpcs-using-phpstorm&#39;, &#39;php &amp;#8211; Custom ruleset for phpcs using PHPStorm &amp;#8211; Stack Overflow&#39;]);&#34; &gt;php &amp;#8211; Custom ruleset for phpcs using PHPStorm &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/cakephp/cakephp-codesniffer&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/cakephp/cakephp-codesniffer&#39;, &#39;cakephp/cakephp-codesniffer · GitHub&#39;]);&#34; &gt;cakephp/cakephp-codesniffer · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fabpot/PHP-CS-Fixer&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/fabpot/PHP-CS-Fixer&#39;, &#39;fabpot/PHP-CS-Fixer · GitHub&#39;]);&#34; &gt;fabpot/PHP-CS-Fixer · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://matsu-chara.hatenablog.com/entry/2013/12/27/125026&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://matsu-chara.hatenablog.com/entry/2013/12/27/125026&#39;, &#39;sublime-phpcsでPSR-2準拠のコーディング &amp;#8211; だいたいよくわからないブログ( ´_ゝ`)&#39;]);&#34; &gt;sublime-phpcsでPSR-2準拠のコーディング &amp;#8211; だいたいよくわからないブログ( ´_ゝ`)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP で beforeFilter() 以降の処理を実行しないようにする方法</title>
+      <link>http://1000k.github.io/2013/12/09/skip-procedures-after-beforefilter-in-cakephp/</link>
+      <pubDate>Mon, 09 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/09/skip-procedures-after-beforefilter-in-cakephp/</guid>
+      <description>
+
+&lt;p&gt;サービスをメンテナンス中には、どこのページにアクセスされてもメンテナンス用画面を表示できるようにしたいでしょう。&lt;/p&gt;
+
+&lt;p&gt;例えば CakePHP で API を作ったなら、メンテナンス時にはどのページにアクセスしても以下のようなレスポンスが返ってくるようにしたい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;result&amp;quot;: &amp;quot;NG&amp;quot;,
+    &amp;quot;message&amp;quot;: &amp;quot;This service is now under maintenance.&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを実現するためのコードを考えました。&lt;/p&gt;
+
+&lt;p&gt;なお、CakePHP 2.4.2 で動作確認済みです。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:882e9f5bab62127de673717c90df9029&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;メンテナンスモードが ON の時は、どのアクションを叩かれても JSON でエラーレスポンスを返すようにする。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード:882e9f5bab62127de673717c90df9029&#34;&gt;コード&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;App::uses(&#39;Controller&#39;, &#39;Controller&#39;);
+
+class AppController extends Controller {
+/**
+ * beforeFilter
+ * サービスがメンテナンス中なら、メンテナンス画面を描画する。
+ */
+    public function beforeFilter() {
+        if ($this-&amp;gt;isUnderMaintenance()) {
+            $this-&amp;gt;set(&#39;output&#39;, [
+                &#39;result&#39; =&amp;gt; &#39;NG&#39;,
+                &#39;message&#39; =&amp;gt; &#39;This service is now under maintenance.&#39;
+            ]);
+        }
+    }
+
+/**
+ * beforeRender
+ * ini/json形式の出し分けをする。
+ */
+    public function beforeRender() {
+        $this-&amp;gt;viewClass = &#39;Json&#39;;
+        $this-&amp;gt;set(&#39;_serialize&#39;, &#39;output&#39;);
+    }
+
+/**
+ * メンテナンスモード時はアクションを実行しないようにする。
+ *
+ * @param CakeRequest $request
+ */
+    public function invokeAction(CakeRequest $request) {
+        if ($this-&amp;gt;isUnderMaintenance()) {
+            return false;
+        }
+
+        return parent::invokeAction($request);
+    }
+
+/**
+ * メンテナンスファイルが存在しているとメンテナンス中。
+ *
+ * @return boolean メンテナンス中なら true
+ */
+    public function isUnderMaintenance() {
+        return file_exists(&#39;/tmp/maintenanceFile&#39;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ポイント:882e9f5bab62127de673717c90df9029&#34;&gt;ポイント&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;AppController::beforeFilter()&lt;/code&gt; に実装することで、全てのコントローラーに影響させることができます。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;invokeAction()&lt;/code&gt; をオーバーライドして、メンテナンスモード時にはアクションを実行させないようにしています。これが無いと、画面にはメンテナンス用の表示がされていても、裏側では結局アクションが実行されてしまいます。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;余談:882e9f5bab62127de673717c90df9029&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;本当は CakePHP 2.1 から採用された &lt;a href=&#34;http://book.cakephp.org/2.0/en/core-libraries/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/2.0/en/core-libraries/events.html&#39;, &#39;Events System&#39;]);&#34; &gt;Events System&lt;/a&gt; を使って &lt;code&gt;beforeFilter()&lt;/code&gt; 以降のアクションを実行されないようにしたかったのですが、やり方がわかりませんでした。アクションを detach する方法をご存知の方がいたら教えて下さい。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:882e9f5bab62127de673717c90df9029&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/2.0/en/views/json-and-xml-views.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/2.0/en/views/json-and-xml-views.html&#39;, &#39;JSON and XML views — CakePHP Cookbook v2.x documentation&#39;]);&#34; &gt;JSON and XML views — CakePHP Cookbook v2.x documentation&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ビューを使わず JSON で出力を行う方法が書かれています。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks&#39;, &#39;Controllers — CakePHP Cookbook v2.x documentation&#39;]);&#34; &gt;Controllers — CakePHP Cookbook v2.x documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://api.cakephp.org/2.4/class-Controller.html#_invokeAction&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://api.cakephp.org/2.4/class-Controller.html#_invokeAction&#39;, &#39;CakeAPI &gt; invokeAction&amp;rsquo;]);&amp;rdquo; &amp;gt;CakeAPI &amp;gt; invokeAction&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP 2 の Controller をテスト駆動で作成するチュートリアル</title>
+      <link>http://1000k.github.io/2013/02/16/tutorial-to-build-cakephp2-controller-by-tdd/</link>
+      <pubDate>Fri, 15 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/02/16/tutorial-to-build-cakephp2-controller-by-tdd/</guid>
+      <description>
+
+&lt;p&gt;社内でCakePHP 2 を使った TDD を始めたチームがあったので、説明のため書いてみました。&lt;/p&gt;
+
+&lt;p&gt;ApisController::index() という、POSTされた値に +1 して返すだけのアクションを TDD で作ります。&lt;/p&gt;
+
+&lt;p&gt;せっかく CakePHP なので、bake コマンドを使って進めます。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-ダミーのテーブルを作成する:ebcb7468c782ecd2d611762d0def266a&#34;&gt;1. ダミーのテーブルを作成する&lt;/h2&gt;
+
+&lt;p&gt;bake コマンドはテーブルに紐付いていない MVC を作れません。&lt;/p&gt;
+
+&lt;p&gt;以下、Apis テーブルがあるものとして話を進めます。&lt;/p&gt;
+
+&lt;p&gt;XAMPP を使っているなら、下記コマンドで Mojamoja データベースに Apis テーブルを作成できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ c:\xampp\mysql\bin\mysql -uroot Mojamoja
+mysql&amp;gt; CREATE TABLE `apis` (
+  `id` int(11) NOT NULL,
+  `created` date,
+  `modified` date,
+  `name` text
+) ENGINE=InnoDB;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;2-必要なファイルをbakeする:ebcb7468c782ecd2d611762d0def266a&#34;&gt;2. 必要なファイルをbakeする&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd c:/mojamoja/cake2/app
+$ ./Console/cake.bat bake controller apis
+$ ./Console/cake.bat bake view apis```
+
+
+テストしたいのは Controller だけですが、対応する View が無いとテスト実行時にエラーになるので一緒に作っておきます。
+
+ちなみに逆順でコマンドを叩くとエラーが出ます。View を作る時には、対応する Controller が必要になるためです。
+
+この時点でテストを動かすことが可能です。
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ Console\cake.bat test app controller/ApisController&lt;/p&gt;
+
+&lt;h2 id=&#34;welcome-to-cakephp-v2-2-5-console:ebcb7468c782ecd2d611762d0def266a&#34;&gt;Welcome to CakePHP v2.2.5 Console&lt;/h2&gt;
+
+&lt;p&gt;App : app&lt;/p&gt;
+
+&lt;h2 id=&#34;path-c-work-htdocs-cake2-tdd-tutorial-app:ebcb7468c782ecd2d611762d0def266a&#34;&gt;Path: c:\work\htdocs\cake2_tdd_tutorial\app&lt;/h2&gt;
+
+&lt;h2 id=&#34;cakephp-test-shell:ebcb7468c782ecd2d611762d0def266a&#34;&gt;CakePHP Test Shell&lt;/h2&gt;
+
+&lt;p&gt;PHPUnit 3.7.10 by Sebastian Bergmann.&lt;/p&gt;
+
+&lt;p&gt;[41;37mF[0m&lt;/p&gt;
+
+&lt;p&gt;Time: 2 seconds, Memory: 4.25Mb&lt;/p&gt;
+
+&lt;p&gt;There was 1 failure:&lt;/p&gt;
+
+&lt;p&gt;1) Warning
+No tests found in class &amp;ldquo;ApisControllerTest&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\TestSuite\CakeTestRunner.php:59
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\TestSuite\CakeTestSuiteCommand.php:113
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\Command\TestShell.php:274
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\Command\TestShell.php:259
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\Shell.php:395
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\ShellDispatcher.php:201
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\ShellDispatcher.php:69&lt;/p&gt;
+
+&lt;p&gt;[37;41m[2KFAILURES!
+[0m[37;41m[2KTests: 1, Assertions: 0, Failures: 1.
+[0m[2K&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+「テストケースが1個もねえよ」と怒られて終了します。
+
+当然の結果なので次に進みましょう。
+
+## 3. テストケースを作る
+
+ApisController::index() で実現したい仕様に沿って、テストケースを書きます。
+
+**app\Test\Case\Controller\ApisControllerTest.php** は下記のようになります。
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;lt;?php
+App::uses(&amp;lsquo;ApisController&amp;rsquo;, &amp;lsquo;Controller&amp;rsquo;);&lt;/p&gt;
+
+&lt;p&gt;class ApisControllerTest extends ControllerTestCase {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public $fixtures = array();    // どの Fixture も参照しないようにする
+
+/**
+ * @covers ApiController::index
+ */
+public function testIndex() {
+    // 期待される値
+    $expected = array(&#39;uso&#39; =&amp;gt; 801);
+
+    // ApisController::index() を叩いた動作を再現する。
+    $this-&amp;gt;testAction(
+        &#39;/apis/index&#39;,
+        array(
+            &#39;data&#39; =&amp;gt; array(&#39;uso&#39; =&amp;gt; 800),  // uso=800 を POST する
+            &#39;return&#39; =&amp;gt; &#39;vars&#39;              // set された値を $this-&amp;gt;vars に格納する
+        )
+    );
+
+    // $this-&amp;gt;vars には、$this-&amp;gt;testAction() 実行時に
+    // Controller から View に渡った値が格納される。
+    $this-&amp;gt;assertEquals($expected, $this-&amp;gt;vars);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+$this-&amp;gt;testAction($action, $options) は、Controller を叩いた時の挙動をシミュレートするメソッドです。今回は uso=800 という値を POST している状況を再現しています。
+
+第2引数の $options には様々なオプションを指定できます。「&amp;amp;#8217;return&amp;amp;#8217; =&amp;gt; &amp;amp;#8216;vars&amp;amp;#8217;」を指定することで、testAction() 実行時に Controller から View に渡った値を、$this-&amp;gt;vars に格納することができます。
+
+この時点でテストを叩くと、当然まだ ApisController::index() が実装できていないので、エラーが出て終了します。
+
+このようにエラーになる状態を **Red** と呼びます。
+
+この後実際のコードを書いてテストを成功する状態、すなわち **Green** にするのがテスト駆動開発 (TDD: Test Driven Development) です。
+
+## 4. とにかく成功するコードを書く
+
+**この作業の前に View/Apis/index.ctp の中身を全て空にしておいてください。**
+
+そうしないと、なにやら単体テスト時に余計な文字列が紛れ込んで失敗してしまいます。
+
+**app/Controller/ApisController.php** を以下のように実装します。
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;lt;?php
+App::uses(&amp;lsquo;AppController&amp;rsquo;, &amp;lsquo;Controller&amp;rsquo;);&lt;/p&gt;
+
+&lt;p&gt;class ApisController extends AppController {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// どの Model も使わないようにする。
+public $uses = false;
+
+public function index() {
+    $data = array(&#39;uso&#39; =&amp;gt; 801);
+    $this-&amp;gt;set($data);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+これでテストを再び実行します。今度は Green になります。
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ Console\cake.bat test app controller/ApisController&lt;/p&gt;
+
+&lt;h2 id=&#34;welcome-to-cakephp-v2-2-5-console-1:ebcb7468c782ecd2d611762d0def266a&#34;&gt;Welcome to CakePHP v2.2.5 Console&lt;/h2&gt;
+
+&lt;p&gt;App : app&lt;/p&gt;
+
+&lt;h2 id=&#34;path-c-work-htdocs-cake2-tdd-tutorial-app-1:ebcb7468c782ecd2d611762d0def266a&#34;&gt;Path: c:\work\htdocs\cake2_tdd_tutorial\app&lt;/h2&gt;
+
+&lt;h2 id=&#34;cakephp-test-shell-1:ebcb7468c782ecd2d611762d0def266a&#34;&gt;CakePHP Test Shell&lt;/h2&gt;
+
+&lt;p&gt;PHPUnit 3.7.10 by Sebastian Bergmann.&lt;/p&gt;
+
+&lt;p&gt;.&lt;/p&gt;
+
+&lt;p&gt;Time: 0 seconds, Memory: 6.00Mb&lt;/p&gt;
+
+&lt;p&gt;[30;42m[2KOK (1 test, 1 assertion)
+[0m[2K&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+テストケース内で予測している値をそのまんま返しているので、成功するのは当たり前です。
+
+もしこの時点で失敗した場合は、どこか別の部分で間違っている可能性があります。
+
+この後はコードの実装とテストを繰り返し、最終的に Green にします。
+
+## 5. コードを実装する
+
+最終的に実装したコードは下記のようになります。
+
+**app/Controller/ApisController.php**
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;lt;?php
+App::uses(&amp;lsquo;AppController&amp;rsquo;, &amp;lsquo;Controller&amp;rsquo;);&lt;/p&gt;
+
+&lt;p&gt;class ApisController extends AppController {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// どの Model も使わないようにする。
+public $uses = false;
+
+public function index() {
+    $data = array();
+
+    foreach ($_POST as $key =&amp;gt; $value) {
+        $data[$key] = $value + 1;
+    }
+
+    $this-&amp;gt;set($data);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+```&lt;/p&gt;
+
+&lt;p&gt;実装コードを Green にする際には、「とにかく早く書くこと」が大切です。&lt;/p&gt;
+
+&lt;p&gt;最初から美しさを求めてコーディングするのは辞めたほうがいいでしょう。&lt;/p&gt;
+
+&lt;p&gt;このコードはテストケースによって保護されているので、後からいくらでも洗練できます。&lt;/p&gt;
+
+&lt;p&gt;このように後からコードを洗練することを &lt;strong&gt;リファクタリング&lt;/strong&gt; と呼びます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:ebcb7468c782ecd2d611762d0def266a&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;TDD は以下のような流れで、Red-&amp;gt;Green をリズミカルに行います。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;テストケースを書く。&lt;/li&gt;
+&lt;li&gt;テストを走らせ、失敗することを確認する。(Red)&lt;/li&gt;
+&lt;li&gt;必ずテストが成功する実装コードを書く。(Green)&lt;/li&gt;
+&lt;li&gt;実装とテストを繰り返しながら、最終的に Green になる実装コードを書く。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ゆとり期間にコードをリファクタリングしましょう。&lt;/p&gt;
+
+&lt;p&gt;そうすることでコードのメンテナンス性を保つことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足:ebcb7468c782ecd2d611762d0def266a&#34;&gt;補足&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers&#39;, &#39;公式チュートリアル&#39;]);&#34; &gt;公式チュートリアル&lt;/a&gt; はそこそこ学べますが、なぜか結果を debug() でコンソールに表示してるだけで、アサーション（期待される値と実際の結果の照合）をやってません。これはダメです。&lt;/p&gt;
+
+&lt;p&gt;戻り値はちゃんと assert しましょう。モックを使って挙動を確かめるなら expectation を使いましょう。&lt;/p&gt;
+
+&lt;p&gt;あと、現在の実装だと $_POST が空の時に Warning が出るので、実際にはもう少しエンハンスが必要になるでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考になるサイト:ebcb7468c782ecd2d611762d0def266a&#34;&gt;参考になるサイト&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://api21.cakephp.org&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://api21.cakephp.org&#39;, &#39;CakePHP API&#39;]);&#34; &gt;CakePHP API&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CakeBook は CakePHP の機能の概要を知るのに向いていますが、メソッドの使い方を調べるだけならこっちの方が早いです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/3.6/ja/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.6/ja/index.html&#39;, &#39;PHPUnit 公式マニュアル&#39;]);&#34; &gt;PHPUnit 公式マニュアル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CakePHP2 の CakeTestCase クラスは、PHPUnit の簡単なラッパーなので、全ての機能が使えます。こちらのドキュメントも読んでおくといいです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.phpunit.de/manual/3.6/ja/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.6/ja/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions&#39;, &#39;PHPUnit のアサーション一覧&#39;]);&#34; &gt;PHPUnit のアサーション一覧&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ほとんどの場合は assertEquals() でカバーできますが、知っておくと便利なものも多いです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>App::import と ClassRegistry::init の違い</title>
+      <link>http://1000k.github.io/2011/07/05/deference-of-app-import-and-classregistry-init/</link>
+      <pubDate>Tue, 05 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/07/05/deference-of-app-import-and-classregistry-init/</guid>
+      <description>
+
+&lt;p&gt;命名規則に従わないモデルやプラグインをロードする際、使われるのが「App::import」と「ClassRegistry::init」。どういう使い分けをしているのかわからず、使い方によっては期待通り動かなかったりで困っていたので、違いを調べて見ました。&lt;/p&gt;
+
+&lt;h2 id=&#34;app-import:115f65372668a367bf2cdba854778dcb&#34;&gt;App::import&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://api13.cakephp.org/class/app#method-Appimport&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://api13.cakephp.org/class/app#method-Appimport&#39;, &#39;API Book&#39;]);&#34; title=&#34;CakePHP: the rapid development php framework: Api : App&#34;&gt;API Book&lt;/a&gt; によると、下記のような説明があります。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Finds classes based on $name or specific file(s) to search. Calling App::import() will not construct any classes contained in the files. It will only find and require() the file.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;「コンストラクトは行わない。ファイルを探してrequire()するだけ」と書いています。&lt;/p&gt;
+
+&lt;p&gt;また、戻り値は&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;boolean true if Class is already in memory or if file is found and loaded, false if not&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;となっています。&lt;/p&gt;
+
+&lt;p&gt;結局このメソッドは「高機能なrequire」と考えて良さそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;classregistry-init:115f65372668a367bf2cdba854778dcb&#34;&gt;ClassRegistry::init&lt;/h2&gt;
+
+&lt;p&gt;これも&lt;a href=&#34;http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit&#39;, &#39;API Book&#39;]);&#34; title=&#34;CakePHP: the rapid development php framework: Api : ClassRegistry&#34;&gt;API Book&lt;/a&gt;を参考にすると、以下のように書かれています。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Loads a class, registers the object in the registry and returns instance of the object. ClassRegistry::init() is used as a factory for models, and handle correct injecting of settings, that assist in testing.&lt;/p&gt;
+
+&lt;p&gt;Return: object instance of ClassName&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;App::importと異なり、「オブジェクトのインスタンスを作成する」と書いています。&lt;/p&gt;
+
+&lt;p&gt;なるほど、テストケースの開始時に ClassRegistry::init() を、終了時に ClassRegistry::flush を行なうのも納得がいきます。テスト毎にモデルのインスタンスを初期化→削除しているんですね。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い分け:115f65372668a367bf2cdba854778dcb&#34;&gt;使い分け&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;動的にモデルのインスタンスを使う時は ClassRegistry::init&lt;/li&gt;
+&lt;li&gt;それ以外は App::import&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;という使い分けで良さそうですです。&lt;/p&gt;
+
+&lt;p&gt;また検証していないのですが、「&lt;a href=&#34;http://d.hatena.ne.jp/foldrr/20090730/p2&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/foldrr/20090730/p2&#39;, &#39;CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &amp;#8211; foldrrの日記&#39;]);&#34; title=&#34;CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で - foldrrの日記&#34;&gt;CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &amp;#8211; foldrrの日記&lt;/a&gt;」によると、App::importを使うとDBの接続先が $default 固定になってしまうため、ユニットテストで問題が出るそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:115f65372668a367bf2cdba854778dcb&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/foldrr/20090730/p2&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/foldrr/20090730/p2&#39;, &#39;CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &amp;#8211; foldrrの日記&#39;]);&#34; title=&#34;CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で - foldrrの日記&#34;&gt;CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &amp;#8211; foldrrの日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#39;, &#39;App::import() は凄い &amp;#8211; 24時間CakePHP&#39;]);&#34; title=&#34;App::import() は凄い - 24時間CakePHP&#34;&gt;App::import() は凄い &amp;#8211; 24時間CakePHP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://web.mt-systems.jp/archives/754&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://web.mt-systems.jp/archives/754&#39;, &#39;CakePHP 今さらですがClassRegistryクラスのメモ | MT Systems&#39;]);&#34; title=&#34;CakePHP 今さらですがClassRegistryクラスのメモ | MT Systems&#34;&gt;CakePHP 今さらですがClassRegistryクラスのメモ | MT Systems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/bennylee/20091005/1254717512&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/bennylee/20091005/1254717512&#39;, &#39;ClassRegistryの備忘録 &amp;#8211; benny毎日ラボ&#39;]);&#34; title=&#34;ClassRegistryの備忘録 - benny毎日ラボ&#34;&gt;ClassRegistryの備忘録 &amp;#8211; benny毎日ラボ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CakeBook API 1.3
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit&#39;, &#39;CakePHP: the rapid development php framework: Api : ClassRegistry&#39;]);&#34; title=&#34;CakePHP: the rapid development php framework: Api : ClassRegistry&#34;&gt;CakePHP: the rapid development php framework: Api : ClassRegistry&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://api13.cakephp.org/class/app#method-Appimport&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://api13.cakephp.org/class/app#method-Appimport&#39;, &#39;CakePHP: the rapid development php framework: Api : App&#39;]);&#34; title=&#34;CakePHP: the rapid development php framework: Api : App&#34;&gt;CakePHP: the rapid development php framework: Api : App&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>fixtureをディレクトリに分けて管理する</title>
+      <link>http://1000k.github.io/2011/07/05/mange-fixtures-in-several-directories/</link>
+      <pubDate>Tue, 05 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/07/05/mange-fixtures-in-several-directories/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;(2011/07/15 Update) 7/13以前のコードに誤りがあり、正しく動作しなかったので修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:06041edaaf4ad9c158653456ce78f617&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;CakePHPの規則に従うと、フィクスチャは /app/test/fixtures/ ディレクトリにすべて入れなければなりません。この場合、「同じモデルを使うけど、テストケース毎に異なるフィクスチャを代入したい」という要望をかなえるのが難しいです。&lt;/p&gt;
+
+&lt;p&gt;例えば、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Hige コントローラー&lt;/li&gt;
+&lt;li&gt;Moja コントローラー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;どちらも同じ Uso モデルを使う場合を考えます。&lt;/p&gt;
+
+&lt;p&gt;それぞれで違うフィクスチャを使いたくても、Uso モデルのフィクスチャは uso_fixture.php の1個です。フィクスチャの値を両方のテストケースで使えるようにするのは難しく、まして複数人でテスト設計するのは困難です。&lt;/p&gt;
+
+&lt;p&gt;そこで、それぞれのコントローラーから呼び出すフィクスチャを&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;/app/test/fixtures/hige/uso_fixture.php&lt;/li&gt;
+&lt;li&gt;/app/test/fixtures/moja/uso_fixture.php&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;と使い分けられるようにする方法を考えました。&lt;/p&gt;
+
+&lt;h2 id=&#34;やり方:06041edaaf4ad9c158653456ce78f617&#34;&gt;やり方&lt;/h2&gt;
+
+&lt;p&gt;CakeTestCase を拡張した MyCakeTestCase を作成し、その中で _loadFixtures をオーバーライドします。&lt;/p&gt;
+
+&lt;p&gt;なお、参考にしたバージョンは CakePHP 1.3.10 です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;/app/libs/my_cake_test_case.php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+/**
+ * Extension of CakeTestCase Class
+ *
+ * @author  $Author: senge.keiyo $
+ * @version $id$
+ */
+class MyCakeTestCase extends CakeTestCase {
+
+    /**
+     * Load fixtures specified in var $fixtures.
+     *
+     * fixtureディレクトリ配下の任意のディレクトリにフィクスチャを配置できるよう拡張。
+     *
+     * 例えば $fixtures に &#39;app.unit_test.uso&#39; と指定すると、
+     * /app/tests/fixtures/unit_test/uso_fixture.php をロードできる。
+     *
+     * @author senda.keijiro
+     * @return void
+     * @access protected
+     */
+    function _loadFixtures() {
+        if (!isset($this-&amp;gt;fixtures) || empty($this-&amp;gt;fixtures)) {
+            return;
+        }
+
+        if (!is_array($this-&amp;gt;fixtures)) {
+            $this-&amp;gt;fixtures = array_map(&#39;trim&#39;, explode(&#39;,&#39;, $this-&amp;gt;fixtures));
+        }
+
+        $this-&amp;gt;_fixtures = array();
+
+        foreach ($this-&amp;gt;fixtures as $index =&amp;gt; $fixture) {
+            $fixtureFile = null;
+            $fixturePaths = null;
+
+            if (strpos($fixture, &#39;core.&#39;) === 0) {
+                $fixture = substr($fixture, strlen(&#39;core.&#39;));
+                foreach (App::core(&#39;cake&#39;) as $key =&amp;gt; $path) {
+                    $fixturePaths[] = $path . &#39;tests&#39; . DS . &#39;fixtures&#39;;
+                }
+            } elseif (strpos($fixture, &#39;app.&#39;) === 0) {
+                // MODIFIED
+                // app.unittest.plan が来たら /fixtures/unittest/plan_fixtures.php
+                // をロードするようにする
+                $parts = explode(&#39;.&#39;, $fixture);
+                $fixture = $parts[count($parts) - 1];
+
+                array_shift($parts);
+                array_pop($parts);
+                $path = implode(DS, $parts);
+
+                $fixturePaths = array(
+                    TESTS . &#39;fixtures&#39; . DS . $path,
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            } elseif (strpos($fixture, &#39;plugin.&#39;) === 0) {
+                $parts = explode(&#39;.&#39;, $fixture, 3);
+                $pluginName = $parts[1];
+                $fixture = $parts[2];
+                $fixturePaths = array(
+                    App::pluginPath($pluginName) . &#39;tests&#39; . DS . &#39;fixtures&#39;,
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            } else {
+                $fixturePaths = array(
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;,
+                    TEST_CAKE_CORE_INCLUDE_PATH . DS . &#39;cake&#39; . DS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            }
+
+            foreach ($fixturePaths as $path) {
+                if (is_readable($path . DS . $fixture . &#39;_fixture.php&#39;)) {
+                    $fixtureFile = $path . DS . $fixture . &#39;_fixture.php&#39;;
+                    break;
+                }
+            }
+
+            if (isset($fixtureFile)) {
+                require_once($fixtureFile);
+                $fixtureClass = Inflector::camelize($fixture) . &#39;Fixture&#39;;
+                $this-&amp;gt;_fixtures[$this-&amp;gt;fixtures[$index]] =&amp;amp;#038; new $fixtureClass($this-&amp;gt;db);
+                $this-&amp;gt;_fixtureClassMap[Inflector::camelize($fixture)] = $this-&amp;gt;fixtures[$index];
+            }
+        }
+
+        if (empty($this-&amp;gt;_fixtures)) {
+            unset($this-&amp;gt;_fixtures);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとはテストケースでこのクラスを呼び出してやればOKです。&lt;/p&gt;
+
+&lt;p&gt;**/app/tests/cases/controllers/higes_controller.test.php**&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+App::import(&#39;Model&#39;, &#39;Uso&#39;);
+App::import(&#39;Lib&#39;, &#39;MyCakeTestCase&#39;);
+
+class HigesControllerTestCase extends MyCakeTestCase {
+    var $fixtures = array(
+        &#39;app.hige.uso&#39;      // /app/test/fixtures/hige/uso_fixture.php がロードされる
+    );
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;副作用:06041edaaf4ad9c158653456ce78f617&#34;&gt;副作用&lt;/h2&gt;
+
+&lt;p&gt;テストケースで「App::import(&amp;#8216;Lib&amp;#8217;, &amp;#8216;MyCakeTestCase&amp;#8217;);」すると、なぜかMyCakeTestCaseもテスト対象になるらしく、テスト結果の「n/n test cases complete」の値が1増えます。&lt;/p&gt;
+
+&lt;p&gt;テスト結果のGreen/Redには影響しないので、無視してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:06041edaaf4ad9c158653456ce78f617&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#39;, &#39;App::import() は凄い &amp;#8211; 24時間CakePHP&#39;]);&#34; title=&#34;App::import() は凄い - 24時間CakePHP&#34;&gt;App::import() は凄い &amp;#8211; 24時間CakePHP&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;本当はApp::importだけでできれば一番いいんですけどね。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP で 2個以上のフィールドを結合して displayField に表示するには</title>
+      <link>http://1000k.github.io/2010/11/08/display-joined-fields-in-cakephp/</link>
+      <pubDate>Mon, 08 Nov 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/11/08/display-joined-fields-in-cakephp/</guid>
+      <description>
+
+&lt;p&gt;displayField に2個以上のフィールドを結合して出したいことがあります。例えば、「姓」「名」フィールドを繋げるケース。&lt;/p&gt;
+
+&lt;p&gt;そんなときは、モデル内で &lt;strong&gt;$virtualFields&lt;/strong&gt; を指定してやれば良いです。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:6f577537d50eabbb296341df1f68cb28&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;例えば、$displayFieldに「姓(family_name)」と「名(given_name)」を繋げて表示したい場合は、下のようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+class User extends AppModel {
+    var $name = &#39;User&#39;;
+    var $virtualFields = array(&#39;full_name&#39; =&amp;gt; &#39;CONCAT(User.family_name , &amp;quot; &amp;quot;, User.given_name)&#39;);
+    var $displayField = &#39;full_name&#39;;
+    var $order = &#39;User.id ASC&#39;;
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;注意:6f577537d50eabbb296341df1f68cb28&#34;&gt;注意&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;$virtualFields は &lt;strong&gt;CakePHP 1.3&lt;/strong&gt; から導入されたらしいので、それ以前のバージョンでは使えません。&lt;/li&gt;
+&lt;li&gt;紛らわしいですが、「virtualField&lt;strong&gt;s&lt;/strong&gt;」(複数形)です。「displayField」（単数形）と混同しないように。&lt;/li&gt;
+&lt;li&gt;上記はMySQLでの例です（CONCAT関数で文字列連結している）。PostgreSQLなどでは違うコマンドになるので、各RDBMSのマニュアルを参照してください。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考:6f577537d50eabbb296341df1f68cb28&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://yohrk.hp2.jp/archives/18&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://yohrk.hp2.jp/archives/18&#39;, &#39;virtualFields使ってみた | Web関係のメモ書き&#39;]);&#34; title=&#34;virtualFields使ってみた | Web関係のメモ書き&#34;&gt;virtualFields使ってみた | Web関係のメモ書き&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/1608/Virtual-fields&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1608/Virtual-fields&#39;, &#39;バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook&#39;]);&#34; title=&#34;バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHPでいわれのない「Missing database table」エラーを直すには</title>
+      <link>http://1000k.github.io/2010/11/05/missing-database-table-error-in-cakephp/</link>
+      <pubDate>Fri, 05 Nov 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/11/05/missing-database-table-error-in-cakephp/</guid>
+      <description>&lt;p&gt;モデルの名前を修正して、再度Bakeしようとすると以下のようなエラーが。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Error: Missing database table &#39;people&#39; for model &#39;Person&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「people」テーブルはさっきDBから消したので、存在していません。いったい何を見てエラーを出しているのか。&lt;/p&gt;
+
+&lt;p&gt;Googleでエラーメッセージを検索すると、「&lt;strong&gt;/app/tmp/cache/&lt;/strong&gt;配下のキャッシュを消せば直る」という記事が。さっそく消して見るも、やはり同じエラーが出ました。&lt;/p&gt;
+
+&lt;p&gt;思い切って &lt;strong&gt;/app/models&lt;/strong&gt;配下にあるモデルをすべて消したところ、無事bakeができるようになりました。&lt;/p&gt;
+
+&lt;p&gt;作成済みのモデルも見てリレーションを判別していたのでしょうか？何という想定外な仕様。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP のコントローラを単純化するために例外を使う</title>
+      <link>http://1000k.github.io/2010/07/23/simplify-controller-by-exception/</link>
+      <pubDate>Fri, 23 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/23/simplify-controller-by-exception/</guid>
+      <description>&lt;p&gt;2009年6月12日の記事でだいぶ古いのですが、CakePHP のコードを改善する TIPS があったので訳してみました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions&#39;, &#39;Simplifying Controller logic with Exceptions | Mark Story&#39;]);&#34; title=&#34;Simplifying Controller logic with Exceptions | Mark Story&#34;&gt;Simplifying Controller logic with Exceptions | Mark Story&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;要約すると、&lt;strong&gt;「モデル内で例外を吐くようにすると、エラーコードが読みやすくなり、コントローラのテストもしやすくなるよ」&lt;/strong&gt;ということです。&lt;/p&gt;
+
+&lt;p&gt;以下、訳です。&lt;/p&gt;
+
+&lt;p&gt;増大するコードと格闘する日々・・・どうにかクリエイティブな方法で解決したい。そんな悩みを、モデルのメソッドから例外を投げる方法で解決しました。別にビックリするようなものではないです。ただfalseを返すより、ちょっと便利な点がいくつかあります。&lt;/p&gt;
+
+&lt;p&gt;第一に、if-elseを減らすことができます。第二に、エラーが起こる部分のソースにエラーメッセージを書くことができるので、何度も使うメソッドならエラーメッセージを重複させずに書くことができます。&lt;/p&gt;
+
+&lt;p&gt;例えば以下のメソッドは、リモートアドレスからリソースをダウンロードし、&lt;/p&gt;
+
+&lt;p&gt;ローカルファイルシステムとデータベースに記録するものです。&lt;em&gt;（訳注: ダウンロードの時点で失敗すると例外を、保存に成功するとtrueを、保存に失敗するとfalseを返します。）&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function downloadResource($url, $userId, $type = &#39;image&#39;) {
+    if (!isset($this-&amp;gt;_fetchMimes[$type])) {
+        throw new OutOfBoundsException(__(&#39;Invalid media type&#39;, true));
+    }
+    $this-&amp;gt;_loadSocket($url);
+    $resource = $this-&amp;gt;Socket-&amp;gt;get($url);
+    if (!isset($this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;])) {
+        throw new OutOfBoundsException(__(&#39;Submitted url has no Mime-Type&#39;, true));
+    }
+    $allowedContentTypes = $this-&amp;gt;_fetchMimes[$type];
+    if (!in_array($this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;], $allowedContentTypes)) {
+        throw new OutOfBoundsException(__(&#39;Submitted url has an invalid Mime-Type&#39;, true));
+    }
+    $newFile = array(
+        &#39;File&#39; =&amp;gt; array(
+            &#39;file&#39; =&amp;gt; $this-&amp;gt;_saveFetchedFile($resource, $url, $this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;]),
+            &#39;user_id&#39; =&amp;gt; $userId,
+            &#39;title&#39; =&amp;gt; $url,
+        )
+    );
+    $this-&amp;gt;create($newMedia);
+    if ($this-&amp;gt;save()) {
+        return true;
+    }
+    return false;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;見てわかる通り、起きてはならないことが起きた時には OutOfBoundsExceptions を投げています。最近のバージョンの PHP に含まれている SPL ライブラリには、便利なクラスが多数用意されています。もちろん自分で例外を作ることもできますが、たいていは組み込みの例外を使うだけで十分でしょう。&lt;/p&gt;
+
+&lt;p&gt;これを使えば、コントローラのメソッドをかなりスッキリさせることができます。何重もの if でチェックする必要が無くなります。また、シンプルでエラーの見通しも良いコードを書くことができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;try {
+    $this-&amp;gt;File-&amp;gt;downloadResource($this-&amp;gt;data[&#39;File&#39;][&#39;url&#39;], $this-&amp;gt;Auth-&amp;gt;user(&#39;id&#39;), &#39;image&#39;);
+    //do some additional file handling and data processing.
+
+    $this-&amp;gt;Session-&amp;gt;setFlash(__(&#39;File uploaded successfully&#39;, true));
+} catch(OutOfBoundsException $e) {
+    $this-&amp;gt;Session-&amp;gt;setFlash($e-&amp;gt;getMessage());
+}
+$this-&amp;gt;redirect(array(&#39;action&#39; =&amp;gt; &#39;index&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このメソッドの例外発生をテストするのは簡単です。assertFalse を使うのではなく、pass() と fail() を使えばいいのです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// (訳注) 不正なURLを送った時に例外が発生することをテストする
+try {
+    $this-&amp;gt;File-&amp;gt;downloadResource(&#39;http:/bogus.com/&#39;, 1, &#39;image&#39;);  // 間違ったURL
+    $this-&amp;gt;fail(&#39;No exception thrown with bogus arguments&#39;);
+} catch (Exception $e) {
+    $this-&amp;gt;pass(&#39;Exception thrown&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例外を使うと便利になることは多いです。だからと言って、false を返すタイプのメソッドすべてを例外を返すようにする必要はないでしょう。たとえばヘルパから例外を返すようにすると、満足より苦痛を感じることのほうが多くなるでしょう。&lt;/p&gt;
+
+&lt;p&gt;どんなツールもそうですが、正しく使えばメンテナンス性の良いコードを生み出すことができるのです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP コントローラからビューに渡る変数をアサーションする</title>
+      <link>http://1000k.github.io/2010/07/20/assert-vars-from-controller-to-view/</link>
+      <pubDate>Tue, 20 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/20/assert-vars-from-controller-to-view/</guid>
+      <description>
+
+&lt;p&gt;公式マニュアルの「&lt;a href=&#34;http://book.cakephp.org/ja/view/366/Testing-controllers&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/366/Testing-controllers&#39;, &#39;コントローラのテスト&#39;]);&#34; title=&#34;コントローラのテスト :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.2コレクション :: The Cookbook&#34;&gt;コントローラのテスト&lt;/a&gt;」では、ただ単に変数をdebugして吐いてるだけで一切アサーションをしていません。これってテストと言えるのでしょうか？&lt;/p&gt;
+
+&lt;p&gt;コントローラのメソッドが実行された後、仕様通りに値が入っているかチェックするにはどうすればいいでしょうか？&lt;/p&gt;
+
+&lt;p&gt;コントローラ内でsetされた変数は &lt;strong&gt;viewVars&lt;/strong&gt; というメンバ変数に格納されるようです。例えば、下記のようなコントローラがあった場合。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// app/controllers/usos_controller.php
+class UsosController extends AppController {
+    var $name = &#39;Usos&#39;;
+
+    function hige() {
+        $this-&amp;gt;set(&#39;moja&#39;, $this-&amp;gt;Uso-&amp;gt;find(&amp;quot;all&amp;quot;));
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをコントローラのテストクラスで取得するには下記のようにすれば良いです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// app/tests/cases/controllers/usos_controller.test.php
+&amp;lt;?php
+/* Usos Test cases generated on: 2010-07-16 16:07:53 : 1279264793*/
+App::import(&#39;Controller&#39;, &#39;Usos&#39;);
+
+class TestUsosController extends UsosController {
+    var $autoRender = false;
+
+    function redirect($url, $status = null, $exit = true) {
+        $this-&amp;gt;redirectUrl = $url;
+    }
+
+    function render($action = null, $layout = null, $file = null) {
+        $this-&amp;gt;renderedAction = $action;
+    }
+
+    function _stop($status = 0) {
+        $this-&amp;gt;stopped = $status;
+    }
+}
+
+
+class UsosControllerTestCase extends CakeTestCase {
+    var $fixtures = array(&#39;app.uso&#39;);
+
+    function startTest() {
+        $this-&amp;gt;Usos =&amp;amp;#038; new TestUsosController();
+        $this-&amp;gt;Usos-&amp;gt;constructClasses();
+    }
+
+    function endTest() {
+        unset($this-&amp;gt;Usos);
+        ClassRegistry::flush();
+    }
+
+    function testHige() {
+        $this-&amp;gt;Usos-&amp;gt;hige();
+        $result = $this-&amp;gt;Usos-&amp;gt;viewVars;     // Usos::viewVars に、set された値が格納されている
+        var_dump($result);
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力結果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;array(1) {
+  [&amp;quot;moja&amp;quot;]=&amp;gt;
+  array(1) {
+    [0]=&amp;gt;
+    array(1) {
+      [&amp;quot;Uso&amp;quot;]=&amp;gt;
+      array(4) {
+        [&amp;quot;id&amp;quot;]=&amp;gt;
+        string(1) &amp;quot;1&amp;quot;
+        [&amp;quot;name&amp;quot;]=&amp;gt;
+        string(11) &amp;quot;Miles Davis&amp;quot;
+        [&amp;quot;created&amp;quot;]=&amp;gt;
+        string(19) &amp;quot;2010-07-16 15:00:49&amp;quot;
+        [&amp;quot;modified&amp;quot;]=&amp;gt;
+        string(19) &amp;quot;2010-07-16 15:00:49&amp;quot;
+      }
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;参考:b3a8ccee870fe281430f610f255f01b4&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case&#39;, &#39;Anatomy of a CakePHP Test Case | Mark Story&#39;]);&#34; title=&#34;Anatomy of a CakePHP Test Case | Mark Story&#34;&gt;Anatomy of a CakePHP Test Case | Mark Story&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way&#39;, &#39;Testing CakePHP Controllers the hard way | Mark Story&#39;]);&#34; title=&#34;Testing CakePHP Controllers the hard way | Mark Story&#34;&gt;Testing CakePHP Controllers the hard way | Mark Story&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031&#39;, &#39;Nabble &amp;#8211; CakePHP &amp;#8211; Getting viewVars set in a controller when using Mock objects during testing&#39;]);&#34; title=&#34;Nabble - CakePHP - Getting viewVars set in a controller when using Mock objects during testing&#34;&gt;Nabble &amp;#8211; CakePHP &amp;#8211; Getting viewVars set in a controller when using Mock objects during testing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP 単体テストで使うメソッドのコールバックの実行順序</title>
+      <link>http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/</link>
+      <pubDate>Fri, 16 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/</guid>
+      <description>
+
+&lt;p&gt;公式マニュアルだけではSimpleTestのコールバックの実行される順序がわからなかったので、調べた結果をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;下のようなコードを実行してみました。実際のテストメソッドは「testHige()」です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+App::import(&#39;Controller&#39;, &#39;Usos&#39;);
+
+class TestUsosController extends UsosController {
+    var $autoRender = false;
+
+    function redirect($url, $status = null, $exit = true) {
+        $this-&amp;gt;redirectUrl = $url;
+    }
+}
+
+class UsosControllerTestCase extends CakeTestCase {
+    var $fixtures = array(&#39;app.uso&#39;);
+
+    function startTest() {
+        echo(&amp;quot;startTest\n&amp;quot;);
+        $this-&amp;gt;Usos =&amp;amp;#038; new TestUsosController();
+        $this-&amp;gt;Usos-&amp;gt;constructClasses();
+    }
+
+    function endTest() {
+        echo(&amp;quot;endTest\n&amp;quot;);
+        unset($this-&amp;gt;Usos);
+        ClassRegistry::flush();
+    }
+
+    function start() {
+        echo(&amp;quot;start\n&amp;quot;);
+    }
+
+    function end() {
+        echo(&amp;quot;end\n&amp;quot;);
+    }
+
+    function startCase() {
+        echo(&amp;quot;startCase\n&amp;quot;);
+    }
+
+    function endCase() {
+        echo(&amp;quot;endCase\n&amp;quot;);
+    }
+
+    function before($method) {
+        echo($method . &amp;quot; before\n&amp;quot;);
+    }
+
+    function after($method) {
+        echo($method . &amp;quot; after\n&amp;quot;);
+    }
+
+    // 実際のテストメソッド
+    function testHige() {
+        echo(&amp;quot;testHige\n&amp;quot;);
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行結果は以下の通りです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;start before
+start
+start after
+startCase before
+startCase
+startCase after
+testHige before
+testHige
+testHige after
+endCase before
+endCase
+endCase after
+end before
+end
+end after
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大まかに書くと「start() → startCase() → testHige() → endCase() → end()」の順に実施され、それぞれのメソッドの前後にbefore($method) と after($method) が呼び出されるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:7c93c2bceb58597d643b29645d174b10&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods&#39;, &#39;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#39;]);&#34; title=&#34;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP1.3 &#43; XAMPP 1.7.3でコードカバレッジを取得できるようにする</title>
+      <link>http://1000k.github.io/2010/07/16/enable-to-get-code-coverage-in-cakephp-13/</link>
+      <pubDate>Fri, 16 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/16/enable-to-get-code-coverage-in-cakephp-13/</guid>
+      <description>
+
+&lt;p&gt;CakePHPでは「http://{アプリURL}/test.php」で単体テスト用ページを表示できます。ここに「Analyze Code Coverage」なんてリンクがあるのですが、私の環境ではここをクリックするとApacheが強制終了させられて、コードカバレッジを取得できませんでした。&lt;/p&gt;
+
+&lt;p&gt;どうやらXAMPP 1.7.3に含まれているxDebugのバージョンが原因のようでした(v2.0.6 rc)。そこで最新のxDebug 2.1.0 を入れたところ、無事取得できるようになりました。&lt;/p&gt;
+
+&lt;p&gt;xDebugの入れ替え方ですが、&lt;a href=&#34;http://www.xdebug.org/find-binary.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.xdebug.org/find-binary.php&#39;, &#39;Xdebug: Support; Tailored Installation Instructions&#39;]);&#34; title=&#34;Xdebug: Support; Tailored Installation Instructions&#34;&gt;Xdebug: Support; Tailored Installation Instructions&lt;/a&gt;にしたがってやるのが一番わかりやすいです。ここのフォームにphpinfoの結果をまるごとコピペするだけで、DLするファイルからphp.iniの設定まですべてやり方を出してくれます。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:95dfb16aee8c1717a3a185c8f8b9f562&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ryuzee.com/contents/blog/2430&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.ryuzee.com/contents/blog/2430&#39;, &#39;[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com&#39;]);&#34; title=&#34;[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com&#34;&gt;[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.xdebug.org/find-binary.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.xdebug.org/find-binary.php&#39;, &#39;Xdebug: Support; Tailored Installation Instructions&#39;]);&#34; title=&#34;Xdebug: Support; Tailored Installation Instructions&#34;&gt;Xdebug: Support; Tailored Installation Instructions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>シェルからcakeErrorメソッドを呼び出すと失敗する</title>
+      <link>http://1000k.github.io/2010/07/15/shell-occurs-error-when-call-cakeerror-method/</link>
+      <pubDate>Thu, 15 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/15/shell-occurs-error-when-call-cakeerror-method/</guid>
+      <description>
+
+&lt;p&gt;CakePHP 1.3.2 &amp;amp; PHP 5.3.1にて。&lt;/p&gt;
+
+&lt;p&gt;CakePHP のエラー処理は「$this-&amp;gt;cakeError(&lt;string errorType&gt;, [array parameters]);」を使うといいらしいので、使ってみました。その結果、Controller で使う場合は問題ありませんが、Shell 上で呼び出すとエラーが出てしまいました。&lt;/p&gt;
+
+&lt;p&gt;以下、その原因と対策をメモします。&lt;/p&gt;
+
+&lt;p&gt;cakeError() を含む uso シェルを実行した結果は下記。エラー画出ています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;../cake/console/cake uso
+
+Notice: Undefined variable: name in C:\xampp\htdocs\sandbox\cake\console\error.php on line 68
+
+Call Stack:
+    0.0898     540608   1. {main}() C:\xampp\htdocs\sandbox\cake\console\cake.php:0
+    0.1060     541392   2. ShellDispatcher-&amp;gt;ShellDispatcher() C:\xampp\htdocs\sandbox\cake\console\cake.php:660
+    0.4175    2728408   3. ShellDispatcher-&amp;gt;dispatch() C:\xampp\htdocs\sandbox\cake\console\cake.php:139
+    1.2805    9165232   4. usoShell-&amp;gt;main() C:\xampp\htdocs\sandbox\cake\console\cake.php:377
+    1.2805    9165232   5. usoCommonComponent-&amp;gt;uho() C:\xampp\htdocs\sandbox\uso\vendors\shells\uso.php:30
+    1.2805    9165736   6. Object-&amp;gt;cakeError() C:\xampp\htdocs\sandbox\uso\controllers\components\uso_common.php:10
+    1.2807    9165992   7. ErrorHandler-&amp;gt;__construct() C:\xampp\htdocs\sandbox\cake\libs\object.php:201
+    1.3140    9166968   8. call_user_func() C:\xampp\htdocs\sandbox\cake\console\error.php:56
+    1.3140    9166984   9. ErrorHandler-&amp;gt;error() C:\xampp\htdocs\sandbox\cake\console\error.php:0
+
+
+Notice: Undefined variable: code in C:\xampp\htdocs\sandbox\cake\console\error.php on line 68
+
+Call Stack:
+    0.0898     540608   1. {main}() C:\xampp\htdocs\sandbox\cake\console\cake.php:0
+    0.1060     541392   2. ShellDispatcher-&amp;gt;ShellDispatcher() C:\xampp\htdocs\sandbox\cake\console\cake.php:660
+    0.4175    2728408   3. ShellDispatcher-&amp;gt;dispatch() C:\xampp\htdocs\sandbox\cake\console\cake.php:139
+    1.2805    9165232   4. usoShell-&amp;gt;main() C:\xampp\htdocs\sandbox\cake\console\cake.php:377
+    1.2805    9165232   5. usoCommonComponent-&amp;gt;uho() C:\xampp\htdocs\sandbox\uso\vendors\shells\uso.php:30
+    1.2805    9165736   6. Object-&amp;gt;cakeError() C:\xampp\htdocs\sandbox\uso\controllers\components\uso_common.php:10
+    1.2807    9165992   7. ErrorHandler-&amp;gt;__construct() C:\xampp\htdocs\sandbox\cake\libs\object.php:201
+    1.3140    9166968   8. call_user_func() C:\xampp\htdocs\sandbox\cake\console\error.php:56
+    1.3140    9166984   9. ErrorHandler-&amp;gt;error() C:\xampp\htdocs\sandbox\cake\console\error.php:0
+
+
+Notice: Undefined variable: message in C:\xampp\htdocs\sandbox\cake\console\error.php on line 68
+
+Call Stack:
+    0.0898     540608   1. {main}() C:\xampp\htdocs\sandbox\cake\console\cake.php:0
+    0.1060     541392   2. ShellDispatcher-&amp;gt;ShellDispatcher() C:\xampp\htdocs\sandbox\cake\console\cake.php:660
+    0.4175    2728408   3. ShellDispatcher-&amp;gt;dispatch() C:\xampp\htdocs\sandbox\cake\console\cake.php:139
+    1.2805    9165232   4. usoShell-&amp;gt;main() C:\xampp\htdocs\sandbox\cake\console\cake.php:377
+    1.2805    9165232   5. usoCommonComponent-&amp;gt;uho() C:\xampp\htdocs\sandbox\uso\vendors\shells\uso.php:30
+    1.2805    9165736   6. Object-&amp;gt;cakeError() C:\xampp\htdocs\sandbox\uso\controllers\components\uso_common.php:10
+    1.2807    9165992   7. ErrorHandler-&amp;gt;__construct() C:\xampp\htdocs\sandbox\cake\libs\object.php:201
+    1.3140    9166968   8. call_user_func() C:\xampp\htdocs\sandbox\cake\console\error.php:56
+    1.3140    9166984   9. ErrorHandler-&amp;gt;error() C:\xampp\htdocs\sandbox\cake\console\error.php:0
+
+Error:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;/cake/console/error.php の コンストラクタ内の下記の部分でしくじっているようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function __construct($method, $messages) {
+    $this-&amp;gt;stdout = fopen(&#39;php://stdout&#39;, &#39;w&#39;);
+    $this-&amp;gt;stderr = fopen(&#39;php://stderr&#39;, &#39;w&#39;);
+    call_user_func_array(array(&amp;amp;#038;$this, $method), $messages); //NG
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;引数 $method に &amp;#8220;error&amp;#8221; を、$messages に配列を入れても、なぜか error メソッドに渡る時点で、$messages の中身が最初の要素の文字列だけになってしまいます。&lt;/p&gt;
+
+&lt;p&gt;そこで、call_user_func_array() ではなく call_user_func() メソッドを使うと動くようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function __construct($method, $messages) {
+    $this-&amp;gt;stdout = fopen(&#39;php://stdout&#39;, &#39;w&#39;);
+    $this-&amp;gt;stderr = fopen(&#39;php://stderr&#39;, &#39;w&#39;);
+    call_user_func(array($this, $method), $messages); // OK
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この二つのメソッドの根本的な違いは何なのかわかりませんが、とりあえずこれでコンソール・コントローラから両方で正しく使えるようになりました。&lt;/p&gt;
+
+&lt;p&gt;検索してもあまり情報が出てきませんでした。詳しい原因を知っている人がいたら教えてください。&lt;/p&gt;
+
+&lt;p&gt;CakePHP のシェルに関するトラブルは概して情報量が少なくて困ります。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:72d171629237a4417381e6389736c783&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/1188/Error-Handling&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1188/Error-Handling&#39;, &#39;エラーハンドリング(Error Handling) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#39;]);&#34; title=&#34;エラーハンドリング(Error Handling) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;エラーハンドリング(Error Handling) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.hard-boiled.jp/?p=415&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.hard-boiled.jp/?p=415&#39;, &#39;いつか辿りつこう(* ^ーﾟ) java seasar2 struts EL mysql many tips » CakePHP 例外処理&#39;]);&#34; title=&#34;いつか辿りつこう(* ^ーﾟ) java seasar2 struts EL mysql many tips » CakePHP 例外処理&#34;&gt;いつか辿りつこう(* ^ーﾟ) java seasar2 struts EL mysql many tips » CakePHP 例外処理&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/lifegood/20081008/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/lifegood/20081008/p1&#39;, &#39;CakePHP＞エラーハンドリング(Error Handling) &amp;#8211; 大人でも自由研究 &amp;#8211; Everyone is creative. Originaly&amp;#8230;!!&#39;]);&#34; title=&#34;CakePHP＞エラーハンドリング(Error Handling) - 大人でも自由研究 - Everyone is creative. Originaly...!!&#34;&gt;CakePHP＞エラーハンドリング(Error Handling) &amp;#8211; 大人でも自由研究 &amp;#8211; Everyone is creative. Originaly&amp;#8230;!!&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://php.net/manual/ja/function.call-user-func-array.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://php.net/manual/ja/function.call-user-func-array.php&#39;, &#39;PHP: call_user_func_array &amp;#8211; Manual&#39;]);&#34; title=&#34;PHP: call_user_func_array - Manual&#34;&gt;PHP: call_user_func_array &amp;#8211; Manual&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHPでコンソールアプリを作るときの基本</title>
+      <link>http://1000k.github.io/2010/07/06/basics-for-building-console-app-in-cakephp/</link>
+      <pubDate>Tue, 06 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/06/basics-for-building-console-app-in-cakephp/</guid>
+      <description>
+
+&lt;p&gt;コンソールアプリケーションの保存先: /app/vendors/shell&lt;/p&gt;
+
+&lt;p&gt;基本的な構造&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// /app/vendors/shell/uso.php
+&amp;lt;?php
+class UsoShell extends Shell {
+    // モデルを使う場合、配列$usesで指定する
+    var $uses = array(&amp;quot;Post&amp;quot;);
+
+    function main() {
+        // ここに命令を記述する
+        // ...
+
+        // 標準出力 (自動改行する)
+        $this-&amp;gt;out(&#39;hige&#39;);
+
+        // 標準出力 (自動改行しない)
+        $this-&amp;gt;out(&#39;moja&#39;, false);
+
+        // 標準エラー出力
+        $this-&amp;gt;err(&#39;bosa&#39;);
+
+        // 区切り線
+        $this-&amp;gt;hr();
+
+        // 異常終了させる
+        $this-&amp;gt;error(&amp;quot;異常発見&amp;quot;, &amp;quot;異常終了します&amp;quot;);
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /app
+../cake/console/cake uso
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力結果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ../cake/console/cake uso
+
+
+Welcome to CakePHP v1.3.2 Console
+---------------------------------------------------------------
+App : uso
+Path: c:\xampp\htdocs\cake\app
+---------------------------------------------------------------
+hige
+mojabosa
+---------------------------------------------------------------
+Error: 異常発見
+異常終了します
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;参考:bdb7996c2533e0f70688b6e9484f46be&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/brtRiver/20090427/1240802118&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/brtRiver/20090427/1240802118&#39;, &#39;CakePHPコンソールのシェルを作るときのメモ &amp;#8211; ぷぎがぽぎ&#39;]);&#34; title=&#34;CakePHPコンソールのシェルを作るときのメモ - ぷぎがぽぎ&#34;&gt;CakePHPコンソールのシェルを作るときのメモ &amp;#8211; ぷぎがぽぎ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks&#39;, &#39;シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#39;]);&#34; title=&#34;シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#34;&gt;シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP公式のブログ作成チュートリアルをSQLite3でやってみる</title>
+      <link>http://1000k.github.io/2010/07/06/cakephp-official-tutorial-using-sqlite3/</link>
+      <pubDate>Tue, 06 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/06/cakephp-official-tutorial-using-sqlite3/</guid>
+      <description>
+
+&lt;h3 id=&#34;このチュートリアルの目的:c559210a78aceddc33ab13f880a8e277&#34;&gt;このチュートリアルの目的&lt;/h3&gt;
+
+&lt;p&gt;一つの CakePHP コアに複数のアプリケーションを同居させる方法を学べます。DB を作って database.php を作成すれば、あとはbakeするだけで基本的な画面が出来上がります。&lt;/p&gt;
+
+&lt;h3 id=&#34;公式チュートリアルと今回のやり方の違い:c559210a78aceddc33ab13f880a8e277&#34;&gt;公式チュートリアルと今回のやり方の違い&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://book.cakephp.org/view/1527/Tutorials-Examples&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/view/1527/Tutorials-Examples&#39;, &#39;公式チュートリアル&#39;]);&#34; title=&#34;Tutorials &amp; Examples :: The Manual :: 1.3 Collection :: The Cookbook&#34;&gt;公式チュートリアル&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MySQL でなく SQLite3 で作る&lt;/li&gt;
+&lt;li&gt;アプリを CakePHP 解凍時の app ディレクトリ内に作らず、「{インストールディレクトリ}/blog」内に bake したファイルを元に作る
+
+&lt;ul&gt;
+&lt;li&gt;一つの CakePHP コアから複数のアプリを併存させる環境を想定&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Model/View/Controller は bake して作る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;作成環境:c559210a78aceddc33ab13f880a8e277&#34;&gt;作成環境&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CakePHP 1.3.2&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;XAMPP Windows&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;th&gt;場所&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ドキュメントルート&lt;/td&gt;
+&lt;td&gt;c:\xampp\htdocs&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;CakePHPインストールディレクトリ&lt;/td&gt;
+&lt;td&gt;c:\xampp\htdocs\cake&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;blogアプリの場所&lt;/td&gt;
+&lt;td&gt;c:\xampp\htdocs\cake\blog&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;手順:c559210a78aceddc33ab13f880a8e277&#34;&gt;手順&lt;/h3&gt;
+
+&lt;h4 id=&#34;1-sqlite3を使うための-dbo-sqlite3-php-を導入する:c559210a78aceddc33ab13f880a8e277&#34;&gt;1. SQLite3を使うための dbo_sqlite3.php を導入する&lt;/h4&gt;
+
+&lt;p&gt;導入先: &lt;strong&gt;{インストールディレクトリ}/cake/libs/model/datasources/dbo/dbo_sqlite3.php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;2-コンソールからblogアプリをbakeする:c559210a78aceddc33ab13f880a8e277&#34;&gt;2. コンソールからblogアプリをbakeする&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cd c:\xampp\htdocs\cake
+mkdir blog
+cake/console/cake bake blog
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;対話式コマンドは↓の通り（Databese Configurationは後で直接いじるので適当でよい）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Welcome to CakePHP v1.3.2 Console
+---------------------------------------------------------------
+App : sandbox
+Path: c:\xampp\htdocs\cake
+---------------------------------------------------------------
+Bake Project
+Skel Directory: C:\xampp\htdocs\cake\cake\console\templates\skel
+Will be copied to: c:\xampp\htdocs\cake\blog
+---------------------------------------------------------------
+Look okay? (y/n/q)
+[y] &amp;gt; y
+Do you want verbose output? (y/n)
+[n] &amp;gt;
+---------------------------------------------------------------
+Created: blog in c:\xampp\htdocs\cake\blog
+---------------------------------------------------------------
+
+Creating file c:\xampp\htdocs\cake\blog\views\pages\home.ctp
+Wrote `c:\xampp\htdocs\cake\blog\views\pages\home.ctp`
+Welcome page created
+Random hash key created for &#39;Security.salt&#39;
+Random seed created for &#39;Security.cipherSeed&#39;
+CAKE_CORE_INCLUDE_PATH set to C:\xampp\htdocs\cake in webroot/index.php
+CAKE_CORE_INCLUDE_PATH set to C:\xampp\htdocs\cake in webroot/test.php
+Remember to check these value after moving to production server
+Your database configuration was not found. Take a moment to create one.
+---------------------------------------------------------------
+Database Configuration:
+---------------------------------------------------------------
+Name:
+[default] &amp;gt;
+Driver: (db2/firebird/mssql/mysql/mysqli/odbc/oracle/postgres/sqlite/sybase)
+[mysql] &amp;gt; sqlite3
+Driver: (db2/firebird/mssql/mysql/mysqli/odbc/oracle/postgres/sqlite/sybase)
+[mysql] &amp;gt; sqlite
+Persistent Connection? (y/n)
+[n] &amp;gt;
+Database Host:
+[localhost] &amp;gt;
+Port?
+[n] &amp;gt;
+User:
+[root] &amp;gt;
+Password:
+&amp;gt;
+The password you supplied was empty. Use an empty password? (y/n)
+[n] &amp;gt; y
+Database Name:
+[cake] &amp;gt;
+Table Prefix?
+[n] &amp;gt;
+Table encoding?
+[n] &amp;gt;
+
+---------------------------------------------------------------
+The following database configuration will be created:
+---------------------------------------------------------------
+Name:         default
+Driver:       sqlite
+Persistent:   false
+Host:         localhost
+User:         root
+Pass:
+Database:     cake
+---------------------------------------------------------------
+Look okay? (y/n)
+[y] &amp;gt;
+Do you wish to add another database configuration?
+[n] &amp;gt;
+
+Creating file c:\xampp\htdocs\cake\blog\config\database.php
+Wrote `c:\xampp\htdocs\cake\blog\config\database.php`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;3-dbファイルを作成し-テーブルとテストデータを作成する:c559210a78aceddc33ab13f880a8e277&#34;&gt;3. DBファイルを作成し、テーブルとテストデータを作成する&lt;/h4&gt;
+
+&lt;p&gt;DBの作成先: &lt;strong&gt;{インストールディレクトリ}/blog/db/blog.sqlite3&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;DBファイルを開いて、下記SQLを実行する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-- テーブルを作成する
+CREATE TABLE posts (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    body TEXT,
+    created DATETIME DEFAULT NULL,
+    modified DATETIME DEFAULT NULL
+);
+
+-- テストデータを流し込む
+INSERT INTO posts (title,body,created) VALUES (&#39;The title&#39;, &#39;This is the post body.&#39;, datetime(&amp;quot;now&amp;quot;, &amp;quot;localtime&amp;quot;));
+INSERT INTO posts (title,body,created) VALUES (&#39;A title once again&#39;, &#39;And the post body follows.&#39;, datetime(&amp;quot;now&amp;quot;, &amp;quot;localtime&amp;quot;));
+INSERT INTO posts (title,body,created) VALUES (&#39;Title strikes back&#39;, &#39;This is really exciting! Not.&#39;, datetime(&amp;quot;now&amp;quot;, &amp;quot;localtime&amp;quot;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;4-database-phpを編集する:c559210a78aceddc33ab13f880a8e277&#34;&gt;4. database.phpを編集する&lt;/h4&gt;
+
+&lt;p&gt;編集するファイル: &lt;strong&gt;{インストールディレクトリ}/blog/config/database.php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+class DATABASE_CONFIG {
+
+    var $default = array(
+        &#39;driver&#39; =&amp;gt; &#39;sqlite3&#39;,
+        &#39;database&#39; =&amp;gt; &#39;C:/xampp/htdocs/cake/blog/db/blog.sqlite3&#39;,
+    );
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここまでやったら、&lt;a href=&#34;http://localhost/cake/blog&#34;&gt;http://localhost/cake/blog&lt;/a&gt; にアクセスして、「Sweet, &amp;#8220;Blog&amp;#8221; got Baked by CakePHP!」という画面が出ることを確認します。画面に赤か黄色で示されるエラーがあれば、どこか間違っているので直してください。&lt;/p&gt;
+
+&lt;p&gt;※画像やCSSが表示されない場合、.htaccessの設定が違う場合があります。下記を手がかりに解決してください。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/1533/A-Note-on-mod_rewrite&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1533/A-Note-on-mod_rewrite&#39;, &#39;mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook&#39;]);&#34; title=&#34;mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;mod_rewriteについて :: CakePHPブログチュートリアル :: 開発例 :: マニュアル :: 1.3コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/37/Apache-and-mod_rewrite-and-htaccess&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/37/Apache-and-mod_rewrite-and-htaccess&#39;, &#39;Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#39;]);&#34; title=&#34;Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#34;&gt;Apacheとmod_rewrite :: インストール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/happy-lucky/20080208/p1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/happy-lucky/20080208/p1&#39;, &#39;CakePHP mod_rewriteについて &amp;#8211; happy-luckyのPHP5日記&#39;]);&#34; title=&#34;CakePHP mod_rewriteについて - happy-luckyのPHP5日記&#34;&gt;CakePHP mod_rewriteについて &amp;#8211; happy-luckyのPHP5日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.glamenv-septzen.net/view/167&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.glamenv-septzen.net/view/167&#39;, &#39;技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 &amp;#8211; Glamenv-Septzen.net&#39;]);&#34; title=&#34;技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 - Glamenv-Septzen.net&#34;&gt;技術/Apache/mod_rewriteメモ(1):RewriteBaseの誤解 &amp;#8211; Glamenv-Septzen.net&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.itsmemo.com/it/web/000173.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.itsmemo.com/it/web/000173.html&#39;, &#39;動的ページを静的ページのように見せる方法 &amp;#8211; ItsMemo::IT (旧)&#39;]);&#34; title=&#34;動的ページを静的ページのように見せる方法 - ItsMemo::IT (旧)&#34;&gt;動的ページを静的ページのように見せる方法 &amp;#8211; ItsMemo::IT (旧)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;5-model-view-controllerをbakeする:c559210a78aceddc33ab13f880a8e277&#34;&gt;5. Model/View/Controllerをbakeする&lt;/h4&gt;
+
+&lt;p&gt;チュートリアルだと「/cake/console/にPATHを設定しろ」と書いていますが、面倒なのでやってません。&lt;/p&gt;
+
+&lt;p&gt;コンソールから、下記のように入力してbakeします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd c:/xampp/htdocs/cake/blog
+../cake/console/cake bake
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この後、何をするか対話式ダイアログで聞かれるので、「M」→「C」→「V」の順に作成してください。（Controllerより先にViewを作ろうとすると「まだControllerがないから作れません」と言われます）&lt;/p&gt;
+
+&lt;h3 id=&#34;6-完成:c559210a78aceddc33ab13f880a8e277&#34;&gt;6. 完成&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://localhost/cake/blog/posts&#34;&gt;http://localhost/cake/blog/posts&lt;/a&gt; にアクセスすると、画面ができあがってます。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Modelのbake中に出る「A displayField could not be automatically detected」とは？</title>
+      <link>http://1000k.github.io/2010/07/06/what-is-a-displayfield-could-not-be-automatically-detected/</link>
+      <pubDate>Tue, 06 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/06/what-is-a-displayfield-could-not-be-automatically-detected/</guid>
+      <description>
+
+&lt;p&gt;Modelをbakeしていると、「A displayField could not be automatically detected would you like to choose one? (y/n)」というメッセージが出ることがあります。&lt;/p&gt;
+
+&lt;p&gt;displayFieldというのは、CakePHPが自動で「これは画面に表示するフィールドだろう」と認識してくれるフィールド。具体的には「name」「title」などが該当します。&lt;/p&gt;
+
+&lt;p&gt;今bakeしようとしているテーブルにそうした名前のフィールドが見つからない場合、自分で指定しなければならない、ということのようです。&lt;/p&gt;
+
+&lt;p&gt;自動で認識されるフィールド名と、それがどう利用されるかの関係は&lt;a href=&#34;http://book.cakephp.org/ja/view/1014/Titles&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1014/Titles&#39;, &#39;Cookbook&#39;]);&#34; title=&#34;タイトル :: データベースのテーブルを作成する :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;Cookbook&lt;/a&gt;に書いてありました。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:2197f5b0a679b1193bc02d7e1d7cc26d&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://cakephp.19694.n2.nabble.com/Cake-Console-Baking-Model-displayField-td4976131.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://cakephp.19694.n2.nabble.com/Cake-Console-Baking-Model-displayField-td4976131.html&#39;, &#39;Nabble &amp;#8211; CakePHP &amp;#8211; Cake Console Baking Model displayField?&#39;]);&#34; title=&#34;Nabble - CakePHP - Cake Console Baking Model displayField?&#34;&gt;Nabble &amp;#8211; CakePHP &amp;#8211; Cake Console Baking Model displayField?&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

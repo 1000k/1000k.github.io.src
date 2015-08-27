@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> HTTP_Request2でhttps接続できない場合の対策 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2011/11/25/http_request2-cannot-connect-https/">HTTP_Request2でhttps接続できない場合の対策</a></h2>
+        <div class="post-content">
+          
+
+<p>HTTP_Request2::send()でhttpsサイトに接続しようとしたら、下記のようなエラーが返ってきました。</p>
+
+<pre><code>Malformed response:
+Unable to connect to ssl://www.google.com:443.
+stream_socket_client(): unable to connect to ssl://www.google.com:443 (Unknown error)
+</code></pre>
+
+<p>Unknown errorというのが一番タチが悪い。エラーが追えません。</p>
+
+<p>検証のためcurlコマンドで同じURLに接続を試みると、ちゃんとレスポンスが返ってきます。何か設定をし忘れているに違いない。</p>
+
+<h1 id="原因:718cece10d0369f9449331b24890587d">原因</h1>
+
+<p>どうやら HTTP_Request::setConfig() で正しい接続設定を行えていない場合、&#8221;Malformed response&#8221; というエラーが出るようです。</p>
+
+<p>私の場合、オレオレ証明書の許可と社内プロキシの設定を行っていなかったためにはまってしまったようです。</p>
+
+<h1 id="対応:718cece10d0369f9449331b24890587d">対応</h1>
+
+<p>オレオレ証明書を持ったサイトを許可するために、setConfig() で <strong>ssl_verify_peer</strong> と <strong>ssl_verify_host</strong> を false に設定してやります。</p>
+
+<p>また、プロキシの設定も行います。</p>
+
+<pre><code>&lt;?php
+require_once('HTTP/Request2.php');
+$req = new HTTP_Request2();
+
+$req-&gt;setConfig(array(
+    'ssl_verify_host' =&gt; false,
+    'ssl_verify_peer' =&gt; false,
+    'proxy_host' =&gt; 'uso.proxy.jp',
+    'proxy_port' =&gt; '8080',
+));
+
+$response = $req-&gt;setUrl(&quot;https://www.google.com/&quot;)-&gt;send();
+print_r($response);     // HTTPレスポンスが出力される
+</code></pre>
+
+<p>ほかにも設定項目はあるので、<a href="http://pear.php.net/manual/en/package.http.http-request2.config.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://pear.php.net/manual/en/package.http.http-request2.config.php', 'マニュアル']);" >マニュアル</a>を参考に設定を疑ってみてはどうでしょうか。</p>
+
+<h1 id="参考:718cece10d0369f9449331b24890587d">参考</h1>
+
+<ul>
+<li><a href="http://pear.php.net/manual/en/package.http.http-request2.config.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://pear.php.net/manual/en/package.http.http-request2.config.php', 'Manual :: Configuration parameters for HTTP_Request2']);" >Manual :: Configuration parameters for HTTP_Request2</a>
+
+<ul>
+<li>setConfigで設定できる項目一覧</li>
+</ul></li>
+<li><a href="http://d.hatena.ne.jp/vivid_skid/20110822/1314013148" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/vivid_skid/20110822/1314013148', 'HTTP_Request2 でのSSL通信でのPOST送信 &#8211; クマーのえんじにありんぐ']);" >HTTP_Request2 でのSSL通信でのPOST送信 &#8211; クマーのえんじにありんぐ</a>
+
+<ul>
+<li>オレオレ証明書の許可ではまってしまった方はこちら</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

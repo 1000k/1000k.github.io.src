@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP で 2個以上のフィールドを結合して displayField に表示するには &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/11/08/display-joined-fields-in-cakephp/">CakePHP で 2個以上のフィールドを結合して displayField に表示するには</a></h2>
+        <div class="post-content">
+          
+
+<p>displayField に2個以上のフィールドを結合して出したいことがあります。例えば、「姓」「名」フィールドを繋げるケース。</p>
+
+<p>そんなときは、モデル内で <strong>$virtualFields</strong> を指定してやれば良いです。</p>
+
+<h2 id="使い方:6f577537d50eabbb296341df1f68cb28">使い方</h2>
+
+<p>例えば、$displayFieldに「姓(family_name)」と「名(given_name)」を繋げて表示したい場合は、下のようにします。</p>
+
+<pre><code>&lt;?php
+class User extends AppModel {
+    var $name = 'User';
+    var $virtualFields = array('full_name' =&gt; 'CONCAT(User.family_name , &quot; &quot;, User.given_name)');
+    var $displayField = 'full_name';
+    var $order = 'User.id ASC';
+?&gt;
+</code></pre>
+
+<h2 id="注意:6f577537d50eabbb296341df1f68cb28">注意</h2>
+
+<ul>
+<li>$virtualFields は <strong>CakePHP 1.3</strong> から導入されたらしいので、それ以前のバージョンでは使えません。</li>
+<li>紛らわしいですが、「virtualField<strong>s</strong>」(複数形)です。「displayField」（単数形）と混同しないように。</li>
+<li>上記はMySQLでの例です（CONCAT関数で文字列連結している）。PostgreSQLなどでは違うコマンドになるので、各RDBMSのマニュアルを参照してください。</li>
+</ul>
+
+<h2 id="参考:6f577537d50eabbb296341df1f68cb28">参考</h2>
+
+<ul>
+<li><a href="http://yohrk.hp2.jp/archives/18" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://yohrk.hp2.jp/archives/18', 'virtualFields使ってみた | Web関係のメモ書き']);" title="virtualFields使ってみた | Web関係のメモ書き">virtualFields使ってみた | Web関係のメモ書き</a></li>
+<li><a href="http://book.cakephp.org/ja/view/1608/Virtual-fields" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1608/Virtual-fields', 'バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook">バーチャルフィールド :: モデル :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

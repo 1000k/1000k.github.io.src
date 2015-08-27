@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vagrant on 1000g</title>
+    <link>http://1000k.github.io/tags/vagrant/</link>
+    <description>Recent content in Vagrant on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 16 Jan 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/vagrant/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Chef Solo ではなく Chef Client Local Mode を使おう</title>
+      <link>http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/</link>
+      <pubDate>Fri, 16 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/</guid>
+      <description>
+
+&lt;p&gt;2014/06/24 に Opscode 公式ブログで &lt;a href=&#34;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#39;, &#39;From Solo to Zero: Migrating to Chef Client Local Mode&#39;]);&#34; &gt;From Solo to Zero: Migrating to Chef Client Local Mode&lt;/a&gt; という記事が公開されました。記事を要約すると「Chef Solo はオワコンだから Chef Client Local Mode を使え」ということのようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;chef-client-local-mode-旧-chef-zero-って:519ef52691307b5f7476688034bf2c1d&#34;&gt;Chef Client Local Mode (旧 Chef Zero) って？&lt;/h2&gt;
+
+&lt;p&gt;Chef Client Local Mode (旧 Chef Zero) は Chef Solo の全ての機能を備えており、Chef Server に移行する際にも楽です。Chef Client 11.8.0 から採用されました。実行するには &lt;code&gt;chef-client&lt;/code&gt; に &lt;code&gt;--local-mode&lt;/code&gt; または &lt;code&gt;-z&lt;/code&gt; オプションを付けます。&lt;/p&gt;
+
+&lt;p&gt;Local Mode ではローカルのファイルシステムから揮発性の Chef Server を作り、&lt;/p&gt;
+
+&lt;p&gt;Server-Client 構成と同じオペレーションが行われます。つまり Chef Server が無ければできなかった高度な機能を、サーバーレスで気軽に行うことができます。&lt;/p&gt;
+
+&lt;p&gt;Chef Server のフル機能を、Chef Solo 同様の気軽さで使えるのが、Chef Client Local Mode と言っていいでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;chef-solo-から-chef-client-local-mode-に移行するべき理由:519ef52691307b5f7476688034bf2c1d&#34;&gt;Chef Solo から Chef Client Local mode に移行するべき理由&lt;/h2&gt;
+
+&lt;p&gt;1&amp;#46; Local Mode なら Server-Client で使える全ての機能 &amp;#8212; environments, roles, (encrypted) data bags &amp;#8212; が使える。ノードやレシピの検索機能も使える。&lt;/p&gt;
+
+&lt;p&gt;2&amp;#46; 特別なツールや knife プラグインは必要無い。&lt;/p&gt;
+
+&lt;p&gt;3&amp;#46; レシピ実行環境が Solo か Server かの分岐を書く必要が無くなる。例えば以下のようなコード。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if Chef::Config[:solo]
+    # do something
+else
+    # do something else
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4&amp;#46; &lt;code&gt;chef_zero&lt;/code&gt; を Test Kitchen の provisioner に使う際、 &amp;#8220;fixture node objects&amp;#8221; をテストデータとして使える。&lt;/p&gt;
+
+&lt;p&gt;5&amp;#46; 後に Chef Server 構成を使いたくなった時にすんなり移行できる。&lt;/p&gt;
+
+&lt;p&gt;今すぐ Chef Solo をお払い箱にする必要はありませんが、公式に deprecated 扱いされているので、今後は Solo よりも Local Mode を使うことをお薦めします。これから Chef を始める人は、chef-apply か local mode を使うといいでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;vagrant-で使う時はどうする:519ef52691307b5f7476688034bf2c1d&#34;&gt;Vagrant で使う時はどうする？&lt;/h2&gt;
+
+&lt;p&gt;Vagrant 1.7.0 より、Chef Client Local mode が使えるようになりました。単純に provisioner に &lt;code&gt;chef_zero&lt;/code&gt; を指定するだけで動作します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.vagrantup.com/v2/provisioning/chef_zero.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://docs.vagrantup.com/v2/provisioning/chef_zero.html&#39;, &#39;Chef Zero &amp;#8211; Provisioning &amp;#8211; Vagrant Documentation&#39;]);&#34; &gt;Chef Zero &amp;#8211; Provisioning &amp;#8211; Vagrant Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;Vagrant.configure(&amp;quot;2&amp;quot;) do |config|
+  config.vm.provision &amp;quot;chef_zero&amp;quot; do |chef|
+    # Specify the local paths where Chef data is stored
+    chef.cookbooks_path = &amp;quot;cookbooks&amp;quot;
+    chef.roles_path = &amp;quot;roles&amp;quot;
+    chef.nodes_path = &amp;quot;nodes&amp;quot;
+
+    # Add a recipe
+    chef.add_recipe &amp;quot;apache&amp;quot;
+
+    # Or maybe a role
+    chef.add_role &amp;quot;web&amp;quot;
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:519ef52691307b5f7476688034bf2c1d&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#39;, &#39;From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog&#39;]);&#34; &gt;From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/YukihikoSawanobori/chef-2014&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/YukihikoSawanobori/chef-2014&#39;, &#39;2014年のChefとInfrastructure as code&#39;]);&#34; &gt;2014年のChefとInfrastructure as code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode&#39;, &#39;chef-client (executable) — Chef Docs # Run in Local Mode&#39;]);&#34; &gt;chef-client (executable) — Chef Docs # Run in Local Mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.opscode.com/ctl_chef_solo.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://docs.opscode.com/ctl_chef_solo.html&#39;, &#39;chef-solo (executable) — Chef Docs&#39;]);&#34; &gt;chef-solo (executable) — Chef Docs&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一番上に warning で「&lt;code&gt;--local-mode&lt;/code&gt; を検討しなよ」と書いてある。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vagrant 1.6.x にアップデートしたら動かなくなった</title>
+      <link>http://1000k.github.io/2014/07/03/vagrant-doesnt-work-after-updating-1-6-x/</link>
+      <pubDate>Thu, 03 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/07/03/vagrant-doesnt-work-after-updating-1-6-x/</guid>
+      <description>&lt;p&gt;Windows 環境で Docker が使いたくて Vagrant を 1.5.1 から 1.6.3 にアップグレードしたら、&lt;code&gt;vagrant up&lt;/code&gt; するたびにエラーが出るようになってしましました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ vagrant up
+Bringing machine &#39;myapp&#39; up with &#39;virtualbox&#39; provider...
+==&amp;gt; myapp: Box &#39;myapp&#39; could not be found. Attempting to find and
+install...
+    myapp: Box Provider: virtualbox
+    myapp: Box Version: &amp;gt;= 0
+==&amp;gt; myapp: Adding box &#39;myapp&#39; (v0) for provider: virtualbox
+    myapp: Downloading: file://C:/static/boxes/CentOS-6.3-x86_64-v2013010
+1.box
+    myapp: Progress: 8% (Rate: 201M/s, Estimated time remaining: 0:00:02)
+    myapp: Progress: 53% (Rate: 203M/s, Estimated time remaining: 0:00:01
+    myapp: Progress: 56% (Rate: 108M/s, Estimated time remaining: 0:00:01
+    myapp: Progress: 76% (Rate: 103M/s, Estimated time remaining: 0:00:01
+    myapp: Progress: 89% (Rate: 91.7M/s, Estimated time remaining: --:--:
+    myapp: Progress: 100% (Rate: 85.8M/s, Estimated time remaining: --:--
+    myapp:
+The box failed to unpackage properly. Please verify that the box
+file you&#39;re trying to add is not corrupted and try again. The
+output from attempting to unpackage (if any):
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GitHub の issue レポートにワークアラウンドが見つかりました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/mitchellh/vagrant/issues/3674&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mitchellh/vagrant/issues/3674&#39;, &#39;The executable &amp;#8216;bsdtar&amp;#8217; Vagrant is trying to run was not found in the %PATH% variable · Issue #3674 · mitchellh/vagrant&#39;]);&#34; &gt;The executable &amp;#8216;bsdtar&amp;#8217; Vagrant is trying to run was not found in the %PATH% variable · Issue #3674 · mitchellh/vagrant&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これによると、古いバージョンが入った Windows に 1.6.x をインストールすると、bsdtar (Vagrant Box を解凍するツール？) がなぜかインストールされないそうです。実際に &lt;code&gt;C:\HashiCorp\Vagrant\embedded\gnuwin32\bin&lt;/code&gt; を見てみたところ、&lt;code&gt;bsdtar.exe&lt;/code&gt; は見つからず、&lt;code&gt;libarchive.dll&lt;/code&gt; というファイル1つしかありませんでした。&lt;/p&gt;
+
+&lt;p&gt;そんなわけで以下の手順を行ったところ、無事起動するようになりました。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;古い Vagrant をアンインストールする。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;c:\HashiCorp\&lt;/code&gt; を削除する。&lt;/li&gt;
+&lt;li&gt;再度インストーラーで Vagrant 1.6.3 をインストールする。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;なおスレッドの書き込みによると、コントロールパネルの「プログラムと機能」から「修復」を選んでも直るらしいです。(未検証)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS&#43;Rails4&#43;Ruby2.0の環境を構築するレシピ</title>
+      <link>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</link>
+      <pubDate>Tue, 27 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/1000k/rails_sandbox&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox&#39;, &#39;1000k/rails_sandbox&#39;]);&#34; &gt;1000k/rails_sandbox&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Vagrant を使って以下の環境を速攻で構築するレシピを作りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 6.4&lt;/li&gt;
+&lt;li&gt;Ruby 2.0.0&lt;/li&gt;
+&lt;li&gt;Ruby on Rails 4.0.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使い方は &lt;a href=&#34;https://github.com/1000k/rails_sandbox/blob/master/README.md&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox/blob/master/README.md&#39;, &#39;README&#39;]);&#34; &gt;README&lt;/a&gt; に書いてある通り、vagrant-berkshelf プラグインをインストールして &lt;code&gt;vagrant up&lt;/code&gt; するだけです。&lt;/p&gt;
+
+&lt;p&gt;最近ようやく第2言語として Ruby が使えるようになってきたので、ここいらで Rails を使いこなせるようになりたいです。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

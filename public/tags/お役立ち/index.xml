@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>お役立ち on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%81%8A%E5%BD%B9%E7%AB%8B%E3%81%A1/</link>
+    <description>Recent content in お役立ち on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 05 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%81%8A%E5%BD%B9%E7%AB%8B%E3%81%A1/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SQLite3で現在時刻をINSERTする</title>
+      <link>http://1000k.github.io/2010/07/05/insert-current-time-in-sqlite3/</link>
+      <pubDate>Mon, 05 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/05/insert-current-time-in-sqlite3/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;datetime(&amp;#8216;now&amp;#8217;, &amp;#8216;localtime&amp;#8217;)&lt;/strong&gt;を使う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INSERT INTO posts (body, created, modified)
+VALUES (&#39;ウソ文章&#39;, datetime(&#39;now&#39;, &#39;localtime&#39;), datetime(&#39;now&#39;, &#39;localtime&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、この値はスキーマ定義時にDEFAULT値に設定することなどもできるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:f8899ebbf568af077f83512b36b60fed&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.tamandua-webtools.net/sqlite3-date.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.tamandua-webtools.net/sqlite3-date.html&#39;, &#39;SQLite3 での日付処理&#39;]);&#34; title=&#34;SQLite3 での日付処理&#34;&gt;SQLite3 での日付処理&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[NetBeans] CodeIgniterの単語補完ができるようにする</title>
+      <link>http://1000k.github.io/2010/05/27/enable-codeigniter-code-complete-in-netbeans/</link>
+      <pubDate>Thu, 27 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/27/enable-codeigniter-code-complete-in-netbeans/</guid>
+      <description>
+
+&lt;p&gt;CodeIgniterには便利なライブラリやヘルパが多数用意されてますが、すべて覚えるのは面倒ですし、間違いもおきます。そういったことはIDEに助けてもらいたい。が、私がよく使うNetBeansは、デフォルトでは単語を補完してくれない。&lt;/p&gt;
+
+&lt;p&gt;そこで、以下の方法で単語補完をできるようにしました。&lt;/p&gt;
+
+&lt;h3 id=&#34;手順:fc1e74b047afd2cf65d5232747f988fd&#34;&gt;手順&lt;/h3&gt;
+
+&lt;p&gt;CodeIgniterをNetBeansのプロジェクトに登録すると、以下のようなディレクトリ構成になっているはず。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/application
+/error
+/images
+/nbproject
+/scripts
+/styles
+index.php
+.htaccess
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この「/nbproject」ディレクトリ内に、以下の「netbeans_ci_code_completion.php」というファイルを配置するだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?
+/**
+* @property CI_Loader $load
+* @property CI_Form_validation $form_validation
+* @property CI_Input $input
+* @property CI_Email $email
+* @property CI_DB_active_record $db
+* @property CI_DB_forge $dbforge
+* @property CI_Table $table
+* @property CI_Session $session
+* @property CI_FTP $ftp
+* ....
+*/
+Class Controller {
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、NetBeansが自動補完してくれるようになります。&lt;/p&gt;
+
+&lt;p&gt;※上記ファイルだけでは全ライブラリを網羅していません。使いたければ「/system/library」内にあるクラスも同様のフォーマットで追加してあげてください。（時間があったらあとで追記します）&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:fc1e74b047afd2cf65d5232747f988fd&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.mybelovedphp.com/2009/01/27/netbeans-revisited-code-completion-for-code-igniter-ii/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.mybelovedphp.com/2009/01/27/netbeans-revisited-code-completion-for-code-igniter-ii/&#39;, &#39;My Beloved PHP » Blog Archive » Netbeans revisited: Code Completion for Code-igniter II&#39;]);&#34; title=&#34;My Beloved PHP » Blog Archive » Netbeans revisited: Code Completion for Code-igniter II&#34;&gt;My Beloved PHP » Blog Archive » Netbeans revisited: Code Completion for Code-igniter II&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

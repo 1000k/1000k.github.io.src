@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Selenium IDE &#43; Pearl Crescent Page Saver で複数画面のキャプチャを自動化する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/06/11/automate-screen-capture-using-selenium-ide-pearl-crescent-page-saver/">Selenium IDE &#43; Pearl Crescent Page Saver で複数画面のキャプチャを自動化する</a></h2>
+        <div class="post-content">
+          
+
+<p>多くの画面があるサイトで、すべてのページを、スクロール領域すべてを含めてキャプチャしなければならない。</p>
+
+<p>こんなこと手動でやっていては大変です。しかも画面修正が入って「もう一回全部撮り直せ」と言われたらもう死ぬしかないですね。</p>
+
+<p>早まる前に、この記事のやり方で自動化してください。</p>
+
+<h2 id="必要なもの:462da812d7d4ed2797cfbcdf095e949a">必要なもの</h2>
+
+<ul>
+<li>FireFox 3.x</li>
+<li><a href="http://seleniumhq.org/download/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://seleniumhq.org/download/', 'Selenium IDE']);" title="Selenium IDE">Selenium IDE</a> (執筆時 バージョン1.0.7)</li>
+<li><a href="http://pearlcrescent.com/products/pagesaver/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://pearlcrescent.com/products/pagesaver/', 'Pearl Crescent Page Saver']);" title="Pearl Crescent Page Saver">Pearl Crescent Page Saver</a></li>
+</ul>
+
+<h2 id="手順:462da812d7d4ed2797cfbcdf095e949a">手順</h2>
+
+<p>まず、Pearl Crescent Page Saver のショートカット設定をします。「Page Saverオプション」から、下記の通り設定します。</p>
+
+<ul>
+<li>「全般」タブ
+
+<ul>
+<li>「キーボードショートカットかツールバーのボタンがクリックされた時:」 &#8211; <strong>ページ全体</strong></li>
+<li>「キーボードショートカット:」 &#8211; <strong>Alt+w</strong> (好きなキーで構わないですが、下記はこの設定でやります)</li>
+</ul></li>
+<li>「画像のキャプチャー」タブ
+
+<ul>
+<li>「ファイルの保存名:」 &#8211; <strong>%t %u</strong></li>
+<li>「次のフォルダに保存する」 &#8211; 好きなフォルダ</li>
+<li>「同じ名前のファイルがあるときは上書きする」 &#8211; <strong>チェックする</strong></li>
+</ul></li>
+</ul>
+
+<p>次に、Selenium IDEのテストケースを作成します。Selenium IDEの基本的な使い方は 「<a href="http://www.atmarkit.co.jp/fjava/rensai4/devtool07/devtool07_2.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.atmarkit.co.jp/fjava/rensai4/devtool07/devtool07_2.html', 'ブラウザを選ばずWebテストを自動化するSelenium (2/3) &#8211; ＠IT']);" title="ブラウザを選ばずWebテストを自動化するSelenium (2/3) - ＠IT">ブラウザを選ばずWebテストを自動化するSelenium (<sup>2</sup>&frasl;<sub>3</sub>) &#8211; ＠IT</a>」 が詳しいです。</p>
+
+<table>
+  <tr>
+    <th>
+      コマンド
+    </th>
+    
+    <th>
+      対象
+    </th>
+    
+    <th>
+      値
+    </th>
+  </tr>
+  
+  <tr>
+    <td>
+      open
+    </td>
+    
+    <td>
+      /index.php
+    </td>
+    
+    <td>
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      windowFocus
+    </td>
+    
+    <td>
+    </td>
+    
+    <td>
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      altKeyDown
+    </td>
+    
+    <td>
+    </td>
+    
+    <td>
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      keyPress
+    </td>
+    
+    <td>
+      //
+    </td>
+    
+    <td>
+      \119
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      altKeyUp
+    </td>
+    
+    <td>
+    </td>
+    
+    <td>
+    </td>
+  </tr>
+</table>
+
+<p>これが1ページぶんのオープン～キャプチャの流れです。</p>
+
+<p>ここまで設定したら、Selenium IDEの「現在のテストケースを実行」をクリックしてください。指定したURLが開き、先ほど指定したフォルダに画像が出力されていればOKです。</p>
+
+<p>あとは上記の要領で、「open」コマンドの対象を撮影したいページのアドレスに変更しながらコピペを繰り返してください。</p>
+
+<h2 id="日本語を含むテストケースファイルが読み込めない場合:462da812d7d4ed2797cfbcdf095e949a">日本語を含むテストケースファイルが読み込めない場合</h2>
+
+<ul>
+<li>XHTMLのヘッダを「xml:lang=&#8221;en&#8221; lang=&#8221;en&#8221;」から「xml:lang=&#8221;ja&#8221; lang=&#8221;ja&#8221;」に直す</li>
+<li>ファイル保存形式を「UTF-8 BOM無し」にする</li>
+</ul>
+
+<h2 id="tips:462da812d7d4ed2797cfbcdf095e949a">TIPS</h2>
+
+<p>カテゴリ毎に多くのコンテンツがあるようなページを連続キャプチャする場合、カテゴリ毎にテストケースを作成し、それをテストスイートに読み込ませると管理が便利（だと思います）。</p>
+
+<h2 id="参考:462da812d7d4ed2797cfbcdf095e949a">参考</h2>
+
+<p><a href="http://d.hatena.ne.jp/szk-takanori/20071104/1194181489" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/szk-takanori/20071104/1194181489', 'Seleniumでキャプチャを取得する拡張コマンド:captureScreenshot &#8211; 現場のためのソフトウェア開発プロセス &#8211; たかのり日記']);" title="Seleniumでキャプチャを取得する拡張コマンド:captureScreenshot - 現場のためのソフトウェア開発プロセス - たかのり日記">Seleniumでキャプチャを取得する拡張コマンド:captureScreenshot &#8211; 現場のためのソフトウェア開発プロセス &#8211; たかのり日記</a></p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

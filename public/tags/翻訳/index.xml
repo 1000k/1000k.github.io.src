@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>翻訳 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E7%BF%BB%E8%A8%B3/</link>
+    <description>Recent content in 翻訳 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 23 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E7%BF%BB%E8%A8%B3/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CakePHP のコントローラを単純化するために例外を使う</title>
+      <link>http://1000k.github.io/2010/07/23/simplify-controller-by-exception/</link>
+      <pubDate>Fri, 23 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/23/simplify-controller-by-exception/</guid>
+      <description>&lt;p&gt;2009年6月12日の記事でだいぶ古いのですが、CakePHP のコードを改善する TIPS があったので訳してみました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions&#39;, &#39;Simplifying Controller logic with Exceptions | Mark Story&#39;]);&#34; title=&#34;Simplifying Controller logic with Exceptions | Mark Story&#34;&gt;Simplifying Controller logic with Exceptions | Mark Story&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;要約すると、&lt;strong&gt;「モデル内で例外を吐くようにすると、エラーコードが読みやすくなり、コントローラのテストもしやすくなるよ」&lt;/strong&gt;ということです。&lt;/p&gt;
+
+&lt;p&gt;以下、訳です。&lt;/p&gt;
+
+&lt;p&gt;増大するコードと格闘する日々・・・どうにかクリエイティブな方法で解決したい。そんな悩みを、モデルのメソッドから例外を投げる方法で解決しました。別にビックリするようなものではないです。ただfalseを返すより、ちょっと便利な点がいくつかあります。&lt;/p&gt;
+
+&lt;p&gt;第一に、if-elseを減らすことができます。第二に、エラーが起こる部分のソースにエラーメッセージを書くことができるので、何度も使うメソッドならエラーメッセージを重複させずに書くことができます。&lt;/p&gt;
+
+&lt;p&gt;例えば以下のメソッドは、リモートアドレスからリソースをダウンロードし、&lt;/p&gt;
+
+&lt;p&gt;ローカルファイルシステムとデータベースに記録するものです。&lt;em&gt;（訳注: ダウンロードの時点で失敗すると例外を、保存に成功するとtrueを、保存に失敗するとfalseを返します。）&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public function downloadResource($url, $userId, $type = &#39;image&#39;) {
+    if (!isset($this-&amp;gt;_fetchMimes[$type])) {
+        throw new OutOfBoundsException(__(&#39;Invalid media type&#39;, true));
+    }
+    $this-&amp;gt;_loadSocket($url);
+    $resource = $this-&amp;gt;Socket-&amp;gt;get($url);
+    if (!isset($this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;])) {
+        throw new OutOfBoundsException(__(&#39;Submitted url has no Mime-Type&#39;, true));
+    }
+    $allowedContentTypes = $this-&amp;gt;_fetchMimes[$type];
+    if (!in_array($this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;], $allowedContentTypes)) {
+        throw new OutOfBoundsException(__(&#39;Submitted url has an invalid Mime-Type&#39;, true));
+    }
+    $newFile = array(
+        &#39;File&#39; =&amp;gt; array(
+            &#39;file&#39; =&amp;gt; $this-&amp;gt;_saveFetchedFile($resource, $url, $this-&amp;gt;Socket-&amp;gt;response[&#39;header&#39;][&#39;Content-Type&#39;]),
+            &#39;user_id&#39; =&amp;gt; $userId,
+            &#39;title&#39; =&amp;gt; $url,
+        )
+    );
+    $this-&amp;gt;create($newMedia);
+    if ($this-&amp;gt;save()) {
+        return true;
+    }
+    return false;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;見てわかる通り、起きてはならないことが起きた時には OutOfBoundsExceptions を投げています。最近のバージョンの PHP に含まれている SPL ライブラリには、便利なクラスが多数用意されています。もちろん自分で例外を作ることもできますが、たいていは組み込みの例外を使うだけで十分でしょう。&lt;/p&gt;
+
+&lt;p&gt;これを使えば、コントローラのメソッドをかなりスッキリさせることができます。何重もの if でチェックする必要が無くなります。また、シンプルでエラーの見通しも良いコードを書くことができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;try {
+    $this-&amp;gt;File-&amp;gt;downloadResource($this-&amp;gt;data[&#39;File&#39;][&#39;url&#39;], $this-&amp;gt;Auth-&amp;gt;user(&#39;id&#39;), &#39;image&#39;);
+    //do some additional file handling and data processing.
+
+    $this-&amp;gt;Session-&amp;gt;setFlash(__(&#39;File uploaded successfully&#39;, true));
+} catch(OutOfBoundsException $e) {
+    $this-&amp;gt;Session-&amp;gt;setFlash($e-&amp;gt;getMessage());
+}
+$this-&amp;gt;redirect(array(&#39;action&#39; =&amp;gt; &#39;index&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このメソッドの例外発生をテストするのは簡単です。assertFalse を使うのではなく、pass() と fail() を使えばいいのです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// (訳注) 不正なURLを送った時に例外が発生することをテストする
+try {
+    $this-&amp;gt;File-&amp;gt;downloadResource(&#39;http:/bogus.com/&#39;, 1, &#39;image&#39;);  // 間違ったURL
+    $this-&amp;gt;fail(&#39;No exception thrown with bogus arguments&#39;);
+} catch (Exception $e) {
+    $this-&amp;gt;pass(&#39;Exception thrown&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例外を使うと便利になることは多いです。だからと言って、false を返すタイプのメソッドすべてを例外を返すようにする必要はないでしょう。たとえばヘルパから例外を返すようにすると、満足より苦痛を感じることのほうが多くなるでしょう。&lt;/p&gt;
+
+&lt;p&gt;どんなツールもそうですが、正しく使えばメンテナンス性の良いコードを生み出すことができるのです。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

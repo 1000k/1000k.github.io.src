@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Sketchup で Google Earth の地形データをインポートする手順 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2014/02/02/importing-geometrical-data-of-google-earth-in-sketchup/">Sketchup で Google Earth の地形データをインポートする手順</a></h2>
+        <div class="post-content">
+          
+
+<p>Google Earth の 3D の地形データを Sketchup にインポートするチュートリアルです。</p>
+
+<h2 id="手順:ada0c3665685f49ff08fee8d194494a8">手順</h2>
+
+<h3 id="場所のインポート:ada0c3665685f49ff08fee8d194494a8">場所のインポート</h3>
+
+<p>&ldquo;ファイル &gt; ジオロケーション &gt; 場所を追加&rdquo; をクリック。</p>
+
+<p>
+<figure >
+    
+        <img src="/img/su_tutorial_001.png"  />
+    
+    
+    <figcaption>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<p>Google Maps が開くので、地名を検索する。</p>
+
+<p>&ldquo;地域を選択&rdquo; をクリック。</p>
+
+<p>矩形の範囲を設定し、&rdquo;グラブ&rdquo; をクリック。</p>
+
+<p>
+<figure >
+    
+        <img src="/img/su_tutorial_002-300x224.png"  />
+    
+    
+    <figcaption>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<p>これで地形データが Sketchup にインポートされます。</p>
+
+<p>
+<figure >
+    
+        <img src="/img/su_tutorial_003-1024x680.jpg"  />
+    
+    
+    <figcaption>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<h3 id="3d-モデルを表示する:ada0c3665685f49ff08fee8d194494a8">3D モデルを表示する</h3>
+
+<p>この時点では 2D の画像しかありませんが、3D のデータも非表示のレイヤーで取り込まれています。</p>
+
+<p>表示するには次の手順に従います。</p>
+
+<ol>
+<li>&ldquo;ウィンドウ &gt; レイヤ&rdquo; をクリックして、レイヤパネルを開く。</li>
+<li>&ldquo;Google Earth Terrain&rdquo; の &ldquo;可視&rdquo; チェックボックスをクリック。</li>
+</ol>
+
+<p>
+<figure >
+    
+        <img src="/img/su_tutorial_004.png"  />
+    
+    
+    <figcaption>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<p>これで 3D のデータが取り込まれました。</p>
+
+<h3 id="編集可能にする:ada0c3665685f49ff08fee8d194494a8">編集可能にする</h3>
+
+<p>さらにこの時点ではエンティティにロックがかかっているため、編集できません。</p>
+
+<p>編集したい場合はエンティティを選択し、&rdquo;エンティティ情報&rdquo; パネルの &ldquo;ロック&rdquo; チェックボックスを外します。</p>
+
+<p>
+<figure >
+    
+        <img src="/img/su_tutorial_005.png"  />
+    
+    
+    <figcaption>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<p>これでエンティティが編集可能になります。</p>
+
+<p>
+<figure >
+    
+        <img src="/img/su_tutorial_006-1024x496.png"  />
+    
+    
+    <figcaption>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<p>表面の 2D 画像を消したければ、エンティティを選択して &ldquo;サーフェス&rdquo; をデフォルトにすれば OK。</p>
+
+<h2 id="参考:ada0c3665685f49ff08fee8d194494a8">参考</h2>
+
+<p><a href="https://productforums.google.com/forum/#!topic/sketchup/Crl5SFcyRo0">How do I import terrain from Google Earth? - Google プロダクト フォーラム</a></p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

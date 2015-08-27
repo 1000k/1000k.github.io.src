@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CodeIgniter1.7.2でSQLite3のカラム名を取得できるようにする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/06/01/get-column-name-of-sqlite3-in-codeigniter-172/">CodeIgniter1.7.2でSQLite3のカラム名を取得できるようにする</a></h2>
+        <div class="post-content">
+          
+
+<p>CodeIgniterのSQLite3に対する迫害と、引き続き奮闘しています。</p>
+
+<p>CIでSQLite3を使えるようにする方法は <a href="http://blog.1000k.net/2010/05/26/codeigniter-codeigniter1-7-2-%E3%81%A7-sqlite3-%E3%81%AEdb%E3%82%92%E4%BD%BF%E3%81%86/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2010/05/26/codeigniter-codeigniter1-7-2-%E3%81%A7-sqlite3-%E3%81%AEdb%E3%82%92%E4%BD%BF%E3%81%86/', '先日']);" title="CodeIgniter1.7.2 で SQLite3 のDBを使う">先日</a> 紹介しました。</p>
+
+<p>CIにはテーブルのカラム名を取得する「$this-&gt;db-&gt;list_fields()」というメソッドがありますが、上の方法で導入したPDOドライバでは使えません。どうやら list_fields() メソッドから呼び出されるローカル関数が定義されていないようです。</p>
+
+<p>ちょっと改造すれば使えるようになったので、やり方を共有します。</p>
+
+<h3 id="手順:4c4c0989caf014b5d7d6c918a32b9dd5">手順</h3>
+
+<ol>
+<li>/system/database/drivers/pdo/pdo_driver.php 内に、下記メソッドを追加する。（このメソッドはMySQLドライバ内の同一メソッドをSQLite用に修正したものです）</li>
+</ol>
+
+<pre><code>/**
+ * Show column query
+ *
+ * Generates a platform-specific query string so that the column names can be fetched
+ *
+ * @access  public
+ * @param   string  the table name
+ * @return  string
+ */
+function _list_columns($table = '')
+{
+    return &quot;PRAGMA table_info(&quot; . $table . &quot;);&quot;;
+}
+</code></pre>
+
+<ol>
+<li>/system/database/DB_driver.php 内の l.833-835 を下記のように書き換えます。</li>
+</ol>
+
+<pre><code>if (isset($row['COLUMN_NAME']))
+{
+    $retval[] = $row['COLUMN_NAME'];
+}
+
+ ↓
+
+if (isset($row['COLUMN_NAME']) || isset($row['name']))
+{
+    $retval[] = isset($row['COLUMN_NAME']) ? $row['COLUMN_NAME'] : $row['name'];
+}
+</code></pre>
+
+<p>これで、SQLite3でも 「$this-&gt;db-&gt;list_fields()」 を使ってカラム名が取得できるようになります。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> mysqlslap で MySQL の負荷テストをする方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2014/05/13/load-test-with-mysqlslap/">mysqlslap で MySQL の負荷テストをする方法</a></h2>
+        <div class="post-content">
+          
+
+<p>mysqlslap は MySQL の負荷テストに使えるツールです。MySQL &gt;= 5.1.4 からはデフォルトで提供されています。</p>
+
+<p>テスト中は <code>mysqlslap</code> という DB を自動で作って、そこにクエリを投げまくります。</p>
+
+<p>以下に基本的な使い方をメモしておきます。</p>
+
+<h2 id="使い方:c586e0247ceee441e4b1b150e9d62fd0">使い方</h2>
+
+<p><code>mysqlslap -?</code> で詳しいヘルプが見られます。典型的な例は下記。</p>
+
+<pre><code>mysqlslap \
+  --no-defaults \
+  --concurrency=50 \
+  --iterations=1 \
+  --number-int-cols=2 \
+  --number-char-cols=3 \
+  --engine=innodb \
+  --auto-generate-sql \
+  --auto-generate-sql-add-autoincrement \
+  --auto-generate-sql-load-type=key \
+  --auto-generate-sql-write-number=1000 \
+  --number-of-queries=100000 \
+  --host=localhost \
+  --port=3306 \
+  --user=root \
+  --csv=/tmp/bench_result.csv
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>パラメータ</th>
+<th>意味</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>no-defaults</td>
+<td>my.cnf に書かれたデフォルト値を無視する。このオプションは先頭に付ける必要がある</td>
+</tr>
+
+<tr>
+<td>concurrency</td>
+<td>同時に接続してくるクライアントの数</td>
+</tr>
+
+<tr>
+<td>iterations</td>
+<td>テストの試行回数</td>
+</tr>
+
+<tr>
+<td>number-int-cols</td>
+<td>テストテーブルに作る INT 型カラムの数</td>
+</tr>
+
+<tr>
+<td>number-char-cols</td>
+<td>テストテーブルに作る VARCHAR 型カラムの数</td>
+</tr>
+
+<tr>
+<td>engine</td>
+<td>使用する DB エンジン</td>
+</tr>
+
+<tr>
+<td>auto-generate-sql</td>
+<td>テストで使用する SQL 文を自動で生成する</td>
+</tr>
+
+<tr>
+<td>auto-generate-sql-add-autoincrement</td>
+<td>自動で作ったテーブルに AUTO_INCREMENT カラムを追加する</td>
+</tr>
+
+<tr>
+<td>auto-generate-sql-load-type</td>
+<td>クエリのタイプ。`[mixed</td>
+</tr>
+
+<tr>
+<td>auto-generate-sql-write-number</td>
+<td>スレッド毎の INSERT 文の発行数。デフォルトは 100</td>
+</tr>
+
+<tr>
+<td>number-of-queries</td>
+<td>各クライアントが投げるクエリの上限数。正確にこの値にはならない</td>
+</tr>
+
+<tr>
+<td>host</td>
+<td>ホスト</td>
+</tr>
+
+<tr>
+<td>port</td>
+<td>ポート番号</td>
+</tr>
+
+<tr>
+<td>user</td>
+<td>ベンチマークを実行するユーザー。DB 作成権限が無いユーザーを指定するとテストできないので注意！</td>
+</tr>
+
+<tr>
+<td>csv</td>
+<td>結果を CSV 形式で取得したい時は、ここに出力先のパスを書く</td>
+</tr>
+</tbody>
+</table>
+
+<p>結果は以下のように出力されます。</p>
+
+<pre><code>Benchmark
+        Running for engine innodb
+        Average number of seconds to run all queries: 16.086 seconds
+        Minimum number of seconds to run all queries: 16.086 seconds
+        Maximum number of seconds to run all queries: 16.086 seconds
+        Number of clients running queries: 50
+        Average number of queries per client: 2000
+</code></pre>
+
+<h2 id="参考:c586e0247ceee441e4b1b150e9d62fd0">参考</h2>
+
+<ul>
+<li><a href="http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション']);" >MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション</a></li>
+<li><a href="http://d.hatena.ne.jp/tetsuyai/20110209/1297253834" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/tetsuyai/20110209/1297253834', 'MySQL標準 負荷測定ツール mysqlslap &#8211; 祈れ、そして働け ～ Ora et labora']);" >MySQL標準 負荷測定ツール mysqlslap &#8211; 祈れ、そして働け ～ Ora et labora</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

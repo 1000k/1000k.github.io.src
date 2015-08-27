@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>バグ on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%83%90%E3%82%B0/</link>
+    <description>Recent content in バグ on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 24 May 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%83%90%E3%82%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[PHP] PHPの閉じタグは書いちゃダメ</title>
+      <link>http://1000k.github.io/2010/05/24/dont-write-php-closing-tag/</link>
+      <pubDate>Mon, 24 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/24/dont-write-php-closing-tag/</guid>
+      <description>
+
+&lt;h1 id=&#34;現象:792e315ec7fc7759bc2457a02c4937b7&#34;&gt;現象&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+
+// ... 処理 ...
+
+?&amp;gt;
+←改行1
+←改行2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上のコードにブラウザからアクセスしてみると、改行が一つだけあるソースが表示される。PHPは閉じタグ直後の改行1個は自動で消してくれるが、2個目以上はそのまま表示するらしい。&lt;/p&gt;
+
+&lt;p&gt;こんなソースを header関数などを使うクラスからIncludeすると終わり。header関数の前にはいかなる出力もしてはいけないのに、勝手に改行が出力されているので、エラーが発生する。&lt;/p&gt;
+
+&lt;p&gt;閉じタグは書かなくてもいい。というか、書くと余計なエラーの原因になるので、&lt;strong&gt;PHPの閉じタグ書くべきではない。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:792e315ec7fc7759bc2457a02c4937b7&#34;&gt;参考&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://d.hatena.ne.jp/fbis/20090716/1247714151&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/fbis/20090716/1247714151&#39;, &#39;PHPの閉じタグは心の臓に悪いから使わないで &amp;#8211; Unknown::Programming&#39;]);&#34; title=&#34;PHPの閉じタグは心の臓に悪いから使わないで - Unknown::Programming&#34;&gt;PHPの閉じタグは心の臓に悪いから使わないで &amp;#8211; Unknown::Programming&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

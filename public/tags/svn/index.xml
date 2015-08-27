@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Svn on 1000g</title>
+    <link>http://1000k.github.io/tags/svn/</link>
+    <description>Recent content in Svn on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 03 Aug 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/svn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>svnでdiffの行数を取得する</title>
+      <link>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</link>
+      <pubDate>Wed, 03 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</guid>
+      <description>
+
+&lt;p&gt;どれだけコーディングしたかチェックするため、svnのdiffの行数を取得するコマンドを考えました。&lt;/p&gt;
+
+&lt;p&gt;下のコマンドを叩くと、変更された行の総数が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(2011-08-17修正) 以前のコードはdiffのヘッダ行まで取得してしまっていたので、正しい数値が得られるよう修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;svn diff -r {before}[:{after}] -x -b {path} | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば「チェンジセット301～310で uso.php に発生した差分の総行数」は、下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn diff -r 301:310 -x -b ./uso.php | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ロジックは、&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;空白文字の差分（インデントや空行の削除）を無視してdiffを取る&lt;/li&gt;
+&lt;li&gt;差分行だけ(「+ 」「- 」どちらかから始まっている行)を取得する&lt;/li&gt;
+&lt;li&gt;行数をカウントする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;となっています。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8ae62bd64dbb38a5a9b5b7de400f164f&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://openlab.dino.co.jp/2007/10/23/184825129.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://openlab.dino.co.jp/2007/10/23/184825129.html&#39;, &#39;svn diffで-wオプションを使う — ディノオープンラボラトリ&#39;]);&#34; title=&#34;svn diffで-wオプションを使う — ディノオープンラボラトリ&#34;&gt;svn diffで-wオプションを使う — ディノオープンラボラトリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.enjoitech.jp/article/71&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.enjoitech.jp/article/71&#39;, &#39;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&#39;]);&#34; title=&#34;Linux である文字を含む行を削除したい - Enjoi Blog&#34;&gt;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

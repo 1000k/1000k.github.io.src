@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tortoisesvn on 1000g</title>
+    <link>http://1000k.github.io/tags/tortoisesvn/</link>
+    <description>Recent content in Tortoisesvn on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 27 Oct 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/tortoisesvn/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>TortoiseSVNでバージョン情報などを自動で埋め込む</title>
+      <link>http://1000k.github.io/2010/10/27/auto-versioning-in-tortoisesvn/</link>
+      <pubDate>Wed, 27 Oct 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/10/27/auto-versioning-in-tortoisesvn/</guid>
+      <description>
+
+&lt;p&gt;オープンソースのコードを見ていると、リビジョン番号などがソースに記載してあるケースがよくあります。&lt;/p&gt;
+
+&lt;p&gt;どうやら Subversion（や CVS）で実現できるようです。&lt;/p&gt;
+
+&lt;p&gt;私は基本的に Windows で TortoiseSVN を使ってリポジトリのやりとりをしているので、その設定方法をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順:9b148e080555f5a4ead4adee49ce465c&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-tortoisesvnの設定:9b148e080555f5a4ead4adee49ce465c&#34;&gt;1.TortoiseSVNの設定&lt;/h3&gt;
+
+&lt;p&gt;今回は例としてPHPファイルが自動変換されるよう設定します。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;svn管理下のファイルを右クリック-&amp;gt;TortoiseSVN-&amp;gt;設定&lt;/li&gt;
+&lt;li&gt;[一般]カテゴリ内の、「Subversionの設定ファイル」の横にある[編集]ボタンをクリック&lt;/li&gt;
+&lt;li&gt;テキストエディタでconfigファイルが開くので、以下のように修正する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;enable-auto-props = yes    ←コメントアウトを外す
+
+[auto-props]
+*.php = svn:keywords=Id Date Author Rev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-対象ファイルにsvnキーワードを埋め込む:9b148e080555f5a4ead4adee49ce465c&#34;&gt;2.対象ファイルにsvnキーワードを埋め込む&lt;/h3&gt;
+
+&lt;p&gt;キーワードは「&lt;strong&gt;$Id$&lt;/strong&gt;」のように、「$」で囲みます。&lt;/p&gt;
+
+&lt;p&gt;使用可能なキーワードは &lt;a href=&#34;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#39;, &#39;Subversion キーワードの展開 &amp;#8211; とみぞーノート&#39;]);&#34; title=&#34;Subversion キーワードの展開 - とみぞーノート&#34;&gt;Subversion キーワードの展開 &amp;#8211; とみぞーノート&lt;/a&gt; あたりを参考にしてください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * テストクラス
+ *
+ * @author  $Author$
+ * @version $Id$
+ */
+class Uso
+{
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;3-コミットしてみる:9b148e080555f5a4ead4adee49ce465c&#34;&gt;3.コミットしてみる&lt;/h3&gt;
+
+&lt;p&gt;ファイルをコミットしてみて、リポジトリブラウザで参照して置換されていれば成功です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * テストクラス
+ *
+ * @author  $Author: Senda Keijiro $
+ * @version $Id: uso.php 13 2010-10-27 05:33:51Z Senda Keijiro $
+ */
+class Uso
+{
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;注意:9b148e080555f5a4ead4adee49ce465c&#34;&gt;注意&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;自動置換は上記設定を行った以後に作られたファイルのみに行われます。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;既存のファイルも自動反映したい場合は、ファイル毎に設定する必要があります。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;既存のファイルを選択して右クリック&lt;/li&gt;
+&lt;li&gt;[Subversion]タブ-&amp;gt;[属性]ボタン&lt;/li&gt;
+&lt;li&gt;恐らく未設定なので、[新規]ボタンをクリック&lt;/li&gt;
+&lt;li&gt;[属性名]に「svn:keywords」、[属性値]に「Id Author Rev Date」(1単語ずつ改行)を書いて[OK]&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;これで、ファイルをコミットすると自動でキーワードが置換されるようになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:9b148e080555f5a4ead4adee49ce465c&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#39;, &#39;Subversion キーワードの展開 &amp;#8211; とみぞーノート&#39;]);&#34; title=&#34;Subversion キーワードの展開 - とみぞーノート&#34;&gt;Subversion キーワードの展開 &amp;#8211; とみぞーノート&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html&#39;, &#39;僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）&#39;]);&#34; title=&#34;僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）&#34;&gt;僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html&#39;, &#39;ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする&#39;]);&#34; title=&#34;ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする&#34;&gt;ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

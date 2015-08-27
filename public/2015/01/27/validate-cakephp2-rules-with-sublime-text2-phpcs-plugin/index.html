@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Sublime Text 2 で CakePHP2 の CodeSniffer ルールを適用する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2015/01/27/validate-cakephp2-rules-with-sublime-text2-phpcs-plugin/">Sublime Text 2 で CakePHP2 の CodeSniffer ルールを適用する</a></h2>
+        <div class="post-content">
+          
+
+<p>Sublime Text 2 のエディタ上で PHP CodeSniffer を使い、コーディング規約をチェックする方法です。<a href="http://benmatselby.github.io/sublime-phpcs/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://benmatselby.github.io/sublime-phpcs/', 'sublime-phpcs']);" >sublime-phpcs</a> プラグインを導入することで、コーディング規約違反のある行がエディタ上に表示されるようになります。</p>
+
+<p>なお、プラグインの公式ページでは phpmd も一緒に導入していますが、<a href="http://blog.1000k.net/2013/11/26/phpmd-%e3%81%ae%e9%a0%ad%e3%81%8c%e3%81%8b%e3%81%aa%e3%82%8a-messy/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/2013/11/26/phpmd-%e3%81%ae%e9%a0%ad%e3%81%8c%e3%81%8b%e3%81%aa%e3%82%8a-messy/', 'PHPMD はヒステリックすぎて個人的にお勧めしない']);" >PHPMD はヒステリックすぎて個人的にお勧めしない</a> ので省略します。</p>
+
+<h2 id="チュートリアル:0e3f1a6b553d4169127746e6faedbbcf">チュートリアル</h2>
+
+<h3 id="codesniffer-をインストールする:0e3f1a6b553d4169127746e6faedbbcf">CodeSniffer をインストールする</h3>
+
+<pre><code>pear install PHP_CodeSniffer
+</code></pre>
+
+<h3 id="cakephp-のルールセットをインストールする:0e3f1a6b553d4169127746e6faedbbcf">CakePHP のルールセットをインストールする</h3>
+
+<pre><code>pear channel-discover pear.cakephp.org
+pear install cakephp/CakePHP_CodeSniffer
+</code></pre>
+
+<p>CodeSniffer のルールセットに追加されているか以下のコマンドで確認。</p>
+
+<pre><code>$ phpcs -i
+The installed coding standards are CakePHP, MySource, PEAR, PHPCS, PSR1, PSR2, Squiz and Zend
+(CakePHP が含まれていれば OK)
+</code></pre>
+
+<h3 id="sublime-text-2-に-codesniffer-プラグインをインストールする:0e3f1a6b553d4169127746e6faedbbcf">Sublime Text 2 に CodeSniffer プラグインをインストールする</h3>
+
+<p>&#8220;Package Control: Install Package&#8221; で <code>Phpcs</code> をインストールするだけ。</p>
+
+<p>(Package Control 自体のインストール方法は <a href="https://sublime.wbond.net/installation#st2" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://sublime.wbond.net/installation#st2', 'Installation &#8211; Package Control']);" >Installation &#8211; Package Control</a> を参照)</p>
+
+<h3 id="sublime-text-の設定:0e3f1a6b553d4169127746e6faedbbcf">Sublime Text の設定</h3>
+
+<p>&#8220;Preferences &gt; Package Settings &gt; PHP Code Sniffer &gt; Settings &#8211; User&#8221; を開き、以下のキーを設定する必要があります。</p>
+
+<ul>
+<li>phpcs_php_path</li>
+<li>phpcs_executable_path</li>
+<li>php_cs_fixer_executable_path</li>
+</ul>
+
+<p>記入例:</p>
+
+<pre><code>{
+    &quot;phpcs_php_path&quot;: &quot;C:\xampp\php\phpcs&quot;,
+    &quot;phpcs_executable_path&quot;: &quot;C:\xampp\php\phpcs.bat&quot;,
+    &quot;phpcs_additional_args&quot;: {
+        &quot;--standard&quot;: &quot;CakePHP&quot;
+    },
+    &quot;php_cs_fixer_executable_path&quot;: &quot;C:Users{ユーザー名}AppDataRoamingComposervendorbin&quot;
+}
+</code></pre>
+
+<h3 id="windows-のみ-phpcs-py-を修正する:0e3f1a6b553d4169127746e6faedbbcf">(Windows のみ) phpcs.py を修正する</h3>
+
+<p>Windows では、このまま phpcs が実行しても何も結果が表示されません。</p>
+
+<p>(<code>Ctrl + @</code> でコンソールを開くと <code>[Windows Error]</code> と出て途中で止まっている)</p>
+
+<p>以下の手順でプラグインのコードを修正してください。</p>
+
+<ol>
+<li>&#8220;Preferences &gt; Browse Packages&#8230;&#8221; でパッケージディレクトリを開く。</li>
+<li>&#8220;Phpcs &gt; phpcs.py&#8221; を開く。</li>
+<li>169行目を以下のように修正 (パラメータに <code>shell=True</code> を追加) する。</li>
+</ol>
+
+<pre><code># proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, startupinfo=info, cwd=home)
+proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, startupinfo=info, cwd=home, shell=True)
+</code></pre>
+
+<h3 id="プラグインを実行する:0e3f1a6b553d4169127746e6faedbbcf">プラグインを実行する</h3>
+
+<p>PHP ファイルを開いたタブで <code>Ctrl + P &gt; PHP Code Sniffer: Sniff This File</code> とタイプすれば、コーディング規約違反を検知してくれます。</p>
+
+<p>これでコーディングルール違反でチームメイトにディスられるリスクを回避できるようになりました。</p>
+
+<h2 id="オプション:0e3f1a6b553d4169127746e6faedbbcf">オプション</h2>
+
+<h3 id="保存時に-sniff-されるのを止める:0e3f1a6b553d4169127746e6faedbbcf">保存時に Sniff されるのを止める</h3>
+
+<p>プラグインインストール後のデフォルトだと、保存するたびに規約違反がサジェストされます。</p>
+
+<p>鬱陶しい場合は &#8220;Preferences &gt; Package Settings &gt; PHP Code Sniffer &gt; Settings &#8211; User&#8221; に下記を追加することでオフにできます。</p>
+
+<pre><code class="language-json">{
+  &quot;phpcs_execute_on_save&quot;: false
+}
+</code></pre>
+
+<h2 id="参考:0e3f1a6b553d4169127746e6faedbbcf">参考</h2>
+
+<ul>
+<li><a href="http://benmatselby.github.io/sublime-phpcs/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://benmatselby.github.io/sublime-phpcs/', 'sublime-phpcs']);" >sublime-phpcs</a></li>
+<li><a href="http://stackoverflow.com/questions/10585274/custom-ruleset-for-phpcs-using-phpstorm" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/10585274/custom-ruleset-for-phpcs-using-phpstorm', 'php &#8211; Custom ruleset for phpcs using PHPStorm &#8211; Stack Overflow']);" >php &#8211; Custom ruleset for phpcs using PHPStorm &#8211; Stack Overflow</a></li>
+<li><a href="https://github.com/cakephp/cakephp-codesniffer" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/cakephp/cakephp-codesniffer', 'cakephp/cakephp-codesniffer · GitHub']);" >cakephp/cakephp-codesniffer · GitHub</a></li>
+<li><a href="https://github.com/fabpot/PHP-CS-Fixer" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/fabpot/PHP-CS-Fixer', 'fabpot/PHP-CS-Fixer · GitHub']);" >fabpot/PHP-CS-Fixer · GitHub</a></li>
+<li><a href="http://matsu-chara.hatenablog.com/entry/2013/12/27/125026" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://matsu-chara.hatenablog.com/entry/2013/12/27/125026', 'sublime-phpcsでPSR-2準拠のコーディング &#8211; だいたいよくわからないブログ( ´_ゝ`)']);" >sublime-phpcsでPSR-2準拠のコーディング &#8211; だいたいよくわからないブログ( ´_ゝ`)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

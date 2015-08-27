@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> VM の共有フォルダ内の 静的ファイルが正しくロードできないときの対処方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/">VM の共有フォルダ内の 静的ファイルが正しくロードできないときの対処方法</a></h2>
+        <div class="post-content">
+          
+
+<p>以下の環境でPHPアプリの開発を行っていたところ、静的コンテンツが正しく反映されない現象に陥りました。</p>
+
+<ul>
+<li>Oracle VirtualBox で CentOS 6.3 VM を起動</li>
+<li>ホストOSは Windows 7</li>
+<li>ホストOS側の &#8220;c:\www\app&#8221; を VM 側の &#8220;/www&#8221; に共有フォルダとしてマウント</li>
+<li>VM上は Apache 2.2 を稼働させ、PHP アプリサーバーとして利用</li>
+</ul>
+
+<p>この状態でホストOS側で JavaScript などの静的コンテンツを編集し、ブラウザからアプリにアクセスすると、以下のようなエラーが出ました。</p>
+
+<p>Chrome</p>
+
+<pre><code>Uncaught SyntaxError: Unexpected end of input
+または
+Uncaught SyntaxError: Unexpected token ILLEGAL
+</code></pre>
+
+<p>Firefox</p>
+
+<pre><code>SyntaxError: unterminated string literal
+</code></pre>
+
+<p>ブラウザのデバッグツールで問題のファイルを見ると、なぜか途中でコンテンツが切れていたり、末尾に謎の文字列（Chromeだと「?」で表示される）が追加されていました。</p>
+
+<p>ただ改行を追加するだけでもこの現象が発生します。</p>
+
+<p>原因は Apache の <em>EnableSendfile</em> ディレクティブでした。</p>
+
+<h2 id="原因:b37b64915a4bf2c4cb4c44aab2bf62d1">原因</h2>
+
+<p><a href="http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile', 'EnableSendfile ディレクティブ']);" >EnableSendfile ディレクティブ</a> の説明には以下のように書いてあります。</p>
+
+<blockquote>
+<p>このディレクティブはクライアントにファイルの内容を送るときに httpd がカーネルの sendfile サポートを使うかどうかを制御します。デフォルトでは、 例えば静的なファイルの配送のように、リクエストの処理にファイルの 途中のデータのアクセスを必要としないときには、Apache は OS が サポートしていればファイルを読み込むことなく sendfile を使って ファイルの内容を送ります。</p>
+
+<p>ネットワークマウントされた DocumentRoot (例えば NFS や SMB) では、カーネルは自身のキャッシュを使ってネットワークからのファイルを 送ることができないことがあります。</p>
+</blockquote>
+
+<p>つまり、VirtualBox で共有フォルダが NFS としてマウントされていると、ホストOSで行った変更が正しく反映されないことがあるようです。</p>
+
+<h2 id="直し方:b37b64915a4bf2c4cb4c44aab2bf62d1">直し方</h2>
+
+<p><em>/etc/httpd/conf/httpd.conf</em> に以下の1行を追加して、Apache を再起動すればOKです。</p>
+
+<pre><code>EnableSendfile Off
+</code></pre>
+
+<p>これで、ホストOSで変更したファイルが、ゲストOS側のキャッシュを介することなく、正しく反映されるようになります。</p>
+
+<p>Vagrant + Chef で環境構築が楽にできるようになったから喜んで使っていたら、こんな罠があるとは。</p>
+
+<h2 id="補足-enablemmap-ディレクティブ:b37b64915a4bf2c4cb4c44aab2bf62d1">補足: EnableMMAP ディレクティブ</h2>
+
+<p>私はまだ遭遇していないのですが、<a href="http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap', 'EnableMMAP ディレクティブ']);" ><em>EnableMMAP</em> ディレクティブ</a>も Apache をクラッシュさせる危険があるので、Offにしておいた方が良いそうです。</p>
+
+<blockquote>
+<p>NFS マウントされた DocumentRoot では、httpd がメモリマップしている間にファイルが削除されたり 短くなったりしたときに起こるセグメンテーションフォールトのために httpd がクラッシュする可能性があります。</p>
+</blockquote>
+
+<p>結局、httpd.conf に以下の2行を書いておけば不具合は避けられるでしょう。</p>
+
+<pre><code>EnableSendfile Off
+EnableMMAP Off
+</code></pre>
+
+<h2 id="参考:b37b64915a4bf2c4cb4c44aab2bf62d1">参考</h2>
+
+<ul>
+<li><a href="http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/', 'DocumentRootに共有フォルダを使った場合の問題 &#8211; フリップフラップ']);" >DocumentRootに共有フォルダを使った場合の問題 &#8211; フリップフラップ</a></li>
+<li><a href="http://tipshare.info/view/4f3481ee4b21227814000001" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://tipshare.info/view/4f3481ee4b21227814000001', 'Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info']);" >Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info</a></li>
+<li><a href="http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap', 'core &#8211; Apache HTTP サーバ']);" >core &#8211; Apache HTTP サーバ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

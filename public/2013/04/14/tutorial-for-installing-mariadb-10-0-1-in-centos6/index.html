@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> MariaDB 10.0.1 を CentOS 6 にインストールする手順 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/">MariaDB 10.0.1 を CentOS 6 にインストールする手順</a></h2>
+        <div class="post-content">
+          
+
+<p>yum を使ってインストールする手順です。</p>
+
+<h2 id="rpg-gpg-key-を追加する:22b952c0c7ccdbfe7d7cc04c5066aa86">RPG-GPG-KEY を追加する</h2>
+
+<pre><code>$ sudo rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+</code></pre>
+
+<h2 id="リポジトリを追加する:22b952c0c7ccdbfe7d7cc04c5066aa86">リポジトリを追加する</h2>
+
+<p>バージョンによって異なります。<a href="https://downloads.mariadb.org/mariadb/repositories/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://downloads.mariadb.org/mariadb/repositories/', 'MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB']);" >MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB</a> からバージョン＆環境毎のリポジトリが選択できるので、10.0 以外をインストールする場合はそちらを参考にしてください。</p>
+
+<p>今回は CentOS 6.3 64bit です。</p>
+
+<p>/etc/yum.repos.d/MariaDB.repo を下記の内容で作成します。</p>
+
+<pre><code># MariaDB 10.0 CentOS repository list - created 2013-04-14 07:02 UTC
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.0/centos6-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+</code></pre>
+
+<h2 id="インストール:22b952c0c7ccdbfe7d7cc04c5066aa86">インストール</h2>
+
+<pre><code>$ sudo yum install MariaDB-devel MariaDB-client MariaDB-server
+</code></pre>
+
+<h2 id="おまけ-chef-レシピ:22b952c0c7ccdbfe7d7cc04c5066aa86">(おまけ) Chef レシピ</h2>
+
+<p>インストールするだけの手順をレシピにすると下記のようになります。</p>
+
+<pre><code>yum_key 'RPM-GPG-KEY-MariaDB' do
+  url 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB'
+  action :add
+end
+
+yum_repository 'MariaDB' do
+  repo_name 'MariaDB'
+  url 'http://yum.mariadb.org/10.0/centos6-amd64'
+  key 'RPM-GPG-KEY-MariaDB'
+  action :create
+end
+
+package 'MariaDB-devel'
+
+package 'MariaDB-client'
+
+package 'MariaDB-server'
+</code></pre>
+
+<h2 id="参考:22b952c0c7ccdbfe7d7cc04c5066aa86">参考</h2>
+
+<ul>
+<li><a href="https://downloads.mariadb.org/mariadb/repositories/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://downloads.mariadb.org/mariadb/repositories/', 'MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB']);" >MariaDB &#8211; Setting up MariaDB Repositories &#8211; MariaDB</a></li>
+<li><a href="https://kb.askmonty.org/en/installing-mariadb-with-yum/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://kb.askmonty.org/en/installing-mariadb-with-yum/', 'Installing MariaDB with yum &#8211; AskMonty KnowledgeBase']);" >Installing MariaDB with yum &#8211; AskMonty KnowledgeBase</a></li>
+<li><a href="http://www.e-agency.co.jp/column/20130208.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.e-agency.co.jp/column/20130208.html', 'MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー']);" >MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー</a></li>
+<li><a href="https://github.com/opscode-cookbooks/yum/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/opscode-cookbooks/yum/', 'opscode-cookbooks/yum · GitHub']);" >opscode-cookbooks/yum · GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

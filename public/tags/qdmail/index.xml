@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Qdmail on 1000g</title>
+    <link>http://1000k.github.io/tags/qdmail/</link>
+    <description>Recent content in Qdmail on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 06 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/qdmail/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Qdmailを使ってCakePHP1.3.2のコンソールからメールを送信する</title>
+      <link>http://1000k.github.io/2010/07/06/send-mail-using-qdmail-in-cakephp-132/</link>
+      <pubDate>Tue, 06 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/06/send-mail-using-qdmail-in-cakephp-132/</guid>
+      <description>
+
+&lt;p&gt;QdmailはCakePHPを初めとしたフレームワークで簡単にメールを作成・送信できるライブラリです。CakePHP1.2 で利用するサンプルは見つかったのですが、1.3で使っている例をあまり見かけず、少しつまづいたのでメモしておきます。&lt;/p&gt;
+
+&lt;h3 id=&#34;手順:82fe1e63d08f1c786a02c83fe3f1d6bb&#34;&gt;手順&lt;/h3&gt;
+
+&lt;p&gt;1&amp;#46; &lt;a href=&#34;http://hal456.net/qdmail/downloads&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hal456.net/qdmail/downloads&#39;, &#39;Qdmailをダウンロード&#39;]);&#34; title=&#34;ダウンロードdownload - Qdmail - PHP::Mail Library , Quick and Detailed for Multibyte&#34;&gt;Qdmailをダウンロード&lt;/a&gt;し、/app/controllers/components に解凍する&lt;/p&gt;
+
+&lt;p&gt;2&amp;#46; コンソールプログラムを下記のように作成する&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// /app/vendors/shells/uso.php
+
+&amp;lt;?php
+class UsoShell extends Shell {
+    // 使用するコア
+    var $Controller;
+
+    // 使用するコンポーネント
+    var $Qdmail;
+
+    // overrideしてcake起動メッセージを消す
+    function startup() {}
+
+    // 初期化処理
+    function initialize() {
+        parent::initialize();
+
+        App::import(&amp;quot;Core&amp;quot;, &amp;quot;Controller&amp;quot;);
+        App::import(&amp;quot;Component&amp;quot;, &amp;quot;Qdmail&amp;quot;);
+
+        $this-&amp;gt;Controller =&amp;amp;#038; new Controller();
+        $this-&amp;gt;Qdmail =&amp;amp;#038; new QdmailComponent(null);
+        $this-&amp;gt;Qdmail-&amp;gt;startup($this-&amp;gt;Controller);
+    }
+
+    // エントリーポイント
+    function main() {
+
+        // Qdmailの設定
+        $this-&amp;gt;Qdmail-&amp;gt;to(&#39;to@uso.uso&#39;, &#39;送信先の名前&#39;);
+        $this-&amp;gt;Qdmail-&amp;gt;subject(&#39;件名&#39;);
+        $this-&amp;gt;Qdmail-&amp;gt;from(&#39;from@uso.uso&#39; , &#39;送信元の名前&#39;);
+        $this-&amp;gt;Qdmail-&amp;gt;text(&#39;本文&#39;);
+
+        // 送信する
+        $return = $this-&amp;gt;Qdmail-&amp;gt;send();
+        $this-&amp;gt;Qdmail-&amp;gt;reset();
+
+        if ($return) {
+            $this-&amp;gt;out(&amp;quot;送信完了。&amp;quot;);
+        } else {
+            $this-&amp;gt;out(&amp;quot;送信失敗...&amp;quot;);
+        }
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;補足:82fe1e63d08f1c786a02c83fe3f1d6bb&#34;&gt;補足&lt;/h3&gt;
+
+&lt;p&gt;何が悪いのかよくわかりませんが、上のコードを実行すると「指定されたパスが見つかりません。」と表示されます。送信するぶんには問題ないのですが、気持ち悪いのでどうにか消せないか方法を探しています。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:82fe1e63d08f1c786a02c83fe3f1d6bb&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://hal456.net/qdmail/cakebase&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hal456.net/qdmail/cakebase&#39;, &#39;使い方　CakePHPでのメール送信 &amp;#8211; Qdmail &amp;#8211; PHP::Mail Library , Quick and Detailed for Multibyte&#39;]);&#34; title=&#34;使い方　CakePHPでのメール送信 - Qdmail - PHP::Mail Library , Quick and Detailed for Multibyte&#34;&gt;使い方　CakePHPでのメール送信 &amp;#8211; Qdmail &amp;#8211; PHP::Mail Library , Quick and Detailed for Multibyte&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://c-brains.jp/blog/wsg/10/06/10-110652.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://c-brains.jp/blog/wsg/10/06/10-110652.php&#39;, &#39;[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。&#39;]);&#34; title=&#34;[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。&#34;&gt;[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bakery.cakephp.org/articles/view/emailcomponent-in-a-cake-shell&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bakery.cakephp.org/articles/view/emailcomponent-in-a-cake-shell&#39;, &#39;EmailComponent in a (cake) Shell (Articles) | The Bakery, Everything CakePHP&#39;]);&#34; title=&#34;EmailComponent in a (cake) Shell (Articles) | The Bakery, Everything CakePHP&#34;&gt;EmailComponent in a (cake) Shell (Articles) | The Bakery, Everything CakePHP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://c-brains.jp/blog/wsg/10/06/10-110652.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://c-brains.jp/blog/wsg/10/06/10-110652.php&#39;, &#39;[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。&#39;]);&#34; title=&#34;[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。&#34;&gt;[ステップアップ！ CakePHP] Shell を使ってコマンドラインで CakePHP | バシャログ。&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

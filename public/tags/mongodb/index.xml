@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mongodb on 1000g</title>
+    <link>http://1000k.github.io/tags/mongodb/</link>
+    <description>Recent content in Mongodb on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 28 Oct 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>php5enmodでPHP拡張を有効化する方法</title>
+      <link>http://1000k.github.io/2012/10/28/enable-php-extensions-by-php5enmod/</link>
+      <pubDate>Sun, 28 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/28/enable-php-extensions-by-php5enmod/</guid>
+      <description>
+
+&lt;p&gt;Ubuntuにて、peclでMongoDBをインストールしてさあ動かそうと思ったら、以下のエラーが出て動きませんでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Sun Oct 28 19:39:08 2012] [error] [client *.*.*.*] PHP Fatal error:  Class &#39;Mongo&#39; not found in /var/www/html/*.php on line 38
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;php.iniも編集したし、Apache再起動もしたのになぜ？と軽くつまづきました。&lt;/p&gt;
+
+&lt;p&gt;けっきょく原因はUbuntuの作法を分かっていなかったが為のエラーでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:d103d0ed9885bf3d8051c00805d3aeed&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;UbuntuではApache2同様、PHPの設定ファイルも階層化されています。&lt;/p&gt;
+
+&lt;p&gt;知らないとはまるのが、WEB用の設定とCLI用の設定が異なることです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;WEB用: /etc/php5/apache2/php.ini&lt;/li&gt;
+&lt;li&gt;CLI用: /etc/php5/cli/php.ini&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;もしmongo.soを両方で使いたければ、両方の設定をしなければなりません。&lt;/p&gt;
+
+&lt;p&gt;私はCLI用のファイルしか設定していなかったので、WEBからアクセス時に Class not found エラーになっていました。&lt;/p&gt;
+
+&lt;p&gt;それは面倒だ、という場合の為にちゃんと抜け道が用意されています。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;php5enmod&lt;/strong&gt;コマンドを使ってmodを両方に有効化させることができます。&lt;/p&gt;
+
+&lt;p&gt;※php5enmod は &lt;strong&gt;PHP &amp;gt;= 5.4.0&lt;/strong&gt; をパッケージでインストールした場合のみ有効です。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順:d103d0ed9885bf3d8051c00805d3aeed&#34;&gt;手順&lt;/h2&gt;
+
+&lt;p&gt;mongo.soをWEB/CLI両方で有効にしたい場合は、下記の手順を踏みます。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;/etc/php5/mods-available/mongo.ini&lt;/strong&gt;を作成する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;extension=mongo.so
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;modを有効化する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo php5enmod mongo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Apache2を再起動する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service apache2 restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;WEB/CLIで両方で設定が反映されているか確認する。&lt;/p&gt;
+
+&lt;p&gt;CLIからは「php -i | grep mongo」を叩き、WEBからは phpinfo() を見て、それぞれ「mongo」という項目があればOKです。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;うまくいかない場合、ログ（/var/log/apache2/error.log）を見てエラーメッセージを確認してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:d103d0ed9885bf3d8051c00805d3aeed&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bugs.launchpad.net/ubuntu/+source/php-apc/+bug/994882&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://bugs.launchpad.net/ubuntu/+source/php-apc/+bug/994882&#39;, &#39;Bug #994882 “php5{en/dis}mod not available in php 5.3.10” : Bugs : “php-apc” package : Ubuntu&#39;]);&#34; &gt;Bug #994882 “php5{en/dis}mod not available in php 5.3.10” : Bugs : “php-apc” package : Ubuntu&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;日頃CentOSばかり触っているとUbuntuルールにつまづきます。&lt;/p&gt;
+
+&lt;p&gt;慣れればUbuntuの整理方法が使いやすいと思うのですが。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

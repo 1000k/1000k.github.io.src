@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Chef Server が FQDN を取得できない時の対処法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/07/05/chef-server-cannot-get-fqdn/">Chef Server が FQDN を取得できない時の対処法</a></h2>
+        <div class="post-content">
+          
+
+<p>どういうわけか会社で使っている Chef Server で <code>knife bootstrap</code> した後、FQDN が空になっているノードがありました。</p>
+
+<pre><code>[root@chefserver-vm ~]# knife node show mojamoja-vm
+Node Name:   mojamoja-vm
+Environment: _default
+FQDN:
+IP:          172.16.83.86
+Run List:    recipe[common], role[web]
+Roles:       web
+Recipes:     common, apache2, php
+Platform:    centos 6.3
+Tags:
+</code></pre>
+
+<p>これのせいで <code>knife search</code> など使う時に大変不便でした。</p>
+
+<p>対処方法をメモしておきます。</p>
+
+<h2 id="原因:1e58b670181ec322a9159a897b06acb1">原因</h2>
+
+<p>クライアント側サーバーの /etc/hosts で自分の IP と hostname を定義していなかったためでした。</p>
+
+<p>この状態だと、クライアント側で <code>hostname -A</code> を叩いても空の文字列が返ってきます。</p>
+
+<pre><code>[root@mojamoja-vm ~]# hostname -A
+
+(↑空)
+</code></pre>
+
+<p>ohai コマンドを叩いても、やはり FQDN は取得できません。</p>
+
+<pre><code># ohai | grep fqdn
+
+(↑空)
+</code></pre>
+
+<h2 id="対処法:1e58b670181ec322a9159a897b06acb1">対処法</h2>
+
+<p><code>/etc/hosts</code> に IP と hostname の対を追加してやります。</p>
+
+<pre><code>172.16.83.86    mojamoja-vm
+</code></pre>
+
+<p>これで FQDN が取得できるようになりました。</p>
+
+<pre><code>[root@mojamoja-vm ~]# hostname -A
+mojamoja-vm
+
+[root@mojamoja-vm ~]# ohai | grep fqdn
+  &quot;fqdn&quot;: &quot;mojamoja-vm&quot;,
+</code></pre>
+
+<p>サーバー側からも FQDN が取得できています。</p>
+
+<p>※FQDN をサーバーに反映するために、クライアント側で一度 <code>chef-client</code> を叩く必要があるようです。</p>
+
+<pre><code>[root@chefserver-vm ~]# knife node show mojamoja-vm
+Node Name:   mojamoja-vm
+Environment: _default
+FQDN:        mojamoja-vm
+IP:          172.16.83.86
+Run List:    recipe[common], role[web]
+Roles:       web
+Recipes:     common, apache2, php
+Platform:    centos 6.3
+Tags:
+</code></pre>
+
+<h2 id="参考:1e58b670181ec322a9159a897b06acb1">参考</h2>
+
+<ul>
+<li><a href="http://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name', 'Setting the hostname: FQDN or short name? &#8211; Server Fault']);" >Setting the hostname: FQDN or short name? &#8211; Server Fault</a></li>
+<li><a href="http://sharadchhetri.com/2012/12/23/change-hostname-fqdn-centos-redhat/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://sharadchhetri.com/2012/12/23/change-hostname-fqdn-centos-redhat/', 'How to change hostname or FQDN in CentOS and Redhat']);" >How to change hostname or FQDN in CentOS and Redhat</a></li>
+</ul>
+
+<p>photo by: <a href="http://www.flickr.com/photos/manoelpetry/5334219183/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.flickr.com/photos/manoelpetry/5334219183/', 'Chef Mauro Sousa e Sous Chef Valdir Ramos by manoel petry, on Flickr']);" >Chef Mauro Sousa e Sous Chef Valdir Ramos by manoel petry, on Flickr</a></p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

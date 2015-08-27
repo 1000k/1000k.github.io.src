@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jenkins on 1000g</title>
+    <link>http://1000k.github.io/tags/jenkins/</link>
+    <description>Recent content in Jenkins on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 28 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Jenkins で Git リポジトリの ID と PW をセキュアに保存する方法</title>
+      <link>http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/</link>
+      <pubDate>Mon, 28 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/</guid>
+      <description>
+
+&lt;p&gt;Jenkins から https 接続で認証付きの Git リポジトリを参照する場合、以下のように URL に直接ユーザー名とパスワードを書く必要がありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://{USERNAME}:{PASSWORD}@foo.com/git/bar.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然 Jenkins の設定ファイルにパスワードがそのまま書かれてしまいます。個人開発ならいいですが、チーム開発では危険すぎます。これをセキュアにしようとすると、.netrc を使ったりするややこしい手順が必要でした。&lt;/p&gt;
+
+&lt;p&gt;ところが、2013年10月22日にリリースされた Git Plugin 2.0 から、Credential Plugin と連携して暗号化したパスワードを保存できるようになったため、大幅に設定が楽になりました。&lt;/p&gt;
+
+&lt;p&gt;以下にそのやり方をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;リポジトリの URL は &lt;code&gt;https://foo.com/git/bar.git&lt;/code&gt; とします。&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Jenkins の管理 &amp;gt; Credentials &amp;gt; Add domain&amp;#8221; をクリックし、Git リポジトリのドメインを入力します。&lt;/p&gt;
+
+&lt;p&gt;Specification の URI スキーマには &lt;code&gt;https&lt;/code&gt; を選択します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1-300x163.png&#34; alt=&#34;jenkins_secure_credientials_1&#34; width=&#34;300&#34; height=&#34;163&#34; class=&#34;alignnone size-medium wp-image-1641&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;続いて、&amp;#8221;Add Credentials&amp;#8221; をクリックし、認証情報入力画面を出します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2-300x71.png&#34; alt=&#34;jenkins_secure_credientials_2&#34; width=&#34;300&#34; height=&#34;71&#34; class=&#34;alignnone size-medium wp-image-1642&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Kind&amp;#8221; は &lt;code&gt;ユーザー名とパスワード&lt;/code&gt; を、&amp;#8221;ユーザー名&amp;#8221; には https 認証のユーザー名を入力します。完了したら &amp;#8220;OK&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3-300x139.png&#34; alt=&#34;jenkins_secure_credientials_3&#34; width=&#34;300&#34; height=&#34;139&#34; class=&#34;alignnone size-medium wp-image-1643&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これで一旦、認証鍵一覧画面に戻されます。引き続き、いま入力したユーザー名をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4-300x136.png&#34; alt=&#34;jenkins_secure_credientials_4&#34; width=&#34;300&#34; height=&#34;136&#34; class=&#34;alignnone size-medium wp-image-1644&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Update&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5-300x137.png&#34; alt=&#34;jenkins_secure_credientials_5&#34; width=&#34;300&#34; height=&#34;137&#34; class=&#34;alignnone size-medium wp-image-1645&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;パスワード&amp;#8221; 欄に認証パスワードを入力し、&amp;#8221;Save&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6-300x134.png&#34; alt=&#34;jenkins_secure_credientials_6&#34; width=&#34;300&#34; height=&#34;134&#34; class=&#34;alignnone size-medium wp-image-1646&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;以上で foo.com のリポジトリの認証情報が設定できました。&lt;/p&gt;
+
+&lt;p&gt;あとはプロジェクトの設定画面を開き、&amp;#8221;ソースコード管理システム &amp;gt; Git&amp;#8221; の &amp;#8220;Repository URL&amp;#8221; に &lt;code&gt;https://foo.com/git/bar.git&lt;/code&gt; を、&amp;#8221;Credentials&amp;#8221; に先ほど入力した ID/PW のペアを選択すれば OKです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7-300x242.png&#34; alt=&#34;jenkins_secure_credientials_7&#34; width=&#34;300&#34; height=&#34;242&#34; class=&#34;alignnone size-medium wp-image-1647&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これでプロジェクトをビルド可能になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;git-1-7-1-では認証が通らない:094599a56af5c07d8e54136f1f310fd1&#34;&gt;Git 1.7.1 では認証が通らない？&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 で、EPEL リポジトリから Git をインストールすると 1.7.1 が入りますが、これだとうまく認証が通りませんでした。プロジェクトの設定画面で &amp;#8220;Repository URL&amp;#8221; と &amp;#8220;Credential&amp;#8221; を入力しても、 &lt;code&gt;Error performing command: ls-remote -h&lt;/code&gt; というエラーが出て進めませんでした。&lt;/p&gt;
+
+&lt;p&gt;仕方ないので手動でソースから Git 1.8.4.1 をインストールしたら、無事エラーが出なくなりました。&lt;/p&gt;
+
+&lt;p&gt;Git のソースインストール方法手順は以下。いつもの Configure -&amp;gt; make -&amp;gt; make install です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /usr/local/src
+wget https://git-core.googlecode.com/files/git-1.8.4.1.tar.gz
+tar zxvf git-1.8.4.1.tar.gz
+cd git-1.8.4.1
+./configure
+make
+make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、この場合 Git のバイナリが &lt;code&gt;/usr/local/bin&lt;/code&gt; 配下にインストールされるので、&amp;#8221;Jenkins の管理 &amp;gt; システム設定 &amp;gt; Git &amp;gt; Path to Git executable&amp;#8221; に &lt;code&gt;/usr/local/bin/git&lt;/code&gt; と入力する必要があります。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81-255x300.png&#34; alt=&#34;jenkins_secure_credientials_8&#34; width=&#34;255&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-1649&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:094599a56af5c07d8e54136f1f310fd1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin&#39;, &#39;Git Plugin &amp;#8211; Jenkins &amp;#8211; Jenkins Wiki&#39;]);&#34; &gt;Git Plugin &amp;#8211; Jenkins &amp;#8211; Jenkins Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/naonya3/items/54c8e3436212ad6686b3&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/naonya3/items/54c8e3436212ad6686b3&#39;, &#39;CentOS6.3にgitをソースコードから入れる &amp;#8211; Qiita [キータ]&#39;]);&#34; &gt;CentOS6.3にgitをソースコードから入れる &amp;#8211; Qiita [キータ]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jenkins ユーザーが ant を実行できないときの対処法</title>
+      <link>http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/</link>
+      <pubDate>Tue, 02 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/</guid>
+      <description>
+
+&lt;p&gt;CentOS 6.3 にて、&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; にある ant タスク (build.xml) 通りに PHPUnit タスクを実行しようとしたら、エラーが出てしまいました。&lt;/p&gt;
+
+&lt;p&gt;かなり長時間ハマったのでメモを残しておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;症状:135291858de89f6329950b22fca515d3&#34;&gt;症状&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 にて、&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; にある以下のタスクを実行するとエラーが出ました。&lt;code&gt;
+ &amp;lt;target name=&amp;quot;phpunit&amp;quot; description=&amp;quot;Run unit tests using PHPUnit and generates junit.xml and clover.xml&amp;quot;&amp;gt; &amp;lt;exec executable=&amp;quot;phpunit&amp;quot; failonerror=&amp;quot;true&amp;quot;/&amp;gt; &amp;lt;/target&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージ:&lt;code&gt;
+ # sudo -u jenkins ant ... phpunit: BUILD FAILED /var/lib/jenkins/jobs/mojamoja-unit-testing/workspace/build.xml:22: Execute failed: java.io.IOException: Cannot run program &amp;quot;phpunit&amp;quot;: error=2, No such file or directory Total time: 0 seconds&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:135291858de89f6329950b22fca515d3&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;どうやら phpunit へのパスが通っていないようです。&lt;/p&gt;
+
+&lt;p&gt;phpunit の実体は &lt;code&gt;/usr/local/bin/phpunit&lt;/code&gt; なのですが、jenkins ユーザーがこの PATH を参照できていない模様。&lt;/p&gt;
+
+&lt;h2 id=&#34;試行錯誤:135291858de89f6329950b22fca515d3&#34;&gt;試行錯誤&lt;/h2&gt;
+
+&lt;p&gt;まず、jenkins ユーザーの &lt;code&gt;~/.bash_profile&lt;/code&gt; と &lt;code&gt;~/.bashrc&lt;/code&gt; を以下の内容で作成してもダメでした。PATH は反映されません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+export PATH=$PATH:/usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、下記のように ant タスク内で PATH を変更するシェルを走らせてもダメでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;target name=&amp;quot;setenv&amp;quot;&amp;gt;
+   &amp;amp;lt;exec executable=&amp;quot;/bin/sh&amp;quot;&amp;gt;
+     &amp;amp;lt;arg line=&amp;quot;./setenv.sh&amp;quot;/&amp;gt;
+   &amp;amp;lt;/exec&amp;gt;
+ &amp;amp;lt;/target&amp;gt;
+
+ &amp;amp;lt;target name=&amp;quot;env&amp;quot;&amp;gt;&amp;amp;lt;exec executable=&amp;quot;env&amp;quot; /&amp;gt;&amp;amp;lt;/target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;setenv.sh の中身は下記。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+export PATH=${PATH}:/usr/local/bin
+echo $PATH
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで ant を実行すると、&lt;code&gt;setenv&lt;/code&gt; タスクの時点では PATH は変更されていますが、次に実行される &lt;code&gt;env&lt;/code&gt; タスクで元に戻ってしまっています。まるで setenv と env が別々のプロセスで動いているように見えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Buildfile: build.xml
+
+setenv:
+     [exec] /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+
+env:
+     [exec] HOSTNAME=mojamoja
+     [exec] SHELL=/bin/bash
+     [exec] TERM=xterm
+     [exec] HISTSIZE=1000
+     [exec] USER=jenkins
+     ...
+     [exec] PATH=/sbin:/bin:/usr/sbin:/usr/bin      &amp;amp;lt;- /usr/local/bin が追加されていない
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とういわけで、setenv で環境変数をセットする方法はボツでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決方法:135291858de89f6329950b22fca515d3&#34;&gt;解決方法&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-jenkins-のグローバルプロパティを設定する:135291858de89f6329950b22fca515d3&#34;&gt;1. Jenkins のグローバルプロパティを設定する&lt;/h3&gt;
+
+&lt;p&gt;Jenkins から環境変数を上書きすることで、PATH を追加することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Jenkinsの管理 &amp;gt; システムの設定 &amp;gt; グローバルプロパティ &amp;gt; 環境変数&lt;/code&gt; にて、以下のように設定します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_global_property-300x191.png&#34; alt=&#34;Jenkins グローバルプロパティ&#34; width=&#34;300&#34; height=&#34;191&#34; class=&#34;alignnone size-medium wp-image-1507&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;キー: &lt;code&gt;PATH&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;値: &lt;code&gt;${PATH}:/usr/local/bin&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ただし、この方法だと Jenkins から Ant を実行した時しか PATH は上書きされません。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-sudoers-の-secure-path-を無効にする:135291858de89f6329950b22fca515d3&#34;&gt;2. sudoers の secure_path を無効にする&lt;/h3&gt;
+
+&lt;p&gt;Fedora 系では sudo ユーザー向けの PATH が &lt;code&gt;/sbin:/bin:/usr/sbin:/usr/bin&lt;/code&gt; のみに制限されているので、これを外してやります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;visudo&lt;/code&gt; コマンドを実行して、以下のように書き直します。&lt;code&gt;
+ # secure\_path をコメントアウト # Defaults secure\_path = /sbin:/bin:/usr/sbin:/usr/bin # env\_keep に PATH を追加 Defaults env\_keep += &amp;quot;PATH&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;これで secure_path の縛りが解除されました。&lt;/p&gt;
+
+&lt;p&gt;sudoers の環境変数は `sudo -l` で確認できます。&lt;code&gt;
+ # sudo -l Matching Defaults entries for root on this host: !visiblepw, always\_set\_home, env\_reset, env\_keep=&amp;quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS\_COLORS&amp;quot;, env\_keep+=&amp;quot;MAIL PS1 PS2 QTDIR USERNAME LANG LC\_ADDRESS LC\_CTYPE&amp;quot;, env\_keep+=&amp;quot;LC\_COLLATE LC\_IDENTIFICATION LC\_MEASUREMENT LC\_MESSAGES&amp;quot;, env\_keep+=&amp;quot;LC\_MONETARY LC\_NAME LC\_NUMERIC LC\_PAPER LC\_TELEPHONE&amp;quot;, env\_keep+=&amp;quot;LC\_TIME LC\_ALL LANGUAGE LINGUAS \_XKB\_CHARSET XAUTHORITY&amp;quot;, env_keep+=PATH User root may run the following commands on this host: (ALL) ALL&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:135291858de89f6329950b22fca515d3&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/&#39;, &#39;[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163\&#39;s Blog&#39;]);&#34; &gt;[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163&amp;rsquo;s Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://fishrimper.blogspot.jp/2012/12/sudo-path.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://fishrimper.blogspot.jp/2012/12/sudo-path.html&#39;, &#39;IT とかその他もろもろ: sudo した時の PATH&#39;]);&#34; &gt;IT とかその他もろもろ: sudo した時の PATH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://superuser.com/questions/98686/passing-path-through-sudo&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://superuser.com/questions/98686/passing-path-through-sudo&#39;, &#39;linux - Passing PATH through sudo - Super User&#39;]);&#34; &gt;linux - Passing PATH through sudo - Super User&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Jenkins が古い Java JDK を参照するせいで起動しなくなった</title>
+      <link>http://1000k.github.io/2013/02/19/jenkins-cannot-run-because-of-refering-old-java-jdk/</link>
+      <pubDate>Tue, 19 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/02/19/jenkins-cannot-run-because-of-refering-old-java-jdk/</guid>
+      <description>
+
+&lt;p&gt;CentOS 5.2 で発生した不具合。Jenkins を最新版 (1.502)にアップデートしたら起動できなくなりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# service jenkins start
+Starting Jenkins Jenkins requires Java5 or later, but you are running 1.4.2 from /usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre
+java.lang.UnsupportedClassVersionError: 48.0
+   at Main.main(Main.java:90)
+                                                           [  OK  ]
+(OK と出るが起動せず)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JDK 1.6.0 がインストールされているにも関わらず、なぜか CentOS デフォルトの 1.4.2 を見に行っています。&lt;/p&gt;
+
+&lt;p&gt;修正方法をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;OS がどの JDK を参照しているのかは、 &lt;span class=&#34;lang:default decode:true crayon-inline&#34;&gt;update-alternatives &amp;#8211;display java&lt;/span&gt; コマンドで確認することができます。&lt;/p&gt;
+
+&lt;p&gt;叩いてみると、やはり古い JDK を参照していました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --display java
+
+java -ステータスは自動です。
+リンクは現在 /usr/lib/jvm/jre-1.4.2-gcj/bin/java を指しています。
+/usr/lib/jvm/jre-1.4.2-gcj/bin/java - 優先項目 1420
+ スレーブ jre: /usr/lib/jvm/jre-1.4.2-gcj
+ スレーブ jre_exports: /usr/lib/jvm-exports/jre-1.4.2-gcj
+ スレーブ keytool: /usr/lib/jvm/jre-1.4.2-gcj/bin/keytool
+ スレーブ rmiregistry: /usr/lib/jvm/jre-1.4.2-gcj/bin/rmiregistry
+現在の「最適」バージョンは /usr/lib/jvm/jre-1.4.2-gcj/bin/java です。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを最新版に切り替えたいのですが、私は手動で JDK 1.6.0 をインストールしたせいで、update-alternatives に認識されていませんでした。&lt;/p&gt;
+
+&lt;p&gt;&lt;span class=&#34;lang:default decode:true crayon-inline&#34;&gt;&amp;#8211;config java&lt;/span&gt; オプションで確認してみると、JDK 1.4.2 しか表示されません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --config java
+
+1 プログラムがあり &#39;java&#39; を提供します。
+
+  選択       コマンド
+-----------------------------------------------
+*+ 1           /usr/lib/jvm/jre-1.4.2-gcj/bin/java
+
+Enter を押して現在の選択 [+] を保持するか、選択番号を入力します:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;というわけで、JDK 1.6.0_32 のパスを追加して、リンクを書きなおしてやります。&lt;/p&gt;
+
+&lt;p&gt;以下のコマンドでリンクを追加することができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_32/bin/java 16032
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでOKです。&lt;/p&gt;
+
+&lt;p&gt;再び &lt;span class=&#34;lang:default decode:true crayon-inline&#34;&gt;update-alternatives &amp;#8211;config java&lt;/span&gt; コマンドでリンクの書き換えが成功してしていることを確かめられます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# update-alternatives --config java
+
+2 プログラムがあり &#39;java&#39; を提供します。
+
+  選択       コマンド
+-----------------------------------------------
+   1           /usr/lib/jvm/jre-1.4.2-gcj/bin/java
+*+ 2           /usr/java/jdk1.6.0_32/bin/java
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で Jenkins が起動するようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# service jenkins start
+Starting Jenkins                                           [  OK  ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:ad0e5aaa074c415a1446b0cc67a27773&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/9527737/how-do-i-configure-starting-jdk-for-hudsonnow-jenkins&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/9527737/how-do-i-configure-starting-jdk-for-hudsonnow-jenkins&#39;, &#39;How do I configure starting jdk for hudson(now jenkins)? &amp;#8211; Stack Overflow&#39;]);&#34; &gt;How do I configure starting jdk for hudson(now jenkins)? &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.neofig.com/2011/03/11/update-alternatives%E3%81%A7%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%82%92%E6%8C%81%E3%81%A4%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E3%81%AE%E5%88%87%E3%82%8A/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.neofig.com/2011/03/11/update-alternatives%E3%81%A7%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%82%92%E6%8C%81%E3%81%A4%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E3%81%AE%E5%88%87%E3%82%8A/&#39;, &#39;update-alternativesで複数のバージョンを持つプログラムの切り替え | kyamamoto at blog.neofig.com&#39;]);&#34; &gt;update-alternativesで複数のバージョンを持つプログラムの切り替え | kyamamoto at blog.neofig.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://piggydb.jp/document-view.htm?id=597&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://piggydb.jp/document-view.htm?id=597&#39;, &#39;update-alternativesのグループにインストールしたJavaが追加されていないのかも&#39;]);&#34; &gt;update-alternativesのグループにインストールしたJavaが追加されていないのかも&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Jenkinsを触ると出てくる用語の解説</title>
+      <link>http://1000k.github.io/2012/09/25/glossary-of-terms-in-jenkins/</link>
+      <pubDate>Tue, 25 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/09/25/glossary-of-terms-in-jenkins/</guid>
+      <description>
+
+&lt;p&gt;Jenkinsは元々Javaのビルドを自動化するツールだったため、Javaの知識が無いと理解しづらい部分があります。&lt;/p&gt;
+
+&lt;p&gt;以下、必要になる知識を簡単にまとめておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;ビルド:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;ビルド&lt;/h2&gt;
+
+&lt;p&gt;Java は PHP や ruby と異なり、ソースのままでは実行できません。実行前に必ず_コンパイル_を行い、実行可能形式（JARファイル）に変換する必要があります。&lt;/p&gt;
+
+&lt;p&gt;実行可能形式を作成するための一連の流れを_ビルド_と呼びます。ビルドでは主に以下の作業を行います。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ソースの文法解析&lt;/li&gt;
+&lt;li&gt;テストの実行&lt;/li&gt;
+&lt;li&gt;ドキュメントの作成（Javadocなど）&lt;/li&gt;
+&lt;li&gt;コンパイル (実行可能ファイルの作成)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これらすべてのコマンドを手動で打つのは困難です。そのため、自動でビルドを行うビルドツールが存在します。代表的なものとして make, Ant, Maven などがあります。（後述）&lt;/p&gt;
+
+&lt;p&gt;PHP等のスクリプト言語ではコンパイルは不要ですが、コンパイル以外のプロセスはJavaと共通のため、「ソースが実行可能な状態にする」という意味でビルドという用語をそのまま使っているようです。&lt;/p&gt;
+
+&lt;p&gt;参考:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nitoyon.com/vc/tutorial/project/build_detail.htm&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.nitoyon.com/vc/tutorial/project/build_detail.htm&#39;, &#39;ビルドは何をしている？ [VC++の使い方]&#39;]);&#34; &gt;ビルドは何をしている？ [VC++の使い方]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)&#39;, &#39;ビルド (ソフトウェア) &amp;#8211; Wikipedia&#39;]);&#34; &gt;ビルド (ソフトウェア) &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;デプロイ:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;デプロイ&lt;/h2&gt;
+
+&lt;p&gt;作成したコードを利用可能にすること。「本番反映」とも言い換えられます。&lt;/p&gt;
+
+&lt;p&gt;Java ではビルドで作成したJARファイルやWARファイルをWebサーバー（Apache Tomcatなど）に読み込ませ、再起動することで利用可能になります。&lt;/p&gt;
+
+&lt;p&gt;PHP や Ruby などのスクリプト言語なら、動作中のWebサーバーにソースコードを配置するだけです。&lt;/p&gt;
+
+&lt;h2 id=&#34;ant:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;Ant&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ビルドツール。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/Make&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/Make&#39;, &#39;GNU make&#39;]);&#34; title=&#34;make - Wikipedia&#34;&gt;GNU make&lt;/a&gt; の代替。&lt;/li&gt;
+&lt;li&gt;ビルドファイル（build.xml）にビルドルールを書くことで、ビルドを自動化できます。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;参考:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/Apache_Ant&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/Apache_Ant&#39;, &#39;Apache Ant &amp;#8211; Wikipedia&#39;]);&#34; &gt;Apache Ant &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;maven:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;Maven&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プロジェクト管理ツール。&lt;/li&gt;
+&lt;li&gt;Apache Ant の機能を内包しており、単にビルドツールとしても利用可能です。&lt;/li&gt;
+&lt;li&gt;コンパイル、テスト、Javadoc生成、テストレポート生成、デプロイなど、様々な機能が用意されています。&lt;/li&gt;
+&lt;li&gt;Ant では build.xml に細かい指示を記述する必要があったが、Maven では指示をコマンドラインに記述するだけで良い。&lt;/li&gt;
+&lt;li&gt;Jenkins は Ant/Maven どちらも利用可能です。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;参考:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/&#39;, &#39;2. Maven 入門 | TECHSCORE(テックスコア)&#39;]);&#34; &gt;2. Maven 入門 | TECHSCORE(テックスコア)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/Apache_Maven&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/Apache_Maven&#39;, &#39;Apache Maven &amp;#8211; Wikipedia&#39;]);&#34; &gt;Apache Maven &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/nsas454/20101013/1287328377&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/nsas454/20101013/1287328377&#39;, &#39;Apache MavenとAntの違いについて調べてみた &amp;#8211; Shuichi’Tec&#39;]);&#34; &gt;Apache MavenとAntの違いについて調べてみた &amp;#8211; Shuichi’Tec&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>XAMPP環境にJenkinsをインストールする</title>
+      <link>http://1000k.github.io/2012/09/25/installing-jenkins-in-xampp-env/</link>
+      <pubDate>Tue, 25 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/09/25/installing-jenkins-in-xampp-env/</guid>
+      <description>
+
+&lt;p&gt;XAMPPにはTomcatが同梱されているため、JenkinsのWARファイルをデプロイすれば、すぐにCI環境が構築できます。&lt;/p&gt;
+
+&lt;p&gt;以下、&lt;a href=&#34;http://www.apachefriends.org/jp/xampp-windows.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.apachefriends.org/jp/xampp-windows.html&#39;, &#39;XAMPP for Windows 1.8.0&#39;]);&#34; title=&#34;apache friends - xampp for windows&#34;&gt;XAMPP for Windows 1.8.0&lt;/a&gt; を使ってJenkins環境を構築する手順を書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順:a2b978718054ff7ee3bcbdd86b4ab357&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;jenkinsをダウンロードする:a2b978718054ff7ee3bcbdd86b4ab357&#34;&gt;Jenkinsをダウンロードする&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_homepage.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_homepage.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_homepage.png&#34; alt=&#34;&#34; title=&#34;Jenkinsホームページ&#34; width=&#34;600&#34; height=&#34;553&#34; class=&#34;alignnone size-full wp-image-1096&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jenkins-ci.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-ci.org/&#39;, &#39;Jenkinsのホームページ&#39;]);&#34; &gt;Jenkinsのホームページ&lt;/a&gt;から最新のwarアーカイブをダウンロードします。「Latest and greatest」をクリックして jenkins.war をダウンロードしてください。&lt;strong&gt;Windowsパッケージではない&lt;/strong&gt;ので注意してください。&lt;/p&gt;
+
+&lt;h3 id=&#34;tomcatの管理者ユーザーを設定する:a2b978718054ff7ee3bcbdd86b4ab357&#34;&gt;Tomcatの管理者ユーザーを設定する&lt;/h3&gt;
+
+&lt;p&gt;Tomcatを起動する前に、Tomcat管理画面に入るためのユーザーを作成します。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;C:\xampp\tomcat\conf\tomcat-users.xml&lt;/em&gt; を開いて、tomcat-usersブロック内に以下の2行を追加してください。&lt;/p&gt;
+
+&lt;div&gt;
+  [xml]&lt;br /&gt; &lt;tomcat-users&gt;&lt;br /&gt; &lt;role rolename=&#34;manager-gui&#34;/&gt;&lt;br /&gt; &lt;user username=&#34;tomcat&#34; password=&#34;s3cret&#34; roles=&#34;manager-gui&#34;/&gt;&lt;br /&gt; &lt;/tomcat-users&gt;&lt;br /&gt; [/xml]
+&lt;/div&gt;
+
+&lt;h3 id=&#34;tomcatを起動する:a2b978718054ff7ee3bcbdd86b4ab357&#34;&gt;Tomcatを起動する&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/xampp_control_panel.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/xampp_control_panel.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/xampp_control_panel.png&#34; alt=&#34;&#34; title=&#34;XAMPPコントロールパネル&#34; width=&#34;714&#34; height=&#34;450&#34; class=&#34;alignnone size-full wp-image-1086&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;XAMPPコントロールパネルを起動し、Tomcatの横にある「Start」ボタンをクリックするだけです。&lt;/p&gt;
+
+&lt;p&gt;ボタンが「Stop」に変わった後 &lt;a href=&#34;http://localhost:8080/&#34;&gt;http://localhost:8080/&lt;/a&gt; にアクセスすれば、Tomcatのトップ画面が表示されます。&lt;/p&gt;
+
+&lt;h3 id=&#34;管理画面にログインする:a2b978718054ff7ee3bcbdd86b4ab357&#34;&gt;管理画面にログインする&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/tomcat_top.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/tomcat_top.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/tomcat_top.png&#34; alt=&#34;&#34; title=&#34;Tomcatトップページ&#34; width=&#34;600&#34; height=&#34;433&#34; class=&#34;alignnone size-full wp-image-1087&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;「Manage App」をクリックして管理画面にログインします。認証パスワードは先ほど設定した通り、ユーザー名が「_tomcat_」、パスワードが「_s3cret_」となります。&lt;/p&gt;
+
+&lt;h3 id=&#34;warファイルをデプロイする:a2b978718054ff7ee3bcbdd86b4ab357&#34;&gt;warファイルをデプロイする&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/tomcat_manage.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/tomcat_manage.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/tomcat_manage.png&#34; alt=&#34;&#34; title=&#34;Tomcatデプロイ&#34; width=&#34;600&#34; height=&#34;174&#34; class=&#34;alignnone size-full wp-image-1088&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;「warファイルの配備」に先ほどダウンロードした jenkins.war を指定し、「配備」をクリックします。&lt;/p&gt;
+
+&lt;h3 id=&#34;jenkinsの画面を確認する:a2b978718054ff7ee3bcbdd86b4ab357&#34;&gt;Jenkinsの画面を確認する&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_dashboard.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_dashboard.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_dashboard.png&#34; alt=&#34;&#34; title=&#34;Jenkinsダッシュボード&#34; width=&#34;600&#34; height=&#34;271&#34; class=&#34;alignnone size-full wp-image-1090&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;以上で完了です。&lt;a href=&#34;http://localhost:8080/jenkins/&#34;&gt;http://localhost:8080/jenkins/&lt;/a&gt; にアクセスすれば Jenkins のトップ画面が表示されます。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

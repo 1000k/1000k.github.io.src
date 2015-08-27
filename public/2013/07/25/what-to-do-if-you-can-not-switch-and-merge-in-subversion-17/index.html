@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Subversion 1.7 で switch や merge ができないときの対処方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/07/25/what-to-do-if-you-can-not-switch-and-merge-in-subversion-17/">Subversion 1.7 で switch や merge ができないときの対処方法</a></h2>
+        <div class="post-content">
+          
+
+<p>Subversion 1.7.10 をソースからインストールしたら、<code>svn switch</code> や <code>svn merge</code> が以下のエラーを吐いて失敗するようになってしまいました。</p>
+
+<pre><code># svn merge https://uso.com/svn/mojamoja/2.13.1
+...
+svn: E200007: Error running context
+svn: E200007: Trying to use an unsupported feature
+</code></pre>
+
+<p>直し方をメモしておきます。</p>
+
+<h2 id="原因:b3d12b85aa6526b84cee44966cb0c763">原因</h2>
+
+<p>Subversion は内部の HTTP/HTTPS クライアントとして serf または neon を使います。Configure オプションを特に指定しない場合は serf が使われるようですが、これに不具合があったようです。</p>
+
+<p>何も configure オプションを指定せずにインストールした場合、<code>svn --version</code> を実行すると下記の通り出力されます。</p>
+
+<pre><code># svn --version
+svn, version 1.7.10 (r1485443)
+   compiled Jul 24 2013, 16:16:57
+...
+* ra_serf : Module for accessing a repository via WebDAV protocol using serf.
+  - handles 'http' scheme
+  - handles 'https' scheme
+</code></pre>
+
+<p>「serf が http と https をハンドルするぜ」と書いていますが、実際には E200007 エラーを吐いて止まります。</p>
+
+<h2 id="対策:b3d12b85aa6526b84cee44966cb0c763">対策</h2>
+
+<p>もう一つの選択肢である neon を使うようにしたら、問題なく動作するようになりました。</p>
+
+<p>再コンパイル手順は以下のとおりです。</p>
+
+<pre><code># cd subversion-1.7.10/
+
+// 依存しているパッケージをダウンロードしてくれる便利なスクリプト。
+# ./get-deps.sh
+
+// neon をコンパイルしてインストールする。
+// (CentOS なら `yum install neon neon-devel` でも OK)
+// `--with-ssl` を忘れずに！
+# cd neon/
+# ./configure --with-ssl
+# make &amp;#038;&amp;#038; make install
+
+// Subversion をインストールする。
+# cd ../
+# make distclean
+# ./configure \
+  --without-berkeley-db \
+  --with-neon \
+  --with-ssl
+# make &amp;#038;&amp;#038; make install
+</code></pre>
+
+<p>正しくインストールできると、以下のように <code>ra_neon</code> という表示が出ます。</p>
+
+<pre><code># svn --version
+...
+* ra_neon : Module for accessing a repository via WebDAV protocol using Neon.
+  - handles 'http' scheme
+  - handles 'https' scheme
+* ra_svn : Module for accessing a repository using the svn network protocol.
+  - handles 'svn' scheme
+* ra_local : Module for accessing a repository on local disk.
+  - handles 'file' scheme
+</code></pre>
+
+<p><code>handles 'https' scheme</code> と出力されない時は、<code>--with-ssl</code> を付け忘れています。それでは https 通信ができないので、再コンパイルしてください。</p>
+
+<h2 id="余談:b3d12b85aa6526b84cee44966cb0c763">余談</h2>
+
+<p>今回とは逆で、「neon だとエラーになるが serf なら大丈夫だった」という事例もありました。</p>
+
+<p><a href="http://masutaka.net/chalow/2009-06-15-1.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://masutaka.net/chalow/2009-06-15-1.html', 'Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ']);" >Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ</a></p>
+
+<p>バージョンアップのたびに不具合が入れ替わるんでしょうか。</p>
+
+<p>奇妙です。</p>
+
+<h2 id="参考:b3d12b85aa6526b84cee44966cb0c763">参考</h2>
+
+<ul>
+<li><a href="http://blog.iss.ms/2009/04/12/141537" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.iss.ms/2009/04/12/141537', '[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）']);" >[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）</a></li>
+<li><a href="http://blog.r-unit.co.jp/archives/726" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.r-unit.co.jp/archives/726', 'はだかの隊長日記 » Subversionコンパイル方法']);" >はだかの隊長日記 » Subversionコンパイル方法</a></li>
+<li><a href="http://masutaka.net/chalow/2009-06-15-1.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://masutaka.net/chalow/2009-06-15-1.html', 'Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ']);" >Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

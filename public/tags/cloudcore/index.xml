@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloudcore on 1000g</title>
+    <link>http://1000k.github.io/tags/cloudcore/</link>
+    <description>Recent content in Cloudcore on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 15 Jan 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/cloudcore/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CentOSでbzip2が解凍できないエラー</title>
+      <link>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</guid>
+      <description>
+
+&lt;p&gt;bzip2ファイルを解凍しようと思ったら、見慣れないエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# tar xvf paco-2.0.9.tar.bz2
+tar: bzip2: exec 不能: そのようなファイルやディレクトリはありません
+tar: エラーを回復できません: 直ちに終了します
+tar: Child returned status 2
+tar: 処理中にエラーが起きましたが、最後まで処理してからエラー終了させました
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただ単にbzip2がインストールされていなかったのが原因でした。yumで入れて即解決です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install bzip2
+...
+Installed:
+  bzip2.x86_64 0:1.0.3-6.el5_5
+
+Complete!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CloudCore VPSでこのエラーに遭遇しました。&lt;/p&gt;
+
+&lt;p&gt;CentOSの最小構成でインストールされているようで、ごく普通のコマンドが使えないことが多いです。&lt;/p&gt;
+
+&lt;p&gt;パッケージが不足していないか注意が必要ですね。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:b209194a963523f744e005b58f948c6d&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiroponz/20070205&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiroponz/20070205&#39;, &#39;2007-02-05 &amp;#8211; プチ技術メモ&#39;]);&#34; &gt;2007-02-05 &amp;#8211; プチ技術メモ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CloudCore VPS初期設定</title>
+      <link>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</guid>
+      <description>
+
+&lt;p&gt;高スペック＆安価＆国産で話題のCloudCore VPSをレンタルしてみました。&lt;/p&gt;
+
+&lt;p&gt;ざっとスペックを確認すると、以下のようになりました。これで月980円はたしかにお得です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cat /etc/redhat-release
+CentOS release 5.6 (Final)
+
+# df -h
+Filesystem          サイズ  使用  残り 使用% マウント位置
+/dev/vda1              97G  5.0G   87G   6% /
+tmpfs                1003M     0 1003M   0% /dev/shm
+
+# cat /proc/cpuinfo
+processor       : 0
+vendor_id       : AuthenticAMD
+cpu family      : 16
+model           : 2
+model name      : AMD Phenom(tm) 9550 Quad-Core Processor
+stepping        : 3
+cpu MHz         : 2199.998
+cache size      : 512 KB
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 5
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1gb lm up pni cx16 popcnt lahf_lm cmp_legacy svm cr8_legacy altmovcr8 abm sse4a misalignsse
+bogomips        : 4399.99
+TLB size        : 1024 4K pages
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 48 bits virtual
+power management:
+
+# cat /proc/meminfo
+MemTotal:      2053764 kB
+MemFree:       1859380 kB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今後利用するかもしれないので、初期設定メモを残しておきます。&lt;/p&gt;
+
+&lt;h1 id=&#34;よく使うパッケージのインストール:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;よく使うパッケージのインストール&lt;/h1&gt;
+
+&lt;p&gt;CentOS最小構成でインストールされているらしく、よく使うパッケージが全然入っていません。入れておきましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install sudo vim-enhanced iptables vsftpd bzip2 gcc gcc-c++ make automake mlocate
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;導入しているパッケージの説明は下記の通り。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;パッケージ名&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;sudo&lt;/td&gt;
+&lt;td&gt;sudoコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vim-enhanced&lt;/td&gt;
+&lt;td&gt;標準で入っているviの高機能版&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;iptables&lt;/td&gt;
+&lt;td&gt;ファイアーウォール&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vsftpd&lt;/td&gt;
+&lt;td&gt;FTPデーモン&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;bzip2&lt;/td&gt;
+&lt;td&gt;bzip2圧縮・解凍&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;gcc, gcc-c++&lt;/td&gt;
+&lt;td&gt;コンパイル時に必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;make, automake&lt;/td&gt;
+&lt;td&gt;ソースからインストールする時必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mlocate&lt;/td&gt;
+&lt;td&gt;locate &amp;amp; updatedbコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vixie-cron&lt;/td&gt;
+&lt;td&gt;crontabコマンド &amp;amp; cronデーモン&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;crondは起動し、自動起動をオンにしておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/crond start
+# chkconfig crond on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、インストール済みのパッケージを更新しましょう。&lt;/p&gt;
+
+&lt;p&gt;私の場合100パッケージ(129MB)ありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;作業用ユーザー追加:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;作業用ユーザー追加&lt;/h1&gt;
+
+&lt;p&gt;rootでの作業はリスク上よろしくないので、作業用ユーザーを追加します。&lt;/p&gt;
+
+&lt;p&gt;wheelグループに追加することで、su権限が得られます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# useradd mojamoja
+# usermod -G wheel mojamoja
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;wheelグループのユーザーがsudoを実行できるよう設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# visudo
+
+----
+## Allows people in group wheel to run all commands
+%wheel  ALL=(ALL)       ALL
+↑この行のコメントアウトを外す。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;sshポートの変更:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;sshポートの変更&lt;/h1&gt;
+
+&lt;p&gt;sshポートデフォルトの22番ではポートスキャンの標的になりやすいので、変更します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#vim /etc/ssh/sshd_config
+
+以下の行を変更。
+
+#port 22
+port 10022
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sshデーモンを再起動して変更を反映します。&lt;/p&gt;
+
+&lt;p&gt;これで22番ポートではsshログインできなくなっています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/init.d/sshd restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;不要なデーモンの停止:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;不要なデーモンの停止&lt;/h1&gt;
+
+&lt;p&gt;初期状態では4つのデーモンしか自動起動設定になっておらず、特に停止するようなデーモンはありません。&lt;/p&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;ファイアーウォールの構築:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;ファイアーウォールの構築&lt;/h1&gt;
+
+&lt;p&gt;ssh(10022), FTP, HTTPで接続できるようポートを開放してやります。&lt;/p&gt;
+
+&lt;p&gt;下記シェルファイルを作成し、実行してください。&lt;/p&gt;
+
+&lt;p&gt;※コンソールから1行ずつ打つと、「/sbin/iptables -P INPUT DROP」設定直後にコンソールが操作不能になります。&lt;/p&gt;
+
+&lt;p&gt;その場合、コントロールパネルから再起動することで再度ログイン可能になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+/sbin/iptables -F
+/sbin/iptables -X
+
+/sbin/iptables -P INPUT DROP
+/sbin/iptables -P OUTPUT ACCEPT
+/sbin/iptables -P FORWARD DROP
+
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j DROP
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j DROP
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j DROP
+
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+/sbin/iptables -A INPUT -p tcp --dport 10022 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+/sbin/iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+/etc/rc.d/init.d/iptables save
+
+/sbin/service iptables restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chmod +x set_iptables.sh
+# ./set_iptables.sh
+ファイアウォールのルールを /etc/sysconfig/iptables に保存中[  OK  ]
+ファイアウォールルールを適用中:                            [  OK  ]
+チェインポリシーを ACCEPT に設定中filter                   [  OK  ]
+iptables モジュールを取り外し中                            [  OK  ]
+iptables ファイアウォールルールを適用中:                   [  OK  ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;無事設定できたら、サーバー起動時にサービスが開始するよう設定します。設定が間違ったままこれをonにすると、コントロールパネルから再起動してもログイン不能になるので注意してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chkconfig iptables on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;ftpを接続可能にする:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;FTPを接続可能にする&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;/etc/vsftpd/vsftpd.conf&lt;/strong&gt; を以下のように設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;以下の既存の行を修正する。
+
+# 匿名ユーザーのログインを禁止
+anonymous_enable=NO
+
+# asciiモードでファイルを転送可能にする
+ascii_upload_enable=YES
+ascii_download_enable=YES
+
+以下の行を追加。
+
+# ファイル所有者を数字ではなくユーザー名で表示する
+text_userdb_names=YES
+
+# ファイルの上書き時間が日本時間になる
+use_localtime=YES
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら起動し、自動起動もオンにしましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/vsftpd start
+vsftpd 用の vsftpd を起動中:                               [  OK  ]
+# chkconfig vsftpd on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FTPクライアントで10022番ポートにSFTP接続可能になっていることを確認してください。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tanaka.sakura.ad.jp/archives/001065.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tanaka.sakura.ad.jp/archives/001065.html&#39;, &#39;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&#39;]);&#34; &gt;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;さくらの社長による、自社のVPSの初期設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/a__z/20071011&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/a__z/20071011&#39;, &#39;CentOS:sudo を設定する &amp;#8211; 日々のメモ&#39;]);&#34; &gt;CentOS:sudo を設定する &amp;#8211; 日々のメモ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://weble.org/2011/05/16/sakura-vps-and-centos&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://weble.org/2011/05/16/sakura-vps-and-centos&#39;, &#39;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&#39;]);&#34; &gt;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;LAMP環境の構築手順も&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#39;, &#39;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&#39;]);&#34; &gt;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.searchman.info/linux/1070.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.searchman.info/linux/1070.html&#39;, &#39;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&#39;]);&#34; &gt;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vsftpdの設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#39;, &#39;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&#39;]);&#34; &gt;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

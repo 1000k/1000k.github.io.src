@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>メモ on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%83%A1%E3%83%A2/</link>
+    <description>Recent content in メモ on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 18 Jul 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%83%A1%E3%83%A2/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Agile Conference Tokyo 2013 のまとめ</title>
+      <link>http://1000k.github.io/2013/07/18/summary-of-agile-conference-tokyo-2013/</link>
+      <pubDate>Thu, 18 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/07/18/summary-of-agile-conference-tokyo-2013/</guid>
+      <description>
+
+&lt;p&gt;Agile Conference Tokyo 2013 のまとめ&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;7&lt;/sup&gt;&amp;frasl;&lt;sub&gt;17&lt;/sub&gt; に開催された &lt;a href=&#34;http://pw.tech-arts.co.jp/act2013/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pw.tech-arts.co.jp/act2013/&#39;, &#39;Agile Conference tokyo 2013&#39;]);&#34; &gt;Agile Conference tokyo 2013&lt;/a&gt; に参加してきました。10時から18時までひたすら座学で激しく消耗しましたが、得るものも多かったです。&lt;/p&gt;
+
+&lt;p&gt;全体を通して思ったことは下記の通り。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アジャイルを正しく導入できた企業は、プロセスを回すことで、プロセス自体が進化している。&lt;/li&gt;
+&lt;li&gt;既存のプロセスから移行するためには、組織全体へのアジャイルプロセスの教育と、トップダウンの号令が必要。
+
+&lt;ul&gt;
+&lt;li&gt;ボトムアップだけでは、部署間の壁を超えられない、企業ルールを変えられない。結局変革しきれない！&lt;/li&gt;
+&lt;li&gt;間違ったアジャイル知識は害。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;アジャイルプロセスは、とっくに開発者だけのものではない。ビジネス全体がターゲットになっている。&lt;/li&gt;
+&lt;li&gt;テスト自動化、CI すらやっていない企業は勝ち目がない。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以下、各セッション毎に重要だと感じたことをまとめます。&lt;/p&gt;
+
+&lt;h2 id=&#34;オープニング:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;オープニング&lt;/h2&gt;
+
+&lt;p&gt;Mihn Le 氏 (株式会社テクノロジックアート 取締役副社長)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;「この中で、会社でアジャイルプロセス使ってる人は？」
+
+&lt;ul&gt;
+&lt;li&gt;結果を見て「去年の2倍程度」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;アジャイルの効果
+
+&lt;ul&gt;
+&lt;li&gt;アジャイルによってリスクが減らせ、コミュニケーションリスクも軽減できる。&lt;/li&gt;
+&lt;li&gt;必要とするドキュメンテーションも自動化した。エンジニアは自分の開発に集中できる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;顧客はほとんど日本企業で、アジャイルを導入したいと考えている。でも昔の環境からなかなか脱却できない。ペーパーワークが4割。すべてをガラッと変えず、徐々に歩み寄るべき。従来のモデルとアジャイルを融合させていくところから始める。イテレーション、TDD、ペアプロ、CIなど。&lt;/li&gt;
+&lt;li&gt;日本の比較的大きなSIerからの質問「アメリカと日本のクライアントの大きな違いはなにか？」
+
+&lt;ul&gt;
+&lt;li&gt;アメリカの方がデザインステップが細かい。&lt;/li&gt;
+&lt;li&gt;アメリカの方がドキュメンテーションプロセスを変更することに抵抗する。&lt;/li&gt;
+&lt;li&gt;日本の方がむしろざっくりしているので、アジャイルには向いていると提案した。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;アジャイルをやることになったら、_トップボトムで_全員が正しくアジャイルのことを学習しなければならない。また、なにをやっているのか見えるようにしなければならない。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;基調講演-戦略としてのカンバン-ビジネスイノベーションのために:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;基調講演: 戦略としてのカンバン：ビジネスイノベーションのために&lt;/h2&gt;
+
+&lt;p&gt;Kraig T.Parkinsons 氏 (ThoughtWorks Inc. Principal Consultant)&lt;/p&gt;
+
+&lt;p&gt;かなりのボリュームでした。簡単にまとめます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;多くの会社はこれまでの習慣を捨てられないでいる。&lt;/li&gt;
+&lt;li&gt;フォード、マッキンジー、FedExは今ではITソリューションとシステムを売っている。これまでのビジネスを引きずっていてはおいて行かれる。IT部門をビジネス部門と分けているともう勝てない。それでうまくいく時代は終わっている。&lt;/li&gt;
+&lt;li&gt;多くの製品は寿命が短くなっている。製造ラインの寿命は劇的に短くなり、常に移行状態にある。一昔前は何年もかけて製品を社会に出していたが、もはやそれでは遅すぎる。勝てる会社は、短期間で何世代ものバージョンアップを重ね、たちまち自分たちの勝てる業界を作る。しかしそこで成功しても、イノベーションを止めればすぐに陳腐化してしまう。&lt;/li&gt;
+&lt;li&gt;どうすれば企業が常にイノベーションを起こせるのか？それには_イノベーションをルーチン化しなければならない_。一度ヒットをとばしても、それをイノベートし続けなければすぐに陳腐化してしまう。ThoughWorks ではカンバンを使ってこれを実現している。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;カンバンの理念:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;カンバンの理念&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;原則1: 「ストーリーを知っている」と仮定しない
+
+&lt;ul&gt;
+&lt;li&gt;多くの PM はバックログをマネージメントしようとしがち。&lt;/li&gt;
+&lt;li&gt;過去のユーザーストーリーはあくまで過去であり、将来的に何が可能かはそこには結局書いていない。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;原則2: 必要になる人を正しく選ぶ
+
+&lt;ul&gt;
+&lt;li&gt;ビジネスオーナー: 代理ではダメ！危機感の無い人ではダメ。必死に利益を欲しているだけ人と対面する。&lt;/li&gt;
+&lt;li&gt;UXデザイナー&lt;/li&gt;
+&lt;li&gt;技術者: 何が実現でき、何ができないかを教えてくれる。&lt;/li&gt;
+&lt;li&gt;ユーザーと顧客:「こうあってほしい」という世界を教えてくれる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;原則3: できるだけ頻繁に現場に行って見る
+
+&lt;ul&gt;
+&lt;li&gt;現場意識を持つ。&lt;/li&gt;
+&lt;li&gt;実際にそこで何が起きているのかをしっかり見る。&lt;/li&gt;
+&lt;li&gt;役員室やプロジェクトルームで伝達されているだけでは伝わらない。自分の目で見て体感すること。&lt;/li&gt;
+&lt;li&gt;「百聞は一見に如かず」は本当。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;実際にtwが始めたこと:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;実際にTWが始めたこと&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ダイバージェント（発散的）な思考プロセス → 収束的な思考プロセス
+
+&lt;ul&gt;
+&lt;li&gt;支離滅裂に見える発散的プロセスを行わないと、可能性が広がらない。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;5つのステップ: 機会を捉える→アイディアを生み出す→実現後の予想図を描く→テストと検証→解決策を収穫する
+
+&lt;ul&gt;
+&lt;li&gt;すべてのステージで学習できる。「継続的学習」&lt;/li&gt;
+&lt;li&gt;学習を通じてカイゼンが起きるように努力する。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;デリバリーチームがより発散的なアイディアを出せるようにサポートする。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;どうすればこれができるようになるか:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;どうすればこれができるようになるか？&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;誰でも参加できる社風を作る。&lt;/li&gt;
+&lt;li&gt;イノベーションの様々なやり方を知る。&lt;/li&gt;
+&lt;li&gt;WIPを制限し、フォーカスを絞り、アウトプットを引き出す。&lt;/li&gt;
+&lt;li&gt;複雑な問題に対処するため、サービスのクラス分けと優先順位づけも有効。
+
+&lt;ul&gt;
+&lt;li&gt;すべてのサービスが等価値ではない。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;仕事とマネージのペースを知る。&lt;/li&gt;
+&lt;li&gt;やりがいのあるミッションが人々を奮い立たせる。
+
+&lt;ul&gt;
+&lt;li&gt;コスト削減の追求ばかりでは萎える。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;継続的デリバリーを持つ。
+
+&lt;ul&gt;
+&lt;li&gt;これがパイプラインとなる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ピボット可能にデザインする。
+
+&lt;ul&gt;
+&lt;li&gt;いつでも最適な道に移れるようにしておく。&lt;/li&gt;
+&lt;li&gt;巨大な（モノリシックな）デザインだと切り替えが不可能。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;可視的にマネージする。
+
+&lt;ul&gt;
+&lt;li&gt;いつどこで何が動いているのかを、誰にでも見えるようにする。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;協業する。
+
+&lt;ul&gt;
+&lt;li&gt;ビジネスは_チームスポーツ_である。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;セッション1-アジャイルな企業のto-beモデルを提示するscaled-agile-framework-safe:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;セッション1: アジャイルな企業のTo Beモデルを提示するScaled Agile Framework (SAFe)&lt;/h2&gt;
+
+&lt;p&gt;藤井 拓氏 (オージス総研 技術部アジャイル開発センター センター長)&lt;/p&gt;
+
+&lt;p&gt;SAFe とは、企業規模でリーンとアジャイルのプラクティスを実現するためのフレームワーク。&lt;a href=&#34;http://scaledagileframework.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://scaledagileframework.com/&#39;, &#39;Scaled Agile Framework&#39;]);&#34; &gt;Scaled Agile Framework&lt;/a&gt; で公開されている。&lt;/p&gt;
+
+&lt;p&gt;細かいことはホームページに書いてあるので省略。一言で言うと、複数の Scrum チームを束ねて定期的なリリースを可能にするルールと、経営層の意思決定をリリースに繋げる流れを示したフレームワーク。&lt;/p&gt;
+
+&lt;p&gt;特に気になったアジャイルリリース列車 (ART) の説明は下記。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;50-100名のメンバーを5-12のチームにし、8-12週間ごとにリリースをする。&lt;/li&gt;
+&lt;li&gt;プロダクト毎に「プロダクト管理者」が1人いて、その下に各チーム毎にPOが割り振られている。&lt;/li&gt;
+&lt;li&gt;チームレベルではScrumを実践。&lt;/li&gt;
+&lt;li&gt;チームは2週間ごとにインクリメントを納品する。&lt;/li&gt;
+&lt;li&gt;技術的プラクティスはXP。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;セッション2-スクラムと品質-日本マイクロソフト提供セッションー日本のアジャイル実践の現場から:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;セッション2: スクラムと品質 （日本マイクロソフト提供セッションー日本のアジャイル実践の現場から）&lt;/h2&gt;
+
+&lt;p&gt;細谷 泰夫氏 （三菱電機株式会社 通信機製作所、TFSUG立ち上げスタッフ）&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;なぜプロダクトの品質が悪くなるのか？
+
+&lt;ul&gt;
+&lt;li&gt;オーバーコミットメント&lt;/li&gt;
+&lt;li&gt;階層的な組織構造&lt;/li&gt;
+&lt;li&gt;上の2つが組み合わさると、激しく品質が下がる。しかも持続して負のスパイラルを生む。&lt;/li&gt;
+&lt;li&gt;Scrum は、こうした状況を避けやすい。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Scrum 実践に必要なこと: 型、プロセスの習熟
+
+&lt;ul&gt;
+&lt;li&gt;適切に運営されたフレームワーク&lt;/li&gt;
+&lt;li&gt;プロセスの理解とチームでの実行の繰り返し&lt;/li&gt;
+&lt;li&gt;頭ではなく体に型をなじませる、習慣化&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;三菱電機での工夫
+
+&lt;ul&gt;
+&lt;li&gt;新人をチームに入れる時は、ベテランと組ませて、スキルの伝播を行う。&lt;/li&gt;
+&lt;li&gt;TDDが簡単にできなさそうな時は、すぐスパイクソリューションかチームレビューに移る。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;特別講演-エンタープライズ規模におけるカンバンの運用:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;特別講演: エンタープライズ規模におけるカンバンの運用&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;高木 徹 氏（株式会社豊田マネジメント研究所　副社長）&lt;/li&gt;
+&lt;li&gt;三井 伸行氏（株式会社戦略スタッフ・サービス　取締役）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;日本のit業界の現状:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;日本のIT業界の現状&lt;/h3&gt;
+
+&lt;p&gt;90% 以上が質が不足と回答。特にプロジェクトマネジメントが 62.5% 不足。&lt;/p&gt;
+
+&lt;h3 id=&#34;なぜマネジメントが低下した:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;なぜマネジメントが低下した？&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;統制型マネジメントの崩壊&lt;/li&gt;
+&lt;li&gt;自律的に動ける人材が育っていない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;アジャイル開発の土壌を醸成する:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;アジャイル開発の土壌を醸成する&lt;/h3&gt;
+
+&lt;p&gt;「上司が変わると仕事のやり方が変わる」のはダメ。&lt;/p&gt;
+
+&lt;h3 id=&#34;エンタープライズにおけるカンバンの進化:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;エンタープライズにおけるカンバンの進化&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;カンバンに貼り出すことで、個々人が持っている暗黙知が可視化され、議論可能になる。&lt;/li&gt;
+&lt;li&gt;議論によって形式知を取り出し、改善アイディアを実践する。&lt;/li&gt;
+&lt;li&gt;新たに溜まった暗黙知を、またカンバンに貼り出す。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;自分やチームの仕事を写像→カンバンに見える化→暗黙知が形式知に置き換えられる→カイゼンのための会話が生まれる→修正した形式知に従ってやってみる→ツールを見て仕事をする（暗黙化）→カイゼンのアイディアを写像→&amp;#8230;&lt;/p&gt;
+
+&lt;h3 id=&#34;アジャイルプロセス適用のステップ:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;アジャイルプロセス適用のステップ&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ステージ１: 「自分たちがまずどうなりたいのか」を自分たちで見える化する。
+
+&lt;ul&gt;
+&lt;li&gt;カンバンに貼り出すと効果的。&lt;/li&gt;
+&lt;li&gt;「思っていることを出して」と言っても出ないなら、それ自体が大問題。&lt;/li&gt;
+&lt;li&gt;KPT は問題を炙り出す道具として使える。&lt;/li&gt;
+&lt;li&gt;ボード一つ作るのにも3ヶ月はかかる。&lt;/li&gt;
+&lt;li&gt;いつか芽が出ることを感じられれば続けられる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ステージ2: 事業方針に展開する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;適用のポイント:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;適用のポイント&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;経営幹部が組織を変えたいのかどうか確かめ、それをどう落とし込んでいくのか考える。&lt;/li&gt;
+&lt;li&gt;トップダウンのほうが手戻りが少ない。手戻り工数は膨大。&lt;/li&gt;
+&lt;li&gt;パイロット運用だけだと、他部署まで変えていくことができないことが多い。&lt;/li&gt;
+&lt;li&gt;複数部署にカイゼン風土があれば、連携して組織の壁を越えられる。でも2年はかかる。&lt;/li&gt;
+&lt;li&gt;カンバンを作る時は、「運用を始めて、不具合が出てきたらカイゼンする」というやり方でOK。
+
+&lt;ul&gt;
+&lt;li&gt;カンバンはどんどん進化する！&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;セッション3-大規模分散アジャイルを支えるプラットフォーム:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;セッション3: 大規模分散アジャイルを支えるプラットフォーム&lt;/h2&gt;
+
+&lt;p&gt;上村 務氏(日本アイ・ビー・エム株式会社)&lt;/p&gt;
+
+&lt;p&gt;IBM が使っている大規模分散開発用のアジャイルフレームワークの説明。ほとんど Rational 製品の解説だけで終わっていました。&lt;/p&gt;
+
+&lt;h2 id=&#34;セッション4-コンパクトなチームでのアジャイル開発とその実践:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;セッション4: コンパクトなチームでのアジャイル開発とその実践&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;及川 喜之氏(株式会社セールスフォース・ドットコム)&lt;/li&gt;
+&lt;li&gt;堀 譲治氏(株式会社シャノン)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;salesforce-のスクラムチーム:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;SalesForce のスクラムチーム&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;100以上のスクラムチームがある。&lt;/li&gt;
+&lt;li&gt;「Salesforce Agile」でググればスライドがいっぱい出てくるよ！&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;シャノンで使っているツール:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;シャノンで使っているツール&lt;/h3&gt;
+
+&lt;p&gt;基本的にOSSや無料パッケージの組み合わせ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pivotal Tracker, Google Docs, Cacoo&lt;/li&gt;
+&lt;li&gt;Github Enterprise , Jenkins, Bugzilla&lt;/li&gt;
+&lt;li&gt;Heroku, AWS&lt;/li&gt;
+&lt;li&gt;Google talk, IRC, Skype&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;pivotal-tracker:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;Pivotal Tracker&lt;/h4&gt;
+
+&lt;p&gt;Googleスプレッドシートでストーリー管理していたが、以下の理由で限界を迎えたので使い始めた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;イテレーションがわかりづらい&lt;/li&gt;
+&lt;li&gt;並び替えしづらい&lt;/li&gt;
+&lt;li&gt;依存性の管理ができない&lt;/li&gt;
+&lt;li&gt;「いつ終わるのか」の未来管理ができない（致命的）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Pivotal Tracker のいいところ&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Bugzilla、GitHub と連携が可能 → トラッキングが簡単に！&lt;/li&gt;
+&lt;li&gt;複数のストーリーをまとめて「エピック」として束ねられる
+
+&lt;ul&gt;
+&lt;li&gt;エピック毎に企画し、予算を出すようにしている。&lt;/li&gt;
+&lt;li&gt;エピック単位の進捗管理が可能になる。いつ終わるかすぐわかる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ベロシティと、リリースまでに必要なイテレーション数を自動で算出 → 精神論に拠らないリリースプラン&lt;/li&gt;
+&lt;li&gt;アナログに近い使い勝手&lt;/li&gt;
+&lt;li&gt;ほかのツールとの統合が容易&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;github-enterprise:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;GitHub Enterprise&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;外部ツールとのインテグレーションが充実&lt;/li&gt;
+&lt;li&gt;標準の機能で、Web上で簡単にコードレビューができる&lt;/li&gt;
+&lt;li&gt;統計ツール、グラフが充実 → ふりかえりに数値的裏付けが使えるようになった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;jenkinsを使ったci:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;Jenkinsを使ったCI&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自動テスト、コードカバレッジ監視、デプロイ、Seleniumのキックで利用&lt;/li&gt;
+&lt;li&gt;自動で重くないスレーブノードにテストを分散できるプラグイン&lt;/li&gt;
+&lt;li&gt;Test Failed 時は IRC に連絡&lt;/li&gt;
+&lt;li&gt;Pull Request と同時に Unit Testing 実行 → 壊れたビルドをマージしない！&lt;/li&gt;
+&lt;li&gt;コードレビュー時にGitHubレビューに「Jenkins, test this please」と書き込むと、UTが走る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;透明化、自動化ができた。&lt;/p&gt;
+
+&lt;h4 id=&#34;heroku:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;Heroku&lt;/h4&gt;
+
+&lt;p&gt;AWS を使いたくても、エンタープライズ向けの必須要件 (セキュリティ、パフォーマンス、SLA、&amp;#8230;) をクリアさせることができない。&lt;/p&gt;
+
+&lt;p&gt;人数が少なく専任のインフラエンジニアを割り振れないので、それらを吸収してくれる PaaS の Heroku を使い始めた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;サーバーを意識しなくて良い。&lt;/li&gt;
+&lt;li&gt;Git コマンドだけでデプロイ可能。git commit &amp;amp; push だけ。&lt;/li&gt;
+&lt;li&gt;パフォーマンスアップも WebUI から簡単にできる。
+
+&lt;ul&gt;
+&lt;li&gt;業種上、キャンペーン日だけアクセスが激増することが多いが、簡単に負荷に対応できる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;New Relic プラグインで簡単にサーバー監視が可能。&lt;/li&gt;
+&lt;li&gt;無料でパフォーマンス分析まで可能。&lt;/li&gt;
+&lt;li&gt;運用をかなり簡素化できる。高度なインフラ知識が無くても十分運用できる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;セッション5-事例から見るアジャイルの失敗と成功-二度とアジャイルはやりたくなかった人が語るアジャイルの成功ポイント:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;セッション5: 事例から見るアジャイルの失敗と成功 （二度とアジャイルはやりたくなかった人が語るアジャイルの成功ポイント）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;平岡 嗣晃氏（株式会社　日立ソリューションズ）&lt;/li&gt;
+&lt;li&gt;奈加 健次氏（株式会社　日立ソリューションズ）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;日立ソリューションズの失敗事例と成功事例。&lt;/p&gt;
+
+&lt;h3 id=&#34;プロセス:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;プロセス&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プレーンなアジャイル&lt;/li&gt;
+&lt;li&gt;ハイブリッドアジャイル
+
+&lt;ul&gt;
+&lt;li&gt;要件定義、基本設計、リリーステスト: ウォーターフォール&lt;/li&gt;
+&lt;li&gt;詳細設計、開発: アジャイル&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ウォーターフォール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;2007年の失敗:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;2007年の失敗&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;本のとおりにやってみようとした。
+
+&lt;ul&gt;
+&lt;li&gt;「ドキュメントを作らない」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;→「優秀なプログラマを集めればアジャイルができる」と勘違いしたまま、100人集めた&lt;/li&gt;
+&lt;li&gt;→結合テストで全く繋がらずボロボロ&lt;/li&gt;
+&lt;li&gt;→結局24時間体制でフォロー、全ドキュメントレビューも実施。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;2度とアジャイルやりたくないと思った。&lt;/p&gt;
+
+&lt;h3 id=&#34;2012年の成功:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;2012年の成功&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;なぜアジャイル開発を行うのか？目的を明確化した。
+
+&lt;ul&gt;
+&lt;li&gt;「仕様変更に対するコストをアジャイルで削減すること」&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;顧客を含め、プロジェクトメンバーへの教育を徹底した。&lt;/li&gt;
+&lt;li&gt;プロジェクト管理（進捗、コスト、品質、変更）を明確化した。&lt;/li&gt;
+&lt;li&gt;チケットの粒度は必ず8時間以下。大きければ分割する。&lt;/li&gt;
+&lt;li&gt;朝会で必ずバーンダウンチャートを確認。&lt;/li&gt;
+&lt;li&gt;変更を受け入れるための進捗には「ゆとり」を持たせて計画する。バッファ。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ポイント:29d91c6d9de33ba41ab60dac9e5e82f1&#34;&gt;ポイント&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;TDD はいきなりやれと言われても絶対できない。
+
+&lt;ul&gt;
+&lt;li&gt;レッド・グリーン・リファクタリングのリズムを徹底的に教育。&lt;/li&gt;
+&lt;li&gt;教育にはペアプロが最適。アマチュアとベテランを組ませて、技術の伝播と平準化をはかる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;常時結合（CI）も教育した。
+
+&lt;ul&gt;
+&lt;li&gt;夜10時から朝5時に毎日走らせ、朝会で確認するようにした。→いい加減なコミットがなくなった。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;仕様の確認方法と受け入れ方法をルール化しておく→スピードアップ
+
+&lt;ul&gt;
+&lt;li&gt;スプリントレビューのタイミングが基本&lt;/li&gt;
+&lt;li&gt;仕様決定者全員が合意する時間を作る&lt;/li&gt;
+&lt;li&gt;約4時間で用件説明、レビュー、操作確認を行う。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;「アジャイルプロセスの適用」が目的ではない！&lt;/li&gt;
+&lt;li&gt;アジャイルは楽ではない。
+
+&lt;ul&gt;
+&lt;li&gt;残業を認めず、時間内にやり遂げることが必要。&lt;/li&gt;
+&lt;li&gt;「3ヶ月は続けられない」というアンケート結果が多かった。ずっとアジャイルは無理という印象。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

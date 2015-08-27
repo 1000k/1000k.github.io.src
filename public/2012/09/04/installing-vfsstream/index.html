@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> vfsStreamをインストールする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/09/04/installing-vfsstream/">vfsStreamをインストールする</a></h2>
+        <div class="post-content">
+          
+
+<p>PHPUnit のマニュアルに出てくる仮想ファイルシステムの vfsStream ですが、<a href="http://www.phpunit.de/manual/3.6/ja/test-doubles.html#test-doubles.mocking-the-filesystem" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.6/ja/test-doubles.html#test-doubles.mocking-the-filesystem', '公式マニュアル']);" title="第10章 テストダブル">公式マニュアル</a>に載っている方法では既にPEARチャンネルが消えているため、インストールできません。</p>
+
+<p>以下に正しいインストール方法をメモしておきます。</p>
+
+<h2 id="php-5-2-の場合:95f81ffdb8fe1ed455aec73bf72b588a">PHP &lt; 5.2 の場合</h2>
+
+<p>以下のコマンドで vfsStream &lt; 1.0 をインストールできます。</p>
+
+<pre><code>$ pear channel-discover pear.bovigo.org
+$ pear install bovigo/vfsStream-beta
+
+downloading vfsStream-0.12.0.tgz ...
+Starting to download vfsStream-0.12.0.tgz (459,376 bytes)
+.........done: 459,376 bytes
+install ok: channel://pear.bovigo.org/vfsStream-0.12.0
+</code></pre>
+
+<h2 id="php-5-3-の場合:95f81ffdb8fe1ed455aec73bf72b588a">PHP &gt;= 5.3 の場合</h2>
+
+<p>vfsStream &gt;= 1.0 を <a href="http://getcomposer.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://getcomposer.org/', 'Composer']);" >Composer</a> でインストールします。</p>
+
+<pre><code>&quot;mikey179/vfsStream&quot;: &quot;v1.1.0&quot;
+</code></pre>
+
+<p>利用可能なバージョンは <a href="https://packagist.org/packages/mikey179/vfsStream" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://packagist.org/packages/mikey179/vfsStream', 'mikey179/vfsStream &#8211; Packagist']);" >mikey179/vfsStream &#8211; Packagist</a> を参照。</p>
+
+<h2 id="参考:95f81ffdb8fe1ed455aec73bf72b588a">参考</h2>
+
+<ul>
+<li><a href="https://github.com/mikey179/vfsStream/wiki/Install" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/mikey179/vfsStream/wiki/Install', 'Download and install vfsStream · mikey179/vfsStream Wiki']);" title="Download and install vfsStream · mikey179/vfsStream Wiki">Download and install vfsStream · mikey179/vfsStream Wiki</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

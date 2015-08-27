@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on 1000g</title>
+    <link>http://1000k.github.io/tags/git/</link>
+    <description>Recent content in Git on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 28 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Jenkins で Git リポジトリの ID と PW をセキュアに保存する方法</title>
+      <link>http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/</link>
+      <pubDate>Mon, 28 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/</guid>
+      <description>
+
+&lt;p&gt;Jenkins から https 接続で認証付きの Git リポジトリを参照する場合、以下のように URL に直接ユーザー名とパスワードを書く必要がありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://{USERNAME}:{PASSWORD}@foo.com/git/bar.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然 Jenkins の設定ファイルにパスワードがそのまま書かれてしまいます。個人開発ならいいですが、チーム開発では危険すぎます。これをセキュアにしようとすると、.netrc を使ったりするややこしい手順が必要でした。&lt;/p&gt;
+
+&lt;p&gt;ところが、2013年10月22日にリリースされた Git Plugin 2.0 から、Credential Plugin と連携して暗号化したパスワードを保存できるようになったため、大幅に設定が楽になりました。&lt;/p&gt;
+
+&lt;p&gt;以下にそのやり方をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;リポジトリの URL は &lt;code&gt;https://foo.com/git/bar.git&lt;/code&gt; とします。&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Jenkins の管理 &amp;gt; Credentials &amp;gt; Add domain&amp;#8221; をクリックし、Git リポジトリのドメインを入力します。&lt;/p&gt;
+
+&lt;p&gt;Specification の URI スキーマには &lt;code&gt;https&lt;/code&gt; を選択します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1-300x163.png&#34; alt=&#34;jenkins_secure_credientials_1&#34; width=&#34;300&#34; height=&#34;163&#34; class=&#34;alignnone size-medium wp-image-1641&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;続いて、&amp;#8221;Add Credentials&amp;#8221; をクリックし、認証情報入力画面を出します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2-300x71.png&#34; alt=&#34;jenkins_secure_credientials_2&#34; width=&#34;300&#34; height=&#34;71&#34; class=&#34;alignnone size-medium wp-image-1642&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Kind&amp;#8221; は &lt;code&gt;ユーザー名とパスワード&lt;/code&gt; を、&amp;#8221;ユーザー名&amp;#8221; には https 認証のユーザー名を入力します。完了したら &amp;#8220;OK&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3-300x139.png&#34; alt=&#34;jenkins_secure_credientials_3&#34; width=&#34;300&#34; height=&#34;139&#34; class=&#34;alignnone size-medium wp-image-1643&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これで一旦、認証鍵一覧画面に戻されます。引き続き、いま入力したユーザー名をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4-300x136.png&#34; alt=&#34;jenkins_secure_credientials_4&#34; width=&#34;300&#34; height=&#34;136&#34; class=&#34;alignnone size-medium wp-image-1644&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Update&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5-300x137.png&#34; alt=&#34;jenkins_secure_credientials_5&#34; width=&#34;300&#34; height=&#34;137&#34; class=&#34;alignnone size-medium wp-image-1645&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;パスワード&amp;#8221; 欄に認証パスワードを入力し、&amp;#8221;Save&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6-300x134.png&#34; alt=&#34;jenkins_secure_credientials_6&#34; width=&#34;300&#34; height=&#34;134&#34; class=&#34;alignnone size-medium wp-image-1646&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;以上で foo.com のリポジトリの認証情報が設定できました。&lt;/p&gt;
+
+&lt;p&gt;あとはプロジェクトの設定画面を開き、&amp;#8221;ソースコード管理システム &amp;gt; Git&amp;#8221; の &amp;#8220;Repository URL&amp;#8221; に &lt;code&gt;https://foo.com/git/bar.git&lt;/code&gt; を、&amp;#8221;Credentials&amp;#8221; に先ほど入力した ID/PW のペアを選択すれば OKです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7-300x242.png&#34; alt=&#34;jenkins_secure_credientials_7&#34; width=&#34;300&#34; height=&#34;242&#34; class=&#34;alignnone size-medium wp-image-1647&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これでプロジェクトをビルド可能になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;git-1-7-1-では認証が通らない:094599a56af5c07d8e54136f1f310fd1&#34;&gt;Git 1.7.1 では認証が通らない？&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 で、EPEL リポジトリから Git をインストールすると 1.7.1 が入りますが、これだとうまく認証が通りませんでした。プロジェクトの設定画面で &amp;#8220;Repository URL&amp;#8221; と &amp;#8220;Credential&amp;#8221; を入力しても、 &lt;code&gt;Error performing command: ls-remote -h&lt;/code&gt; というエラーが出て進めませんでした。&lt;/p&gt;
+
+&lt;p&gt;仕方ないので手動でソースから Git 1.8.4.1 をインストールしたら、無事エラーが出なくなりました。&lt;/p&gt;
+
+&lt;p&gt;Git のソースインストール方法手順は以下。いつもの Configure -&amp;gt; make -&amp;gt; make install です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /usr/local/src
+wget https://git-core.googlecode.com/files/git-1.8.4.1.tar.gz
+tar zxvf git-1.8.4.1.tar.gz
+cd git-1.8.4.1
+./configure
+make
+make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、この場合 Git のバイナリが &lt;code&gt;/usr/local/bin&lt;/code&gt; 配下にインストールされるので、&amp;#8221;Jenkins の管理 &amp;gt; システム設定 &amp;gt; Git &amp;gt; Path to Git executable&amp;#8221; に &lt;code&gt;/usr/local/bin/git&lt;/code&gt; と入力する必要があります。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81-255x300.png&#34; alt=&#34;jenkins_secure_credientials_8&#34; width=&#34;255&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-1649&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:094599a56af5c07d8e54136f1f310fd1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin&#39;, &#39;Git Plugin &amp;#8211; Jenkins &amp;#8211; Jenkins Wiki&#39;]);&#34; &gt;Git Plugin &amp;#8211; Jenkins &amp;#8211; Jenkins Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/naonya3/items/54c8e3436212ad6686b3&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/naonya3/items/54c8e3436212ad6686b3&#39;, &#39;CentOS6.3にgitをソースコードから入れる &amp;#8211; Qiita [キータ]&#39;]);&#34; &gt;CentOS6.3にgitをソースコードから入れる &amp;#8211; Qiita [キータ]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git の submodule を最新にする方法</title>
+      <link>http://1000k.github.io/2013/10/19/command-to-update-git-submodule/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/19/command-to-update-git-submodule/</guid>
+      <description>
+
+&lt;p&gt;「そんなの &lt;code&gt;git submodule update&lt;/code&gt; で一発だろ」と思っていましたが、全然違いました。このコマンドをいくら叩いても、標準出力には何も表示されず、submodule はちっとも更新されません。&lt;/p&gt;
+
+&lt;p&gt;submodule を最新の状態にするコマンドは &lt;code&gt;git submodule foreach git pull origin master&lt;/code&gt; です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:e45e994ba8135917364d3e9a430429e3&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/5828324/update-git-submodule&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/5828324/update-git-submodule&#39;, &#39;Update git submodule &amp;#8211; Stack Overflow&#39;]);&#34; &gt;Update git submodule &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git ワークフロー</title>
+      <link>http://1000k.github.io/2013/04/14/git-workflow/</link>
+      <pubDate>Sun, 14 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/14/git-workflow/</guid>
+      <description>
+
+&lt;p&gt;実際のプロジェクトを git で運用する時のよくある流れをまとめました。&lt;/p&gt;
+
+&lt;h2 id=&#34;前準備:c200c94cf5af25837ca230fae46d8045&#34;&gt;前準備&lt;/h2&gt;
+
+&lt;h3 id=&#34;git-push-コマンドのデフォルトの挙動を変更する:c200c94cf5af25837ca230fae46d8045&#34;&gt;git push コマンドのデフォルトの挙動を変更する&lt;/h3&gt;
+
+&lt;p&gt;git push コマンドのデフォルトの挙動では、引数を指定しないとローカルにある全てのブランチを push してしまいます。そのため、リモートとローカルに同名のブランチがある場合、リモートブランチを同名のローカルブランチで意図せず上書きしてしまう危険があります。&lt;/p&gt;
+
+&lt;p&gt;そこで、引数なしの git push を実行した時は、現在編集中のブランチのみ push するようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git config  --global push.default current
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;新しいブランチを作成して作業する:c200c94cf5af25837ca230fae46d8045&#34;&gt;新しいブランチを作成して作業する&lt;/h2&gt;
+
+&lt;p&gt;以下の流れを行う時のコマンドです。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;mojamoja リポジトリに新しいブランチを作成する&lt;/li&gt;
+&lt;li&gt;変更をリモートに push する&lt;/li&gt;
+&lt;li&gt;変更点を master ブランチにマージする&lt;/li&gt;
+&lt;li&gt;変更したバージョンをタグにする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;# mojamoja リポジトリをローカルに clone する
+$ git clone git@bitbucket.org:1000k/mojamoja
+$ cd mojamoja
+
+# 現在ローカルにあるブランチを確認する
+$ git branch -l
+
+# 作業用ブランチ (例として &#39;feature-branch&#39; という名前) を作成する
+$ git branch feature-branch
+
+# 作業用ブランチに切り替える
+$ git checkout feature-branch
+
+# 編集
+$ vim ...
+$ vim ...
+
+# 変更のあったファイルを確認する
+$ git status
+
+# 変更したファイルを全てコミット対象に入れる
+# 個別に登録したい場合は &amp;quot;git add {ファイルパス}&amp;quot;
+$ git add -A
+
+$ git commit -m &amp;quot;Foo クラスを作成。&amp;quot;
+
+# 変更したファイルをリモートにプッシュする
+$ git push
+
+# master ブランチにマージする
+$ git checkout master
+$ git merge feature-branch
+$ git push
+
+# 既存のタグを確認
+$ git tag -l
+
+# ローカルにタグを作成する
+$ git tag 0.0.1 -m &amp;quot;First tag&amp;quot;
+
+# リモートに push する
+$ git push --tags
+
+# 使わなくなったローカルブランチを削除する
+$ git branch -d feature-branch
+
+# 使わなくなったリモートブランチを削除する
+# ブランチ名の前に &amp;quot;:&amp;quot; を付け忘れると動かないので注意
+$ git push origin :feature-branch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ローカルをリモートの状態に合わせる:c200c94cf5af25837ca230fae46d8045&#34;&gt;ローカルをリモートの状態に合わせる&lt;/h2&gt;
+
+&lt;p&gt;異なるマシンから同じリモートブランチに変更を加えると、それぞれのマシン間で差異が出てしまいます。以下の手順で、ローカルのブランチをリモートにあるブランチと同期させることが可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# リモートの最新のデータを取得する
+$ git fetch origin master
+
+# ローカルのバージョンの向き先を最新に変える
+$ git reset --hard FETCH_HEAD
+
+# ローカルの管理外ファイルを消す
+$ git clean -df
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでリモートとローカルでファイルの中身が同一になりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;リモートブランチをローカルで編集する:c200c94cf5af25837ca230fae46d8045&#34;&gt;リモートブランチをローカルで編集する&lt;/h2&gt;
+
+&lt;p&gt;リモートにのみ 0.2.0 ブランチがあり、ローカルにはまだ無い場合、以下のコマンドでローカルにコピーすることができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ローカルにあるブランチの一覧を確認する
+$ git branch -r
+
+# ローカルの 0.2.0 ブランチにリモートの 0.2.0 をチェックアウトする
+$ git checkout -b 0.2.0 origin/0.2.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;間違ったコミットを取り消す:c200c94cf5af25837ca230fae46d8045&#34;&gt;間違ったコミットを取り消す&lt;/h2&gt;
+
+&lt;p&gt;2つの考え方があるので注意。&lt;/p&gt;
+
+&lt;p&gt;ここは git の内部構造を理解していないと飲み込めないかもしれません。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.slideshare.net/matsukaz/git-17499005&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/matsukaz/git-17499005&#39;, &#39;いつやるの？Git入門&#39;]);&#34; &gt;いつやるの？Git入門&lt;/a&gt; が簡潔に内部構造を説明しているので、目を通すことをオススメします。&lt;/p&gt;
+
+&lt;h3 id=&#34;commit-8211-amend:c200c94cf5af25837ca230fae46d8045&#34;&gt;commit &amp;#8211;amend&lt;/h3&gt;
+
+&lt;p&gt;後から前回のコミットに追加して変更をするやり方です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# わざと間違ったコミットをする
+$ git commit -m &amp;quot;Failure commit&amp;quot;
+
+# これまでのコミットの一覧を確認する
+$ git log
+
+# さっきコミットし忘れたファイルをステージングする
+$ git add foo.php
+
+# 先ほどコミットした部分と合わせて新たなコミットを行う
+git commit --amend -m &amp;quot;Successful commit&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これにより、1回目の間違ったコミットは無効化され、2回目のコミットが利用されます。&lt;/p&gt;
+
+&lt;h3 id=&#34;git-reset:c200c94cf5af25837ca230fae46d8045&#34;&gt;git reset&lt;/h3&gt;
+
+&lt;p&gt;前回のコミットそのものを取り消す (無かったことにする) コマンドです。&lt;/p&gt;
+
+&lt;p&gt;コミットしたファイルを残すか消すかで、オプションの値を変える必要があります。&lt;/p&gt;
+
+&lt;p&gt;コミットだけを取り消して、変更したファイルはそのままで、1つ手前の状態に戻すには、&lt;code&gt;--soft&lt;/code&gt; オプションを付けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset --soft HEAD^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コミットを取り消し、ワークディレクトリの中身も1つ前の状態に置き換える (= 変更も全て元に戻る) には、&lt;code&gt;--hard&lt;/code&gt; オプションを付けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset --hard HEAD^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:c200c94cf5af25837ca230fae46d8045&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/nayutaya/20090519/1242701594&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/nayutaya/20090519/1242701594&#39;, &#39;gitのリモートブランチを使って作業を行う流れのメモ &amp;#8211; 那由多屋 開発日誌&#39;]);&#34; &gt;gitのリモートブランチを使って作業を行う流れのメモ &amp;#8211; 那由多屋 開発日誌&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/948354/git-push-current-branch&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/948354/git-push-current-branch&#39;, &#39;git push current branch &amp;#8211; Stack Overflow&#39;]);&#34; &gt;git push current branch &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://transitive.info/article/git/command/tag/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://transitive.info/article/git/command/tag/&#39;, &#39;transitive.info &amp;#8211; git tag 使い方&#39;]);&#34; &gt;transitive.info &amp;#8211; git tag 使い方&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/items/e082d64f3f8b424e9b7d&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/items/e082d64f3f8b424e9b7d&#39;, &#39;fetch と pullの違い #git &amp;#8211; Qiita&#39;]);&#34; &gt;fetch と pullの違い #git &amp;#8211; Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dqn.sakusakutto.jp/2012/11/git_pull.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dqn.sakusakutto.jp/2012/11/git_pull.html&#39;, &#39;Git pullを使うべきでない３つの理由 &amp;#8211; DQNEO起業日記&#39;]);&#34; &gt;Git pullを使うべきでない３つの理由 &amp;#8211; DQNEO起業日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468&#39;, &#39;git commitをやり直しする＆取り消しする(「get commit &amp;#8211;amend」と「git reset」) &amp;#8211; hogehoge foobar Blog Style5&#39;]);&#34; &gt;git commitをやり直しする＆取り消しする(「get commit &amp;#8211;amend」と「git reset」) &amp;#8211; hogehoge foobar Blog Style5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/matsukaz/git-17499005&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/matsukaz/git-17499005&#39;, &#39;いつやるの？Git入門&#39;]);&#34; &gt;いつやるの？Git入門&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git clone した後 git sudmobule init が失敗するときの対処方法</title>
+      <link>http://1000k.github.io/2013/03/27/what-to-do-if-git-sudmobule-init-fails-after-git-clone/</link>
+      <pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/27/what-to-do-if-git-sudmobule-init-fails-after-git-clone/</guid>
+      <description>
+
+&lt;p&gt;submodule を含むリポジトリを clone した直後は、ディレクトリは存在しますが実ファイルが存在しません。以下のコマンドで初期化する必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git clone git://mojamoja/uso.git
+$ cd uso/
+$ git submodule init
+$ git submodule update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで実ファイルがローカルにダウンロードされます。&lt;/p&gt;
+
+&lt;p&gt;&amp;#8230;らしいですが、うまくいきませんでした。&lt;/p&gt;
+
+&lt;p&gt;私の場合、&amp;#8221;git submodule init&amp;#8221; を叩いたら以下のエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;No submodule mapping found in .gitmodules for path &#39;chef-repo/cookbooks/ant&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;原因はプロジェクト内の .gitmodules にありました。&lt;/p&gt;
+
+&lt;p&gt;Windows で &amp;#8220;git submodule add&amp;#8221; した時に一部の path が &amp;#8220;&amp;#92;&amp;#8221; という表記になっており、これを git がうまく解釈できなかった模様。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[submodule &amp;quot;chef-repo\\cookbooks\\java&amp;quot;]
+     path = chef-repo\\cookbooks\\java
+     url = git://github.com/opscode-cookbooks/java.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;#8220;&amp;#92;&amp;#8221; を &amp;#8220;/&amp;#8221; に置換してやればOKです。&lt;code&gt;
+ [submodule &amp;quot;chef-repo/cookbooks/ava&amp;quot;] path = chef-repo/cookbooks/java url = git://github.com/opscode-cookbooks/java.git&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;これで &amp;#8220;git sudmoule init&amp;#8221; が成功するようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:4471c99086089d3b3bb5481282090f4e&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://edspencer.net/2008/04/git-clone-vs-git-submodule.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://edspencer.net/2008/04/git-clone-vs-git-submodule.html&#39;, &#39;Git clone vs Git submodule : Ed Spencer&#39;]);&#34; &gt;Git clone vs Git submodule : Ed Spencer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

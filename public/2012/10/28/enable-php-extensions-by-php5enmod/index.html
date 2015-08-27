@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> php5enmodでPHP拡張を有効化する方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/10/28/enable-php-extensions-by-php5enmod/">php5enmodでPHP拡張を有効化する方法</a></h2>
+        <div class="post-content">
+          
+
+<p>Ubuntuにて、peclでMongoDBをインストールしてさあ動かそうと思ったら、以下のエラーが出て動きませんでした。</p>
+
+<pre><code>[Sun Oct 28 19:39:08 2012] [error] [client *.*.*.*] PHP Fatal error:  Class 'Mongo' not found in /var/www/html/*.php on line 38
+</code></pre>
+
+<p>php.iniも編集したし、Apache再起動もしたのになぜ？と軽くつまづきました。</p>
+
+<p>けっきょく原因はUbuntuの作法を分かっていなかったが為のエラーでした。</p>
+
+<h2 id="原因:d103d0ed9885bf3d8051c00805d3aeed">原因</h2>
+
+<p>UbuntuではApache2同様、PHPの設定ファイルも階層化されています。</p>
+
+<p>知らないとはまるのが、WEB用の設定とCLI用の設定が異なることです。</p>
+
+<ul>
+<li>WEB用: /etc/php5/apache2/php.ini</li>
+<li>CLI用: /etc/php5/cli/php.ini</li>
+</ul>
+
+<p>もしmongo.soを両方で使いたければ、両方の設定をしなければなりません。</p>
+
+<p>私はCLI用のファイルしか設定していなかったので、WEBからアクセス時に Class not found エラーになっていました。</p>
+
+<p>それは面倒だ、という場合の為にちゃんと抜け道が用意されています。</p>
+
+<p><strong>php5enmod</strong>コマンドを使ってmodを両方に有効化させることができます。</p>
+
+<p>※php5enmod は <strong>PHP &gt;= 5.4.0</strong> をパッケージでインストールした場合のみ有効です。</p>
+
+<h2 id="手順:d103d0ed9885bf3d8051c00805d3aeed">手順</h2>
+
+<p>mongo.soをWEB/CLI両方で有効にしたい場合は、下記の手順を踏みます。</p>
+
+<ol>
+<li><strong>/etc/php5/mods-available/mongo.ini</strong>を作成する。</li>
+</ol>
+
+<pre><code>extension=mongo.so
+</code></pre>
+
+<ol>
+<li>modを有効化する。</li>
+</ol>
+
+<pre><code>$ sudo php5enmod mongo
+</code></pre>
+
+<ol>
+<li>Apache2を再起動する。</li>
+</ol>
+
+<pre><code>$ sudo service apache2 restart
+</code></pre>
+
+<ol>
+<li><p>WEB/CLIで両方で設定が反映されているか確認する。</p>
+
+<p>CLIからは「php -i | grep mongo」を叩き、WEBからは phpinfo() を見て、それぞれ「mongo」という項目があればOKです。</p></li>
+</ol>
+
+<p>うまくいかない場合、ログ（/var/log/apache2/error.log）を見てエラーメッセージを確認してください。</p>
+
+<h2 id="参考:d103d0ed9885bf3d8051c00805d3aeed">参考</h2>
+
+<ul>
+<li><a href="https://bugs.launchpad.net/ubuntu/+source/php-apc/+bug/994882" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://bugs.launchpad.net/ubuntu/+source/php-apc/+bug/994882', 'Bug #994882 “php5{en/dis}mod not available in php 5.3.10” : Bugs : “php-apc” package : Ubuntu']);" >Bug #994882 “php5{en/dis}mod not available in php 5.3.10” : Bugs : “php-apc” package : Ubuntu</a></li>
+</ul>
+
+<p>日頃CentOSばかり触っているとUbuntuルールにつまづきます。</p>
+
+<p>慣れればUbuntuの整理方法が使いやすいと思うのですが。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

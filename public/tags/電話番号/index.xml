@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>電話番号 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E9%9B%BB%E8%A9%B1%E7%95%AA%E5%8F%B7/</link>
+    <description>Recent content in 電話番号 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 25 Jan 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E9%9B%BB%E8%A9%B1%E7%95%AA%E5%8F%B7/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>電話番号チェックする正規表現(入力枠1個、ハイフン抜き)</title>
+      <link>http://1000k.github.io/2011/01/25/regex-of-tel-number/</link>
+      <pubDate>Tue, 25 Jan 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/01/25/regex-of-tel-number/</guid>
+      <description>
+
+&lt;p&gt;「電話番号 正規表現」で検索するといろいろな正規表現パターンが出てきますが、完璧なものはあまり無いようです。私が必要としていた簡単なものもなかったので、PHPで書いてみました。&lt;/p&gt;
+
+&lt;p&gt;どういう条件で使えるかコメントに書いたので、よくご確認ください。総務省の電話番号ルールに従っています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * 電話番号が正しいか判定する
+ *
+ * - 入力枠1個、ハイフン抜きでチェックする
+ * - 0A0, 0AB, 0ABC (A,B,Cは0以外)から始まる番号だけに対応
+ *   - 「00XY-0市外局番-市内局番-加入者番号」の形式は非対応 (@seeのQ3参照)
+ * - 10桁(固定電話)と11桁(固定電話)のみ対応
+ *
+ * @param  string $tel  電話番号
+ * @return bool   判定結果 (true:正しい電話番号)
+ * @see &amp;lt;a href=&amp;quot;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&#39;, &#39;電話番号に関するＱ＆Ａ&#39;]);&amp;quot; &amp;gt;電話番号に関するＱ＆Ａ&amp;lt;/a&amp;gt;
+ */
+function is_valid_tel_number($tel = &amp;quot;&amp;quot;) {
+    return preg_match(&amp;quot;/^0\d{9,10}$/&amp;quot;, str_replace(&amp;quot;-&amp;quot;, &amp;quot;&amp;quot;, $tel));
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;動作チェックは書きの通りです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+/**
+ * 電話番号が正しいか判定する
+ *
+ * - 入力枠1個、ハイフン抜きでチェックする
+ * - 0A0, 0AB, 0ABC (A,B,Cは0以外)から始まる番号だけに対応
+ *   - 「00XY-0市外局番-市内局番-加入者番号」の形式は非対応 (@seeのQ3参照)
+ * - 10桁(固定電話)と11桁(固定電話)のみ対応
+ *
+ * @param  string $tel  電話番号
+ * @return bool   判定結果 (true:正しい電話番号)
+ * @see &amp;lt;a href=&amp;quot;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&amp;quot; onclick=&amp;quot;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&#39;, &#39;電話番号に関するＱ＆Ａ&#39;]);&amp;quot; &amp;gt;電話番号に関するＱ＆Ａ&amp;amp;lt;/a&amp;gt;
+ */
+function is_valid_tel_number($tel = &amp;quot;&amp;quot;) {
+    return preg_match(&amp;quot;/^0\d{9,10}$/&amp;quot;, str_replace(&amp;quot;-&amp;quot;, &amp;quot;&amp;quot;, $tel));
+}
+
+$tels = array(
+    // NGパターン
+    &amp;quot;0&amp;quot;,
+    &amp;quot;1-1-1-1&amp;quot;,
+    &amp;quot;uhouho&amp;quot;,
+    &amp;quot;9999999999&amp;quot;,       // 0から始まってない
+    &amp;quot;03-333-333&amp;quot;,       // ケタ不足
+    &amp;quot;090-9999-999999&amp;quot;,  // ケタ多すぎ
+    &amp;quot;012301230123&amp;quot;,     // ケタ多すぎ
+    // OKパターン
+    &amp;quot;03-3200-2222&amp;quot;,     // 市外局番1桁: 東京など
+    &amp;quot;043-000-0000&amp;quot;,     // 市外局番2桁: 千葉
+    &amp;quot;0166-00-0000&amp;quot;,     // 市外局番3桁: 旭川
+    &amp;quot;09913-0-0000&amp;quot;,     // 市外局番4桁: 硫黄島
+    &amp;quot;090-0000-0000&amp;quot;,    // 携帯電話
+    &amp;quot;050-0000-0000&amp;quot;,    // 携帯電話
+    &amp;quot;080-0000-0000&amp;quot;,    // 携帯電話
+);
+
+foreach ($tels as $key =&amp;gt; $tel) {
+    echo &amp;quot;{$key}: {$tel} ... &amp;quot;;
+    echo is_valid_tel_number($tel) ? &amp;quot;OK&amp;quot; : &amp;quot;NG&amp;quot;;
+    echo &amp;quot;\n&amp;quot;;
+}
+
+ /** End of file */
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力結果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ php tel_check.php
+0: 0 ... NG
+1: 1-1-1-1 ... NG
+2: uhouho ... NG
+3: 9999999999 ... NG
+4: 03-333-333 ... NG
+5: 090-9999-999999 ... NG
+6: 012301230123 ... NG
+7: 03-3200-2222 ... OK
+8: 043-000-0000 ... OK
+9: 0166-00-0000 ... OK
+10: 09913-0-0000 ... OK
+11: 090-0000-0000 ... OK
+12: 050-0000-0000 ... OK
+13: 080-0000-0000 ... OK
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:2daffd78901abd39a0325093e2a569a5&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&#39;, &#39;電話番号に関するＱ＆Ａ&#39;]);&#34; title=&#34;電話番号に関するＱ＆Ａ&#34;&gt;電話番号に関するＱ＆Ａ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

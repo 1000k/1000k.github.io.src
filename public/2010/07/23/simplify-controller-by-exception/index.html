@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP のコントローラを単純化するために例外を使う &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/23/simplify-controller-by-exception/">CakePHP のコントローラを単純化するために例外を使う</a></h2>
+        <div class="post-content">
+          <p>2009年6月12日の記事でだいぶ古いのですが、CakePHP のコードを改善する TIPS があったので訳してみました。</p>
+
+<p><a href="http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mark-story.com/posts/view/simplifying-controller-logic-with-exceptions', 'Simplifying Controller logic with Exceptions | Mark Story']);" title="Simplifying Controller logic with Exceptions | Mark Story">Simplifying Controller logic with Exceptions | Mark Story</a></p>
+
+<p>要約すると、<strong>「モデル内で例外を吐くようにすると、エラーコードが読みやすくなり、コントローラのテストもしやすくなるよ」</strong>ということです。</p>
+
+<p>以下、訳です。</p>
+
+<p>増大するコードと格闘する日々・・・どうにかクリエイティブな方法で解決したい。そんな悩みを、モデルのメソッドから例外を投げる方法で解決しました。別にビックリするようなものではないです。ただfalseを返すより、ちょっと便利な点がいくつかあります。</p>
+
+<p>第一に、if-elseを減らすことができます。第二に、エラーが起こる部分のソースにエラーメッセージを書くことができるので、何度も使うメソッドならエラーメッセージを重複させずに書くことができます。</p>
+
+<p>例えば以下のメソッドは、リモートアドレスからリソースをダウンロードし、</p>
+
+<p>ローカルファイルシステムとデータベースに記録するものです。<em>（訳注: ダウンロードの時点で失敗すると例外を、保存に成功するとtrueを、保存に失敗するとfalseを返します。）</em></p>
+
+<pre><code>public function downloadResource($url, $userId, $type = 'image') {
+    if (!isset($this-&gt;_fetchMimes[$type])) {
+        throw new OutOfBoundsException(__('Invalid media type', true));
+    }
+    $this-&gt;_loadSocket($url);
+    $resource = $this-&gt;Socket-&gt;get($url);
+    if (!isset($this-&gt;Socket-&gt;response['header']['Content-Type'])) {
+        throw new OutOfBoundsException(__('Submitted url has no Mime-Type', true));
+    }
+    $allowedContentTypes = $this-&gt;_fetchMimes[$type];
+    if (!in_array($this-&gt;Socket-&gt;response['header']['Content-Type'], $allowedContentTypes)) {
+        throw new OutOfBoundsException(__('Submitted url has an invalid Mime-Type', true));
+    }
+    $newFile = array(
+        'File' =&gt; array(
+            'file' =&gt; $this-&gt;_saveFetchedFile($resource, $url, $this-&gt;Socket-&gt;response['header']['Content-Type']),
+            'user_id' =&gt; $userId,
+            'title' =&gt; $url,
+        )
+    );
+    $this-&gt;create($newMedia);
+    if ($this-&gt;save()) {
+        return true;
+    }
+    return false;
+}
+</code></pre>
+
+<p>見てわかる通り、起きてはならないことが起きた時には OutOfBoundsExceptions を投げています。最近のバージョンの PHP に含まれている SPL ライブラリには、便利なクラスが多数用意されています。もちろん自分で例外を作ることもできますが、たいていは組み込みの例外を使うだけで十分でしょう。</p>
+
+<p>これを使えば、コントローラのメソッドをかなりスッキリさせることができます。何重もの if でチェックする必要が無くなります。また、シンプルでエラーの見通しも良いコードを書くことができます。</p>
+
+<pre><code>try {
+    $this-&gt;File-&gt;downloadResource($this-&gt;data['File']['url'], $this-&gt;Auth-&gt;user('id'), 'image');
+    //do some additional file handling and data processing.
+
+    $this-&gt;Session-&gt;setFlash(__('File uploaded successfully', true));
+} catch(OutOfBoundsException $e) {
+    $this-&gt;Session-&gt;setFlash($e-&gt;getMessage());
+}
+$this-&gt;redirect(array('action' =&gt; 'index'));
+</code></pre>
+
+<p>このメソッドの例外発生をテストするのは簡単です。assertFalse を使うのではなく、pass() と fail() を使えばいいのです。</p>
+
+<pre><code>// (訳注) 不正なURLを送った時に例外が発生することをテストする
+try {
+    $this-&gt;File-&gt;downloadResource('http:/bogus.com/', 1, 'image');  // 間違ったURL
+    $this-&gt;fail('No exception thrown with bogus arguments');
+} catch (Exception $e) {
+    $this-&gt;pass('Exception thrown');
+}
+</code></pre>
+
+<p>例外を使うと便利になることは多いです。だからと言って、false を返すタイプのメソッドすべてを例外を返すようにする必要はないでしょう。たとえばヘルパから例外を返すようにすると、満足より苦痛を感じることのほうが多くなるでしょう。</p>
+
+<p>どんなツールもそうですが、正しく使えばメンテナンス性の良いコードを生み出すことができるのです。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

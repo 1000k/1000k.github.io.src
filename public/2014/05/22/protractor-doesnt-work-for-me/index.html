@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Protractor が動かなくてハマった &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/">Protractor が動かなくてハマった</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="https://github.com/angular/angular-seed" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/angular/angular-seed', 'angular-seed']);" >angular-seed</a> を使って Angular.js の開発環境を作成していたのですが、どうにもこうにも e2e テストが動かなくてハマりました。</p>
+
+<p>エラーメッセージは以下のとおり。</p>
+
+<pre><code>$ npm run protractor
+
+&gt; angular-seed@0.0.0 preprotractor /var/www
+&gt; npm run update-webdriver
+
+
+&gt; angular-seed@0.0.0 preupdate-webdriver /var/www
+&gt; npm install
+
+
+&gt; angular-seed@0.0.0 postinstall /var/www
+&gt; bower install
+
+
+&gt; angular-seed@0.0.0 update-webdriver /var/www
+&gt; webdriver-manager update
+
+selenium standalone is up to date.
+chromedriver is up to date.
+
+&gt; angular-seed@0.0.0 protractor /var/www
+&gt; protractor test/protractor-conf.js
+
+
+------------------------------------
+PID: 2314 (capability: chrome #1)
+------------------------------------
+
+Starting selenium standalone server...
+
+events.js:72
+        throw er; // Unhandled 'error' event
+              ^
+Error: spawn ENOENT
+    at errnoException (child_process.js:998:11)
+    at Process.ChildProcess._handle.onexit (child_process.js:789:34)
+[launcher] Runner Process Exited With Error Code: 8
+
+npm ERR! angular-seed@0.0.0 protractor: `protractor test/protractor-conf.js`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the angular-seed@0.0.0 protractor script.
+npm ERR! This is most likely a problem with the angular-seed package,
+npm ERR! not with npm itself.
+npm ERR! Tell the author that this fails on your system:
+npm ERR!     protractor test/protractor-conf.js
+npm ERR! You can get their info via:
+npm ERR!     npm owner ls angular-seed
+npm ERR! There is likely additional logging output above.
+npm ERR! System Linux 3.13.0-24-generic
+npm ERR! command &quot;node&quot; &quot;/usr/bin/npm&quot; &quot;run&quot; &quot;protractor&quot;
+npm ERR! cwd /var/www
+npm ERR! node -v v0.10.28
+npm ERR! npm -v 1.4.10
+npm ERR! code ELIFECYCLE
+npm ERR!
+npm ERR! Additional logging details can be found in:
+npm ERR!     /var/www/npm-debug.log
+npm ERR! not ok code 0
+</code></pre>
+
+<p><code>code ELIFECYCLE</code> が何を意味しているのかさっぱりわからず途方に暮れていましたが、結局のところ Java に PATH が通っていなかったのが原因だったようです。</p>
+
+<p>e2e テストは内部で Selenium Standalone Server を呼んでいますが、そこに Java が必要でした。</p>
+
+<p>単純に OpenJDK をパッケージインストールするだけで解決しました。</p>
+
+<pre><code>$ sudo apt-get install openjdk-7-jre-headless
+$ java -version
+(バージョンが表示されれば PATH が通ってるので OK)
+</code></pre>
+
+<p>Node.js はデバッグメッセージが雑なことが多いので苦手です。</p>
+
+<h2 id="参考:44911033301877b7be87059dd5b5c5f6">参考</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/20188679/how-to-run-protractor/23772014#23772014', 'angularjs &#8211; How to run protractor? &#8211; Stack Overflow']);" >angularjs &#8211; How to run protractor? &#8211; Stack Overflow</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

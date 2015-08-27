@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pdo on 1000g</title>
+    <link>http://1000k.github.io/tags/pdo/</link>
+    <description>Recent content in Pdo on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 11 Nov 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/pdo/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SQLiteのインメモリDBを異なるPDOオブジェクトから参照するには</title>
+      <link>http://1000k.github.io/2011/11/11/how-to-refer-sqlite-in-memory-db-from-defferent-pdo-object/</link>
+      <pubDate>Fri, 11 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/11/11/how-to-refer-sqlite-in-memory-db-from-defferent-pdo-object/</guid>
+      <description>
+
+&lt;p&gt;どうにもSQLiteのインメモリDBの値が取得できなかったので、実験してみました。&lt;/p&gt;
+
+&lt;p&gt;いきなり結論を書くと、&lt;strong&gt;「あるPDOオブジェクトからは、別のPDOオブジェクトが作成したインメモリDBには接続できない」&lt;/strong&gt;ようです。&lt;/p&gt;
+
+&lt;h1 id=&#34;テストコード:79219f7f66a89108f263ed750ab9ba1c&#34;&gt;テストコード&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+/**
+ * SQLiteのオンメモリDBにテストデータを作成し、PDOからアクセスできることを確かめる
+ */
+try {
+    $pdo1 = new PDO(&#39;sqlite::memory:&#39;, null, null);
+    $pdo1-&amp;gt;exec(&#39;CREATE TABLE uso(id INTEGER PRIMARY KEY, name STRING)&#39;);
+    $pdo1-&amp;gt;exec(&#39;INSERT INTO uso VALUES (1, &amp;quot;uhouho&amp;quot;);&#39;);
+    $pdo1-&amp;gt;exec(&#39;INSERT INTO uso VALUES (2, &amp;quot;mojamoja&amp;quot;);&#39;);
+
+    // 接続済みのPDOオブジェクトからデータを取得できるか試してみる
+    $stmt = $pdo1-&amp;gt;query(&#39;SELECT * FROM uso&#39;);
+    if (!$stmt) {
+        echo &#39;Cannot fetch data via $pdo1.&#39;;
+    } else {
+        print_r($stmt-&amp;gt;fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    // 新たにPDOオブジェクトを作成し、データを取得できるか試してみる
+    $pdo2 = new PDO(&#39;sqlite::memory:&#39;);
+    $stmt = $pdo2-&amp;gt;query(&#39;SELECT * FROM uso&#39;);
+    if (!$stmt) {
+        echo &#39;Cannot fetch data via $pdo2.&#39;;
+    } else {
+        print_r($stmt-&amp;gt;fetchAll(PDO::FETCH_ASSOC));
+    }
+} catch (Exception $e) {
+    exit($e-&amp;gt;getMessage());
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;結果:79219f7f66a89108f263ed750ab9ba1c&#34;&gt;結果&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;Array
+(
+    [0] =&amp;gt; Array
+        (
+            [id] =&amp;gt; 1
+            [name] =&amp;gt; uhouho
+        )
+
+    [1] =&amp;gt; Array
+        (
+            [id] =&amp;gt; 2
+            [name] =&amp;gt; mojamoja
+        )
+
+)
+Cannot fetch data via $pdo2.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$pdo1で作成したインメモリDBに、$pdo2からは接続できていません。&lt;/p&gt;
+
+&lt;p&gt;どちらも同じ「sqlite::memory:」ですが、見ている領域は異なるようです。&lt;/p&gt;
+
+&lt;h1 id=&#34;考察:79219f7f66a89108f263ed750ab9ba1c&#34;&gt;考察&lt;/h1&gt;
+
+&lt;p&gt;インメモリDB内に作ったテーブルに、複数のPDOオブジェクトからアクセスすることはできませんでした。&lt;/p&gt;
+
+&lt;p&gt;アクセスしたければ、テーブルを作ったPDOオブジェクトを使い回すしかなさそうです。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

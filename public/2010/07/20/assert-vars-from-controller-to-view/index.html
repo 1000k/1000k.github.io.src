@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP コントローラからビューに渡る変数をアサーションする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/20/assert-vars-from-controller-to-view/">CakePHP コントローラからビューに渡る変数をアサーションする</a></h2>
+        <div class="post-content">
+          
+
+<p>公式マニュアルの「<a href="http://book.cakephp.org/ja/view/366/Testing-controllers" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/366/Testing-controllers', 'コントローラのテスト']);" title="コントローラのテスト :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.2コレクション :: The Cookbook">コントローラのテスト</a>」では、ただ単に変数をdebugして吐いてるだけで一切アサーションをしていません。これってテストと言えるのでしょうか？</p>
+
+<p>コントローラのメソッドが実行された後、仕様通りに値が入っているかチェックするにはどうすればいいでしょうか？</p>
+
+<p>コントローラ内でsetされた変数は <strong>viewVars</strong> というメンバ変数に格納されるようです。例えば、下記のようなコントローラがあった場合。</p>
+
+<pre><code>// app/controllers/usos_controller.php
+class UsosController extends AppController {
+    var $name = 'Usos';
+
+    function hige() {
+        $this-&gt;set('moja', $this-&gt;Uso-&gt;find(&quot;all&quot;));
+    }
+}
+?&gt;
+</code></pre>
+
+<p>これをコントローラのテストクラスで取得するには下記のようにすれば良いです。</p>
+
+<pre><code>// app/tests/cases/controllers/usos_controller.test.php
+&lt;?php
+/* Usos Test cases generated on: 2010-07-16 16:07:53 : 1279264793*/
+App::import('Controller', 'Usos');
+
+class TestUsosController extends UsosController {
+    var $autoRender = false;
+
+    function redirect($url, $status = null, $exit = true) {
+        $this-&gt;redirectUrl = $url;
+    }
+
+    function render($action = null, $layout = null, $file = null) {
+        $this-&gt;renderedAction = $action;
+    }
+
+    function _stop($status = 0) {
+        $this-&gt;stopped = $status;
+    }
+}
+
+
+class UsosControllerTestCase extends CakeTestCase {
+    var $fixtures = array('app.uso');
+
+    function startTest() {
+        $this-&gt;Usos =&amp;#038; new TestUsosController();
+        $this-&gt;Usos-&gt;constructClasses();
+    }
+
+    function endTest() {
+        unset($this-&gt;Usos);
+        ClassRegistry::flush();
+    }
+
+    function testHige() {
+        $this-&gt;Usos-&gt;hige();
+        $result = $this-&gt;Usos-&gt;viewVars;     // Usos::viewVars に、set された値が格納されている
+        var_dump($result);
+    }
+}
+?&gt;
+</code></pre>
+
+<p>出力結果</p>
+
+<pre><code>array(1) {
+  [&quot;moja&quot;]=&gt;
+  array(1) {
+    [0]=&gt;
+    array(1) {
+      [&quot;Uso&quot;]=&gt;
+      array(4) {
+        [&quot;id&quot;]=&gt;
+        string(1) &quot;1&quot;
+        [&quot;name&quot;]=&gt;
+        string(11) &quot;Miles Davis&quot;
+        [&quot;created&quot;]=&gt;
+        string(19) &quot;2010-07-16 15:00:49&quot;
+        [&quot;modified&quot;]=&gt;
+        string(19) &quot;2010-07-16 15:00:49&quot;
+      }
+    }
+  }
+}
+</code></pre>
+
+<h3 id="参考:b3a8ccee870fe281430f610f255f01b4">参考</h3>
+
+<ul>
+<li><a href="http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mark-story.com/posts/view/anatomy-of-a-cakephp-test-case', 'Anatomy of a CakePHP Test Case | Mark Story']);" title="Anatomy of a CakePHP Test Case | Mark Story">Anatomy of a CakePHP Test Case | Mark Story</a></li>
+<li><a href="http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way', 'Testing CakePHP Controllers the hard way | Mark Story']);" title="Testing CakePHP Controllers the hard way | Mark Story">Testing CakePHP Controllers the hard way | Mark Story</a></li>
+<li><a href="http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://cakephp.1045679.n5.nabble.com/Getting-viewVars-set-in-a-controller-when-using-Mock-objects-during-testing-td1318031.html#a1318031', 'Nabble &#8211; CakePHP &#8211; Getting viewVars set in a controller when using Mock objects during testing']);" title="Nabble - CakePHP - Getting viewVars set in a controller when using Mock objects during testing">Nabble &#8211; CakePHP &#8211; Getting viewVars set in a controller when using Mock objects during testing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

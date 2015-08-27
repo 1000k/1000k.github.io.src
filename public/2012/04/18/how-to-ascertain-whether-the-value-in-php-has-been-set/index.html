@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> PHPで値がセットされているか確かめる方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/04/18/how-to-ascertain-whether-the-value-in-php-has-been-set/">PHPで値がセットされているか確かめる方法</a></h2>
+        <div class="post-content">
+          
+
+<p>似たようなエントリは世間に無数にありますが、自分用のまとめとして。</p>
+
+<p>PHPで「値がセットされているか」をチェックするには、下記のように何通りか書き方があります。</p>
+
+<pre><code>if (isset($var)) {...}
+if (!empty($var)) {...}
+if ($var) {...}
+</code></pre>
+
+<p>それぞれの違いがあいまいだと痛い目を見るので、違いをハッキリさせておきます。</p>
+
+<h2 id="テストコード:71a31f00f70d8fd33007422af8f12d77">テストコード</h2>
+
+<h2 id="結果:71a31f00f70d8fd33007422af8f12d77">結果</h2>
+
+<pre><code>*** NULL ***
+isset(NULL): false
+!empty(NULL): false
+(NULL): false
+
+*** true ***
+isset(true): true
+!empty(true): true
+(true): true
+
+*** false ***
+isset(false): true
+!empty(false): false
+(false): false
+
+*** 'false' ***
+isset('false'): true
+!empty('false'): true
+('false'): true
+
+*** '' ***
+isset(''): true
+!empty(''): false
+(''): false
+
+*** 0 ***
+isset(0): true
+!empty(0): false
+(0): false
+
+*** '0' ***
+isset('0'): true
+!empty('0'): false
+('0'): false
+
+*** 'aaaaa' ***
+isset('aaaaa'): true
+!empty('aaaaa'): true
+('aaaaa'): true
+
+*** 12345 ***
+isset(12345): true
+!empty(12345): true
+(12345): true
+
+*** array () ***
+isset(array ()): true
+!empty(array ()): false
+(array ()): false
+</code></pre>
+
+<p>以上より、「値がセットされているか」が真になるのは、下記の表のようになります。</p>
+
+<table>
+<thead>
+<tr>
+<th>&#8211;</th>
+<th>isset($var)</th>
+<th>!empty($var)</th>
+<th>($var)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>NULL</td>
+<td>false</td>
+<td>false</td>
+<td>false</td>
+</tr>
+
+<tr>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+</tr>
+
+<tr>
+<td>&#8216;false&#8217;</td>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>&#8221;</td>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+</tr>
+
+<tr>
+<td></td>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+</tr>
+
+<tr>
+<td>&#8216;0&#8217;</td>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+</tr>
+
+<tr>
+<td>&#8216;aaaaa&#8217;</td>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>12345</td>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>array()</td>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="まとめ:71a31f00f70d8fd33007422af8f12d77">まとめ</h2>
+
+<ul>
+<li>issetはNULL以外がセットされていればtrue</li>
+<li>「!empty($var)」と「($var)」は同義</li>
+<li>empty()は大変クセが強いので、<a href="http://jp.php.net/manual/ja/function.empty.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jp.php.net/manual/ja/function.empty.php', '公式マニュアル']);" >公式マニュアル</a>を熟読しましょう。</li>
+</ul>
+
+<blockquote>
+<p>varが空でないか、0でない値であれば FALSE を返します。</p>
+
+<p>次のような値は空であるとみなされます。</p>
+
+<ul>
+<li>&#8220;&#8221; (空文字列)</li>
+<li>0 (整数 の 0)</li>
+<li>0.0 (浮動小数点数の 0)</li>
+<li>&#8220;0&#8221; (文字列 の 0)</li>
+<li>NULL</li>
+<li>FALSE</li>
+<li>array() (空の配列)</li>
+<li>var $var; (変数が宣言されているが、クラスの中で値が設定されていない)</li>
+</ul>
+</blockquote>
+
+<h2 id="参考:71a31f00f70d8fd33007422af8f12d77">参考</h2>
+
+<p>PHPの公式マニュアルを見て確かめましょう。</p>
+
+<ul>
+<li><a href="http://jp.php.net/manual/ja/function.empty.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jp.php.net/manual/ja/function.empty.php', 'PHP: empty &#8211; Manual']);" >PHP: empty &#8211; Manual</a></li>
+<li><a href="http://jp.php.net/manual/ja/function.isset.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jp.php.net/manual/ja/function.isset.php', 'PHP: isset &#8211; Manual']);" >PHP: isset &#8211; Manual</a></li>
+<li><a href="http://jp.php.net/manual/ja/control-structures.if.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jp.php.net/manual/ja/control-structures.if.php', 'PHP: if &#8211; Manual']);" >PHP: if &#8211; Manual</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

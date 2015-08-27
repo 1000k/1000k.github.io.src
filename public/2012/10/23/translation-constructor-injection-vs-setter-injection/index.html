@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> 抄訳: Constructor Injection vs. Setter Injection &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/10/23/translation-constructor-injection-vs-setter-injection/">抄訳: Constructor Injection vs. Setter Injection</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://misko.hevery.com/2009/02/19/constructor-injection-vs-setter-injection/', 'Constructor Injection vs. Setter Injection']);" >Constructor Injection vs. Setter Injection</a></p>
+
+<p>3年前の記事ですが、かなり役立つ知識だったので、一部補足しながら訳しました。コードを単体テスト可能にする（＝「接合点を作る」）ために知っておくべき内容です。</p>
+
+<p>クラスBに依存しているクラスAをテストするときに、依存性を排除する典型的な方法として <strong>Constructor Injection</strong> (コンストラクター・インジェクション) と <strong>Setter Injection</strong> (セッター・インジェクション) があります。以下でそれぞれのやり方と、どちらがベターかを解説します。</p>
+
+<h2 id="setter-injection-とは:b2ac201c3b760f5a9180de0cd4a738c1">Setter Injection とは？</h2>
+
+<ul>
+<li>Springフレームワークで使用。</li>
+<li>コンストラクタは引数を取らない。</li>
+<li>インスタンス化後、そのインスタンスの setter メソッドを使ってオブジェクトを注入する。</li>
+</ul>
+
+<pre><code>Database db = new Database();
+
+OfflineQueue queue = new OfflineQueue();
+queue.setDatabase(db);
+
+CreditCardProcessor processor = new CreditCardProcessor();
+processor.setOfflineQueue(queue);
+processor.setDatabase(db);
+</code></pre>
+
+<h2 id="constructor-injection-とは:b2ac201c3b760f5a9180de0cd4a738c1">Constructor Injection とは？</h2>
+
+<ul>
+<li>Pico-Container や GUICE で使用。</li>
+<li>コンストラクタの引数にインスタンスを渡し、メンバ変数に設定する方法。</li>
+<li>もし引数が渡されなかったらデフォルトのインスタンスを作成する。</li>
+</ul>
+
+<pre><code>CreditCardProcessor processor = new CreditCardProcessor(?queue?, ?db?);
+</code></pre>
+
+<h2 id="どちらが良いか:b2ac201c3b760f5a9180de0cd4a738c1">どちらが良いか？</h2>
+
+<p>一見すると、コンストラクタにごちゃごちゃ引数を渡さなくて済むぶん Setter Injection の方が楽に書けて良いように思えます。しかし Contructor Injection の方が優れている部分があるため、私は後者を選びます。それは、Constructor Injection はパラメータの順序を指定でき、<a href="http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://misko.hevery.com/2008/08/01/circular-dependency-in-constructors-and-dependency-injection/', 'Circular Dependency']);" title="Circular Dependency in constructors and Dependency Injection">Circular Dependency</a>（循環参照）に陥る危険が無いという点です。</p>
+
+<p>一般的なアプリは多くのクラスと連携します。そこに Setter Injection を採用すると、何度も setter の呼び出しを行う事になってしまいます。これだと連携するクラスの数が増えるたびに setter をコールする行を追加しなくてはいけません。面倒ですし、コールし忘れの危険性も増えます。さらに set する順番が決まっている場合は最悪です。</p>
+
+<p>一方で Constructor Injection はコンストラクタさえ書いてしまえば、指定した順に、自動でクラスをインスタンス化してくれます。コンストラクトの時点ですべて設定が完了するので、後はそのオブジェクトを確実に使えます。</p>
+
+<h2 id="例:b2ac201c3b760f5a9180de0cd4a738c1">例</h2>
+
+<p>CreaditCardProcessor クラスをインスタンス化するケースを考えてみましょう。</p>
+
+<pre><code>CreditCardProcessor processor = new CreditCardProcessor();
+</code></pre>
+
+<p>インスタンス化できてめでたしめでたし、とはなりません。実際にはこのクラスは OfflineQueue クラスと連携し、またDBとやりとりするために Database クラスとも連携します。これらのインスタンスを set してやらなければ使えません。</p>
+
+<p>これらすべてを Setter Injection で行うと下のようになります。</p>
+
+<pre><code>// Database クラスのインスタンス化
+Database db = new Database();
+
+// 必要なインスタンスを setter で設定する
+db.setUsername(&quot;username&quot;);
+db.setPassword(&quot;password&quot;);
+db.setUrl(&quot;jdbc:....&quot;);
+
+// OfflineQueue クラスのインスタンス化
+OfflineQueue queue = new OfflineQueue();
+
+// setter による設定
+queue.setDatabase(db);
+
+// CreditCardProcessor クラスに、上で作ったインスタンスを setter でセットする
+CreditCardProcessor processor = new CreditCardProcessor();
+processor.setOfflineQueue(queue);
+processor.setDatabase(db);
+</code></pre>
+
+<p>これで全部？いや、要件が増えればさらに setter でセットする内容は増えるかもしれません。何かフレームワークを使っていれば楽に書く方法があるかもしれませんが、使ってない場合はもうお手上げです。</p>
+
+<p>では同じことを Constructor Injection で実現してみましょう。CreditCardProcessor は以下のようにインスタンス化できます。</p>
+
+<pre><code>CreditCardProcessor processor = new CreditCardProcessor(?queue?, ?db?);
+</code></pre>
+
+<p>コンストラクタは OfflineQueue と Database のインスタンスを必要とするので、両方ともインスタンス化しましょう。</p>
+
+<pre><code>// 必要となるインスタンスを作成する
+Database db = new Database(&quot;username&quot;, &quot;password&quot;, &quot;jdbc:....&quot;);
+OfflineQueue queue = new OfflineQueue(db);
+
+// コンストラクタに渡してやる
+CreditCardProcessor processor = new CreditCardProcessor(queue, db);
+</code></pre>
+
+<p>コンストラクタにインスタンスを渡すことができました。これで完了です。</p>
+
+<p>このコードの良いところは、コンストラクタに渡す引数が不足していたらコンパイルエラーがちゃんと出ることです。また、意図していない順番でインスタンス化される不具合も防げます。</p>
+
+<p>というわけで、個人的には Constructor Injection がおすすめです。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

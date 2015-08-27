@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chef on 1000g</title>
+    <link>http://1000k.github.io/tags/chef/</link>
+    <description>Recent content in Chef on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 16 Jan 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/chef/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Chef Solo ではなく Chef Client Local Mode を使おう</title>
+      <link>http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/</link>
+      <pubDate>Fri, 16 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/</guid>
+      <description>
+
+&lt;p&gt;2014/06/24 に Opscode 公式ブログで &lt;a href=&#34;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#39;, &#39;From Solo to Zero: Migrating to Chef Client Local Mode&#39;]);&#34; &gt;From Solo to Zero: Migrating to Chef Client Local Mode&lt;/a&gt; という記事が公開されました。記事を要約すると「Chef Solo はオワコンだから Chef Client Local Mode を使え」ということのようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;chef-client-local-mode-旧-chef-zero-って:519ef52691307b5f7476688034bf2c1d&#34;&gt;Chef Client Local Mode (旧 Chef Zero) って？&lt;/h2&gt;
+
+&lt;p&gt;Chef Client Local Mode (旧 Chef Zero) は Chef Solo の全ての機能を備えており、Chef Server に移行する際にも楽です。Chef Client 11.8.0 から採用されました。実行するには &lt;code&gt;chef-client&lt;/code&gt; に &lt;code&gt;--local-mode&lt;/code&gt; または &lt;code&gt;-z&lt;/code&gt; オプションを付けます。&lt;/p&gt;
+
+&lt;p&gt;Local Mode ではローカルのファイルシステムから揮発性の Chef Server を作り、&lt;/p&gt;
+
+&lt;p&gt;Server-Client 構成と同じオペレーションが行われます。つまり Chef Server が無ければできなかった高度な機能を、サーバーレスで気軽に行うことができます。&lt;/p&gt;
+
+&lt;p&gt;Chef Server のフル機能を、Chef Solo 同様の気軽さで使えるのが、Chef Client Local Mode と言っていいでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;chef-solo-から-chef-client-local-mode-に移行するべき理由:519ef52691307b5f7476688034bf2c1d&#34;&gt;Chef Solo から Chef Client Local mode に移行するべき理由&lt;/h2&gt;
+
+&lt;p&gt;1&amp;#46; Local Mode なら Server-Client で使える全ての機能 &amp;#8212; environments, roles, (encrypted) data bags &amp;#8212; が使える。ノードやレシピの検索機能も使える。&lt;/p&gt;
+
+&lt;p&gt;2&amp;#46; 特別なツールや knife プラグインは必要無い。&lt;/p&gt;
+
+&lt;p&gt;3&amp;#46; レシピ実行環境が Solo か Server かの分岐を書く必要が無くなる。例えば以下のようなコード。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if Chef::Config[:solo]
+    # do something
+else
+    # do something else
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4&amp;#46; &lt;code&gt;chef_zero&lt;/code&gt; を Test Kitchen の provisioner に使う際、 &amp;#8220;fixture node objects&amp;#8221; をテストデータとして使える。&lt;/p&gt;
+
+&lt;p&gt;5&amp;#46; 後に Chef Server 構成を使いたくなった時にすんなり移行できる。&lt;/p&gt;
+
+&lt;p&gt;今すぐ Chef Solo をお払い箱にする必要はありませんが、公式に deprecated 扱いされているので、今後は Solo よりも Local Mode を使うことをお薦めします。これから Chef を始める人は、chef-apply か local mode を使うといいでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;vagrant-で使う時はどうする:519ef52691307b5f7476688034bf2c1d&#34;&gt;Vagrant で使う時はどうする？&lt;/h2&gt;
+
+&lt;p&gt;Vagrant 1.7.0 より、Chef Client Local mode が使えるようになりました。単純に provisioner に &lt;code&gt;chef_zero&lt;/code&gt; を指定するだけで動作します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.vagrantup.com/v2/provisioning/chef_zero.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://docs.vagrantup.com/v2/provisioning/chef_zero.html&#39;, &#39;Chef Zero &amp;#8211; Provisioning &amp;#8211; Vagrant Documentation&#39;]);&#34; &gt;Chef Zero &amp;#8211; Provisioning &amp;#8211; Vagrant Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;Vagrant.configure(&amp;quot;2&amp;quot;) do |config|
+  config.vm.provision &amp;quot;chef_zero&amp;quot; do |chef|
+    # Specify the local paths where Chef data is stored
+    chef.cookbooks_path = &amp;quot;cookbooks&amp;quot;
+    chef.roles_path = &amp;quot;roles&amp;quot;
+    chef.nodes_path = &amp;quot;nodes&amp;quot;
+
+    # Add a recipe
+    chef.add_recipe &amp;quot;apache&amp;quot;
+
+    # Or maybe a role
+    chef.add_role &amp;quot;web&amp;quot;
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:519ef52691307b5f7476688034bf2c1d&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#39;, &#39;From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog&#39;]);&#34; &gt;From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/YukihikoSawanobori/chef-2014&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/YukihikoSawanobori/chef-2014&#39;, &#39;2014年のChefとInfrastructure as code&#39;]);&#34; &gt;2014年のChefとInfrastructure as code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode&#39;, &#39;chef-client (executable) — Chef Docs # Run in Local Mode&#39;]);&#34; &gt;chef-client (executable) — Chef Docs # Run in Local Mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.opscode.com/ctl_chef_solo.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://docs.opscode.com/ctl_chef_solo.html&#39;, &#39;chef-solo (executable) — Chef Docs&#39;]);&#34; &gt;chef-solo (executable) — Chef Docs&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一番上に warning で「&lt;code&gt;--local-mode&lt;/code&gt; を検討しなよ」と書いてある。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS&#43;Rails4&#43;Ruby2.0の環境を構築するレシピ</title>
+      <link>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</link>
+      <pubDate>Tue, 27 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/1000k/rails_sandbox&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox&#39;, &#39;1000k/rails_sandbox&#39;]);&#34; &gt;1000k/rails_sandbox&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Vagrant を使って以下の環境を速攻で構築するレシピを作りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 6.4&lt;/li&gt;
+&lt;li&gt;Ruby 2.0.0&lt;/li&gt;
+&lt;li&gt;Ruby on Rails 4.0.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使い方は &lt;a href=&#34;https://github.com/1000k/rails_sandbox/blob/master/README.md&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox/blob/master/README.md&#39;, &#39;README&#39;]);&#34; &gt;README&lt;/a&gt; に書いてある通り、vagrant-berkshelf プラグインをインストールして &lt;code&gt;vagrant up&lt;/code&gt; するだけです。&lt;/p&gt;
+
+&lt;p&gt;最近ようやく第2言語として Ruby が使えるようになってきたので、ここいらで Rails を使いこなせるようになりたいです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Chef Server が FQDN を取得できない時の対処法</title>
+      <link>http://1000k.github.io/2013/07/05/chef-server-cannot-get-fqdn/</link>
+      <pubDate>Fri, 05 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/07/05/chef-server-cannot-get-fqdn/</guid>
+      <description>
+
+&lt;p&gt;どういうわけか会社で使っている Chef Server で &lt;code&gt;knife bootstrap&lt;/code&gt; した後、FQDN が空になっているノードがありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@chefserver-vm ~]# knife node show mojamoja-vm
+Node Name:   mojamoja-vm
+Environment: _default
+FQDN:
+IP:          172.16.83.86
+Run List:    recipe[common], role[web]
+Roles:       web
+Recipes:     common, apache2, php
+Platform:    centos 6.3
+Tags:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これのせいで &lt;code&gt;knife search&lt;/code&gt; など使う時に大変不便でした。&lt;/p&gt;
+
+&lt;p&gt;対処方法をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:1e58b670181ec322a9159a897b06acb1&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;クライアント側サーバーの /etc/hosts で自分の IP と hostname を定義していなかったためでした。&lt;/p&gt;
+
+&lt;p&gt;この状態だと、クライアント側で &lt;code&gt;hostname -A&lt;/code&gt; を叩いても空の文字列が返ってきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@mojamoja-vm ~]# hostname -A
+
+(↑空)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ohai コマンドを叩いても、やはり FQDN は取得できません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ohai | grep fqdn
+
+(↑空)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;対処法:1e58b670181ec322a9159a897b06acb1&#34;&gt;対処法&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;/etc/hosts&lt;/code&gt; に IP と hostname の対を追加してやります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;172.16.83.86    mojamoja-vm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで FQDN が取得できるようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@mojamoja-vm ~]# hostname -A
+mojamoja-vm
+
+[root@mojamoja-vm ~]# ohai | grep fqdn
+  &amp;quot;fqdn&amp;quot;: &amp;quot;mojamoja-vm&amp;quot;,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;サーバー側からも FQDN が取得できています。&lt;/p&gt;
+
+&lt;p&gt;※FQDN をサーバーに反映するために、クライアント側で一度 &lt;code&gt;chef-client&lt;/code&gt; を叩く必要があるようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@chefserver-vm ~]# knife node show mojamoja-vm
+Node Name:   mojamoja-vm
+Environment: _default
+FQDN:        mojamoja-vm
+IP:          172.16.83.86
+Run List:    recipe[common], role[web]
+Roles:       web
+Recipes:     common, apache2, php
+Platform:    centos 6.3
+Tags:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:1e58b670181ec322a9159a897b06acb1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://serverfault.com/questions/331936/setting-the-hostname-fqdn-or-short-name&#39;, &#39;Setting the hostname: FQDN or short name? &amp;#8211; Server Fault&#39;]);&#34; &gt;Setting the hostname: FQDN or short name? &amp;#8211; Server Fault&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sharadchhetri.com/2012/12/23/change-hostname-fqdn-centos-redhat/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sharadchhetri.com/2012/12/23/change-hostname-fqdn-centos-redhat/&#39;, &#39;How to change hostname or FQDN in CentOS and Redhat&#39;]);&#34; &gt;How to change hostname or FQDN in CentOS and Redhat&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;photo by: &lt;a href=&#34;http://www.flickr.com/photos/manoelpetry/5334219183/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.flickr.com/photos/manoelpetry/5334219183/&#39;, &#39;Chef Mauro Sousa e Sous Chef Valdir Ramos by manoel petry, on Flickr&#39;]);&#34; &gt;Chef Mauro Sousa e Sous Chef Valdir Ramos by manoel petry, on Flickr&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MariaDB 10.0.1 を CentOS 6 にインストールする手順</title>
+      <link>http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/</link>
+      <pubDate>Sun, 14 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/</guid>
+      <description>
+
+&lt;p&gt;yum を使ってインストールする手順です。&lt;/p&gt;
+
+&lt;h2 id=&#34;rpg-gpg-key-を追加する:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;RPG-GPG-KEY を追加する&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;リポジトリを追加する:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;リポジトリを追加する&lt;/h2&gt;
+
+&lt;p&gt;バージョンによって異なります。&lt;a href=&#34;https://downloads.mariadb.org/mariadb/repositories/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://downloads.mariadb.org/mariadb/repositories/&#39;, &#39;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&#39;]);&#34; &gt;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&lt;/a&gt; からバージョン＆環境毎のリポジトリが選択できるので、10.0 以外をインストールする場合はそちらを参考にしてください。&lt;/p&gt;
+
+&lt;p&gt;今回は CentOS 6.3 64bit です。&lt;/p&gt;
+
+&lt;p&gt;/etc/yum.repos.d/MariaDB.repo を下記の内容で作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# MariaDB 10.0 CentOS repository list - created 2013-04-14 07:02 UTC
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.0/centos6-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;インストール:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install MariaDB-devel MariaDB-client MariaDB-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ-chef-レシピ:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;(おまけ) Chef レシピ&lt;/h2&gt;
+
+&lt;p&gt;インストールするだけの手順をレシピにすると下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum_key &#39;RPM-GPG-KEY-MariaDB&#39; do
+  url &#39;https://yum.mariadb.org/RPM-GPG-KEY-MariaDB&#39;
+  action :add
+end
+
+yum_repository &#39;MariaDB&#39; do
+  repo_name &#39;MariaDB&#39;
+  url &#39;http://yum.mariadb.org/10.0/centos6-amd64&#39;
+  key &#39;RPM-GPG-KEY-MariaDB&#39;
+  action :create
+end
+
+package &#39;MariaDB-devel&#39;
+
+package &#39;MariaDB-client&#39;
+
+package &#39;MariaDB-server&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://downloads.mariadb.org/mariadb/repositories/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://downloads.mariadb.org/mariadb/repositories/&#39;, &#39;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&#39;]);&#34; &gt;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.askmonty.org/en/installing-mariadb-with-yum/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://kb.askmonty.org/en/installing-mariadb-with-yum/&#39;, &#39;Installing MariaDB with yum &amp;#8211; AskMonty KnowledgeBase&#39;]);&#34; &gt;Installing MariaDB with yum &amp;#8211; AskMonty KnowledgeBase&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.e-agency.co.jp/column/20130208.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.e-agency.co.jp/column/20130208.html&#39;, &#39;MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー&#39;]);&#34; &gt;MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/opscode-cookbooks/yum/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/opscode-cookbooks/yum/&#39;, &#39;opscode-cookbooks/yum · GitHub&#39;]);&#34; &gt;opscode-cookbooks/yum · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

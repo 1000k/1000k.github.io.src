@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> [CodeIgniter] CodeIgniter1.7.2 で SQLite3 のDBを使う &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/05/26/using-sqlite3-in-codeigniter-172/">[CodeIgniter] CodeIgniter1.7.2 で SQLite3 のDBを使う</a></h2>
+        <div class="post-content">
+          
+
+<p>CodeIgniterはPHP4との下位互換性を保っているせいか、標準で入っているSQLiteドライバーはSQLite2用のものらしい。PDOでのアクセス時は、その古いSQLiteドライバーに基づいているらしく、まともに動かない。</p>
+
+<p>そういうわけで、有志が作成したPDOドライバーを導入しないとSQLite3のDBにはアクセスできない。</p>
+
+<p>以下に、ドライバーの導入手順を示します。</p>
+
+<h3 id="手順:780c545c6d70fccec367c9bf61e4dac3">手順</h3>
+
+<p>※CodeIgniter 1.7.2 用です。それより前のバージョンだと導入するドライバが違うかもしれないので、<a href="http://codeigniter.com/wiki/PDO_SQLite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.com/wiki/PDO_SQLite3/', 'Wiki | CodeIgniter']);" title="Wiki | CodeIgniter">Wiki | CodeIgniter</a>あたりを読んでください。</p>
+
+<ol>
+<li><a href="http://codeigniter.com/wiki/PDO_SQLite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.com/wiki/PDO_SQLite3/', 'Wiki | CodeIgniter']);" title="Wiki | CodeIgniter">Wiki | CodeIgniter</a> から、「pdo driver 0 02 by xi.zip」をダウンロード</li>
+<li>CodeIgniter/system/database/drivers/pdo というディレクトリを作成し、その中に解凍する</li>
+<li>CodeIgniter/system/application/config/database.php を下記のように編集する</li>
+</ol>
+
+<pre><code>// DBファイルが /system/appilication/db/hige.sqlite3 にある場合
+$db['default']['hostname'] = &quot;&quot;;
+$db['default']['username'] = &quot;&quot;;
+$db['default']['password'] = &quot;&quot;;
+$db['default']['database'] = &quot;sqlite:&quot;.APPPATH.&quot;db/hige.sqlite3&quot;;
+$db['default']['dbdriver'] = &quot;pdo&quot;;
+$db['default']['dbprefix'] = &quot;&quot;;
+</code></pre>
+
+<p>これでアクセスできるようになります。</p>
+
+<p>ちゃんとロードできているか確かめたい場合は、適当なviewファイルに</p>
+
+<pre><code>&lt;?php echo $this-&gt;db-&gt;platform() . &quot; &quot;. $this-&gt;db-&gt;version(); ?&gt;
+</code></pre>
+
+<p>と書いてみて、「pdo 3.6.20」などと出力されればOK。</p>
+
+<h3 id="参考:780c545c6d70fccec367c9bf61e4dac3">参考</h3>
+
+<ul>
+<li><a href="http://codeigniter.com/wiki/PDO_SQLite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://codeigniter.com/wiki/PDO_SQLite3/', 'Wiki | CodeIgniter']);" title="Wiki | CodeIgniter">Wiki | CodeIgniter</a></li>
+<li><a href="http://blog.trevorbramble.com/past/2009/9/20/codeigniter_sqlite3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.trevorbramble.com/past/2009/9/20/codeigniter_sqlite3/', 'CodeIgniter & SQLite3']);" title="CodeIgniter & SQLite3">CodeIgniter &amp; SQLite3</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

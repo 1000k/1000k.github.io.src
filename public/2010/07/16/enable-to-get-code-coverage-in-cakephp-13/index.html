@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP1.3 &#43; XAMPP 1.7.3でコードカバレッジを取得できるようにする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/16/enable-to-get-code-coverage-in-cakephp-13/">CakePHP1.3 &#43; XAMPP 1.7.3でコードカバレッジを取得できるようにする</a></h2>
+        <div class="post-content">
+          
+
+<p>CakePHPでは「http://{アプリURL}/test.php」で単体テスト用ページを表示できます。ここに「Analyze Code Coverage」なんてリンクがあるのですが、私の環境ではここをクリックするとApacheが強制終了させられて、コードカバレッジを取得できませんでした。</p>
+
+<p>どうやらXAMPP 1.7.3に含まれているxDebugのバージョンが原因のようでした(v2.0.6 rc)。そこで最新のxDebug 2.1.0 を入れたところ、無事取得できるようになりました。</p>
+
+<p>xDebugの入れ替え方ですが、<a href="http://www.xdebug.org/find-binary.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.xdebug.org/find-binary.php', 'Xdebug: Support; Tailored Installation Instructions']);" title="Xdebug: Support; Tailored Installation Instructions">Xdebug: Support; Tailored Installation Instructions</a>にしたがってやるのが一番わかりやすいです。ここのフォームにphpinfoの結果をまるごとコピペするだけで、DLするファイルからphp.iniの設定まですべてやり方を出してくれます。</p>
+
+<h3 id="参考:95dfb16aee8c1717a3a185c8f8b9f562">参考</h3>
+
+<ul>
+<li><a href="http://www.ryuzee.com/contents/blog/2430" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.ryuzee.com/contents/blog/2430', '[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com']);" title="[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com">[CakePHP]晴れときどきcakephpでコードカバレージを測定する | Ryuzee.com</a></li>
+<li><a href="http://www.xdebug.org/find-binary.php" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.xdebug.org/find-binary.php', 'Xdebug: Support; Tailored Installation Instructions']);" title="Xdebug: Support; Tailored Installation Instructions">Xdebug: Support; Tailored Installation Instructions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

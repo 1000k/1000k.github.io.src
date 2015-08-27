@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> XAMPP環境にJenkinsをインストールする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/09/25/installing-jenkins-in-xampp-env/">XAMPP環境にJenkinsをインストールする</a></h2>
+        <div class="post-content">
+          
+
+<p>XAMPPにはTomcatが同梱されているため、JenkinsのWARファイルをデプロイすれば、すぐにCI環境が構築できます。</p>
+
+<p>以下、<a href="http://www.apachefriends.org/jp/xampp-windows.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.apachefriends.org/jp/xampp-windows.html', 'XAMPP for Windows 1.8.0']);" title="apache friends - xampp for windows">XAMPP for Windows 1.8.0</a> を使ってJenkins環境を構築する手順を書きます。</p>
+
+<h2 id="手順:a2b978718054ff7ee3bcbdd86b4ab357">手順</h2>
+
+<h3 id="jenkinsをダウンロードする:a2b978718054ff7ee3bcbdd86b4ab357">Jenkinsをダウンロードする</h3>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_homepage.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_homepage.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_homepage.png" alt="" title="Jenkinsホームページ" width="600" height="553" class="alignnone size-full wp-image-1096" /></a></p>
+
+<p><a href="http://jenkins-ci.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jenkins-ci.org/', 'Jenkinsのホームページ']);" >Jenkinsのホームページ</a>から最新のwarアーカイブをダウンロードします。「Latest and greatest」をクリックして jenkins.war をダウンロードしてください。<strong>Windowsパッケージではない</strong>ので注意してください。</p>
+
+<h3 id="tomcatの管理者ユーザーを設定する:a2b978718054ff7ee3bcbdd86b4ab357">Tomcatの管理者ユーザーを設定する</h3>
+
+<p>Tomcatを起動する前に、Tomcat管理画面に入るためのユーザーを作成します。</p>
+
+<p><em>C:\xampp\tomcat\conf\tomcat-users.xml</em> を開いて、tomcat-usersブロック内に以下の2行を追加してください。</p>
+
+<div>
+  [xml]<br /> <tomcat-users><br /> <role rolename="manager-gui"/><br /> <user username="tomcat" password="s3cret" roles="manager-gui"/><br /> </tomcat-users><br /> [/xml]
+</div>
+
+<h3 id="tomcatを起動する:a2b978718054ff7ee3bcbdd86b4ab357">Tomcatを起動する</h3>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/xampp_control_panel.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/xampp_control_panel.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/xampp_control_panel.png" alt="" title="XAMPPコントロールパネル" width="714" height="450" class="alignnone size-full wp-image-1086" /></a></p>
+
+<p>XAMPPコントロールパネルを起動し、Tomcatの横にある「Start」ボタンをクリックするだけです。</p>
+
+<p>ボタンが「Stop」に変わった後 <a href="http://localhost:8080/">http://localhost:8080/</a> にアクセスすれば、Tomcatのトップ画面が表示されます。</p>
+
+<h3 id="管理画面にログインする:a2b978718054ff7ee3bcbdd86b4ab357">管理画面にログインする</h3>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/tomcat_top.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/tomcat_top.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/tomcat_top.png" alt="" title="Tomcatトップページ" width="600" height="433" class="alignnone size-full wp-image-1087" /></a></p>
+
+<p>「Manage App」をクリックして管理画面にログインします。認証パスワードは先ほど設定した通り、ユーザー名が「_tomcat_」、パスワードが「_s3cret_」となります。</p>
+
+<h3 id="warファイルをデプロイする:a2b978718054ff7ee3bcbdd86b4ab357">warファイルをデプロイする</h3>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/tomcat_manage.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/tomcat_manage.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/tomcat_manage.png" alt="" title="Tomcatデプロイ" width="600" height="174" class="alignnone size-full wp-image-1088" /></a></p>
+
+<p>「warファイルの配備」に先ほどダウンロードした jenkins.war を指定し、「配備」をクリックします。</p>
+
+<h3 id="jenkinsの画面を確認する:a2b978718054ff7ee3bcbdd86b4ab357">Jenkinsの画面を確認する</h3>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_dashboard.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_dashboard.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_dashboard.png" alt="" title="Jenkinsダッシュボード" width="600" height="271" class="alignnone size-full wp-image-1090" /></a></p>
+
+<p>以上で完了です。<a href="http://localhost:8080/jenkins/">http://localhost:8080/jenkins/</a> にアクセスすれば Jenkins のトップ画面が表示されます。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

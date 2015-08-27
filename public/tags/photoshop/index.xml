@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Photoshop on 1000g</title>
+    <link>http://1000k.github.io/tags/photoshop/</link>
+    <description>Recent content in Photoshop on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 10 Sep 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/photoshop/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Adobe Photoshop CCのUIを英語にする方法</title>
+      <link>http://1000k.github.io/2013/09/10/how-to-change-ui-language-to-eignlish-of-photoshop-cc/</link>
+      <pubDate>Tue, 10 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/09/10/how-to-change-ui-language-to-eignlish-of-photoshop-cc/</guid>
+      <description>
+
+&lt;p&gt;英語サイトからカスタムアクションをダウンロードして使おうとしたものの、レイヤー名が日本語なせいで、英語版のレイヤー名を前提としたアクションが途中で止まってしまいます。&lt;/p&gt;
+
+&lt;p&gt;Photoshop を英語版で動かすようにしたら使えるようになったのですが、そのやり方が直感的ではありませんでした。メモしておきます。&lt;/p&gt;
+
+&lt;p&gt;なお、使用バージョンは Adobe Photoshop CC (version 14.0) です。&lt;/p&gt;
+
+&lt;p&gt;まず、Photoshop を開いている場合は終了します。&lt;/p&gt;
+
+&lt;p&gt;次に、&lt;code&gt;{Photoshop のインストールディレクトリ}/Locales/ja_JP/Support Files&lt;/code&gt; の中にある &lt;code&gt;tw10428.dat&lt;/code&gt; というファイルを、&lt;code&gt;tw10428.dat.bak&lt;/code&gt; にリネームします。&lt;/p&gt;
+
+&lt;p&gt;Windows 7 のデフォルトでは &lt;code&gt;C:\Program Files\Adobe\Adobe Photoshop CC (64 Bit)\Locales\ja_JP\Support Files&lt;/code&gt; の中にありました。&lt;/p&gt;
+
+&lt;p&gt;これで Photoshop を再起動すれば、UI が英語になっています。&lt;/p&gt;
+
+&lt;p&gt;高いアドビ税払ってるんだから、このへんのローカリゼーションはちゃんとやってほしいですね。せめて UI の言語ぐらいオプションから設定させてほしいです。（一応 &amp;#8220;編集 &amp;gt; 環境設定 &amp;gt; インターフェース&amp;#8221;）の中に言語を選ぶセレクトボックスはありますが、日本語しか選べません。じゃあ置くなよ。）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:39e92141fb766995ade2d8a4ea832417&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.youtube.com/watch?v=3I8B8QH5uRE&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.youtube.com/watch?v=3I8B8QH5uRE&#39;, &#39;HOW TO CHANGE LANGUAGE IN PHOTOSHOP [Works with (CC, Win, Mac)] &amp;#8211; YouTube&#39;]);&#34; &gt;HOW TO CHANGE LANGUAGE IN PHOTOSHOP [Works with (CC, Win, Mac)] &amp;#8211; YouTube&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

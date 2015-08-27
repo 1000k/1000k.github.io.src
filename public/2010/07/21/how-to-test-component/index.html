@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP モデルを使わないコンポーネントの単体テスト手順 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/07/21/how-to-test-component/">CakePHP モデルを使わないコンポーネントの単体テスト手順</a></h2>
+        <div class="post-content">
+          
+
+<p>CakePHP 1.3.2でコンポーネントを単体テストする場合、モデルの有無によって大幅に面倒くささが変わってきます。なぜならコンポーネントはモデルを直接操作できず、モデルを操作するためのコントローラを経由する必要があるからです。</p>
+
+<p>公式マニュアルにある方法はモデルを使うケースのみで、しかもわかりづらいです (どのファイルのどのブロックに書いてるのかわからない)。今回はモデル無しのコンポーネントのテスト方法をメモしておきます。</p>
+
+<h3 id="やり方:35d601dbd599414f3050fbd49e3a3808">やり方</h3>
+
+<p>以下のコンポーネント、「HigeComponent」をテストする場合を考えます。</p>
+
+<pre><code>// app/controllers/components/hige.php
+&lt;?php
+class HigeComponent extends Object {
+    function moja() {
+        return &quot;mojamoja&quot;;
+    }
+}
+?&gt;
+</code></pre>
+
+<p>テストケースは下記の通り、コンポーネントを読み込んで直接実行するだけです。</p>
+
+<pre><code>// app/tests/cases/components/hige.test.php
+&lt;?php
+App::import(&quot;Component&quot;, &quot;Hige&quot;);
+
+class HigeComponentTestCase extends CakeTestCase {
+    function setUp() {
+        $this-&gt;component = new HigeComponent();
+    }
+
+    // テストケース
+    function testMoja() {
+        $result = $this-&gt;component-&gt;moja();
+        $expected = &quot;moja&quot;;
+
+        $this-&gt;assertEqual($result, $expected);
+    }
+}
+?&gt;
+</code></pre>
+
+<p>あとは、下記の通りコマンドを打ち込めばOK。（cake.batにパスを通さずやってます）</p>
+
+<pre><code>cd c:\xampp\htdocs\cakephp\app
+../cake/console/cake testsuite app case components/hige
+</code></pre>
+
+<p>出力結果</p>
+
+<pre><code>Welcome to CakePHP v1.3.2 Console
+---------------------------------------------------------------
+App : app
+Path: c:\xampp\htdocs\cakephp\app
+---------------------------------------------------------------
+CakePHP Test Shell
+---------------------------------------------------------------
+Running app case components/hige
+1/1 test cases complete: 1 passes.
+Time taken by tests (in seconds): 0.016170024871826
+Peak memory use: (in bytes): 11,534,288
+</code></pre>
+
+<h3 id="参考:35d601dbd599414f3050fbd49e3a3808">参考</h3>
+
+<ul>
+<li><a href="http://book.cakephp.org/ja/view/1216/Testing-components" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/1216/Testing-components', 'コンポーネントのテスト :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="コンポーネントのテスト :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook">コンポーネントのテスト :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook</a></li>
+<li><a href="http://book.cakephp.org/ja/view/995/Configuring-Components" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/ja/view/995/Configuring-Components', 'コンポーネントの設定 :: コンポーネント :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook']);" title="コンポーネントの設定 :: コンポーネント :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook">コンポーネントの設定 :: コンポーネント :: CakePHPによる開発 :: マニュアル :: 1.3コレクション :: The Cookbook</a></li>
+<li><a href="http://www.littlehart.net/atthekeyboard/2007/06/26/testing-components-in-cakephp/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.littlehart.net/atthekeyboard/2007/06/26/testing-components-in-cakephp/', '@TheKeyboard » Blog Archive » Testing Components In CakePHP']);" title="@TheKeyboard » Blog Archive » Testing Components In CakePHP">@TheKeyboard » Blog Archive » Testing Components In CakePHP</a></li>
+</ul>
+
+<p>assertionは下記を参考に。</p>
+
+<ul>
+<li><a href="http://www.syuhari.jp/blog/archives/438" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.syuhari.jp/blog/archives/438', 'CakePHP1.2 SimpleTest 値を検証する assert～メソッド | Sun Limited Mt.']);" title="CakePHP1.2 SimpleTest 値を検証する assert～メソッド | Sun Limited Mt.">CakePHP1.2 SimpleTest 値を検証する assert～メソッド | Sun Limited Mt.</a></li>
+<li><a href="http://simpletest.org/api/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://simpletest.org/api/', 'SimpleTest 1.1beta Documentation']);" title="SimpleTest 1.1beta Documentation">SimpleTest 1.1beta Documentation</a></li>
+<li><a href="http://www.debuggable.com/posts/unit-testing-in-cakephp-part-1---introduction-to-unit-testing:48102610-c5d0-4398-a010-76974834cda3" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.debuggable.com/posts/unit-testing-in-cakephp-part-1---introduction-to-unit-testing:48102610-c5d0-4398-a010-76974834cda3', 'Unit Testing in CakePHP Part 1 &#8211; Introduction to Unit Testing » Debuggable Ltd']);" title="Unit Testing in CakePHP Part 1 - Introduction to Unit Testing » Debuggable Ltd">Unit Testing in CakePHP Part 1 &#8211; Introduction to Unit Testing » Debuggable Ltd</a></li>
+<li><a href="http://simpletest.sourceforge.net/en/unit_test_documentation.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://simpletest.sourceforge.net/en/unit_test_documentation.html', 'PHP Unit Test documentation']);" title="PHP Unit Test documentation">PHP Unit Test documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

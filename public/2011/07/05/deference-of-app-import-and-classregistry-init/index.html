@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> App::import と ClassRegistry::init の違い &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2011/07/05/deference-of-app-import-and-classregistry-init/">App::import と ClassRegistry::init の違い</a></h2>
+        <div class="post-content">
+          
+
+<p>命名規則に従わないモデルやプラグインをロードする際、使われるのが「App::import」と「ClassRegistry::init」。どういう使い分けをしているのかわからず、使い方によっては期待通り動かなかったりで困っていたので、違いを調べて見ました。</p>
+
+<h2 id="app-import:115f65372668a367bf2cdba854778dcb">App::import</h2>
+
+<p><a href="http://api13.cakephp.org/class/app#method-Appimport" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api13.cakephp.org/class/app#method-Appimport', 'API Book']);" title="CakePHP: the rapid development php framework: Api : App">API Book</a> によると、下記のような説明があります。</p>
+
+<blockquote>
+<p>Finds classes based on $name or specific file(s) to search. Calling App::import() will not construct any classes contained in the files. It will only find and require() the file.</p>
+</blockquote>
+
+<p>「コンストラクトは行わない。ファイルを探してrequire()するだけ」と書いています。</p>
+
+<p>また、戻り値は</p>
+
+<blockquote>
+<p>boolean true if Class is already in memory or if file is found and loaded, false if not</p>
+</blockquote>
+
+<p>となっています。</p>
+
+<p>結局このメソッドは「高機能なrequire」と考えて良さそうです。</p>
+
+<h2 id="classregistry-init:115f65372668a367bf2cdba854778dcb">ClassRegistry::init</h2>
+
+<p>これも<a href="http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit', 'API Book']);" title="CakePHP: the rapid development php framework: Api : ClassRegistry">API Book</a>を参考にすると、以下のように書かれています。</p>
+
+<blockquote>
+<p>Loads a class, registers the object in the registry and returns instance of the object. ClassRegistry::init() is used as a factory for models, and handle correct injecting of settings, that assist in testing.</p>
+
+<p>Return: object instance of ClassName</p>
+</blockquote>
+
+<p>App::importと異なり、「オブジェクトのインスタンスを作成する」と書いています。</p>
+
+<p>なるほど、テストケースの開始時に ClassRegistry::init() を、終了時に ClassRegistry::flush を行なうのも納得がいきます。テスト毎にモデルのインスタンスを初期化→削除しているんですね。</p>
+
+<h2 id="使い分け:115f65372668a367bf2cdba854778dcb">使い分け</h2>
+
+<ul>
+<li>動的にモデルのインスタンスを使う時は ClassRegistry::init</li>
+<li>それ以外は App::import</li>
+</ul>
+
+<p>という使い分けで良さそうですです。</p>
+
+<p>また検証していないのですが、「<a href="http://d.hatena.ne.jp/foldrr/20090730/p2" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/foldrr/20090730/p2', 'CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &#8211; foldrrの日記']);" title="CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で - foldrrの日記">CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &#8211; foldrrの日記</a>」によると、App::importを使うとDBの接続先が $default 固定になってしまうため、ユニットテストで問題が出るそうです。</p>
+
+<h2 id="参考:115f65372668a367bf2cdba854778dcb">参考</h2>
+
+<ul>
+<li><a href="http://d.hatena.ne.jp/foldrr/20090730/p2" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/foldrr/20090730/p2', 'CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &#8211; foldrrの日記']);" title="CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で - foldrrの日記">CakePHP モデルの読み込みは App::import ではなく ClassRegistry::init で &#8211; foldrrの日記</a></li>
+<li><a href="http://d.hatena.ne.jp/hiromi2424/20101215/1292379625" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/hiromi2424/20101215/1292379625', 'App::import() は凄い &#8211; 24時間CakePHP']);" title="App::import() は凄い - 24時間CakePHP">App::import() は凄い &#8211; 24時間CakePHP</a></li>
+<li><a href="http://web.mt-systems.jp/archives/754" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://web.mt-systems.jp/archives/754', 'CakePHP 今さらですがClassRegistryクラスのメモ | MT Systems']);" title="CakePHP 今さらですがClassRegistryクラスのメモ | MT Systems">CakePHP 今さらですがClassRegistryクラスのメモ | MT Systems</a></li>
+<li><a href="http://d.hatena.ne.jp/bennylee/20091005/1254717512" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/bennylee/20091005/1254717512', 'ClassRegistryの備忘録 &#8211; benny毎日ラボ']);" title="ClassRegistryの備忘録 - benny毎日ラボ">ClassRegistryの備忘録 &#8211; benny毎日ラボ</a></li>
+<li>CakeBook API 1.3
+
+<ul>
+<li><a href="http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api13.cakephp.org/class/class-registry#method-ClassRegistryinit', 'CakePHP: the rapid development php framework: Api : ClassRegistry']);" title="CakePHP: the rapid development php framework: Api : ClassRegistry">CakePHP: the rapid development php framework: Api : ClassRegistry</a></li>
+<li><a href="http://api13.cakephp.org/class/app#method-Appimport" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api13.cakephp.org/class/app#method-Appimport', 'CakePHP: the rapid development php framework: Api : App']);" title="CakePHP: the rapid development php framework: Api : App">CakePHP: the rapid development php framework: Api : App</a></li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

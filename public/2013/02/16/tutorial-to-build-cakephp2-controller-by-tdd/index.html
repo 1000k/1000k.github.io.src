@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP 2 の Controller をテスト駆動で作成するチュートリアル &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/02/16/tutorial-to-build-cakephp2-controller-by-tdd/">CakePHP 2 の Controller をテスト駆動で作成するチュートリアル</a></h2>
+        <div class="post-content">
+          
+
+<p>社内でCakePHP 2 を使った TDD を始めたチームがあったので、説明のため書いてみました。</p>
+
+<p>ApisController::index() という、POSTされた値に +1 して返すだけのアクションを TDD で作ります。</p>
+
+<p>せっかく CakePHP なので、bake コマンドを使って進めます。</p>
+
+<h2 id="1-ダミーのテーブルを作成する:ebcb7468c782ecd2d611762d0def266a">1. ダミーのテーブルを作成する</h2>
+
+<p>bake コマンドはテーブルに紐付いていない MVC を作れません。</p>
+
+<p>以下、Apis テーブルがあるものとして話を進めます。</p>
+
+<p>XAMPP を使っているなら、下記コマンドで Mojamoja データベースに Apis テーブルを作成できます。</p>
+
+<pre><code>$ c:\xampp\mysql\bin\mysql -uroot Mojamoja
+mysql&gt; CREATE TABLE `apis` (
+  `id` int(11) NOT NULL,
+  `created` date,
+  `modified` date,
+  `name` text
+) ENGINE=InnoDB;
+</code></pre>
+
+<h2 id="2-必要なファイルをbakeする:ebcb7468c782ecd2d611762d0def266a">2. 必要なファイルをbakeする</h2>
+
+<pre><code>$ cd c:/mojamoja/cake2/app
+$ ./Console/cake.bat bake controller apis
+$ ./Console/cake.bat bake view apis```
+
+
+テストしたいのは Controller だけですが、対応する View が無いとテスト実行時にエラーになるので一緒に作っておきます。
+
+ちなみに逆順でコマンドを叩くとエラーが出ます。View を作る時には、対応する Controller が必要になるためです。
+
+この時点でテストを動かすことが可能です。
+
+</code></pre>
+
+<p>$ Console\cake.bat test app controller/ApisController</p>
+
+<h2 id="welcome-to-cakephp-v2-2-5-console:ebcb7468c782ecd2d611762d0def266a">Welcome to CakePHP v2.2.5 Console</h2>
+
+<p>App : app</p>
+
+<h2 id="path-c-work-htdocs-cake2-tdd-tutorial-app:ebcb7468c782ecd2d611762d0def266a">Path: c:\work\htdocs\cake2_tdd_tutorial\app</h2>
+
+<h2 id="cakephp-test-shell:ebcb7468c782ecd2d611762d0def266a">CakePHP Test Shell</h2>
+
+<p>PHPUnit 3.7.10 by Sebastian Bergmann.</p>
+
+<p>[41;37mF[0m</p>
+
+<p>Time: 2 seconds, Memory: 4.25Mb</p>
+
+<p>There was 1 failure:</p>
+
+<p>1) Warning
+No tests found in class &ldquo;ApisControllerTest&rdquo;.</p>
+
+<p>C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\TestSuite\CakeTestRunner.php:59
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\TestSuite\CakeTestSuiteCommand.php:113
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\Command\TestShell.php:274
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\Command\TestShell.php:259
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\Shell.php:395
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\ShellDispatcher.php:201
+C:\work\htdocs\cake2_tdd_tutorial\lib\Cake\Console\ShellDispatcher.php:69</p>
+
+<p>[37;41m[2KFAILURES!
+[0m[37;41m[2KTests: 1, Assertions: 0, Failures: 1.
+[0m[2K</p>
+
+<pre><code>
+
+「テストケースが1個もねえよ」と怒られて終了します。
+
+当然の結果なので次に進みましょう。
+
+## 3. テストケースを作る
+
+ApisController::index() で実現したい仕様に沿って、テストケースを書きます。
+
+**app\Test\Case\Controller\ApisControllerTest.php** は下記のようになります。
+
+</code></pre>
+
+<p>&lt;?php
+App::uses(&lsquo;ApisController&rsquo;, &lsquo;Controller&rsquo;);</p>
+
+<p>class ApisControllerTest extends ControllerTestCase {</p>
+
+<pre><code>public $fixtures = array();    // どの Fixture も参照しないようにする
+
+/**
+ * @covers ApiController::index
+ */
+public function testIndex() {
+    // 期待される値
+    $expected = array('uso' =&gt; 801);
+
+    // ApisController::index() を叩いた動作を再現する。
+    $this-&gt;testAction(
+        '/apis/index',
+        array(
+            'data' =&gt; array('uso' =&gt; 800),  // uso=800 を POST する
+            'return' =&gt; 'vars'              // set された値を $this-&gt;vars に格納する
+        )
+    );
+
+    // $this-&gt;vars には、$this-&gt;testAction() 実行時に
+    // Controller から View に渡った値が格納される。
+    $this-&gt;assertEquals($expected, $this-&gt;vars);
+}
+</code></pre>
+
+<p>}</p>
+
+<pre><code>
+
+$this-&gt;testAction($action, $options) は、Controller を叩いた時の挙動をシミュレートするメソッドです。今回は uso=800 という値を POST している状況を再現しています。
+
+第2引数の $options には様々なオプションを指定できます。「&amp;#8217;return&amp;#8217; =&gt; &amp;#8216;vars&amp;#8217;」を指定することで、testAction() 実行時に Controller から View に渡った値を、$this-&gt;vars に格納することができます。
+
+この時点でテストを叩くと、当然まだ ApisController::index() が実装できていないので、エラーが出て終了します。
+
+このようにエラーになる状態を **Red** と呼びます。
+
+この後実際のコードを書いてテストを成功する状態、すなわち **Green** にするのがテスト駆動開発 (TDD: Test Driven Development) です。
+
+## 4. とにかく成功するコードを書く
+
+**この作業の前に View/Apis/index.ctp の中身を全て空にしておいてください。**
+
+そうしないと、なにやら単体テスト時に余計な文字列が紛れ込んで失敗してしまいます。
+
+**app/Controller/ApisController.php** を以下のように実装します。
+
+</code></pre>
+
+<p>&lt;?php
+App::uses(&lsquo;AppController&rsquo;, &lsquo;Controller&rsquo;);</p>
+
+<p>class ApisController extends AppController {</p>
+
+<pre><code>// どの Model も使わないようにする。
+public $uses = false;
+
+public function index() {
+    $data = array('uso' =&gt; 801);
+    $this-&gt;set($data);
+}
+</code></pre>
+
+<p>}</p>
+
+<pre><code>
+
+これでテストを再び実行します。今度は Green になります。
+
+</code></pre>
+
+<p>$ Console\cake.bat test app controller/ApisController</p>
+
+<h2 id="welcome-to-cakephp-v2-2-5-console-1:ebcb7468c782ecd2d611762d0def266a">Welcome to CakePHP v2.2.5 Console</h2>
+
+<p>App : app</p>
+
+<h2 id="path-c-work-htdocs-cake2-tdd-tutorial-app-1:ebcb7468c782ecd2d611762d0def266a">Path: c:\work\htdocs\cake2_tdd_tutorial\app</h2>
+
+<h2 id="cakephp-test-shell-1:ebcb7468c782ecd2d611762d0def266a">CakePHP Test Shell</h2>
+
+<p>PHPUnit 3.7.10 by Sebastian Bergmann.</p>
+
+<p>.</p>
+
+<p>Time: 0 seconds, Memory: 6.00Mb</p>
+
+<p>[30;42m[2KOK (1 test, 1 assertion)
+[0m[2K</p>
+
+<pre><code>
+
+テストケース内で予測している値をそのまんま返しているので、成功するのは当たり前です。
+
+もしこの時点で失敗した場合は、どこか別の部分で間違っている可能性があります。
+
+この後はコードの実装とテストを繰り返し、最終的に Green にします。
+
+## 5. コードを実装する
+
+最終的に実装したコードは下記のようになります。
+
+**app/Controller/ApisController.php**
+
+</code></pre>
+
+<p>&lt;?php
+App::uses(&lsquo;AppController&rsquo;, &lsquo;Controller&rsquo;);</p>
+
+<p>class ApisController extends AppController {</p>
+
+<pre><code>// どの Model も使わないようにする。
+public $uses = false;
+
+public function index() {
+    $data = array();
+
+    foreach ($_POST as $key =&gt; $value) {
+        $data[$key] = $value + 1;
+    }
+
+    $this-&gt;set($data);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>実装コードを Green にする際には、「とにかく早く書くこと」が大切です。</p>
+
+<p>最初から美しさを求めてコーディングするのは辞めたほうがいいでしょう。</p>
+
+<p>このコードはテストケースによって保護されているので、後からいくらでも洗練できます。</p>
+
+<p>このように後からコードを洗練することを <strong>リファクタリング</strong> と呼びます。</p>
+
+<h2 id="まとめ:ebcb7468c782ecd2d611762d0def266a">まとめ</h2>
+
+<p>TDD は以下のような流れで、Red-&gt;Green をリズミカルに行います。</p>
+
+<ol>
+<li>テストケースを書く。</li>
+<li>テストを走らせ、失敗することを確認する。(Red)</li>
+<li>必ずテストが成功する実装コードを書く。(Green)</li>
+<li>実装とテストを繰り返しながら、最終的に Green になる実装コードを書く。</li>
+</ol>
+
+<p>ゆとり期間にコードをリファクタリングしましょう。</p>
+
+<p>そうすることでコードのメンテナンス性を保つことができます。</p>
+
+<h2 id="補足:ebcb7468c782ecd2d611762d0def266a">補足</h2>
+
+<p><a href="http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers', '公式チュートリアル']);" >公式チュートリアル</a> はそこそこ学べますが、なぜか結果を debug() でコンソールに表示してるだけで、アサーション（期待される値と実際の結果の照合）をやってません。これはダメです。</p>
+
+<p>戻り値はちゃんと assert しましょう。モックを使って挙動を確かめるなら expectation を使いましょう。</p>
+
+<p>あと、現在の実装だと $_POST が空の時に Warning が出るので、実際にはもう少しエンハンスが必要になるでしょう。</p>
+
+<h2 id="参考になるサイト:ebcb7468c782ecd2d611762d0def266a">参考になるサイト</h2>
+
+<ul>
+<li><a href="http://api21.cakephp.org" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api21.cakephp.org', 'CakePHP API']);" >CakePHP API</a>
+
+<ul>
+<li>CakeBook は CakePHP の機能の概要を知るのに向いていますが、メソッドの使い方を調べるだけならこっちの方が早いです。</li>
+</ul></li>
+<li><a href="http://www.phpunit.de/manual/3.6/ja/index.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.6/ja/index.html', 'PHPUnit 公式マニュアル']);" >PHPUnit 公式マニュアル</a>
+
+<ul>
+<li>CakePHP2 の CakeTestCase クラスは、PHPUnit の簡単なラッパーなので、全ての機能が使えます。こちらのドキュメントも読んでおくといいです。</li>
+</ul></li>
+<li><a href="http://www.phpunit.de/manual/3.6/ja/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.phpunit.de/manual/3.6/ja/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions', 'PHPUnit のアサーション一覧']);" >PHPUnit のアサーション一覧</a>
+
+<ul>
+<li>ほとんどの場合は assertEquals() でカバーできますが、知っておくと便利なものも多いです。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

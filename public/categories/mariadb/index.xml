@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mariadb on 1000g</title>
+    <link>http://1000k.github.io/categories/mariadb/</link>
+    <description>Recent content in Mariadb on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 14 Apr 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/mariadb/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MariaDB 10.0.1 で日本語が文字化けしないようにする</title>
+      <link>http://1000k.github.io/2013/04/14/avoid-garbled-japanese-in-mariadb-10-0-1/</link>
+      <pubDate>Sun, 14 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/14/avoid-garbled-japanese-in-mariadb-10-0-1/</guid>
+      <description>
+
+&lt;p&gt;MariaDB 10.0.1 で確認しました。&lt;/p&gt;
+
+&lt;p&gt;MySQL 同様、MariaDB はデフォルトの文字セットが latin1 になっているので、日本語をそのまま格納して表示しようとすると文字化けします。&lt;/p&gt;
+
+&lt;p&gt;日本語を利用可能にするためには、&lt;code&gt;/etc/my.cnf.d/server.cnf&lt;/code&gt; に以下の行を追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[mysqld]
+character-set-server = utf8
+collation-server     = utf8_general_ci
+skip-character-set-client-handshake
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで MariaDB の再起動後、日本語が正しく出力されるようになっています。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:b525f416a269d7b3c0781ad579245a90&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ozamasa.naganoblog.jp/e1194854.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ozamasa.naganoblog.jp/e1194854.html&#39;, &#39;(・∀・) ozamasa:MacのMySQLを5.5から5.6にバージョンアップしたときのメモ。&#39;]);&#34; &gt;(・∀・) ozamasa:MacのMySQLを5.5から5.6にバージョンアップしたときのメモ。&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MariaDB 10.0.1 を CentOS 6 にインストールする手順</title>
+      <link>http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/</link>
+      <pubDate>Sun, 14 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/</guid>
+      <description>
+
+&lt;p&gt;yum を使ってインストールする手順です。&lt;/p&gt;
+
+&lt;h2 id=&#34;rpg-gpg-key-を追加する:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;RPG-GPG-KEY を追加する&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;リポジトリを追加する:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;リポジトリを追加する&lt;/h2&gt;
+
+&lt;p&gt;バージョンによって異なります。&lt;a href=&#34;https://downloads.mariadb.org/mariadb/repositories/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://downloads.mariadb.org/mariadb/repositories/&#39;, &#39;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&#39;]);&#34; &gt;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&lt;/a&gt; からバージョン＆環境毎のリポジトリが選択できるので、10.0 以外をインストールする場合はそちらを参考にしてください。&lt;/p&gt;
+
+&lt;p&gt;今回は CentOS 6.3 64bit です。&lt;/p&gt;
+
+&lt;p&gt;/etc/yum.repos.d/MariaDB.repo を下記の内容で作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# MariaDB 10.0 CentOS repository list - created 2013-04-14 07:02 UTC
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.0/centos6-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;インストール:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install MariaDB-devel MariaDB-client MariaDB-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ-chef-レシピ:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;(おまけ) Chef レシピ&lt;/h2&gt;
+
+&lt;p&gt;インストールするだけの手順をレシピにすると下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum_key &#39;RPM-GPG-KEY-MariaDB&#39; do
+  url &#39;https://yum.mariadb.org/RPM-GPG-KEY-MariaDB&#39;
+  action :add
+end
+
+yum_repository &#39;MariaDB&#39; do
+  repo_name &#39;MariaDB&#39;
+  url &#39;http://yum.mariadb.org/10.0/centos6-amd64&#39;
+  key &#39;RPM-GPG-KEY-MariaDB&#39;
+  action :create
+end
+
+package &#39;MariaDB-devel&#39;
+
+package &#39;MariaDB-client&#39;
+
+package &#39;MariaDB-server&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://downloads.mariadb.org/mariadb/repositories/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://downloads.mariadb.org/mariadb/repositories/&#39;, &#39;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&#39;]);&#34; &gt;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.askmonty.org/en/installing-mariadb-with-yum/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://kb.askmonty.org/en/installing-mariadb-with-yum/&#39;, &#39;Installing MariaDB with yum &amp;#8211; AskMonty KnowledgeBase&#39;]);&#34; &gt;Installing MariaDB with yum &amp;#8211; AskMonty KnowledgeBase&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.e-agency.co.jp/column/20130208.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.e-agency.co.jp/column/20130208.html&#39;, &#39;MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー&#39;]);&#34; &gt;MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/opscode-cookbooks/yum/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/opscode-cookbooks/yum/&#39;, &#39;opscode-cookbooks/yum · GitHub&#39;]);&#34; &gt;opscode-cookbooks/yum · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

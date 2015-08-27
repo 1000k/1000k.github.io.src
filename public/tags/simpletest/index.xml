@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Simpletest on 1000g</title>
+    <link>http://1000k.github.io/tags/simpletest/</link>
+    <description>Recent content in Simpletest on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 16 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/simpletest/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CakePHP 単体テストで使うメソッドのコールバックの実行順序</title>
+      <link>http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/</link>
+      <pubDate>Fri, 16 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/</guid>
+      <description>
+
+&lt;p&gt;公式マニュアルだけではSimpleTestのコールバックの実行される順序がわからなかったので、調べた結果をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;下のようなコードを実行してみました。実際のテストメソッドは「testHige()」です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+App::import(&#39;Controller&#39;, &#39;Usos&#39;);
+
+class TestUsosController extends UsosController {
+    var $autoRender = false;
+
+    function redirect($url, $status = null, $exit = true) {
+        $this-&amp;gt;redirectUrl = $url;
+    }
+}
+
+class UsosControllerTestCase extends CakeTestCase {
+    var $fixtures = array(&#39;app.uso&#39;);
+
+    function startTest() {
+        echo(&amp;quot;startTest\n&amp;quot;);
+        $this-&amp;gt;Usos =&amp;amp;#038; new TestUsosController();
+        $this-&amp;gt;Usos-&amp;gt;constructClasses();
+    }
+
+    function endTest() {
+        echo(&amp;quot;endTest\n&amp;quot;);
+        unset($this-&amp;gt;Usos);
+        ClassRegistry::flush();
+    }
+
+    function start() {
+        echo(&amp;quot;start\n&amp;quot;);
+    }
+
+    function end() {
+        echo(&amp;quot;end\n&amp;quot;);
+    }
+
+    function startCase() {
+        echo(&amp;quot;startCase\n&amp;quot;);
+    }
+
+    function endCase() {
+        echo(&amp;quot;endCase\n&amp;quot;);
+    }
+
+    function before($method) {
+        echo($method . &amp;quot; before\n&amp;quot;);
+    }
+
+    function after($method) {
+        echo($method . &amp;quot; after\n&amp;quot;);
+    }
+
+    // 実際のテストメソッド
+    function testHige() {
+        echo(&amp;quot;testHige\n&amp;quot;);
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行結果は以下の通りです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;start before
+start
+start after
+startCase before
+startCase
+startCase after
+testHige before
+testHige
+testHige after
+endCase before
+endCase
+endCase after
+end before
+end
+end after
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大まかに書くと「start() → startCase() → testHige() → endCase() → end()」の順に実施され、それぞれのメソッドの前後にbefore($method) と after($method) が呼び出されるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;参考:7c93c2bceb58597d643b29645d174b10&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/1206/CakeTestCase-Callback-Methods&#39;, &#39;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#39;]);&#34; title=&#34;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&#34;&gt;CakeTestCase Callback Methods :: テストの作成 :: テスト(Testing) :: CakePHPによる作業の定石 :: マニュアル :: 1.3コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

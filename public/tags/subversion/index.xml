@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Subversion on 1000g</title>
+    <link>http://1000k.github.io/tags/subversion/</link>
+    <description>Recent content in Subversion on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 25 Jul 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/subversion/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Subversion 1.7 で switch や merge ができないときの対処方法</title>
+      <link>http://1000k.github.io/2013/07/25/what-to-do-if-you-can-not-switch-and-merge-in-subversion-17/</link>
+      <pubDate>Thu, 25 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/07/25/what-to-do-if-you-can-not-switch-and-merge-in-subversion-17/</guid>
+      <description>
+
+&lt;p&gt;Subversion 1.7.10 をソースからインストールしたら、&lt;code&gt;svn switch&lt;/code&gt; や &lt;code&gt;svn merge&lt;/code&gt; が以下のエラーを吐いて失敗するようになってしまいました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn merge https://uso.com/svn/mojamoja/2.13.1
+...
+svn: E200007: Error running context
+svn: E200007: Trying to use an unsupported feature
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;直し方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;Subversion は内部の HTTP/HTTPS クライアントとして serf または neon を使います。Configure オプションを特に指定しない場合は serf が使われるようですが、これに不具合があったようです。&lt;/p&gt;
+
+&lt;p&gt;何も configure オプションを指定せずにインストールした場合、&lt;code&gt;svn --version&lt;/code&gt; を実行すると下記の通り出力されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn --version
+svn, version 1.7.10 (r1485443)
+   compiled Jul 24 2013, 16:16:57
+...
+* ra_serf : Module for accessing a repository via WebDAV protocol using serf.
+  - handles &#39;http&#39; scheme
+  - handles &#39;https&#39; scheme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「serf が http と https をハンドルするぜ」と書いていますが、実際には E200007 エラーを吐いて止まります。&lt;/p&gt;
+
+&lt;h2 id=&#34;対策:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;対策&lt;/h2&gt;
+
+&lt;p&gt;もう一つの選択肢である neon を使うようにしたら、問題なく動作するようになりました。&lt;/p&gt;
+
+&lt;p&gt;再コンパイル手順は以下のとおりです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cd subversion-1.7.10/
+
+// 依存しているパッケージをダウンロードしてくれる便利なスクリプト。
+# ./get-deps.sh
+
+// neon をコンパイルしてインストールする。
+// (CentOS なら `yum install neon neon-devel` でも OK)
+// `--with-ssl` を忘れずに！
+# cd neon/
+# ./configure --with-ssl
+# make &amp;amp;#038;&amp;amp;#038; make install
+
+// Subversion をインストールする。
+# cd ../
+# make distclean
+# ./configure \
+  --without-berkeley-db \
+  --with-neon \
+  --with-ssl
+# make &amp;amp;#038;&amp;amp;#038; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;正しくインストールできると、以下のように &lt;code&gt;ra_neon&lt;/code&gt; という表示が出ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn --version
+...
+* ra_neon : Module for accessing a repository via WebDAV protocol using Neon.
+  - handles &#39;http&#39; scheme
+  - handles &#39;https&#39; scheme
+* ra_svn : Module for accessing a repository using the svn network protocol.
+  - handles &#39;svn&#39; scheme
+* ra_local : Module for accessing a repository on local disk.
+  - handles &#39;file&#39; scheme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;handles &#39;https&#39; scheme&lt;/code&gt; と出力されない時は、&lt;code&gt;--with-ssl&lt;/code&gt; を付け忘れています。それでは https 通信ができないので、再コンパイルしてください。&lt;/p&gt;
+
+&lt;h2 id=&#34;余談:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;今回とは逆で、「neon だとエラーになるが serf なら大丈夫だった」という事例もありました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://masutaka.net/chalow/2009-06-15-1.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://masutaka.net/chalow/2009-06-15-1.html&#39;, &#39;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&#39;]);&#34; &gt;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;バージョンアップのたびに不具合が入れ替わるんでしょうか。&lt;/p&gt;
+
+&lt;p&gt;奇妙です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.iss.ms/2009/04/12/141537&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.iss.ms/2009/04/12/141537&#39;, &#39;[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）&#39;]);&#34; &gt;[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.r-unit.co.jp/archives/726&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.r-unit.co.jp/archives/726&#39;, &#39;はだかの隊長日記 » Subversionコンパイル方法&#39;]);&#34; &gt;はだかの隊長日記 » Subversionコンパイル方法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://masutaka.net/chalow/2009-06-15-1.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://masutaka.net/chalow/2009-06-15-1.html&#39;, &#39;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&#39;]);&#34; &gt;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>svnでdiffの行数を取得する</title>
+      <link>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</link>
+      <pubDate>Wed, 03 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</guid>
+      <description>
+
+&lt;p&gt;どれだけコーディングしたかチェックするため、svnのdiffの行数を取得するコマンドを考えました。&lt;/p&gt;
+
+&lt;p&gt;下のコマンドを叩くと、変更された行の総数が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(2011-08-17修正) 以前のコードはdiffのヘッダ行まで取得してしまっていたので、正しい数値が得られるよう修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;svn diff -r {before}[:{after}] -x -b {path} | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば「チェンジセット301～310で uso.php に発生した差分の総行数」は、下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn diff -r 301:310 -x -b ./uso.php | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ロジックは、&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;空白文字の差分（インデントや空行の削除）を無視してdiffを取る&lt;/li&gt;
+&lt;li&gt;差分行だけ(「+ 」「- 」どちらかから始まっている行)を取得する&lt;/li&gt;
+&lt;li&gt;行数をカウントする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;となっています。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8ae62bd64dbb38a5a9b5b7de400f164f&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://openlab.dino.co.jp/2007/10/23/184825129.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://openlab.dino.co.jp/2007/10/23/184825129.html&#39;, &#39;svn diffで-wオプションを使う — ディノオープンラボラトリ&#39;]);&#34; title=&#34;svn diffで-wオプションを使う — ディノオープンラボラトリ&#34;&gt;svn diffで-wオプションを使う — ディノオープンラボラトリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.enjoitech.jp/article/71&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.enjoitech.jp/article/71&#39;, &#39;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&#39;]);&#34; title=&#34;Linux である文字を含む行を削除したい - Enjoi Blog&#34;&gt;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>svnコマンドを打つ度に「パスワードを保存しますか？」と聞かれるのを抑制する</title>
+      <link>http://1000k.github.io/2011/06/29/suppress-message-of-svn-command/</link>
+      <pubDate>Wed, 29 Jun 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/06/29/suppress-message-of-svn-command/</guid>
+      <description>
+
+&lt;p&gt;Subversion 1.6にアップグレードしてからというもの、何かsvnコマンドを打つ度に下のメッセージが出るようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-----------------------------------------------------------------------
+ATTENTION!  Your password for authentication realm:
+
+&amp;amp;lt;http://localhost:80&amp;gt; TEST SVN repository
+
+can only be stored to disk unencrypted!  You are advised to configure
+your system so that Subversion can store passwords encrypted, if
+possible.  See the documentation for details.
+
+You can avoid future appearances of this warning by setting the value
+of the &#39;store-plaintext-passwords&#39; option to either &#39;yes&#39; or &#39;no&#39; in
+&#39;/home/stylesen/.subversion/servers&#39;.
+-----------------------------------------------------------------------
+暗号化されていないパスワードを保存しますか (yes/no)?
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保存する気は無いのに毎回聞いてきてやかましいです。&lt;/p&gt;
+
+&lt;p&gt;抑止するには以下のように config ファイルを編集します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ~/.subversion/config
+
+# [auth] ブロックに以下の行を追加する
+store-passwords = no
+store-plaintext-passwords = no
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみに、一度保存してしまったユーザーの情報は &lt;strong&gt;~/.subversion/auth/svn.simple/&lt;/strong&gt;の中に保存されています。&lt;/p&gt;
+
+&lt;p&gt;セキュリティリスクになるので消してしまいましょう。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:a8b04d0b8996e9714afe4865fd320deb&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.linuxforu.com/previews/subversion-16-security-improvements-illustrated/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.linuxforu.com/previews/subversion-16-security-improvements-illustrated/&#39;, &#39;Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine&#39;]);&#34; title=&#34;Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine&#34;&gt;Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/fumokmm/20070820/1187575030&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/fumokmm/20070820/1187575030&#39;, &#39;Subversionのユーザ名とパスワードの記録場所 &amp;#8211; No Programming, No Life&#39;]);&#34; title=&#34;Subversionのユーザ名とパスワードの記録場所 - No Programming, No Life&#34;&gt;Subversionのユーザ名とパスワードの記録場所 &amp;#8211; No Programming, No Life&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>TortoiseSVNでバージョン情報などを自動で埋め込む</title>
+      <link>http://1000k.github.io/2010/10/27/auto-versioning-in-tortoisesvn/</link>
+      <pubDate>Wed, 27 Oct 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/10/27/auto-versioning-in-tortoisesvn/</guid>
+      <description>
+
+&lt;p&gt;オープンソースのコードを見ていると、リビジョン番号などがソースに記載してあるケースがよくあります。&lt;/p&gt;
+
+&lt;p&gt;どうやら Subversion（や CVS）で実現できるようです。&lt;/p&gt;
+
+&lt;p&gt;私は基本的に Windows で TortoiseSVN を使ってリポジトリのやりとりをしているので、その設定方法をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順:9b148e080555f5a4ead4adee49ce465c&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-tortoisesvnの設定:9b148e080555f5a4ead4adee49ce465c&#34;&gt;1.TortoiseSVNの設定&lt;/h3&gt;
+
+&lt;p&gt;今回は例としてPHPファイルが自動変換されるよう設定します。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;svn管理下のファイルを右クリック-&amp;gt;TortoiseSVN-&amp;gt;設定&lt;/li&gt;
+&lt;li&gt;[一般]カテゴリ内の、「Subversionの設定ファイル」の横にある[編集]ボタンをクリック&lt;/li&gt;
+&lt;li&gt;テキストエディタでconfigファイルが開くので、以下のように修正する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;enable-auto-props = yes    ←コメントアウトを外す
+
+[auto-props]
+*.php = svn:keywords=Id Date Author Rev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-対象ファイルにsvnキーワードを埋め込む:9b148e080555f5a4ead4adee49ce465c&#34;&gt;2.対象ファイルにsvnキーワードを埋め込む&lt;/h3&gt;
+
+&lt;p&gt;キーワードは「&lt;strong&gt;$Id$&lt;/strong&gt;」のように、「$」で囲みます。&lt;/p&gt;
+
+&lt;p&gt;使用可能なキーワードは &lt;a href=&#34;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#39;, &#39;Subversion キーワードの展開 &amp;#8211; とみぞーノート&#39;]);&#34; title=&#34;Subversion キーワードの展開 - とみぞーノート&#34;&gt;Subversion キーワードの展開 &amp;#8211; とみぞーノート&lt;/a&gt; あたりを参考にしてください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * テストクラス
+ *
+ * @author  $Author$
+ * @version $Id$
+ */
+class Uso
+{
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;3-コミットしてみる:9b148e080555f5a4ead4adee49ce465c&#34;&gt;3.コミットしてみる&lt;/h3&gt;
+
+&lt;p&gt;ファイルをコミットしてみて、リポジトリブラウザで参照して置換されていれば成功です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * テストクラス
+ *
+ * @author  $Author: Senda Keijiro $
+ * @version $Id: uso.php 13 2010-10-27 05:33:51Z Senda Keijiro $
+ */
+class Uso
+{
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;注意:9b148e080555f5a4ead4adee49ce465c&#34;&gt;注意&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;自動置換は上記設定を行った以後に作られたファイルのみに行われます。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;既存のファイルも自動反映したい場合は、ファイル毎に設定する必要があります。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;既存のファイルを選択して右クリック&lt;/li&gt;
+&lt;li&gt;[Subversion]タブ-&amp;gt;[属性]ボタン&lt;/li&gt;
+&lt;li&gt;恐らく未設定なので、[新規]ボタンをクリック&lt;/li&gt;
+&lt;li&gt;[属性名]に「svn:keywords」、[属性値]に「Id Author Rev Date」(1単語ずつ改行)を書いて[OK]&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;これで、ファイルをコミットすると自動でキーワードが置換されるようになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:9b148e080555f5a4ead4adee49ce465c&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB&#39;, &#39;Subversion キーワードの展開 &amp;#8211; とみぞーノート&#39;]);&#34; title=&#34;Subversion キーワードの展開 - とみぞーノート&#34;&gt;Subversion キーワードの展開 &amp;#8211; とみぞーノート&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html&#39;, &#39;僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）&#39;]);&#34; title=&#34;僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）&#34;&gt;僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html&#39;, &#39;ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする&#39;]);&#34; title=&#34;ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする&#34;&gt;ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

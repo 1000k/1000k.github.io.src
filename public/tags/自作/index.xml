@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>自作 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E8%87%AA%E4%BD%9C/</link>
+    <description>Recent content in 自作 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 01 Sep 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E8%87%AA%E4%BD%9C/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>デコード/エンコードを1ファイルで行うPHP</title>
+      <link>http://1000k.github.io/2011/09/01/php-script-to-decode-and-encode/</link>
+      <pubDate>Thu, 01 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/09/01/php-script-to-decode-and-encode/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/Encodes-Decodes-localhost-encodeco-278x300.png&#34; alt=&#34;&#34; title=&#34;エンコード/デコードフォーム&#34; width=&#34;278&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-805&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;URLエンコード/デコード、HTMLエンティティエンコード/デコードを行うとき便利なフォームを作成しました。&lt;/p&gt;
+
+&lt;p&gt;PHP+jQueryで実装されており、このファイルをPHPの動くWebサーバーに置けばすぐに使えます。&lt;/p&gt;
+
+&lt;h1 id=&#34;できること:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;できること&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;URLエンコード/デコード&lt;/li&gt;
+&lt;li&gt;HTMLエンティティエンコード/デコード&lt;/li&gt;
+&lt;li&gt;PHPの配列のシリアライズ/アンシリアライズ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;必要な環境:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;必要な環境&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PHPの動作するWebサーバー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;ソースコード:5c533bf99fe3f23b9c69c167932af02c&#34;&gt;ソースコード&lt;/h1&gt;
+
+&lt;p&gt;初めてコードをgistに公開してみました。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

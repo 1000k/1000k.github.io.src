@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Poderosa on 1000g</title>
+    <link>http://1000k.github.io/tags/poderosa/</link>
+    <description>Recent content in Poderosa on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 16 May 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/poderosa/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[その他] Poderosaマクロ – telnet自動ログイン</title>
+      <link>http://1000k.github.io/2010/05/16/telnet-auto-login-macro-in-poderosa/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/telnet-auto-login-macro-in-poderosa/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;ワンクリックでtelnetログインし、自動でID/PWを入力するマクロ
+
+&lt;ul&gt;
+&lt;li&gt;いじるファイル：　Poderosaインストールディレクトリ &amp;gt; Macro &amp;gt; AutoLogin.js&lt;/li&gt;
+&lt;li&gt;登録方法：　[ツール] &amp;gt; [マクロ] &amp;gt; [環境設定] &amp;gt; [新規]　で上記ファイルを指定&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;//AutoLogin.js
+import Poderosa;
+import Poderosa.ConnectionParam;
+import Poderosa.Terminal;
+import Poderosa.Macro;
+import Poderosa.View;
+import System.Drawing;
+import System.Threading;
+
+var vars = new Object();
+// telnetの場合
+connect(&amp;quot;ホスト名&amp;quot;, ConnectionMethod.Telnet, 23, EncodingType.UTF8, &amp;quot;ログインID&amp;quot;, &amp;quot;ログインPW&amp;quot;);
+// SSHの場合
+//connect(&amp;quot;ssh-host&amp;quot;, ConnectionMethod.SSH2, 22, EncodingType.EUC_JP, &amp;quot;ログインID&amp;quot;, &amp;quot;ログインPW&amp;quot;);
+
+function connect(host, method, port, encoding, id, password) {
+    vars.env = new Environment();
+    if (method == ConnectionMethod.Telnet) {
+        vars.param = new TelnetTerminalParam(host);
+    } else {
+        vars.param = new SSHTerminalParam(method, host, id, password);
+    }
+    vars.param.Port = port;
+    vars.param.Encoding = encoding;
+    vars.connection = vars.env.Connections.Open(vars.param);
+    if (method == ConnectionMethod.Telnet) {
+        wait(&amp;quot;login: &amp;quot;);
+        sendln(id);
+        wait(&amp;quot;Password: &amp;quot;);
+        sendln(password);
+    }
+}
+
+function sendln(s) {
+    vars.connection.TransmitLn(s);
+}
+
+function wait(s) {
+    Thread.Sleep(10);
+    var r = vars.connection.ReceiveData();
+    while(r.indexOf(s) == -1) {
+        Thread.Sleep(10);
+        r += vars.connection.ReceiveData();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

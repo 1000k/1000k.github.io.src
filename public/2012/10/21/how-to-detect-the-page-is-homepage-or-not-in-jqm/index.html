@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> jQMでアクセス中のページがトップページかどうか判別する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/">jQMでアクセス中のページがトップページかどうか判別する</a></h2>
+        <div class="post-content">
+          
+
+<p>現在アクセスしているURLがアプリのトップページか否かを判断するには、どうすればいいでしょうか？</p>
+
+<p>jQuery Mobile では id 属性を使ってページを識別するため、簡単に判断できます。</p>
+
+<h2 id="やりたいこと:0a67ae7ca7c840717b36a9958e52a0df">やりたいこと</h2>
+
+<p>今アクセスしているURLが、アプリのトップページかどうか判別する関数を作る。</p>
+
+<ul>
+<li>トップページなら true</li>
+<li>それ以外なら false</li>
+</ul>
+
+<h2 id="コード:0a67ae7ca7c840717b36a9958e52a0df">コード</h2>
+
+<p>トップページの id 属性が「top」という想定で進めます。</p>
+
+<pre><code>&lt;div data-role=&quot;page&quot; id=&quot;top&quot; data-title=&quot;top page&quot;&gt;
+  &lt;div data-role=&quot;header&quot;&gt;
+
+  &lt;/div&gt;
+
+
+
+  &lt;div data-role=&quot;content&quot;&gt;
+
+  &lt;/div&gt;
+
+
+&lt;/div&gt;
+</code></pre>
+
+<p>jQuery Mobile はページにアクセス時、画面を描画する前にページの構造を取得します。</p>
+
+<p>つまり、今アクセスしているページの id 属性を取得できるので、これが top かそうでないかを判別すればOKです。</p>
+
+<pre><code>/**
+ * アクセスしたページがトップページかどうか判別する
+ *
+ * @return {boolean} トップページなら true
+ */
+function isTop() {
+    return $(&quot;:jqmData(role='page')&quot;).attr(&quot;id&quot;) === &quot;top&quot;;
+}
+</code></pre>
+
+<p>jQuery Mobile では data-* 属性を取得する時にはカスタムセレクタの jqmData() を使うのが作法なので、このような書き方になります。（下記の参考リンク内の「$.fn.jqmData()」参照）</p>
+
+<h2 id="参考:0a67ae7ca7c840717b36a9958e52a0df">参考</h2>
+
+<p><a href="http://jquerymobile.com/test/docs/api/methods.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jquerymobile.com/test/docs/api/methods.html', 'jQuery Mobile Docs &#8211; Methods']);" >jQuery Mobile Docs &#8211; Methods</a></p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

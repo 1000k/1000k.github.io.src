@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://1000k.github.io/</loc>
+    <lastmod>2015-03-11T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2015/03/11/introducing-to-tmux/</loc>
+    <lastmod>2015-03-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2015/01/27/validate-cakephp2-rules-with-sublime-text2-phpcs-plugin/</loc>
+    <lastmod>2015-01-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2015/01/16/close-popup-window-on-chrome/</loc>
+    <lastmod>2015-01-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/</loc>
+    <lastmod>2015-01-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/07/03/vagrant-doesnt-work-after-updating-1-6-x/</loc>
+    <lastmod>2014-07-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/05/22/protractor-doesnt-work-for-me/</loc>
+    <lastmod>2014-05-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/05/13/collect-audit-log-with-mcafee-mysql-audit-plugin/</loc>
+    <lastmod>2014-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/05/13/estimate-load-of-mcafee-mysql-audit-plugin/</loc>
+    <lastmod>2014-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/05/13/load-test-with-mysqlslap/</loc>
+    <lastmod>2014-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/02/02/importing-geometrical-data-of-google-earth-in-sketchup/</loc>
+    <lastmod>2014-02-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/01/28/how-to-access-apaches2-with-self-certification/</loc>
+    <lastmod>2014-01-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/01/25/way-to-handle-system-which-more-than-you-can-handle/</loc>
+    <lastmod>2014-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/01/19/questions-to-jutta-eckstein/</loc>
+    <lastmod>2014-01-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/01/18/sgt2014-keynote2/</loc>
+    <lastmod>2014-01-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/01/17/questions-to-mike-beedle/</loc>
+    <lastmod>2014-01-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/01/17/sgt2014-keynote1/</loc>
+    <lastmod>2014-01-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2014/01/10/my-history-and-now-of-working-with-agile-method/</loc>
+    <lastmod>2014-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/</loc>
+    <lastmod>2013-12-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</loc>
+    <lastmod>2013-12-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/12/16/agile-samurai-base-camp-2013-report/</loc>
+    <lastmod>2013-12-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/12/09/skip-procedures-after-beforefilter-in-cakephp/</loc>
+    <lastmod>2013-12-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/11/26/phpmd-is-messy/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/</loc>
+    <lastmod>2013-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</loc>
+    <lastmod>2013-10-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/10/19/command-to-update-git-submodule/</loc>
+    <lastmod>2013-10-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/10/20/speed-up-grunt-watch/</loc>
+    <lastmod>2013-10-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/10/01/no-file-or-directory-is-found-but-init-d-script-exists/</loc>
+    <lastmod>2013-10-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/</loc>
+    <lastmod>2013-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/09/10/how-to-change-ui-language-to-eignlish-of-photoshop-cc/</loc>
+    <lastmod>2013-09-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/08/27/change-source-because-bundle-install-is-too-slow/</loc>
+    <lastmod>2013-08-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</loc>
+    <lastmod>2013-08-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/07/25/what-to-do-if-you-can-not-switch-and-merge-in-subversion-17/</loc>
+    <lastmod>2013-07-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/07/18/summary-of-agile-conference-tokyo-2013/</loc>
+    <lastmod>2013-07-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/07/13/book-review-software-in-30-days/</loc>
+    <lastmod>2013-07-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/07/08/book-review-how-to-change-the-world/</loc>
+    <lastmod>2013-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/07/05/chef-server-cannot-get-fqdn/</loc>
+    <lastmod>2013-07-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/</loc>
+    <lastmod>2013-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/06/25/how-to-run-phpunit-under-php-5-2-environment/</loc>
+    <lastmod>2013-06-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/05/04/managing-js-packages-by-bower/</loc>
+    <lastmod>2013-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/04/27/suppress-omitting-var-dump-output-of-xdebug/</loc>
+    <lastmod>2013-04-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/04/14/avoid-garbled-japanese-in-mariadb-10-0-1/</loc>
+    <lastmod>2013-04-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/04/14/git-workflow/</loc>
+    <lastmod>2013-04-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/</loc>
+    <lastmod>2013-04-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/04/10/how-to-check-communication-between-the-server-using-netcat/</loc>
+    <lastmod>2013-04-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/04/03/installing-redis-2-6/</loc>
+    <lastmod>2013-04-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/03/27/usage-of-vfsstream/</loc>
+    <lastmod>2013-03-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/03/27/what-to-do-if-git-sudmobule-init-fails-after-git-clone/</loc>
+    <lastmod>2013-03-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</loc>
+    <lastmod>2013-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/02/28/book-review-scrum-boot-camp-the-book/</loc>
+    <lastmod>2013-02-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/02/19/jenkins-cannot-run-because-of-refering-old-java-jdk/</loc>
+    <lastmod>2013-02-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/02/16/tutorial-to-build-cakephp2-controller-by-tdd/</loc>
+    <lastmod>2013-02-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/01/15/suppress-closing-replace-dialog-in-sublime-text-2/</loc>
+    <lastmod>2013-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2013/01/11/oneliner-convert-unix-timestamp-to-ymd-format/</loc>
+    <lastmod>2013-01-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/31/key-to-be-pressed-when-the-only-half-width-kana-can-be-input/</loc>
+    <lastmod>2012-10-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/28/enable-php-extensions-by-php5enmod/</loc>
+    <lastmod>2012-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/24/lecture-of-dependency-injection/</loc>
+    <lastmod>2012-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/23/translation-constructor-injection-vs-setter-injection/</loc>
+    <lastmod>2012-10-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/20/how-to-test-method-using-header-function-in-phpunit/</loc>
+    <lastmod>2012-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/21/how-to-detect-the-page-is-homepage-or-not-in-jqm/</loc>
+    <lastmod>2012-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/19/phpunit-does-not-run-after-upgrade/</loc>
+    <lastmod>2012-10-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/14/how-to-dynamically-insert-the-list-view-in-the-jquery-mobile/</loc>
+    <lastmod>2012-10-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/14/jqm-remedy-when-the-map-does-not-appear-in-google-maps/</loc>
+    <lastmod>2012-10-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/10/14/order-in-which-the-event-is-fired-when-the-page-transition-of-jquery-mobile/</loc>
+    <lastmod>2012-10-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/09/25/glossary-of-terms-in-jenkins/</loc>
+    <lastmod>2012-09-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/09/25/installing-jenkins-in-xampp-env/</loc>
+    <lastmod>2012-09-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/09/04/installing-vfsstream/</loc>
+    <lastmod>2012-09-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/07/25/implicit-convension-of-integer-column-in-mysql/</loc>
+    <lastmod>2012-07-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/07/08/enable-basic-auth-in-xampp/</loc>
+    <lastmod>2012-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/07/02/how-to-detect-safari-5-x-in-javascript/</loc>
+    <lastmod>2012-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/06/29/safari-5-x-cannot-submit-form-values-by-javascript/</loc>
+    <lastmod>2012-06-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/05/30/how-to-test-singular-named-table-by-phacory/</loc>
+    <lastmod>2012-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/05/24/why-scrum-failed-in-rakuten/</loc>
+    <lastmod>2012-05-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/04/18/how-to-ascertain-whether-the-value-in-php-has-been-set/</loc>
+    <lastmod>2012-04-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</loc>
+    <lastmod>2012-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/01/15/installing-up-to-date-package-by-yum/</loc>
+    <lastmod>2012-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</loc>
+    <lastmod>2012-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/01/15/managing-source-installed-packages-using-paco/</loc>
+    <lastmod>2012-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2012/01/09/set-up-android-development-environment-on-windows7/</loc>
+    <lastmod>2012-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/11/25/http_request2-cannot-connect-https/</loc>
+    <lastmod>2011-11-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/11/21/pear-clear-cache-before-pear-install/</loc>
+    <lastmod>2011-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/11/11/how-to-refer-sqlite-in-memory-db-from-defferent-pdo-object/</loc>
+    <lastmod>2011-11-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/11/04/export-var-dump-result-into-file/</loc>
+    <lastmod>2011-11-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/09/28/logging-vmstat-values/</loc>
+    <lastmod>2011-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/09/01/php-script-to-decode-and-encode/</loc>
+    <lastmod>2011-09-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</loc>
+    <lastmod>2011-08-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/07/05/deference-of-app-import-and-classregistry-init/</loc>
+    <lastmod>2011-07-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/07/05/mange-fixtures-in-several-directories/</loc>
+    <lastmod>2011-07-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/06/29/suppress-message-of-svn-command/</loc>
+    <lastmod>2011-06-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/06/22/click-specific-element-by-jquery/</loc>
+    <lastmod>2011-06-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/04/07/what-is-stub-and-mock/</loc>
+    <lastmod>2011-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/03/18/randy-wilkins/</loc>
+    <lastmod>2011-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/03/13/sketchup-plugin-latticeizer/</loc>
+    <lastmod>2011-03-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/03/06/sketchup-plugin-instant-roof/</loc>
+    <lastmod>2011-03-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/03/05/colleciton-of-sketchup-plugin/</loc>
+    <lastmod>2011-03-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/02/24/fix-background-gradient-by-css3/</loc>
+    <lastmod>2011-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/01/25/regex-of-tel-number/</loc>
+    <lastmod>2011-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2011/01/22/fixing-gable-in-netbeans/</loc>
+    <lastmod>2011-01-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/12/25/sketchup-plugin-hole-punchin-tool/</loc>
+    <lastmod>2010-12-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/12/14/tips-for-build-room/</loc>
+    <lastmod>2010-12-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/12/13/how-to-draw-steps/</loc>
+    <lastmod>2010-12-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/12/08/sketchup-plugin-face-pusher/</loc>
+    <lastmod>2010-12-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/12/06/cooperation-of-skethup-and-cad/</loc>
+    <lastmod>2010-12-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/11/15/define-class-constant-dynamically/</loc>
+    <lastmod>2010-11-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/11/15/anatomy-of-mysql-boolean-type/</loc>
+    <lastmod>2010-11-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/11/08/display-joined-fields-in-cakephp/</loc>
+    <lastmod>2010-11-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/11/05/missing-database-table-error-in-cakephp/</loc>
+    <lastmod>2010-11-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/10/27/auto-versioning-in-tortoisesvn/</loc>
+    <lastmod>2010-10-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/25/notes-for-buiding-house-in-skethup/</loc>
+    <lastmod>2010-07-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/23/redirect-keeping-query-strings-with-mod-rewrite/</loc>
+    <lastmod>2010-07-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/23/simplify-controller-by-exception/</loc>
+    <lastmod>2010-07-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/21/how-to-test-component/</loc>
+    <lastmod>2010-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/20/assert-vars-from-controller-to-view/</loc>
+    <lastmod>2010-07-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/16/order-of-callback-in-unit-testing/</loc>
+    <lastmod>2010-07-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/16/enable-to-get-code-coverage-in-cakephp-13/</loc>
+    <lastmod>2010-07-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/15/shell-occurs-error-when-call-cakeerror-method/</loc>
+    <lastmod>2010-07-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/06/basics-for-building-console-app-in-cakephp/</loc>
+    <lastmod>2010-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/06/cakephp-official-tutorial-using-sqlite3/</loc>
+    <lastmod>2010-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/06/send-mail-using-qdmail-in-cakephp-132/</loc>
+    <lastmod>2010-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/06/what-is-a-displayfield-could-not-be-automatically-detected/</loc>
+    <lastmod>2010-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/05/define-constants-in-cakephp/</loc>
+    <lastmod>2010-07-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/05/insert-current-time-in-sqlite3/</loc>
+    <lastmod>2010-07-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/07/05/escape-ordered-list-in-markdown-syntax/</loc>
+    <lastmod>2010-07-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/06/30/using-sqlite3-in-cakephp-132/</loc>
+    <lastmod>2010-06-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/06/15/htaccess-settings-in-codeigniter/</loc>
+    <lastmod>2010-06-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/06/11/automate-screen-capture-using-selenium-ide-pearl-crescent-page-saver/</loc>
+    <lastmod>2010-06-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/06/01/get-column-name-of-sqlite3-in-codeigniter-172/</loc>
+    <lastmod>2010-06-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/27/enable-codeigniter-code-complete-in-netbeans/</loc>
+    <lastmod>2010-05-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/26/implement-zen-coding-to-netbeans-68/</loc>
+    <lastmod>2010-05-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/26/using-sqlite3-in-codeigniter-172/</loc>
+    <lastmod>2010-05-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/25/execution-order-of-select/</loc>
+    <lastmod>2010-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/24/coding-rules-of-codeigniter/</loc>
+    <lastmod>2010-05-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/24/dont-write-php-closing-tag/</loc>
+    <lastmod>2010-05-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/24/usage-of-codeigniter-model/</loc>
+    <lastmod>2010-05-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/20/usage-of-logrotate/</loc>
+    <lastmod>2010-05-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/19/enable-wiki-markup-in-wordpress/</loc>
+    <lastmod>2010-05-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/19/output-apache-log-by-hostname/</loc>
+    <lastmod>2010-05-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/about/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/16/get-image-size-using-jquery/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/16/cannot-select-gt-and-lt-with-jquery/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/16/telnet-auto-login-macro-in-poderosa/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/17/firefox-addon-copy-title-and-url/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/17/mark-center-of-the-circle/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/17/specify-rotation-axis-in-rotate-tool/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://1000k.github.io/2010/05/16/opening/</loc>
+    <lastmod>2010-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+</urlset>

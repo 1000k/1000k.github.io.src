@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> TortoiseSVNでバージョン情報などを自動で埋め込む &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/10/27/auto-versioning-in-tortoisesvn/">TortoiseSVNでバージョン情報などを自動で埋め込む</a></h2>
+        <div class="post-content">
+          
+
+<p>オープンソースのコードを見ていると、リビジョン番号などがソースに記載してあるケースがよくあります。</p>
+
+<p>どうやら Subversion（や CVS）で実現できるようです。</p>
+
+<p>私は基本的に Windows で TortoiseSVN を使ってリポジトリのやりとりをしているので、その設定方法をメモしておきます。</p>
+
+<h2 id="手順:9b148e080555f5a4ead4adee49ce465c">手順</h2>
+
+<h3 id="1-tortoisesvnの設定:9b148e080555f5a4ead4adee49ce465c">1.TortoiseSVNの設定</h3>
+
+<p>今回は例としてPHPファイルが自動変換されるよう設定します。</p>
+
+<ol>
+<li>svn管理下のファイルを右クリック-&gt;TortoiseSVN-&gt;設定</li>
+<li>[一般]カテゴリ内の、「Subversionの設定ファイル」の横にある[編集]ボタンをクリック</li>
+<li>テキストエディタでconfigファイルが開くので、以下のように修正する</li>
+</ol>
+
+<pre><code>enable-auto-props = yes    ←コメントアウトを外す
+
+[auto-props]
+*.php = svn:keywords=Id Date Author Rev
+</code></pre>
+
+<h3 id="2-対象ファイルにsvnキーワードを埋め込む:9b148e080555f5a4ead4adee49ce465c">2.対象ファイルにsvnキーワードを埋め込む</h3>
+
+<p>キーワードは「<strong>$Id$</strong>」のように、「$」で囲みます。</p>
+
+<p>使用可能なキーワードは <a href="http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB', 'Subversion キーワードの展開 &#8211; とみぞーノート']);" title="Subversion キーワードの展開 - とみぞーノート">Subversion キーワードの展開 &#8211; とみぞーノート</a> あたりを参考にしてください。</p>
+
+<pre><code>/**
+ * テストクラス
+ *
+ * @author  $Author$
+ * @version $Id$
+ */
+class Uso
+{
+    ...
+}
+</code></pre>
+
+<h3 id="3-コミットしてみる:9b148e080555f5a4ead4adee49ce465c">3.コミットしてみる</h3>
+
+<p>ファイルをコミットしてみて、リポジトリブラウザで参照して置換されていれば成功です。</p>
+
+<pre><code>/**
+ * テストクラス
+ *
+ * @author  $Author: Senda Keijiro $
+ * @version $Id: uso.php 13 2010-10-27 05:33:51Z Senda Keijiro $
+ */
+class Uso
+{
+    ...
+}
+</code></pre>
+
+<h2 id="注意:9b148e080555f5a4ead4adee49ce465c">注意</h2>
+
+<p><strong>自動置換は上記設定を行った以後に作られたファイルのみに行われます。</strong></p>
+
+<p>既存のファイルも自動反映したい場合は、ファイル毎に設定する必要があります。</p>
+
+<ol>
+<li>既存のファイルを選択して右クリック</li>
+<li>[Subversion]タブ-&gt;[属性]ボタン</li>
+<li>恐らく未設定なので、[新規]ボタンをクリック</li>
+<li>[属性名]に「svn:keywords」、[属性値]に「Id Author Rev Date」(1単語ずつ改行)を書いて[OK]</li>
+</ol>
+
+<p>これで、ファイルをコミットすると自動でキーワードが置換されるようになります。</p>
+
+<h2 id="参考:9b148e080555f5a4ead4adee49ce465c">参考</h2>
+
+<ul>
+<li><a href="http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://wiki.bit-hive.com/tomizoo/pg/Subversion%20%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A4%CE%C5%B8%B3%AB', 'Subversion キーワードの展開 &#8211; とみぞーノート']);" title="Subversion キーワードの展開 - とみぞーノート">Subversion キーワードの展開 &#8211; とみぞーノート</a></li>
+<li><a href="http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://bokunomichi.blogspot.com/2007/03/subversiontortoisesvn.html', '僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）']);" title="僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）">僕の道(仮)　devlog: Subversion　クライアントの設定（TortoiseSVN）</a></li>
+<li><a href="http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://cheebow.info/chemt/archives/2006/03/tortoisesvn.html', 'ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする']);" title="ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする">ヒビノアワ: TortoiseSVNでキーワードアンカーの設定をする</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

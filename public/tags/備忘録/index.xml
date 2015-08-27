@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>備忘録 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E5%82%99%E5%BF%98%E9%8C%B2/</link>
+    <description>Recent content in 備忘録 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 15 Jun 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E5%82%99%E5%BF%98%E9%8C%B2/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CodeIgniterで使う.htaccessの設定</title>
+      <link>http://1000k.github.io/2010/06/15/htaccess-settings-in-codeigniter/</link>
+      <pubDate>Tue, 15 Jun 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/06/15/htaccess-settings-in-codeigniter/</guid>
+      <description>&lt;pre&gt;&lt;code&gt;RewriteEngine on
+RewriteCond $1 !^(index\.php|css|user_guide|.+\.gif$|.+\.jpe?g$|.+\.png$|.+\.js$|.+\.css$)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば 「&lt;a href=&#34;http://localhost/hige/moja」がトップディレクトリ(=index.phpの置いてある場所)の時、&#34;&gt;http://localhost/hige/moja」がトップディレクトリ(=index.phpの置いてある場所)の時、&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;RewriteEngine on
+RewriteCond $1 !^(index\.php|css|user_guide|.+\.gif$|.+\.jpe?g$|.+\.png$|.+\.js$|.+\.css$)
+RewriteRule ^(.*)$ /hige/moja/index.php/$1 [L]
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

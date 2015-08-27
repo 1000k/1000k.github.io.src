@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Berkshelf on 1000g</title>
+    <link>http://1000k.github.io/tags/berkshelf/</link>
+    <description>Recent content in Berkshelf on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 27 Aug 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/berkshelf/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CentOS&#43;Rails4&#43;Ruby2.0の環境を構築するレシピ</title>
+      <link>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</link>
+      <pubDate>Tue, 27 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/1000k/rails_sandbox&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox&#39;, &#39;1000k/rails_sandbox&#39;]);&#34; &gt;1000k/rails_sandbox&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Vagrant を使って以下の環境を速攻で構築するレシピを作りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 6.4&lt;/li&gt;
+&lt;li&gt;Ruby 2.0.0&lt;/li&gt;
+&lt;li&gt;Ruby on Rails 4.0.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使い方は &lt;a href=&#34;https://github.com/1000k/rails_sandbox/blob/master/README.md&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox/blob/master/README.md&#39;, &#39;README&#39;]);&#34; &gt;README&lt;/a&gt; に書いてある通り、vagrant-berkshelf プラグインをインストールして &lt;code&gt;vagrant up&lt;/code&gt; するだけです。&lt;/p&gt;
+
+&lt;p&gt;最近ようやく第2言語として Ruby が使えるようになってきたので、ここいらで Rails を使いこなせるようになりたいです。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

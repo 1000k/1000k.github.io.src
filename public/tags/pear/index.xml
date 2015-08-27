@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pear on 1000g</title>
+    <link>http://1000k.github.io/tags/pear/</link>
+    <description>Recent content in Pear on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 25 Jun 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/pear/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>今さら PHP 5.2 環境で PHPUnit を動かせるようにする手順</title>
+      <link>http://1000k.github.io/2013/06/25/how-to-run-phpunit-under-php-5-2-environment/</link>
+      <pubDate>Tue, 25 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/06/25/how-to-run-phpunit-under-php-5-2-environment/</guid>
+      <description>
+
+&lt;p&gt;業務で使っているアプリが PHP 5.2 でしか動かず、仕方なく PHP 5.2 でも動く PHPUnit 3.6.11 を使っています。(&lt;a href=&#34;http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/2012/10/19/phpunit%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%97%E3%81%9F%E3%82%89%E5%8B%95%E4%BD%9C%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F/&#39;, &#39;PHPUnit &gt;= 3.6.12 は PHP 5.3 が必要。&amp;rsquo;]);&amp;rdquo; title=&amp;ldquo;PHPUnitをアップグレードしたら動作しなくなった | 1000g&amp;rdquo;&amp;gt;PHPUnit &amp;gt;= 3.6.12 は PHP 5.3 が必要。&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;最近になってサーバーのリプレースの時期になり、新しいビルドマシンに PHPUnit をインストールする羽目になったのですが、うまくバージョンが揃わず苦労しました。&lt;/p&gt;
+
+&lt;p&gt;作業メモを残しておきます。&lt;/p&gt;
+
+&lt;p&gt;なお、コマンドは全て super user で叩いています。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境:a58652de0ea1df651ea37649dd28159c&#34;&gt;環境&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 63bit&lt;/p&gt;
+
+&lt;h2 id=&#34;php-5-2-をインストールする:a58652de0ea1df651ea37649dd28159c&#34;&gt;PHP 5.2 をインストールする&lt;/h2&gt;
+
+&lt;p&gt;そもそも5.2系はとっくに Deprecated なので使うべきではないのですが、業務で使うから仕方ない。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.php.net/releases/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.php.net/releases/&#39;, &#39;PHP: Releases&#39;]);&#34; &gt;PHP: Releases&lt;/a&gt; から 5.2.17 をダウンロードして、ソースからインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# wget http://museum.php.net/php5/php-5.2.17.tar.gz
+# tar -zxf php-5.2.17.tar.gz
+# cd php-5.2.17
+# ./configure #{好きな configure オプション}
+# make
+# make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;configure オプションは &lt;a href=&#34;http://www.php.net/manual/ja/configure.about.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.php.net/manual/ja/configure.about.php&#39;, &#39;PHP: 中心となる configure オプションのリスト &amp;#8211; Manual&#39;]);&#34; &gt;PHP: 中心となる configure オプションのリスト &amp;#8211; Manual&lt;/a&gt; を参考に。&lt;/p&gt;
+
+&lt;h2 id=&#34;pear-をアップグレードする:a58652de0ea1df651ea37649dd28159c&#34;&gt;PEAR をアップグレードする&lt;/h2&gt;
+
+&lt;p&gt;PHP 5.2.17 にデフォルトで入っている PEAR 1.9.1 では、各種パッケージをインストールする時に下のようなエラーが出ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;warning: phpunit/PHPUnit requires PEAR Installer (version &amp;gt;= 1.9.4), installed version iphpunit/PHPUnit can optionally use package &amp;quot;phpunit/PHP_Invoker&amp;quot; (version &amp;gt;= 1.1.0)
+warning: phpunit/File_Iterator requires PHP (version &amp;gt;= 5.3.3), installed version is 5.2warning: phpunit/File_Iterator requires PEAR Installer (version &amp;gt;= 1.9.4), installed ver1.9.1
+warning: phpunit/Text_Template requires PHP (version &amp;gt;= 5.3.3), installed version is 5.2warning: phpunit/Text_Template requires PEAR Installer (version &amp;gt;= 1.9.4), installed ver1.9.1
+warning: phpunit/PHP_CodeCoverage requires PHP (version &amp;gt;= 5.3.3), installed version is
+warning: phpunit/PHP_CodeCoverage requires PEAR Installer (version &amp;gt;= 1.9.4), installed
+is 1.9.1
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;まずは PEAR を 1.9.4 以上にアップデートしましょう。&lt;/p&gt;
+
+&lt;p&gt;以下のコマンドです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear upgrade PEAR
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;phpunit-をインストールする:a58652de0ea1df651ea37649dd28159c&#34;&gt;PHPUnit をインストールする&lt;/h2&gt;
+
+&lt;p&gt;これで PHPUnit をインストールする準備が整いました。&lt;/p&gt;
+
+&lt;p&gt;下のコマンドを叩いてください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear config-set auto_discover 1
+# pear channel-add pear.phpunit.de
+# pear install php.phpunit.de/PHPUnit-3.6.11
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で PHPUnit が動作可能になりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# phpunit -v
+PHPUnit 3.6.11 by Sebastian Bergmann.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ついでに関連ツールも入れる:a58652de0ea1df651ea37649dd28159c&#34;&gt;ついでに関連ツールも入れる&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; で紹介されているツールは下記のコマンドでインストールできます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear channel-add pear.pdepend.org
+# pear channel-add pear.phpmd.org
+# pear channel-add components.ez.no
+# pear channel-add pear.symfony-project.com
+
+# pear install pdepend/PHP_Depend
+# pear install phpmd/PHP_PMD
+# pear install phpunit/phpcpd
+# pear install phpunit/phploc
+# pear install PHPDocumentor
+# pear install PHP_CodeSniffer
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;愚痴:a58652de0ea1df651ea37649dd28159c&#34;&gt;愚痴&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/composer/composer&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/composer/composer&#39;, &#39;Composer&#39;]);&#34; &gt;Composer&lt;/a&gt; を使えれば圧倒的に楽なのですが、PHP &amp;gt;= 5.3.2 でしか動かないので諦めました。&lt;/li&gt;
+&lt;li&gt;PEAR 遅い。&lt;/li&gt;
+&lt;li&gt;自動テストがあれば PHP をバージョンアップできるか検証できるのですが、ほとんどテストケースが無いのでそれも無理。コード総数は10万行。死にたい。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ちゃんと自動テストは作ろうね！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHPUnitをアップグレードしたら動作しなくなった</title>
+      <link>http://1000k.github.io/2012/10/19/phpunit-does-not-run-after-upgrade/</link>
+      <pubDate>Fri, 19 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/10/19/phpunit-does-not-run-after-upgrade/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit を何となくアップグレードしたら動かなくなってしまいました。&lt;/p&gt;
+
+&lt;p&gt;今回は pear upgrade で PHPUnit を 3.6.11 から 3.6.12 に 更新した後、phpunit コマンドを叩くと下記のようなエラーが出るようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# phpunit
+
+Parse error: syntax error, unexpected T_FUNCTION, expecting &#39;)&#39; in /usr/local/lib/php/PHP/Timer/Autoload.php on line 47
+
+Call Stack:
+    0.0018      50328   1. {main}() /usr/local/bin/phpunit:0
+    0.0030      87992   2. require(&#39;/usr/local/lib/php/PHPUnit/Autoload.php&#39;) /usr/local/bin/phpunit:43
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修復に小一時間かかったので、直し方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:50be0dd242e143a3defa66c95863f49e&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;PHPUnit は PHP &amp;gt;= 5.3 での利用を強く推奨しており、PHP &amp;lt;= 5.2 のままだと動かない機能を盛り込んでくることがあります。&lt;/p&gt;
+
+&lt;p&gt;また、本体以外にも多数の依存パッケージがあり、どれかが急に &amp;gt;= 5.3 の機能を使い始めても動かなくなります。&lt;/p&gt;
+
+&lt;p&gt;私の環境は PHP 5.2.x だったため、今回のエラーに出くわしました。原因は phpunit/PHP_Timer がバージョンアップしたせいでした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/sebastianbergmann/php-timer/blob/1.0.4/PHP/Timer/Autoload.php&#39;, &#39;phpunit/PHP_Timer-1.0.4&#39;]);&#34; title=&#34;php-timer/PHP/Timer/Autoload.php at 1.0.4 · sebastianbergmann/php-timer&#34;&gt;phpunit/PHP_Timer-1.0.4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/sebastianbergmann/php-timer/blob/1.0.3/PHP/Timer/Autoload.php&#39;, &#39;phpunit/PHP_Timer-1.0.3&#39;]);&#34; title=&#34;php-timer/PHP/Timer/Autoload.php at 1.0.3 · sebastianbergmann/php-timer&#34;&gt;phpunit/PHP_Timer-1.0.3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上記のソースからおわかりのように、1.0.4 から匿名関数を使っています。これは PHP &amp;gt;= 5.3 でしか動きません。5.2系ではパースエラーになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;対策:50be0dd242e143a3defa66c95863f49e&#34;&gt;対策&lt;/h2&gt;
+
+&lt;p&gt;PHP_Timer を再インストールすることで修正可能です。&lt;/p&gt;
+
+&lt;p&gt;アンインストールの時は依存関係を無視して削除するため「-n」オプションを付けています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# pear uninstall -n phpunit/PHP_Timer
+&amp;quot;phpunit/PHP_Timer&amp;quot; can be optionally used by installed package pear/PHP_CodeSniffer
+warning: phpunit/PHP_Timer (version &amp;gt;= 1.0.2) is required by installed package &amp;quot;phpunit/phpcpd&amp;quot;
+warning: phpunit/PHP_Timer (version &amp;gt;= 1.0.1, version &amp;amp;lt;= 1.0.3) is required by installed package &amp;quot;phpunit/PHPUnit&amp;quot;
+warning: phpunit/PHP_Timer should not be uninstalled, other installed packages depend on this package
+uninstall ok: channel://pear.phpunit.de/PHP_Timer-1.0.4
+
+#  pear install phpunit/PHP_Timer-1.0.3
+downloading PHP_Timer-1.0.3.tgz ...
+Starting to download PHP_Timer-1.0.3.tgz (3,743 bytes)
+....done: 3,743 bytes
+install ok: channel://pear.phpunit.de/PHP_Timer-1.0.3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上で動作するようになりました。&lt;/p&gt;
+
+&lt;p&gt;PHP 5.2系の人はうかつに 「pear upgrade phpunit/phpunit」なんてコマンドを叩かないようにしましょう。&lt;/p&gt;
+
+&lt;p&gt;もしくはさっさと5.4系に移行しましょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:50be0dd242e143a3defa66c95863f49e&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dustyreagan.com/downgrade-phpunit-3-6-to-3-5-15/&#39;, &#39;How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan&#39;]);&#34; &gt;How to Downgrade PHPUnit 3.6 to 3.5.15 | Dusty Reagan&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pear パッケージのダウングレード方法はこちらを参考にしました。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>HTTP_Request2でhttps接続できない場合の対策</title>
+      <link>http://1000k.github.io/2011/11/25/http_request2-cannot-connect-https/</link>
+      <pubDate>Fri, 25 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/11/25/http_request2-cannot-connect-https/</guid>
+      <description>
+
+&lt;p&gt;HTTP_Request2::send()でhttpsサイトに接続しようとしたら、下記のようなエラーが返ってきました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Malformed response:
+Unable to connect to ssl://www.google.com:443.
+stream_socket_client(): unable to connect to ssl://www.google.com:443 (Unknown error)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unknown errorというのが一番タチが悪い。エラーが追えません。&lt;/p&gt;
+
+&lt;p&gt;検証のためcurlコマンドで同じURLに接続を試みると、ちゃんとレスポンスが返ってきます。何か設定をし忘れているに違いない。&lt;/p&gt;
+
+&lt;h1 id=&#34;原因:718cece10d0369f9449331b24890587d&#34;&gt;原因&lt;/h1&gt;
+
+&lt;p&gt;どうやら HTTP_Request::setConfig() で正しい接続設定を行えていない場合、&amp;#8221;Malformed response&amp;#8221; というエラーが出るようです。&lt;/p&gt;
+
+&lt;p&gt;私の場合、オレオレ証明書の許可と社内プロキシの設定を行っていなかったためにはまってしまったようです。&lt;/p&gt;
+
+&lt;h1 id=&#34;対応:718cece10d0369f9449331b24890587d&#34;&gt;対応&lt;/h1&gt;
+
+&lt;p&gt;オレオレ証明書を持ったサイトを許可するために、setConfig() で &lt;strong&gt;ssl_verify_peer&lt;/strong&gt; と &lt;strong&gt;ssl_verify_host&lt;/strong&gt; を false に設定してやります。&lt;/p&gt;
+
+&lt;p&gt;また、プロキシの設定も行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+require_once(&#39;HTTP/Request2.php&#39;);
+$req = new HTTP_Request2();
+
+$req-&amp;gt;setConfig(array(
+    &#39;ssl_verify_host&#39; =&amp;gt; false,
+    &#39;ssl_verify_peer&#39; =&amp;gt; false,
+    &#39;proxy_host&#39; =&amp;gt; &#39;uso.proxy.jp&#39;,
+    &#39;proxy_port&#39; =&amp;gt; &#39;8080&#39;,
+));
+
+$response = $req-&amp;gt;setUrl(&amp;quot;https://www.google.com/&amp;quot;)-&amp;gt;send();
+print_r($response);     // HTTPレスポンスが出力される
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ほかにも設定項目はあるので、&lt;a href=&#34;http://pear.php.net/manual/en/package.http.http-request2.config.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pear.php.net/manual/en/package.http.http-request2.config.php&#39;, &#39;マニュアル&#39;]);&#34; &gt;マニュアル&lt;/a&gt;を参考に設定を疑ってみてはどうでしょうか。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:718cece10d0369f9449331b24890587d&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://pear.php.net/manual/en/package.http.http-request2.config.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://pear.php.net/manual/en/package.http.http-request2.config.php&#39;, &#39;Manual :: Configuration parameters for HTTP_Request2&#39;]);&#34; &gt;Manual :: Configuration parameters for HTTP_Request2&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;setConfigで設定できる項目一覧&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/vivid_skid/20110822/1314013148&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/vivid_skid/20110822/1314013148&#39;, &#39;HTTP_Request2 でのSSL通信でのPOST送信 &amp;#8211; クマーのえんじにありんぐ&#39;]);&#34; &gt;HTTP_Request2 でのSSL通信でのPOST送信 &amp;#8211; クマーのえんじにありんぐ&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;オレオレ証明書の許可ではまってしまった方はこちら&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>pear installできない問題はpear clear-cacheで解決する</title>
+      <link>http://1000k.github.io/2011/11/21/pear-clear-cache-before-pear-install/</link>
+      <pubDate>Mon, 21 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/11/21/pear-clear-cache-before-pear-install/</guid>
+      <description>
+
+&lt;p&gt;pear installでパッケージをインストールしようと思いましたが、身に覚えのないエラーが出て困りました。&lt;/p&gt;
+
+&lt;p&gt;インストールエラーの原因と、解決法をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;出てきたエラーメッセージは以下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pear install HTTP_Request2
+PHP_PEAR_PHP_BIN is not set correctly.
+Please fix it using your environment variable or modify
+the default value in pear.bat
+The current value is:
+.\php.exe
+
+$ pear install Net_URL2-2.0.0
+SECURITY ERROR: Will not write to C:\DOCUME~1\keijiro\LOCALS~1\Temp\pear\cache\ee3f372dc6f69cdae3c6b0c2a0d1098erest.cacheid as it is symlinked to C:\DOCUME~1\keijiro\LOCALS~1\Temp\pear\cache\ee3f372dc6f69cdae3c6b0c2a0d1098erest.cacheid - Possible symlink attack
+install failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「PHP_PEAR_PHP_BINが間違ってる」「一時ファイルが書き込めない」など言われていますが、どちらも正常に設定できています。&lt;/p&gt;
+
+&lt;p&gt;はてどうしたことか。&lt;/p&gt;
+
+&lt;p&gt;と思いましたが、&lt;strong&gt;pear clear-cache&lt;/strong&gt;を実行したらコマンドが通るようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pear clear-cache
+reading directory C:\DOCUME~1\keijiro\LOCALS~1\Temp\pear\cache
+1024 cache entries cleared
+
+$ pear install Net_URL2-2.0.0
+
+Notice: fwrite(): send of 189 bytes failed with errno=10054 既存の接続はリモート ホストに強制的に切断されました。
+ in PEAR\Downloader.php on line 1664
+downloading Net_URL2-2.0.0.tgz ...
+Starting to download Net_URL2-2.0.0.tgz (11,325 bytes)
+.....done: 11,325 bytes
+install ok: channel://pear.php.net/Net_URL2-2.0.0
+
+$ pear install HTTP_Request2-2.0.0
+
+Notice: fwrite(): send of 189 bytes failed with errno=10054 既存の接続はリモート ホストに強制的に切断されました。
+ in PEAR\Downloader.php on line 1664
+pear/HTTP_Request2 can optionally use PHP extension &amp;quot;curl&amp;quot;
+pear/HTTP_Request2 can optionally use PHP extension &amp;quot;fileinfo&amp;quot;
+downloading HTTP_Request2-2.0.0.tgz ...
+Starting to download HTTP_Request2-2.0.0.tgz (97,476 bytes)
+......................done: 97,476 bytes
+install ok: channel://pear.php.net/HTTP_Request2-2.0.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Noticeが出ていますが、パッケージは問題無く利用できました。&lt;/p&gt;
+
+&lt;p&gt;でたらめなエラーメッセージはやめていただきたいですね。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:ffbf1c0b8401971288a56b58bcdcb029&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/6442187/security-error-while-installing-phing-using-pear&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/6442187/security-error-while-installing-phing-using-pear&#39;, &#39;Security Error while installing phing using pear &amp;#8211; Stack Overflow&#39;]);&#34; &gt;Security Error while installing phing using pear &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

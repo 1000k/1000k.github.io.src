@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP1.3.2でSQLite3を使う（改訂版） &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2010/06/30/using-sqlite3-in-cakephp-132/">CakePHP1.3.2でSQLite3を使う（改訂版）</a></h2>
+        <div class="post-content">
+          <p>bakeできなかったので、下記を参考にやり直しました。</p>
+
+<p><a href="http://stackoverflow.com/questions/1021980/cakephp-sqlite/2241385#2241385" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/1021980/cakephp-sqlite/2241385#2241385', 'CakePHP SQLite &#8211; Stack Overflow']);" title="CakePHP SQLite - Stack Overflow">CakePHP SQLite &#8211; Stack Overflow</a></p>
+
+<p>bake all するとWarningが続々出ますが、一応動きました。</p>
+
+<ol>
+<li><a href="http://github.com/cakephp/datasources" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://github.com/cakephp/datasources', 'cakephp&#8217;s datasources at master &#8211; GitHub']);" title="cakephp's datasources at master - GitHub">cakephp&#8217;s datasources at master &#8211; GitHub</a> から「CakePHP Datasources Plugin v0.2」をダウンロードする</li>
+<li>「cakePHPディレクトリ/app/plugins/datasources」内に解凍する</li>
+<li>プラグイン内の「models/datasources/dbo/dbo_sqlite3.php」を編集し、「class DboSqlite3 extends DboSource {」より前の行に「App::import(&#8216;Datasource&#8217;,&#8217;DboSource&#8217;);」を追加する</li>
+</ol>
+
+<pre><code>&lt;?php
+/**
+ * SQLite layer for DBO.
+ *
+ * PHP versions 4 and 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       datasources
+ * @subpackage    datasources.models.datasources.dbo
+ * @since         CakePHP Datasources v 0.1
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+App::import('Datasource','DboSource');
+
+/**
+ * DBO implementation for the SQLite3 DBMS.
+ *
+ * A DboSource adapter for SQLite 3 using PDO
+ *
+ * @package datasources
+ * @subpackage datasources.models.datasources.dbo
+ */
+class DboSqlite3 extends DboSource {
+</code></pre>
+
+<ol>
+  <li>
+    「/app/config/database.php」を以下のように設定する
+  </li>
+
+</ol>
+
+<pre><code>
+    var $default = array(
+        'driver' =&gt; 'Datasources.DboSqlite3',
+        'database' =&gt; '/full/path/to/db/db.sqlite',
+    );
+</code></pre>
+
+<p>
+  これで何とかbakeできるようになる。ただし、何かにつけ「Warning: FIXME: Can't parse field:  in C:\xampp\htdocs\cake\sandbox\cake\libs\model\datasources\dbo_source.php on line 2510」みたいなエラーが出てくる。
+</p>
+
+<p>
+  とりあえず<a href="http://book.cakephp.org/view/1543/Simple-Acl-controlled-Application" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/view/1543/Simple-Acl-controlled-Application', 'CakePHP1.3の公式チュートリアル']);" title="Simple Acl controlled Application :: Tutorials & Examples :: The Manual :: 1.3 Collection :: The Cookbook">CakePHP1.3の公式チュートリアル</a>をやってみたけど、一応普通に動きました。
+</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

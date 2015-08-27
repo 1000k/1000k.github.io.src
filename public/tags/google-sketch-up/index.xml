@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Google Sketch Up on 1000g</title>
+    <link>http://1000k.github.io/tags/google-sketch-up/</link>
+    <description>Recent content in Google Sketch Up on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 07 Dec 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/google-sketch-up/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>複数面を同時にプッシュ／プルできるプラグイン</title>
+      <link>http://1000k.github.io/2010/12/08/sketchup-plugin-face-pusher/</link>
+      <pubDate>Tue, 07 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/08/sketchup-plugin-face-pusher/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=141&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rhin.crai.archi.fr/RubyLibraryDepot/plugin_details.php?id=141&#39;, &#39;FacePusher (SU Plugin) &amp;#8211; Ruby Library Depot&#39;]);&#34; title=&#34;FacePusher (SU Plugin) - Ruby Library Depot&#34;&gt;FacePusher (SU Plugin) &amp;#8211; Ruby Library Depot&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;非常に便利です。標準で搭載されていてほしい機能。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:5683a228e3a5b961dcc8430221de4ef4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[選択]ツールで複数面の面を選択する&lt;/li&gt;
+&lt;li&gt;[プラグイン &amp;gt; Push Faces] をクリック&lt;/li&gt;
+&lt;li&gt;表示されるダイアログで、距離(Distance)とプッシュ／プル後のマテリアルを選択して、OKをクリック
+
+&lt;ul&gt;
+&lt;li&gt;Distanceはマイナスも入力可能&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

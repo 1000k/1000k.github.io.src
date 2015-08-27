@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Centos on 1000g</title>
+    <link>http://1000k.github.io/tags/centos/</link>
+    <description>Recent content in Centos on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 01 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>init.dスクリプトが存在するのに「そのようなファイルやディレクトリはありません」と言われた</title>
+      <link>http://1000k.github.io/2013/10/01/no-file-or-directory-is-found-but-init-d-script-exists/</link>
+      <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/01/no-file-or-directory-is-found-but-init-d-script-exists/</guid>
+      <description>
+
+&lt;p&gt;CentOS 6.4 でとある init.d スクリプトを実行したら以下のようなエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# service mysql_master
+env: /etc/init.d/mysql_master: そのようなファイルやディレクトリはありません
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;いえ、何度確認してもそのファイルは確かに存在しています。&lt;/p&gt;
+
+&lt;p&gt;ファイルの中身を見ても何も異常が見つかりません。&lt;/p&gt;
+
+&lt;p&gt;グーグル先生に道を伺ったところ、「改行コードがLFじゃないから」とのこと。&lt;/p&gt;
+
+&lt;p&gt;さっそく改行コードを確認したところ CR+LF でした。&lt;/p&gt;
+
+&lt;p&gt;Vim で以下のコマンドを実行したら、正しく実行されるようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:set ff=unix
+:wq
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;# service mysql_master
+Usage: /etc/init.d/mysql_master {start|stop|restart|status}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:78516bd3eda8050d97cd4c550e13df69&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.linuxquestions.org/questions/red-hat-31/init-d-script-error-bad-interpreter-204902/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.linuxquestions.org/questions/red-hat-31/init-d-script-error-bad-interpreter-204902/&#39;, &#39;init.d script error bad interpreter&#39;]);&#34; &gt;init.d script error bad interpreter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/82726/convert-dos-line-endings-to-linux-line-endings-in-vim&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/82726/convert-dos-line-endings-to-linux-line-endings-in-vim&#39;, &#39;Convert DOS line endings to Linux line endings in vim &amp;#8211; Stack Overflow&#39;]);&#34; &gt;Convert DOS line endings to Linux line endings in vim &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Subversion 1.7 で switch や merge ができないときの対処方法</title>
+      <link>http://1000k.github.io/2013/07/25/what-to-do-if-you-can-not-switch-and-merge-in-subversion-17/</link>
+      <pubDate>Thu, 25 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/07/25/what-to-do-if-you-can-not-switch-and-merge-in-subversion-17/</guid>
+      <description>
+
+&lt;p&gt;Subversion 1.7.10 をソースからインストールしたら、&lt;code&gt;svn switch&lt;/code&gt; や &lt;code&gt;svn merge&lt;/code&gt; が以下のエラーを吐いて失敗するようになってしまいました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn merge https://uso.com/svn/mojamoja/2.13.1
+...
+svn: E200007: Error running context
+svn: E200007: Trying to use an unsupported feature
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;直し方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;Subversion は内部の HTTP/HTTPS クライアントとして serf または neon を使います。Configure オプションを特に指定しない場合は serf が使われるようですが、これに不具合があったようです。&lt;/p&gt;
+
+&lt;p&gt;何も configure オプションを指定せずにインストールした場合、&lt;code&gt;svn --version&lt;/code&gt; を実行すると下記の通り出力されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn --version
+svn, version 1.7.10 (r1485443)
+   compiled Jul 24 2013, 16:16:57
+...
+* ra_serf : Module for accessing a repository via WebDAV protocol using serf.
+  - handles &#39;http&#39; scheme
+  - handles &#39;https&#39; scheme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「serf が http と https をハンドルするぜ」と書いていますが、実際には E200007 エラーを吐いて止まります。&lt;/p&gt;
+
+&lt;h2 id=&#34;対策:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;対策&lt;/h2&gt;
+
+&lt;p&gt;もう一つの選択肢である neon を使うようにしたら、問題なく動作するようになりました。&lt;/p&gt;
+
+&lt;p&gt;再コンパイル手順は以下のとおりです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cd subversion-1.7.10/
+
+// 依存しているパッケージをダウンロードしてくれる便利なスクリプト。
+# ./get-deps.sh
+
+// neon をコンパイルしてインストールする。
+// (CentOS なら `yum install neon neon-devel` でも OK)
+// `--with-ssl` を忘れずに！
+# cd neon/
+# ./configure --with-ssl
+# make &amp;amp;#038;&amp;amp;#038; make install
+
+// Subversion をインストールする。
+# cd ../
+# make distclean
+# ./configure \
+  --without-berkeley-db \
+  --with-neon \
+  --with-ssl
+# make &amp;amp;#038;&amp;amp;#038; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;正しくインストールできると、以下のように &lt;code&gt;ra_neon&lt;/code&gt; という表示が出ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn --version
+...
+* ra_neon : Module for accessing a repository via WebDAV protocol using Neon.
+  - handles &#39;http&#39; scheme
+  - handles &#39;https&#39; scheme
+* ra_svn : Module for accessing a repository using the svn network protocol.
+  - handles &#39;svn&#39; scheme
+* ra_local : Module for accessing a repository on local disk.
+  - handles &#39;file&#39; scheme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;handles &#39;https&#39; scheme&lt;/code&gt; と出力されない時は、&lt;code&gt;--with-ssl&lt;/code&gt; を付け忘れています。それでは https 通信ができないので、再コンパイルしてください。&lt;/p&gt;
+
+&lt;h2 id=&#34;余談:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;今回とは逆で、「neon だとエラーになるが serf なら大丈夫だった」という事例もありました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://masutaka.net/chalow/2009-06-15-1.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://masutaka.net/chalow/2009-06-15-1.html&#39;, &#39;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&#39;]);&#34; &gt;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;バージョンアップのたびに不具合が入れ替わるんでしょうか。&lt;/p&gt;
+
+&lt;p&gt;奇妙です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:b3d12b85aa6526b84cee44966cb0c763&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.iss.ms/2009/04/12/141537&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.iss.ms/2009/04/12/141537&#39;, &#39;[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）&#39;]);&#34; &gt;[memo][svn] svnクライアントにSSLをサポートさせる « いわぶろ（ろてん）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.r-unit.co.jp/archives/726&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.r-unit.co.jp/archives/726&#39;, &#39;はだかの隊長日記 » Subversionコンパイル方法&#39;]);&#34; &gt;はだかの隊長日記 » Subversionコンパイル方法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://masutaka.net/chalow/2009-06-15-1.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://masutaka.net/chalow/2009-06-15-1.html&#39;, &#39;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&#39;]);&#34; &gt;Debian squeeze の subversion で http リポジトリにアクセスできなくなった / マスタカの ChangeLog メモ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>jenkins ユーザーが ant を実行できないときの対処法</title>
+      <link>http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/</link>
+      <pubDate>Tue, 02 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/</guid>
+      <description>
+
+&lt;p&gt;CentOS 6.3 にて、&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; にある ant タスク (build.xml) 通りに PHPUnit タスクを実行しようとしたら、エラーが出てしまいました。&lt;/p&gt;
+
+&lt;p&gt;かなり長時間ハマったのでメモを残しておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;症状:135291858de89f6329950b22fca515d3&#34;&gt;症状&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 にて、&lt;a href=&#34;http://jenkins-php.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jenkins-php.org/&#39;, &#39;Template for Jenkins Jobs for PHP Projects&#39;]);&#34; &gt;Template for Jenkins Jobs for PHP Projects&lt;/a&gt; にある以下のタスクを実行するとエラーが出ました。&lt;code&gt;
+ &amp;lt;target name=&amp;quot;phpunit&amp;quot; description=&amp;quot;Run unit tests using PHPUnit and generates junit.xml and clover.xml&amp;quot;&amp;gt; &amp;lt;exec executable=&amp;quot;phpunit&amp;quot; failonerror=&amp;quot;true&amp;quot;/&amp;gt; &amp;lt;/target&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージ:&lt;code&gt;
+ # sudo -u jenkins ant ... phpunit: BUILD FAILED /var/lib/jenkins/jobs/mojamoja-unit-testing/workspace/build.xml:22: Execute failed: java.io.IOException: Cannot run program &amp;quot;phpunit&amp;quot;: error=2, No such file or directory Total time: 0 seconds&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:135291858de89f6329950b22fca515d3&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;どうやら phpunit へのパスが通っていないようです。&lt;/p&gt;
+
+&lt;p&gt;phpunit の実体は &lt;code&gt;/usr/local/bin/phpunit&lt;/code&gt; なのですが、jenkins ユーザーがこの PATH を参照できていない模様。&lt;/p&gt;
+
+&lt;h2 id=&#34;試行錯誤:135291858de89f6329950b22fca515d3&#34;&gt;試行錯誤&lt;/h2&gt;
+
+&lt;p&gt;まず、jenkins ユーザーの &lt;code&gt;~/.bash_profile&lt;/code&gt; と &lt;code&gt;~/.bashrc&lt;/code&gt; を以下の内容で作成してもダメでした。PATH は反映されません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+export PATH=$PATH:/usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、下記のように ant タスク内で PATH を変更するシェルを走らせてもダメでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;target name=&amp;quot;setenv&amp;quot;&amp;gt;
+   &amp;amp;lt;exec executable=&amp;quot;/bin/sh&amp;quot;&amp;gt;
+     &amp;amp;lt;arg line=&amp;quot;./setenv.sh&amp;quot;/&amp;gt;
+   &amp;amp;lt;/exec&amp;gt;
+ &amp;amp;lt;/target&amp;gt;
+
+ &amp;amp;lt;target name=&amp;quot;env&amp;quot;&amp;gt;&amp;amp;lt;exec executable=&amp;quot;env&amp;quot; /&amp;gt;&amp;amp;lt;/target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;setenv.sh の中身は下記。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+export PATH=${PATH}:/usr/local/bin
+echo $PATH
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで ant を実行すると、&lt;code&gt;setenv&lt;/code&gt; タスクの時点では PATH は変更されていますが、次に実行される &lt;code&gt;env&lt;/code&gt; タスクで元に戻ってしまっています。まるで setenv と env が別々のプロセスで動いているように見えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Buildfile: build.xml
+
+setenv:
+     [exec] /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+
+env:
+     [exec] HOSTNAME=mojamoja
+     [exec] SHELL=/bin/bash
+     [exec] TERM=xterm
+     [exec] HISTSIZE=1000
+     [exec] USER=jenkins
+     ...
+     [exec] PATH=/sbin:/bin:/usr/sbin:/usr/bin      &amp;amp;lt;- /usr/local/bin が追加されていない
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とういわけで、setenv で環境変数をセットする方法はボツでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決方法:135291858de89f6329950b22fca515d3&#34;&gt;解決方法&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-jenkins-のグローバルプロパティを設定する:135291858de89f6329950b22fca515d3&#34;&gt;1. Jenkins のグローバルプロパティを設定する&lt;/h3&gt;
+
+&lt;p&gt;Jenkins から環境変数を上書きすることで、PATH を追加することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Jenkinsの管理 &amp;gt; システムの設定 &amp;gt; グローバルプロパティ &amp;gt; 環境変数&lt;/code&gt; にて、以下のように設定します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_global_property-300x191.png&#34; alt=&#34;Jenkins グローバルプロパティ&#34; width=&#34;300&#34; height=&#34;191&#34; class=&#34;alignnone size-medium wp-image-1507&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;キー: &lt;code&gt;PATH&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;値: &lt;code&gt;${PATH}:/usr/local/bin&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ただし、この方法だと Jenkins から Ant を実行した時しか PATH は上書きされません。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-sudoers-の-secure-path-を無効にする:135291858de89f6329950b22fca515d3&#34;&gt;2. sudoers の secure_path を無効にする&lt;/h3&gt;
+
+&lt;p&gt;Fedora 系では sudo ユーザー向けの PATH が &lt;code&gt;/sbin:/bin:/usr/sbin:/usr/bin&lt;/code&gt; のみに制限されているので、これを外してやります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;visudo&lt;/code&gt; コマンドを実行して、以下のように書き直します。&lt;code&gt;
+ # secure\_path をコメントアウト # Defaults secure\_path = /sbin:/bin:/usr/sbin:/usr/bin # env\_keep に PATH を追加 Defaults env\_keep += &amp;quot;PATH&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;これで secure_path の縛りが解除されました。&lt;/p&gt;
+
+&lt;p&gt;sudoers の環境変数は `sudo -l` で確認できます。&lt;code&gt;
+ # sudo -l Matching Defaults entries for root on this host: !visiblepw, always\_set\_home, env\_reset, env\_keep=&amp;quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS\_COLORS&amp;quot;, env\_keep+=&amp;quot;MAIL PS1 PS2 QTDIR USERNAME LANG LC\_ADDRESS LC\_CTYPE&amp;quot;, env\_keep+=&amp;quot;LC\_COLLATE LC\_IDENTIFICATION LC\_MEASUREMENT LC\_MESSAGES&amp;quot;, env\_keep+=&amp;quot;LC\_MONETARY LC\_NAME LC\_NUMERIC LC\_PAPER LC\_TELEPHONE&amp;quot;, env\_keep+=&amp;quot;LC\_TIME LC\_ALL LANGUAGE LINGUAS \_XKB\_CHARSET XAUTHORITY&amp;quot;, env_keep+=PATH User root may run the following commands on this host: (ALL) ALL&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:135291858de89f6329950b22fca515d3&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/&#39;, &#39;[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163\&#39;s Blog&#39;]);&#34; &gt;[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163&amp;rsquo;s Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://fishrimper.blogspot.jp/2012/12/sudo-path.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://fishrimper.blogspot.jp/2012/12/sudo-path.html&#39;, &#39;IT とかその他もろもろ: sudo した時の PATH&#39;]);&#34; &gt;IT とかその他もろもろ: sudo した時の PATH&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://superuser.com/questions/98686/passing-path-through-sudo&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://superuser.com/questions/98686/passing-path-through-sudo&#39;, &#39;linux - Passing PATH through sudo - Super User&#39;]);&#34; &gt;linux - Passing PATH through sudo - Super User&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MariaDB 10.0.1 を CentOS 6 にインストールする手順</title>
+      <link>http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/</link>
+      <pubDate>Sun, 14 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/14/tutorial-for-installing-mariadb-10-0-1-in-centos6/</guid>
+      <description>
+
+&lt;p&gt;yum を使ってインストールする手順です。&lt;/p&gt;
+
+&lt;h2 id=&#34;rpg-gpg-key-を追加する:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;RPG-GPG-KEY を追加する&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;リポジトリを追加する:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;リポジトリを追加する&lt;/h2&gt;
+
+&lt;p&gt;バージョンによって異なります。&lt;a href=&#34;https://downloads.mariadb.org/mariadb/repositories/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://downloads.mariadb.org/mariadb/repositories/&#39;, &#39;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&#39;]);&#34; &gt;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&lt;/a&gt; からバージョン＆環境毎のリポジトリが選択できるので、10.0 以外をインストールする場合はそちらを参考にしてください。&lt;/p&gt;
+
+&lt;p&gt;今回は CentOS 6.3 64bit です。&lt;/p&gt;
+
+&lt;p&gt;/etc/yum.repos.d/MariaDB.repo を下記の内容で作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# MariaDB 10.0 CentOS repository list - created 2013-04-14 07:02 UTC
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.0/centos6-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;インストール:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install MariaDB-devel MariaDB-client MariaDB-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ-chef-レシピ:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;(おまけ) Chef レシピ&lt;/h2&gt;
+
+&lt;p&gt;インストールするだけの手順をレシピにすると下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum_key &#39;RPM-GPG-KEY-MariaDB&#39; do
+  url &#39;https://yum.mariadb.org/RPM-GPG-KEY-MariaDB&#39;
+  action :add
+end
+
+yum_repository &#39;MariaDB&#39; do
+  repo_name &#39;MariaDB&#39;
+  url &#39;http://yum.mariadb.org/10.0/centos6-amd64&#39;
+  key &#39;RPM-GPG-KEY-MariaDB&#39;
+  action :create
+end
+
+package &#39;MariaDB-devel&#39;
+
+package &#39;MariaDB-client&#39;
+
+package &#39;MariaDB-server&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:22b952c0c7ccdbfe7d7cc04c5066aa86&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://downloads.mariadb.org/mariadb/repositories/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://downloads.mariadb.org/mariadb/repositories/&#39;, &#39;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&#39;]);&#34; &gt;MariaDB &amp;#8211; Setting up MariaDB Repositories &amp;#8211; MariaDB&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.askmonty.org/en/installing-mariadb-with-yum/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://kb.askmonty.org/en/installing-mariadb-with-yum/&#39;, &#39;Installing MariaDB with yum &amp;#8211; AskMonty KnowledgeBase&#39;]);&#34; &gt;Installing MariaDB with yum &amp;#8211; AskMonty KnowledgeBase&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.e-agency.co.jp/column/20130208.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.e-agency.co.jp/column/20130208.html&#39;, &#39;MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー&#39;]);&#34; &gt;MariaDBをCentOS 6にyumでインストールする方法 | ブログ | 株式会社イー・エージェンシー&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/opscode-cookbooks/yum/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/opscode-cookbooks/yum/&#39;, &#39;opscode-cookbooks/yum · GitHub&#39;]);&#34; &gt;opscode-cookbooks/yum · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOSでbzip2が解凍できないエラー</title>
+      <link>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/cannot-unzip-bzip2-in-centos/</guid>
+      <description>
+
+&lt;p&gt;bzip2ファイルを解凍しようと思ったら、見慣れないエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# tar xvf paco-2.0.9.tar.bz2
+tar: bzip2: exec 不能: そのようなファイルやディレクトリはありません
+tar: エラーを回復できません: 直ちに終了します
+tar: Child returned status 2
+tar: 処理中にエラーが起きましたが、最後まで処理してからエラー終了させました
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただ単にbzip2がインストールされていなかったのが原因でした。yumで入れて即解決です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install bzip2
+...
+Installed:
+  bzip2.x86_64 0:1.0.3-6.el5_5
+
+Complete!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CloudCore VPSでこのエラーに遭遇しました。&lt;/p&gt;
+
+&lt;p&gt;CentOSの最小構成でインストールされているようで、ごく普通のコマンドが使えないことが多いです。&lt;/p&gt;
+
+&lt;p&gt;パッケージが不足していないか注意が必要ですね。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:b209194a963523f744e005b58f948c6d&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiroponz/20070205&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiroponz/20070205&#39;, &#39;2007-02-05 &amp;#8211; プチ技術メモ&#39;]);&#34; &gt;2007-02-05 &amp;#8211; プチ技術メモ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CloudCore VPS初期設定</title>
+      <link>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</guid>
+      <description>
+
+&lt;p&gt;高スペック＆安価＆国産で話題のCloudCore VPSをレンタルしてみました。&lt;/p&gt;
+
+&lt;p&gt;ざっとスペックを確認すると、以下のようになりました。これで月980円はたしかにお得です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cat /etc/redhat-release
+CentOS release 5.6 (Final)
+
+# df -h
+Filesystem          サイズ  使用  残り 使用% マウント位置
+/dev/vda1              97G  5.0G   87G   6% /
+tmpfs                1003M     0 1003M   0% /dev/shm
+
+# cat /proc/cpuinfo
+processor       : 0
+vendor_id       : AuthenticAMD
+cpu family      : 16
+model           : 2
+model name      : AMD Phenom(tm) 9550 Quad-Core Processor
+stepping        : 3
+cpu MHz         : 2199.998
+cache size      : 512 KB
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 5
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1gb lm up pni cx16 popcnt lahf_lm cmp_legacy svm cr8_legacy altmovcr8 abm sse4a misalignsse
+bogomips        : 4399.99
+TLB size        : 1024 4K pages
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 48 bits virtual
+power management:
+
+# cat /proc/meminfo
+MemTotal:      2053764 kB
+MemFree:       1859380 kB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今後利用するかもしれないので、初期設定メモを残しておきます。&lt;/p&gt;
+
+&lt;h1 id=&#34;よく使うパッケージのインストール:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;よく使うパッケージのインストール&lt;/h1&gt;
+
+&lt;p&gt;CentOS最小構成でインストールされているらしく、よく使うパッケージが全然入っていません。入れておきましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install sudo vim-enhanced iptables vsftpd bzip2 gcc gcc-c++ make automake mlocate
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;導入しているパッケージの説明は下記の通り。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;パッケージ名&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;sudo&lt;/td&gt;
+&lt;td&gt;sudoコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vim-enhanced&lt;/td&gt;
+&lt;td&gt;標準で入っているviの高機能版&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;iptables&lt;/td&gt;
+&lt;td&gt;ファイアーウォール&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vsftpd&lt;/td&gt;
+&lt;td&gt;FTPデーモン&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;bzip2&lt;/td&gt;
+&lt;td&gt;bzip2圧縮・解凍&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;gcc, gcc-c++&lt;/td&gt;
+&lt;td&gt;コンパイル時に必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;make, automake&lt;/td&gt;
+&lt;td&gt;ソースからインストールする時必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mlocate&lt;/td&gt;
+&lt;td&gt;locate &amp;amp; updatedbコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vixie-cron&lt;/td&gt;
+&lt;td&gt;crontabコマンド &amp;amp; cronデーモン&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;crondは起動し、自動起動をオンにしておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/crond start
+# chkconfig crond on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、インストール済みのパッケージを更新しましょう。&lt;/p&gt;
+
+&lt;p&gt;私の場合100パッケージ(129MB)ありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;作業用ユーザー追加:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;作業用ユーザー追加&lt;/h1&gt;
+
+&lt;p&gt;rootでの作業はリスク上よろしくないので、作業用ユーザーを追加します。&lt;/p&gt;
+
+&lt;p&gt;wheelグループに追加することで、su権限が得られます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# useradd mojamoja
+# usermod -G wheel mojamoja
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;wheelグループのユーザーがsudoを実行できるよう設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# visudo
+
+----
+## Allows people in group wheel to run all commands
+%wheel  ALL=(ALL)       ALL
+↑この行のコメントアウトを外す。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;sshポートの変更:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;sshポートの変更&lt;/h1&gt;
+
+&lt;p&gt;sshポートデフォルトの22番ではポートスキャンの標的になりやすいので、変更します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#vim /etc/ssh/sshd_config
+
+以下の行を変更。
+
+#port 22
+port 10022
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sshデーモンを再起動して変更を反映します。&lt;/p&gt;
+
+&lt;p&gt;これで22番ポートではsshログインできなくなっています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/init.d/sshd restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;不要なデーモンの停止:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;不要なデーモンの停止&lt;/h1&gt;
+
+&lt;p&gt;初期状態では4つのデーモンしか自動起動設定になっておらず、特に停止するようなデーモンはありません。&lt;/p&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;ファイアーウォールの構築:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;ファイアーウォールの構築&lt;/h1&gt;
+
+&lt;p&gt;ssh(10022), FTP, HTTPで接続できるようポートを開放してやります。&lt;/p&gt;
+
+&lt;p&gt;下記シェルファイルを作成し、実行してください。&lt;/p&gt;
+
+&lt;p&gt;※コンソールから1行ずつ打つと、「/sbin/iptables -P INPUT DROP」設定直後にコンソールが操作不能になります。&lt;/p&gt;
+
+&lt;p&gt;その場合、コントロールパネルから再起動することで再度ログイン可能になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+/sbin/iptables -F
+/sbin/iptables -X
+
+/sbin/iptables -P INPUT DROP
+/sbin/iptables -P OUTPUT ACCEPT
+/sbin/iptables -P FORWARD DROP
+
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j DROP
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j DROP
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j DROP
+
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+/sbin/iptables -A INPUT -p tcp --dport 10022 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+/sbin/iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+/etc/rc.d/init.d/iptables save
+
+/sbin/service iptables restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chmod +x set_iptables.sh
+# ./set_iptables.sh
+ファイアウォールのルールを /etc/sysconfig/iptables に保存中[  OK  ]
+ファイアウォールルールを適用中:                            [  OK  ]
+チェインポリシーを ACCEPT に設定中filter                   [  OK  ]
+iptables モジュールを取り外し中                            [  OK  ]
+iptables ファイアウォールルールを適用中:                   [  OK  ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;無事設定できたら、サーバー起動時にサービスが開始するよう設定します。設定が間違ったままこれをonにすると、コントロールパネルから再起動してもログイン不能になるので注意してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chkconfig iptables on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;ftpを接続可能にする:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;FTPを接続可能にする&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;/etc/vsftpd/vsftpd.conf&lt;/strong&gt; を以下のように設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;以下の既存の行を修正する。
+
+# 匿名ユーザーのログインを禁止
+anonymous_enable=NO
+
+# asciiモードでファイルを転送可能にする
+ascii_upload_enable=YES
+ascii_download_enable=YES
+
+以下の行を追加。
+
+# ファイル所有者を数字ではなくユーザー名で表示する
+text_userdb_names=YES
+
+# ファイルの上書き時間が日本時間になる
+use_localtime=YES
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら起動し、自動起動もオンにしましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/vsftpd start
+vsftpd 用の vsftpd を起動中:                               [  OK  ]
+# chkconfig vsftpd on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FTPクライアントで10022番ポートにSFTP接続可能になっていることを確認してください。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tanaka.sakura.ad.jp/archives/001065.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tanaka.sakura.ad.jp/archives/001065.html&#39;, &#39;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&#39;]);&#34; &gt;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;さくらの社長による、自社のVPSの初期設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/a__z/20071011&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/a__z/20071011&#39;, &#39;CentOS:sudo を設定する &amp;#8211; 日々のメモ&#39;]);&#34; &gt;CentOS:sudo を設定する &amp;#8211; 日々のメモ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://weble.org/2011/05/16/sakura-vps-and-centos&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://weble.org/2011/05/16/sakura-vps-and-centos&#39;, &#39;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&#39;]);&#34; &gt;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;LAMP環境の構築手順も&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#39;, &#39;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&#39;]);&#34; &gt;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.searchman.info/linux/1070.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.searchman.info/linux/1070.html&#39;, &#39;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&#39;]);&#34; &gt;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vsftpdの設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#39;, &#39;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&#39;]);&#34; &gt;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

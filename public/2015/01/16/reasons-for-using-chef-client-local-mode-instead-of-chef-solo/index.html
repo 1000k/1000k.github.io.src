@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Chef Solo ではなく Chef Client Local Mode を使おう &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/">Chef Solo ではなく Chef Client Local Mode を使おう</a></h2>
+        <div class="post-content">
+          
+
+<p>2014/06/24 に Opscode 公式ブログで <a href="http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/', 'From Solo to Zero: Migrating to Chef Client Local Mode']);" >From Solo to Zero: Migrating to Chef Client Local Mode</a> という記事が公開されました。記事を要約すると「Chef Solo はオワコンだから Chef Client Local Mode を使え」ということのようです。</p>
+
+<h2 id="chef-client-local-mode-旧-chef-zero-って:519ef52691307b5f7476688034bf2c1d">Chef Client Local Mode (旧 Chef Zero) って？</h2>
+
+<p>Chef Client Local Mode (旧 Chef Zero) は Chef Solo の全ての機能を備えており、Chef Server に移行する際にも楽です。Chef Client 11.8.0 から採用されました。実行するには <code>chef-client</code> に <code>--local-mode</code> または <code>-z</code> オプションを付けます。</p>
+
+<p>Local Mode ではローカルのファイルシステムから揮発性の Chef Server を作り、</p>
+
+<p>Server-Client 構成と同じオペレーションが行われます。つまり Chef Server が無ければできなかった高度な機能を、サーバーレスで気軽に行うことができます。</p>
+
+<p>Chef Server のフル機能を、Chef Solo 同様の気軽さで使えるのが、Chef Client Local Mode と言っていいでしょう。</p>
+
+<h2 id="chef-solo-から-chef-client-local-mode-に移行するべき理由:519ef52691307b5f7476688034bf2c1d">Chef Solo から Chef Client Local mode に移行するべき理由</h2>
+
+<p>1&#46; Local Mode なら Server-Client で使える全ての機能 &#8212; environments, roles, (encrypted) data bags &#8212; が使える。ノードやレシピの検索機能も使える。</p>
+
+<p>2&#46; 特別なツールや knife プラグインは必要無い。</p>
+
+<p>3&#46; レシピ実行環境が Solo か Server かの分岐を書く必要が無くなる。例えば以下のようなコード。</p>
+
+<pre><code>if Chef::Config[:solo]
+    # do something
+else
+    # do something else
+end
+</code></pre>
+
+<p>4&#46; <code>chef_zero</code> を Test Kitchen の provisioner に使う際、 &#8220;fixture node objects&#8221; をテストデータとして使える。</p>
+
+<p>5&#46; 後に Chef Server 構成を使いたくなった時にすんなり移行できる。</p>
+
+<p>今すぐ Chef Solo をお払い箱にする必要はありませんが、公式に deprecated 扱いされているので、今後は Solo よりも Local Mode を使うことをお薦めします。これから Chef を始める人は、chef-apply か local mode を使うといいでしょう。</p>
+
+<h2 id="vagrant-で使う時はどうする:519ef52691307b5f7476688034bf2c1d">Vagrant で使う時はどうする？</h2>
+
+<p>Vagrant 1.7.0 より、Chef Client Local mode が使えるようになりました。単純に provisioner に <code>chef_zero</code> を指定するだけで動作します。</p>
+
+<p><a href="https://docs.vagrantup.com/v2/provisioning/chef_zero.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://docs.vagrantup.com/v2/provisioning/chef_zero.html', 'Chef Zero &#8211; Provisioning &#8211; Vagrant Documentation']);" >Chef Zero &#8211; Provisioning &#8211; Vagrant Documentation</a></p>
+
+<pre><code class="language-ruby">Vagrant.configure(&quot;2&quot;) do |config|
+  config.vm.provision &quot;chef_zero&quot; do |chef|
+    # Specify the local paths where Chef data is stored
+    chef.cookbooks_path = &quot;cookbooks&quot;
+    chef.roles_path = &quot;roles&quot;
+    chef.nodes_path = &quot;nodes&quot;
+
+    # Add a recipe
+    chef.add_recipe &quot;apache&quot;
+
+    # Or maybe a role
+    chef.add_role &quot;web&quot;
+  end
+end
+</code></pre>
+
+<h2 id="参考:519ef52691307b5f7476688034bf2c1d">参考</h2>
+
+<ul>
+<li><a href="http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/', 'From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog']);" >From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog</a></li>
+<li><a href="http://www.slideshare.net/YukihikoSawanobori/chef-2014" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.slideshare.net/YukihikoSawanobori/chef-2014', '2014年のChefとInfrastructure as code']);" >2014年のChefとInfrastructure as code</a></li>
+<li><a href="http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode', 'chef-client (executable) — Chef Docs # Run in Local Mode']);" >chef-client (executable) — Chef Docs # Run in Local Mode</a></li>
+<li><a href="http://docs.opscode.com/ctl_chef_solo.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://docs.opscode.com/ctl_chef_solo.html', 'chef-solo (executable) — Chef Docs']);" >chef-solo (executable) — Chef Docs</a>
+
+<ul>
+<li>一番上に warning で「<code>--local-mode</code> を検討しなよ」と書いてある。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> CakePHP で beforeFilter() 以降の処理を実行しないようにする方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/12/09/skip-procedures-after-beforefilter-in-cakephp/">CakePHP で beforeFilter() 以降の処理を実行しないようにする方法</a></h2>
+        <div class="post-content">
+          
+
+<p>サービスをメンテナンス中には、どこのページにアクセスされてもメンテナンス用画面を表示できるようにしたいでしょう。</p>
+
+<p>例えば CakePHP で API を作ったなら、メンテナンス時にはどのページにアクセスしても以下のようなレスポンスが返ってくるようにしたい。</p>
+
+<pre><code>{
+    &quot;result&quot;: &quot;NG&quot;,
+    &quot;message&quot;: &quot;This service is now under maintenance.&quot;
+}
+</code></pre>
+
+<p>これを実現するためのコードを考えました。</p>
+
+<p>なお、CakePHP 2.4.2 で動作確認済みです。</p>
+
+<h2 id="やりたいこと:882e9f5bab62127de673717c90df9029">やりたいこと</h2>
+
+<p>メンテナンスモードが ON の時は、どのアクションを叩かれても JSON でエラーレスポンスを返すようにする。</p>
+
+<h2 id="コード:882e9f5bab62127de673717c90df9029">コード</h2>
+
+<pre><code>App::uses('Controller', 'Controller');
+
+class AppController extends Controller {
+/**
+ * beforeFilter
+ * サービスがメンテナンス中なら、メンテナンス画面を描画する。
+ */
+    public function beforeFilter() {
+        if ($this-&gt;isUnderMaintenance()) {
+            $this-&gt;set('output', [
+                'result' =&gt; 'NG',
+                'message' =&gt; 'This service is now under maintenance.'
+            ]);
+        }
+    }
+
+/**
+ * beforeRender
+ * ini/json形式の出し分けをする。
+ */
+    public function beforeRender() {
+        $this-&gt;viewClass = 'Json';
+        $this-&gt;set('_serialize', 'output');
+    }
+
+/**
+ * メンテナンスモード時はアクションを実行しないようにする。
+ *
+ * @param CakeRequest $request
+ */
+    public function invokeAction(CakeRequest $request) {
+        if ($this-&gt;isUnderMaintenance()) {
+            return false;
+        }
+
+        return parent::invokeAction($request);
+    }
+
+/**
+ * メンテナンスファイルが存在しているとメンテナンス中。
+ *
+ * @return boolean メンテナンス中なら true
+ */
+    public function isUnderMaintenance() {
+        return file_exists('/tmp/maintenanceFile');
+    }
+}
+</code></pre>
+
+<h2 id="ポイント:882e9f5bab62127de673717c90df9029">ポイント</h2>
+
+<ul>
+<li><code>AppController::beforeFilter()</code> に実装することで、全てのコントローラーに影響させることができます。</li>
+<li><code>invokeAction()</code> をオーバーライドして、メンテナンスモード時にはアクションを実行させないようにしています。これが無いと、画面にはメンテナンス用の表示がされていても、裏側では結局アクションが実行されてしまいます。</li>
+</ul>
+
+<h2 id="余談:882e9f5bab62127de673717c90df9029">余談</h2>
+
+<p>本当は CakePHP 2.1 から採用された <a href="http://book.cakephp.org/2.0/en/core-libraries/events.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/core-libraries/events.html', 'Events System']);" >Events System</a> を使って <code>beforeFilter()</code> 以降のアクションを実行されないようにしたかったのですが、やり方がわかりませんでした。アクションを detach する方法をご存知の方がいたら教えて下さい。</p>
+
+<h2 id="参考:882e9f5bab62127de673717c90df9029">参考</h2>
+
+<ul>
+<li><a href="http://book.cakephp.org/2.0/en/views/json-and-xml-views.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/views/json-and-xml-views.html', 'JSON and XML views — CakePHP Cookbook v2.x documentation']);" >JSON and XML views — CakePHP Cookbook v2.x documentation</a>
+
+<ul>
+<li>ビューを使わず JSON で出力を行う方法が書かれています。</li>
+</ul></li>
+<li><a href="http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks', 'Controllers — CakePHP Cookbook v2.x documentation']);" >Controllers — CakePHP Cookbook v2.x documentation</a></li>
+<li><a href="http://api.cakephp.org/2.4/class-Controller.html#_invokeAction" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://api.cakephp.org/2.4/class-Controller.html#_invokeAction', 'CakeAPI > invokeAction&rsquo;]);&rdquo; &gt;CakeAPI &gt; invokeAction</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

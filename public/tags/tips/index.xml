@@ -1,0 +1,1060 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tips on 1000g</title>
+    <link>http://1000k.github.io/tags/tips/</link>
+    <description>Recent content in Tips on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 28 Jan 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Apache2 にオレオレ証明書で HTTPS アクセスできるようにする手順</title>
+      <link>http://1000k.github.io/2014/01/28/how-to-access-apaches2-with-self-certification/</link>
+      <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/28/how-to-access-apaches2-with-self-certification/</guid>
+      <description>
+
+&lt;p&gt;よくやるけどすぐ忘れるのでメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証環境:1ec5ca8028cd506870889668379eecae&#34;&gt;検証環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 6.3&lt;/li&gt;
+&lt;li&gt;Apache 2.2.26&lt;/li&gt;
+&lt;li&gt;設定ファイルの格納フォルダ: &lt;code&gt;/usr/local/apache2/conf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;httpd.conf に &lt;code&gt;Include conf.d/*.conf&lt;/code&gt; を書き、&lt;code&gt;/usr/local/apache2/conf.d/*.conf&lt;/code&gt; を自動ロードできるようにしてあります。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;チュートリアル:1ec5ca8028cd506870889668379eecae&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;p&gt;オレオレ証明書を作る。(有効期限は10年)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /usr/local/apache2/conf/
+$ sudo mkdir ssl.crt
+$ sudo mkdir ssl.key
+$ sudo sh -c &amp;quot;openssl genrsa 2048 &amp;gt; ssl.key/server.key&amp;quot;
+$ sudo sh -c &amp;quot;openssl req -new -key ssl.key/server.key &amp;gt; server.csr&amp;quot;
+(質問は全てデフォルトのまま Enter)
+$ sudo sh -c &amp;quot;openssl x509 -days 3650 -req -signkey ssl.key/server.key &amp;amp;lt; server.csr &amp;gt; ssl.crt/server.crt&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;https アクセスを有効にする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo sh -c &amp;quot;cat &amp;amp;lt;&amp;amp;lt;EOT &amp;gt; /usr/local/apache2/conf.d/ssl.conf
+NameVirtualHost *:443
+Listen 443
+
+&amp;amp;lt;VirtualHost *:443&amp;gt;
+    DocumentRoot /var/www
+
+    SSLEngine on
+    SSLCertificateFile conf/ssl.crt/server.crt
+    SSLCertificateKeyFile conf/ssl.key/server.key
+&amp;amp;lt;/VirtualHost&amp;gt;
+EOT&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apache を再起動する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service httpd restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ダン！&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:1ec5ca8028cd506870889668379eecae&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://smokycat.info/ubuntu/440&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://smokycat.info/ubuntu/440&#39;, &#39;ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info&#39;]);&#34; &gt;ubuntuにオレオレ証明書を入れてapacheにhttpsできるようにする話。 | smokycat.info&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/ozuma/20130511/1368284304&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/ozuma/20130511/1368284304&#39;, &#39;オレオレ証明書をopensslで作る（詳細版） &amp;#8211; ろば電子が詰まっている&#39;]);&#34; &gt;オレオレ証明書をopensslで作る（詳細版） &amp;#8211; ろば電子が詰まっている&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ヘッダーとフッターを固定しつつ高さ100% の Google Maps を描画する方法</title>
+      <link>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</link>
+      <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/893s2/2/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/893s2/2/&#39;, &#39;このデモ&#39;]);&#34; &gt;このデモ&lt;/a&gt;を見れば、何をやりたいかすぐ把握できると思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_1.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_1.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_1-300x225.png&#34; alt=&#34;map_1&#34; width=&#34;300&#34; height=&#34;225&#34; class=&#34;alignnone size-medium wp-image-1683&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_2.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_2.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_2-190x300.png&#34; alt=&#34;map_2&#34; width=&#34;190&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-1684&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ウィンドウの幅や高さを変えても、ヘッダーとフッターは常に同じ高さのままで、マップの部分はウィンドウサイズに合うように伸縮しています。&lt;/p&gt;
+
+&lt;p&gt;以下、このようなコードの実装方法を書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード:58e354fc35f3ca4266379278104f5f1b&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;まずはお決まりの Google Maps 呼び出しコードと、HTML の構造です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div id=&amp;quot;container&amp;quot;&amp;gt;
+  &amp;amp;lt;header&amp;gt;header&amp;amp;lt;/header&amp;gt;
+
+
+
+  &amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;map_canvas&amp;quot; style=&amp;quot;width: 100%; height: 100%;&amp;quot;&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+      &amp;amp;lt;footer&amp;gt;This footer is absolutely positioned&amp;amp;lt;/footer&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+&amp;lt;!-- /#container --&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これについては説明は不要でしょう。ページ全体を覆う &lt;code&gt;#container&lt;/code&gt; の中に、ヘッダーとコンテンツとフッターがあります。&lt;/p&gt;
+
+&lt;p&gt;次に、ポイントとなる CSS は以下のとおりです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;html,body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* needed for container min-height */
+  background: #300;
+}
+
+#container {
+  background: #ccc;
+  height: 100%;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  /*height:auto !important;  real browsers */
+  height:100%; /* IE6: treaded as min-height*/
+
+  min-height:100%; /* real browsers */
+}
+
+header {
+  height: 108px;
+  position: relative;
+  background: #0ff;
+}
+
+#content{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  margin-top: 108px;    /* header&#39;s height */
+  width: 100%;
+}
+
+footer {
+  position: absolute;
+  clear: both;
+  width: 100%;
+  height: 40px;
+  bottom: 0;        /* stick to bottom */
+  background: #ff0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;全体を覆う &lt;code&gt;#container&lt;/code&gt; には &lt;code&gt;min-height: 100%;&lt;/code&gt; を指定し、ブラウザの高さいっぱいに描画するようにしています。また、&lt;code&gt;position: relative;&lt;/code&gt; を指定することで、その内部で自由に要素を配置できるようにしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;header&lt;/code&gt; に関しては特にコメントは不要ですね。ただ高さを指定しているだけです。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;#content&lt;/code&gt; にはいくつか工夫があります。まず、&lt;code&gt;position: absolute; top: 0; bottom: 0;&lt;/code&gt; によって、要素の高さを 100% にしています。次に、&lt;code&gt;margin-top: 108px;&lt;/code&gt; というように header と同じ高さでマージンを作ることで、ヘッダーとマップを隙間なく描画しています。&lt;/p&gt;
+
+&lt;p&gt;最後に &lt;code&gt;footer&lt;/code&gt; ですが、&lt;code&gt;position: absolute; bottom: 0;&lt;/code&gt; によって、常に &lt;code&gt;#container&lt;/code&gt; の最下部に貼り付くようにしています。&lt;/p&gt;
+
+&lt;p&gt;実現したいことはシンプルですが、実装するのに結構工夫が必要だったのでメモしておきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:58e354fc35f3ca4266379278104f5f1b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#39;, &#39;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&#39;]);&#34; &gt;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;今回のデモは、この Q&amp;amp;A に書かれているコードをシンプルにしただけです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CakePHP で beforeFilter() 以降の処理を実行しないようにする方法</title>
+      <link>http://1000k.github.io/2013/12/09/skip-procedures-after-beforefilter-in-cakephp/</link>
+      <pubDate>Mon, 09 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/09/skip-procedures-after-beforefilter-in-cakephp/</guid>
+      <description>
+
+&lt;p&gt;サービスをメンテナンス中には、どこのページにアクセスされてもメンテナンス用画面を表示できるようにしたいでしょう。&lt;/p&gt;
+
+&lt;p&gt;例えば CakePHP で API を作ったなら、メンテナンス時にはどのページにアクセスしても以下のようなレスポンスが返ってくるようにしたい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;result&amp;quot;: &amp;quot;NG&amp;quot;,
+    &amp;quot;message&amp;quot;: &amp;quot;This service is now under maintenance.&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを実現するためのコードを考えました。&lt;/p&gt;
+
+&lt;p&gt;なお、CakePHP 2.4.2 で動作確認済みです。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:882e9f5bab62127de673717c90df9029&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;メンテナンスモードが ON の時は、どのアクションを叩かれても JSON でエラーレスポンスを返すようにする。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード:882e9f5bab62127de673717c90df9029&#34;&gt;コード&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;App::uses(&#39;Controller&#39;, &#39;Controller&#39;);
+
+class AppController extends Controller {
+/**
+ * beforeFilter
+ * サービスがメンテナンス中なら、メンテナンス画面を描画する。
+ */
+    public function beforeFilter() {
+        if ($this-&amp;gt;isUnderMaintenance()) {
+            $this-&amp;gt;set(&#39;output&#39;, [
+                &#39;result&#39; =&amp;gt; &#39;NG&#39;,
+                &#39;message&#39; =&amp;gt; &#39;This service is now under maintenance.&#39;
+            ]);
+        }
+    }
+
+/**
+ * beforeRender
+ * ini/json形式の出し分けをする。
+ */
+    public function beforeRender() {
+        $this-&amp;gt;viewClass = &#39;Json&#39;;
+        $this-&amp;gt;set(&#39;_serialize&#39;, &#39;output&#39;);
+    }
+
+/**
+ * メンテナンスモード時はアクションを実行しないようにする。
+ *
+ * @param CakeRequest $request
+ */
+    public function invokeAction(CakeRequest $request) {
+        if ($this-&amp;gt;isUnderMaintenance()) {
+            return false;
+        }
+
+        return parent::invokeAction($request);
+    }
+
+/**
+ * メンテナンスファイルが存在しているとメンテナンス中。
+ *
+ * @return boolean メンテナンス中なら true
+ */
+    public function isUnderMaintenance() {
+        return file_exists(&#39;/tmp/maintenanceFile&#39;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ポイント:882e9f5bab62127de673717c90df9029&#34;&gt;ポイント&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;AppController::beforeFilter()&lt;/code&gt; に実装することで、全てのコントローラーに影響させることができます。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;invokeAction()&lt;/code&gt; をオーバーライドして、メンテナンスモード時にはアクションを実行させないようにしています。これが無いと、画面にはメンテナンス用の表示がされていても、裏側では結局アクションが実行されてしまいます。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;余談:882e9f5bab62127de673717c90df9029&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;本当は CakePHP 2.1 から採用された &lt;a href=&#34;http://book.cakephp.org/2.0/en/core-libraries/events.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/2.0/en/core-libraries/events.html&#39;, &#39;Events System&#39;]);&#34; &gt;Events System&lt;/a&gt; を使って &lt;code&gt;beforeFilter()&lt;/code&gt; 以降のアクションを実行されないようにしたかったのですが、やり方がわかりませんでした。アクションを detach する方法をご存知の方がいたら教えて下さい。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:882e9f5bab62127de673717c90df9029&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/2.0/en/views/json-and-xml-views.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/2.0/en/views/json-and-xml-views.html&#39;, &#39;JSON and XML views — CakePHP Cookbook v2.x documentation&#39;]);&#34; &gt;JSON and XML views — CakePHP Cookbook v2.x documentation&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ビューを使わず JSON で出力を行う方法が書かれています。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks&#39;, &#39;Controllers — CakePHP Cookbook v2.x documentation&#39;]);&#34; &gt;Controllers — CakePHP Cookbook v2.x documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://api.cakephp.org/2.4/class-Controller.html#_invokeAction&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://api.cakephp.org/2.4/class-Controller.html#_invokeAction&#39;, &#39;CakeAPI &gt; invokeAction&amp;rsquo;]);&amp;rdquo; &amp;gt;CakeAPI &amp;gt; invokeAction&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git の submodule を最新にする方法</title>
+      <link>http://1000k.github.io/2013/10/19/command-to-update-git-submodule/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/19/command-to-update-git-submodule/</guid>
+      <description>
+
+&lt;p&gt;「そんなの &lt;code&gt;git submodule update&lt;/code&gt; で一発だろ」と思っていましたが、全然違いました。このコマンドをいくら叩いても、標準出力には何も表示されず、submodule はちっとも更新されません。&lt;/p&gt;
+
+&lt;p&gt;submodule を最新の状態にするコマンドは &lt;code&gt;git submodule foreach git pull origin master&lt;/code&gt; です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:e45e994ba8135917364d3e9a430429e3&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/5828324/update-git-submodule&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/5828324/update-git-submodule&#39;, &#39;Update git submodule &amp;#8211; Stack Overflow&#39;]);&#34; &gt;Update git submodule &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>grunt watch が遅い時の改善方法</title>
+      <link>http://1000k.github.io/2013/10/20/speed-up-grunt-watch/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/20/speed-up-grunt-watch/</guid>
+      <description>
+
+&lt;p&gt;Grunt を使うからには &lt;a href=&#34;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#39;, &#39;grunt-contrib-watch&#39;]);&#34; &gt;grunt-contrib-watch&lt;/a&gt; でファイルの変更を監視して自動ビルドしたいのですが、どうも遅い。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grunt watch
+
+Running &amp;quot;watch&amp;quot; task
+Waiting...OK
+&amp;gt;&amp;gt; File &amp;quot;src/sass/screen.scss&amp;quot; changed.
+
+Running &amp;quot;compass:dist&amp;quot; (compass) task
+overwrite app/css/screen.css (0.333s)
+Compilation took 0.342s
+
+Running &amp;quot;cssmin:add_banner&amp;quot; (cssmin) task
+File app/css/screen.min.css created.
+
+Running &amp;quot;cssmin:minify&amp;quot; (cssmin) task
+File app/css/app.min.css created.
+File app/css/screen.min.css created.
+
+Done, without errors.
+Completed in 12.602s at Sat Oct 19 2013 16:26:32 GMT+0000 (UTC) - Waiting...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;タスクの実行自体は1秒もかかっていないのに、全体では12秒ほどかかっていました。&lt;/p&gt;
+
+&lt;p&gt;Gruntfile の設定を見直すことで改善できたので、そのやり方をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;grunt watch&lt;/code&gt; のボトルネックは、ファイルの変更を検知後にタスクプロセスを子プロセスとしてスポーンさせる部分にあるようです。&lt;/p&gt;
+
+&lt;p&gt;したがって、子プロセスとしてタスクを起動するオプションを無効にすることで回避できます。&lt;/p&gt;
+
+&lt;p&gt;以下のように、Gruntfile.js 内で &lt;code&gt;spawn: false&lt;/code&gt; を指定してやれば OK です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports = function(grunt) {
+  grunt.initConfig({
+    // ...
+    watch: {
+      options: {
+        spawn: false
+      },
+      css: {
+        files: [&#39;src/sass/*.scss&#39;],
+        tasks: [&#39;compass&#39;, &#39;cssmin&#39;]
+      }
+    }
+  });
+  // ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで大幅にスピードが改善されました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grunt watch
+
+Running &amp;quot;watch&amp;quot; task
+Waiting...OK
+&amp;gt;&amp;gt; File &amp;quot;src/sass/screen.scss&amp;quot; changed.
+
+
+Running &amp;quot;compass:dist&amp;quot; (compass) task
+identical app/css/screen.css (0.319s)
+Compilation took 0.328s
+
+Running &amp;quot;cssmin:add_banner&amp;quot; (cssmin) task
+File app/css/screen.min.css created.
+
+Running &amp;quot;cssmin:minify&amp;quot; (cssmin) task
+File app/css/app.min.css created.
+File app/css/screen.min.css created.
+
+Running &amp;quot;watch&amp;quot; task
+Completed in 0.712s at Sat Oct 19 2013 16:27:58 GMT+0000 (UTC) - Waiting...
+OK
+&amp;gt;&amp;gt; File &amp;quot;src/sass/screen.scss&amp;quot; changed.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;12秒が0.7秒に。イェーイ！&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:bcbef8a25879c17668c0f2da3a272309&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt-contrib-watch/issues/69&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt-contrib-watch/issues/69&#39;, &#39;Why Watch is so slow compared to Regarde · Issue #69 · gruntjs/grunt-contrib-watch&#39;]);&#34; &gt;Why Watch is so slow compared to Regarde · Issue #69 · gruntjs/grunt-contrib-watch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#39;, &#39;gruntjs/grunt-contrib-watch#optionsnospawn&#39;]);&#34; &gt;gruntjs/grunt-contrib-watch#optionsnospawn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PHPUnit の Expectation を簡潔に書く TIPS</title>
+      <link>http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/</link>
+      <pubDate>Tue, 24 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/09/24/tips-to-simplify-writing-expection-of-phpunit/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit の小ネタです。&lt;/p&gt;
+
+&lt;p&gt;PHPUnit でモックを使ったテストケースを書くと、以下のように記述量が多くなってうんざりします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+class FooClassTest extends PHPUnit_Framework_TestCase {
+    /**
+     * @covers FooClass::doSomething
+     */
+    public function testDoSomething() {
+        // FooClass が依存している BarClass のモックを作る。
+        // 何もしないように、__construct() と __clone() は無効化しておく。
+        $mockBar = $this-&amp;gt;getMockBuilder(&#39;BarClass&#39;)
+            -&amp;gt;disableOriginalConstructor()
+            -&amp;gt;disableOriginalClone()
+            -&amp;gt;getMock();
+
+        // BarClass::barMethod のモックの挙動を変える。
+        $mockBar-&amp;gt;expect($this-&amp;gt;any())
+            -&amp;gt;method(&#39;barMethod&#39;)
+            -&amp;gt;will($this-&amp;gt;returnValue(true));
+
+        $object = new FooClass($mockBar);
+
+        $this-&amp;gt;assertTrue($object-&amp;gt;doSomething());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;長い、書きづらい、読みづらい。こんなテストケース、2つ以上書きたくないですね。もっと楽に書くための TIPS をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;まず、何もしない「プレーンな」モックオブジェクトを作るメソッドを作りましょう。&lt;code&gt;PHPUnit_Framework_TestCase&lt;/code&gt; を継承した &lt;code&gt;MyTestCase&lt;/code&gt; に実装してやります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class MyTestCase extends PHPUnit_Framework_TestCase {
+
+    /**
+     * 元のクラスが完全に何もしないよう擬装したモックを作成する。
+     *
+     * - コンストラクタが無効
+     * - クローンコンストラクタが無効
+     *
+     * @param string $class_name
+     * @return mixed 指定したクラスのモック
+     * @throws InvalidArgumentException 指定したクラス名が見つからない場合
+     */
+    protected function _getPlainMock($class_name) {
+        if (!class_exists($class_name)) {
+            throw new InvalidArgumentException(&amp;quot;{$class_name} does not exist.&amp;quot;);
+        }
+
+        return $this-&amp;gt;getMockBuilder($class_name)
+            -&amp;gt;disableOriginalConstructor()
+            -&amp;gt;disableOriginalClone()
+            -&amp;gt;getMock();
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、PHPUnit の Expectation はメソッドチェーンで連続して指定できます (&amp;#8220;-&amp;gt;&amp;#8221; 演算子で繋げて書ける) が、そもそも記述量が多いです。いちいち this this 書くのも煩わしい。&lt;/p&gt;
+
+&lt;p&gt;そこで、Expectation をセットするためのメソッドを作ってやると楽になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+    /**
+     * モックオブジェクトに Expectation を設定する。
+     *
+     * @param Object &amp;amp;#038;$mock モックオブジェクト
+     * @param string $matcher マッチャー ([any|once|never|...])
+     * @param string $method メソッド名
+     * @param mixed $return_value 期待する戻り値
+     */
+    protected function _setExpectation(&amp;amp;#038;$mock, $matcher, $method, $return_value = null) {
+        $mock-&amp;gt;expects($this-&amp;gt;$matcher())
+            -&amp;gt;method($method)
+            -&amp;gt;will($this-&amp;gt;returnValue($return_value));
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを使うと、一番最初のテストケースは以下のように書き直せます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require_once &#39;MyTestCase.php&#39;;
+
+class FooClassTest extends MyTestCase {
+    /**
+     * @covers FooClass::doSomething
+     * @test
+     */
+    function doSomething() {
+        $mockBar = $this-&amp;gt;_getPlainMock(&#39;BarClass&#39;)
+        $this-&amp;gt;_setExpectation($mockBar, &#39;any&#39;, &#39;barMethod&#39;, true);
+
+        $object = new FooClass($mockBar);
+
+        $this-&amp;gt;assertTrue($object-&amp;gt;doSomething());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単になりましたね！9行もあったコードが4行に減りました。&lt;/p&gt;
+
+&lt;p&gt;ちなみに、さり気なくテストケースの &lt;code&gt;public&lt;/code&gt; は削除しています。PHP の仕様上、public なメソッドはわざわざそれを書く必要がありません。&lt;/p&gt;
+
+&lt;p&gt;また、PHPDoc 部分に &lt;code&gt;@test&lt;/code&gt; アノテーションを付けると、メソッド名を &lt;code&gt;test&lt;/code&gt; で始めなくてもテストケースとして認識されるようになります。私はこの方が読みやすいので、最近はこう書くことが多いです。&lt;/p&gt;
+
+&lt;p&gt;こういう改善をしても、Ruby に慣れているとまだ長く感じます。「$」「&amp;#8217;」「&amp;gt;」などの記号を打つのも煩わしいです。Ruby 使いてえなあ。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:66eb9e16e3cbfb7a24c972ec7c7d6f12&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://phpunit.de/manual/3.8/ja/test-doubles.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpunit.de/manual/3.8/ja/test-doubles.html&#39;, &#39;PHPUnit 公式マニュアル &gt; 第10章 テストダブル&amp;rsquo;]);&amp;rdquo; &amp;gt;PHPUnit 公式マニュアル &amp;gt; 第10章 テストダブル&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://phpunit.de/manual/3.8/ja/appendixes.annotations.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://phpunit.de/manual/3.8/ja/appendixes.annotations.html&#39;, &#39;付録B アノテーション&#39;]);&#34; &gt;付録B アノテーション&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Netcat でサーバー間の疎通を確認する方法</title>
+      <link>http://1000k.github.io/2013/04/10/how-to-check-communication-between-the-server-using-netcat/</link>
+      <pubDate>Wed, 10 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/10/how-to-check-communication-between-the-server-using-netcat/</guid>
+      <description>
+
+&lt;p&gt;サーバー間のネットワークが繋がっているか確認したい場合、Netcat (nc) コマンドが便利です。&lt;/p&gt;
+
+&lt;h2 id=&#34;使うコマンド:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;使うコマンド&lt;/h2&gt;
+
+&lt;p&gt;受信側では &amp;#8220;-l&amp;#8221; (Listen mode) オプションを使い、待受状態にします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ nc -l {listenするポート番号}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;送信側は &amp;#8220;-z&amp;#8221; (Zero-I/O mode) オプションを使い、指定したポートに接続できるかテストします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ nc -v -z {受信側のIP} {受信側のポート番号}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;例:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;例&lt;/h2&gt;
+
+&lt;p&gt;host001 のポート 4949 に、host002 から疎通できるかどうかテストするには、下記のようなコマンドを叩きます。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-受信側のポートを-listen-する:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;1. 受信側のポートを listen する&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;[host001]$ nc -v -k -l 4949
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;#8220;-v&amp;#8221; でより多くのメッセージを出力し、&amp;#8221;-k&amp;#8221; でコネクションを永続化することができます。（&amp;#8221;-k&amp;#8221; を指定しないと1回受信するたびに nc が終了します）&lt;/p&gt;
+
+&lt;h3 id=&#34;2-送信側から接続できるか確かめる:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;2. 送信側から接続できるか確かめる&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;[host002]$ nc -v -z host001 4949
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;接続 OK の場合、以下のようなメッセージが出力されます。&lt;/p&gt;
+
+&lt;p&gt;送信側&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Connection to host001 4949 port [tcp/munin] succeeded!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;受信側&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Connection from host002 port 4949 [tcp/munin] accepted
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:eab99a5c8d7d52c5c56e0b2e7fa8bbba&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.techrepublic.com/article/learn-the-many-uses-of-netcat/5689982&#39;, &#39;Learn the many uses of netcat | TechRepublic&#39;]);&#34; &gt;Learn the many uses of netcat | TechRepublic&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.usupi.org/sysad/190.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.usupi.org/sysad/190.html&#39;, &#39;Netcat でネットワークをもう少し活用する &amp;#8211; いますぐ実践! Linuxシステム管理 / Vol.190&#39;]);&#34; &gt;Netcat でネットワークをもう少し活用する &amp;#8211; いますぐ実践! Linuxシステム管理 / Vol.190&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>var_dump()の結果をファイルに出力する</title>
+      <link>http://1000k.github.io/2011/11/04/export-var-dump-result-into-file/</link>
+      <pubDate>Fri, 04 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/11/04/export-var-dump-result-into-file/</guid>
+      <description>
+
+&lt;p&gt;file_put_contents()とvar_export()を組み合わせれば、1行で実現できます。&lt;/p&gt;
+
+&lt;h1 id=&#34;コード:48c102883614406009a90644938731e2&#34;&gt;コード&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+ * 変数のvar_dump()結果をログファイルに出力する。
+ *
+ * @param mixed $var ダンプしたい変数
+ * @param string $path ログファイルのパス
+ * @return int ファイルに書き込まれたバイト数。失敗した場合falseを返す。
+ */
+public function varExportToLog($var, $path) {
+    return file_put_contents($path, $var_export($var, true), FILE_APPEND);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;参考:48c102883614406009a90644938731e2&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://plaza.rakuten.co.jp/hknopage/diary/201109060000/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://plaza.rakuten.co.jp/hknopage/diary/201109060000/&#39;, &#39;PHPメモ：var_export() &amp;#8211; まんじうこわい@楽 &amp;#8211; 楽天ブログ（Blog）&#39;]);&#34; &gt;PHPメモ：var_export() &amp;#8211; まんじうこわい@楽 &amp;#8211; 楽天ブログ（Blog）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>vmstatの値をロギングする</title>
+      <link>http://1000k.github.io/2011/09/28/logging-vmstat-values/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/09/28/logging-vmstat-values/</guid>
+      <description>
+
+&lt;p&gt;vmstatの値をファイルに出力したいとき、次のコマンドが使えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nohup vmstat -n -S M 1 | awk &#39;{ print strftime(&amp;quot;%Y/%m/%d %H:%M:%S&amp;quot;), $0 } { system(&amp;quot;:&amp;quot;) }&#39; &amp;gt;&amp;gt; /path/to/log &amp;amp;#038;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2011/09/28 15:51:07 procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------
+2011/09/28 15:51:07  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+2011/09/28 15:51:07  1  0      0    251    153    358    0    0     0     9    1    0  0  0 99  0  0
+2011/09/28 15:51:08  0  0      0    251    153    358    0    0     0     0 1012   40  0  1 99  0  0
+2011/09/28 15:51:09  0  0      0    251    153    358    0    0     0     0 1004   37  0  0 100  0  0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このプロセスを終了したい場合は、下記のようにkillしてやればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pgrep vmstat      # vmstatのprocess idを取得する
+29248
+
+$ kill {上で出てきたpid}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;参考:981194324cf5b426a797d33ec4db9e80&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://babyp.blog55.fc2.com/blog-entry-446.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://babyp.blog55.fc2.com/blog-entry-446.html&#39;, &#39;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&#39;]);&#34; &gt;サーバのリソースを定期的に出力しとく方法：なんとなしの日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/higher_tomorrow/20110601/1306887919&#39;, &#39;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&#39;]);&#34; &gt;（今さら） vmstat の結果に時間をつけてファイルに出力する &amp;#8211; あしのあしあと&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://itpro.nikkeibp.co.jp/article/COLUMN/20060227/230850/&#39;, &#39;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&#39;]);&#34; &gt;【 nohup 】 ログアウトした後もコマンドを実行し続ける &amp;#8211; Linuxコマンド集：ITpro&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>svnでdiffの行数を取得する</title>
+      <link>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</link>
+      <pubDate>Wed, 03 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/</guid>
+      <description>
+
+&lt;p&gt;どれだけコーディングしたかチェックするため、svnのdiffの行数を取得するコマンドを考えました。&lt;/p&gt;
+
+&lt;p&gt;下のコマンドを叩くと、変更された行の総数が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(2011-08-17修正) 以前のコードはdiffのヘッダ行まで取得してしまっていたので、正しい数値が得られるよう修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;svn diff -r {before}[:{after}] -x -b {path} | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば「チェンジセット301～310で uso.php に発生した差分の総行数」は、下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# svn diff -r 301:310 -x -b ./uso.php | grep -E &#39;^[+\-][[:blank:]]&#39; | wc -l
+500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ロジックは、&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;空白文字の差分（インデントや空行の削除）を無視してdiffを取る&lt;/li&gt;
+&lt;li&gt;差分行だけ(「+ 」「- 」どちらかから始まっている行)を取得する&lt;/li&gt;
+&lt;li&gt;行数をカウントする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;となっています。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8ae62bd64dbb38a5a9b5b7de400f164f&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://openlab.dino.co.jp/2007/10/23/184825129.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://openlab.dino.co.jp/2007/10/23/184825129.html&#39;, &#39;svn diffで-wオプションを使う — ディノオープンラボラトリ&#39;]);&#34; title=&#34;svn diffで-wオプションを使う — ディノオープンラボラトリ&#34;&gt;svn diffで-wオプションを使う — ディノオープンラボラトリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.enjoitech.jp/article/71&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.enjoitech.jp/article/71&#39;, &#39;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&#39;]);&#34; title=&#34;Linux である文字を含む行を削除したい - Enjoi Blog&#34;&gt;Linux である文字を含む行を削除したい &amp;#8211; Enjoi Blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>fixtureをディレクトリに分けて管理する</title>
+      <link>http://1000k.github.io/2011/07/05/mange-fixtures-in-several-directories/</link>
+      <pubDate>Tue, 05 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/07/05/mange-fixtures-in-several-directories/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;(2011/07/15 Update) 7/13以前のコードに誤りがあり、正しく動作しなかったので修正しました。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:06041edaaf4ad9c158653456ce78f617&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;CakePHPの規則に従うと、フィクスチャは /app/test/fixtures/ ディレクトリにすべて入れなければなりません。この場合、「同じモデルを使うけど、テストケース毎に異なるフィクスチャを代入したい」という要望をかなえるのが難しいです。&lt;/p&gt;
+
+&lt;p&gt;例えば、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Hige コントローラー&lt;/li&gt;
+&lt;li&gt;Moja コントローラー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;どちらも同じ Uso モデルを使う場合を考えます。&lt;/p&gt;
+
+&lt;p&gt;それぞれで違うフィクスチャを使いたくても、Uso モデルのフィクスチャは uso_fixture.php の1個です。フィクスチャの値を両方のテストケースで使えるようにするのは難しく、まして複数人でテスト設計するのは困難です。&lt;/p&gt;
+
+&lt;p&gt;そこで、それぞれのコントローラーから呼び出すフィクスチャを&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;/app/test/fixtures/hige/uso_fixture.php&lt;/li&gt;
+&lt;li&gt;/app/test/fixtures/moja/uso_fixture.php&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;と使い分けられるようにする方法を考えました。&lt;/p&gt;
+
+&lt;h2 id=&#34;やり方:06041edaaf4ad9c158653456ce78f617&#34;&gt;やり方&lt;/h2&gt;
+
+&lt;p&gt;CakeTestCase を拡張した MyCakeTestCase を作成し、その中で _loadFixtures をオーバーライドします。&lt;/p&gt;
+
+&lt;p&gt;なお、参考にしたバージョンは CakePHP 1.3.10 です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;/app/libs/my_cake_test_case.php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+/**
+ * Extension of CakeTestCase Class
+ *
+ * @author  $Author: senge.keiyo $
+ * @version $id$
+ */
+class MyCakeTestCase extends CakeTestCase {
+
+    /**
+     * Load fixtures specified in var $fixtures.
+     *
+     * fixtureディレクトリ配下の任意のディレクトリにフィクスチャを配置できるよう拡張。
+     *
+     * 例えば $fixtures に &#39;app.unit_test.uso&#39; と指定すると、
+     * /app/tests/fixtures/unit_test/uso_fixture.php をロードできる。
+     *
+     * @author senda.keijiro
+     * @return void
+     * @access protected
+     */
+    function _loadFixtures() {
+        if (!isset($this-&amp;gt;fixtures) || empty($this-&amp;gt;fixtures)) {
+            return;
+        }
+
+        if (!is_array($this-&amp;gt;fixtures)) {
+            $this-&amp;gt;fixtures = array_map(&#39;trim&#39;, explode(&#39;,&#39;, $this-&amp;gt;fixtures));
+        }
+
+        $this-&amp;gt;_fixtures = array();
+
+        foreach ($this-&amp;gt;fixtures as $index =&amp;gt; $fixture) {
+            $fixtureFile = null;
+            $fixturePaths = null;
+
+            if (strpos($fixture, &#39;core.&#39;) === 0) {
+                $fixture = substr($fixture, strlen(&#39;core.&#39;));
+                foreach (App::core(&#39;cake&#39;) as $key =&amp;gt; $path) {
+                    $fixturePaths[] = $path . &#39;tests&#39; . DS . &#39;fixtures&#39;;
+                }
+            } elseif (strpos($fixture, &#39;app.&#39;) === 0) {
+                // MODIFIED
+                // app.unittest.plan が来たら /fixtures/unittest/plan_fixtures.php
+                // をロードするようにする
+                $parts = explode(&#39;.&#39;, $fixture);
+                $fixture = $parts[count($parts) - 1];
+
+                array_shift($parts);
+                array_pop($parts);
+                $path = implode(DS, $parts);
+
+                $fixturePaths = array(
+                    TESTS . &#39;fixtures&#39; . DS . $path,
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            } elseif (strpos($fixture, &#39;plugin.&#39;) === 0) {
+                $parts = explode(&#39;.&#39;, $fixture, 3);
+                $pluginName = $parts[1];
+                $fixture = $parts[2];
+                $fixturePaths = array(
+                    App::pluginPath($pluginName) . &#39;tests&#39; . DS . &#39;fixtures&#39;,
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            } else {
+                $fixturePaths = array(
+                    TESTS . &#39;fixtures&#39;,
+                    VENDORS . &#39;tests&#39; . DS . &#39;fixtures&#39;,
+                    TEST_CAKE_CORE_INCLUDE_PATH . DS . &#39;cake&#39; . DS . &#39;tests&#39; . DS . &#39;fixtures&#39;
+                );
+            }
+
+            foreach ($fixturePaths as $path) {
+                if (is_readable($path . DS . $fixture . &#39;_fixture.php&#39;)) {
+                    $fixtureFile = $path . DS . $fixture . &#39;_fixture.php&#39;;
+                    break;
+                }
+            }
+
+            if (isset($fixtureFile)) {
+                require_once($fixtureFile);
+                $fixtureClass = Inflector::camelize($fixture) . &#39;Fixture&#39;;
+                $this-&amp;gt;_fixtures[$this-&amp;gt;fixtures[$index]] =&amp;amp;#038; new $fixtureClass($this-&amp;gt;db);
+                $this-&amp;gt;_fixtureClassMap[Inflector::camelize($fixture)] = $this-&amp;gt;fixtures[$index];
+            }
+        }
+
+        if (empty($this-&amp;gt;_fixtures)) {
+            unset($this-&amp;gt;_fixtures);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとはテストケースでこのクラスを呼び出してやればOKです。&lt;/p&gt;
+
+&lt;p&gt;**/app/tests/cases/controllers/higes_controller.test.php**&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+App::import(&#39;Model&#39;, &#39;Uso&#39;);
+App::import(&#39;Lib&#39;, &#39;MyCakeTestCase&#39;);
+
+class HigesControllerTestCase extends MyCakeTestCase {
+    var $fixtures = array(
+        &#39;app.hige.uso&#39;      // /app/test/fixtures/hige/uso_fixture.php がロードされる
+    );
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;副作用:06041edaaf4ad9c158653456ce78f617&#34;&gt;副作用&lt;/h2&gt;
+
+&lt;p&gt;テストケースで「App::import(&amp;#8216;Lib&amp;#8217;, &amp;#8216;MyCakeTestCase&amp;#8217;);」すると、なぜかMyCakeTestCaseもテスト対象になるらしく、テスト結果の「n/n test cases complete」の値が1増えます。&lt;/p&gt;
+
+&lt;p&gt;テスト結果のGreen/Redには影響しないので、無視してください。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:06041edaaf4ad9c158653456ce78f617&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/hiromi2424/20101215/1292379625&#39;, &#39;App::import() は凄い &amp;#8211; 24時間CakePHP&#39;]);&#34; title=&#34;App::import() は凄い - 24時間CakePHP&#34;&gt;App::import() は凄い &amp;#8211; 24時間CakePHP&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;本当はApp::importだけでできれば一番いいんですけどね。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>svnコマンドを打つ度に「パスワードを保存しますか？」と聞かれるのを抑制する</title>
+      <link>http://1000k.github.io/2011/06/29/suppress-message-of-svn-command/</link>
+      <pubDate>Wed, 29 Jun 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/06/29/suppress-message-of-svn-command/</guid>
+      <description>
+
+&lt;p&gt;Subversion 1.6にアップグレードしてからというもの、何かsvnコマンドを打つ度に下のメッセージが出るようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-----------------------------------------------------------------------
+ATTENTION!  Your password for authentication realm:
+
+&amp;amp;lt;http://localhost:80&amp;gt; TEST SVN repository
+
+can only be stored to disk unencrypted!  You are advised to configure
+your system so that Subversion can store passwords encrypted, if
+possible.  See the documentation for details.
+
+You can avoid future appearances of this warning by setting the value
+of the &#39;store-plaintext-passwords&#39; option to either &#39;yes&#39; or &#39;no&#39; in
+&#39;/home/stylesen/.subversion/servers&#39;.
+-----------------------------------------------------------------------
+暗号化されていないパスワードを保存しますか (yes/no)?
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保存する気は無いのに毎回聞いてきてやかましいです。&lt;/p&gt;
+
+&lt;p&gt;抑止するには以下のように config ファイルを編集します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ~/.subversion/config
+
+# [auth] ブロックに以下の行を追加する
+store-passwords = no
+store-plaintext-passwords = no
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみに、一度保存してしまったユーザーの情報は &lt;strong&gt;~/.subversion/auth/svn.simple/&lt;/strong&gt;の中に保存されています。&lt;/p&gt;
+
+&lt;p&gt;セキュリティリスクになるので消してしまいましょう。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:a8b04d0b8996e9714afe4865fd320deb&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.linuxforu.com/previews/subversion-16-security-improvements-illustrated/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.linuxforu.com/previews/subversion-16-security-improvements-illustrated/&#39;, &#39;Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine&#39;]);&#34; title=&#34;Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine&#34;&gt;Subversion 1.6: Security Improvements Illustrated – LINUX For You Magazine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/fumokmm/20070820/1187575030&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/fumokmm/20070820/1187575030&#39;, &#39;Subversionのユーザ名とパスワードの記録場所 &amp;#8211; No Programming, No Life&#39;]);&#34; title=&#34;Subversionのユーザ名とパスワードの記録場所 - No Programming, No Life&#34;&gt;Subversionのユーザ名とパスワードの記録場所 &amp;#8211; No Programming, No Life&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>「要素をクリックする」命令をjQueryで書く</title>
+      <link>http://1000k.github.io/2011/06/22/click-specific-element-by-jquery/</link>
+      <pubDate>Wed, 22 Jun 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/06/22/click-specific-element-by-jquery/</guid>
+      <description>
+
+&lt;p&gt;LightBoxのように、リンクをクリックするとアクションが発生するスクリプトは数多く存在します。&lt;/p&gt;
+
+&lt;p&gt;任意の場所をクリックした時にそのアクションを起動したい場合は、jQueryの&lt;strong&gt;click()&lt;/strong&gt;メソッドを使うと簡単に実現できます。&lt;/p&gt;
+
+&lt;h1 id=&#34;例:8f479fe2b847018d9162cbf4baf74733&#34;&gt;例&lt;/h1&gt;
+
+&lt;p&gt;classが&amp;#8221;uso&amp;#8221;のaリンクをクリックした時に &amp;#8220;a#mojamoja&amp;#8221; をクリックした時のアクション起動したい場合は、下記のように書けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(function() {
+    $(&amp;quot;a.uso&amp;quot;).click(function(e) {
+        e.preventDefault();
+        $(&amp;quot;a#mojamoja&amp;quot;).eq(0).click();
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;応用-悪用:8f479fe2b847018d9162cbf4baf74733&#34;&gt;応用（悪用？）&lt;/h1&gt;
+
+&lt;p&gt;FirebugやChromeのスクリプト入力ボックスに下記のコードを書き込むと、button#usoを永遠に毎秒10回叩き続けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;setInterval(function() {$(&amp;quot;button#uso&amp;quot;).eq(0).click();}, 100);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「どうしてもボタンが連打したい。でも指が折れて動かせない…。」という名人にお勧めです。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:8f479fe2b847018d9162cbf4baf74733&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://semooh.jp/jquery/api/events/click/_/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://semooh.jp/jquery/api/events/click/_/&#39;, &#39;click() &amp;#8211; jQuery 日本語リファレンス&#39;]);&#34; title=&#34;click() - jQuery 日本語リファレンス&#34;&gt;click() &amp;#8211; jQuery 日本語リファレンス&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://semooh.jp/jquery/api/events/click/fn/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://semooh.jp/jquery/api/events/click/fn/&#39;, &#39;click(fn) &amp;#8211; jQuery 日本語リファレンス&#39;]);&#34; title=&#34;click(fn) - jQuery 日本語リファレンス&#34;&gt;click(fn) &amp;#8211; jQuery 日本語リファレンス&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tobysoft.net/wiki/index.php?JavaScript%2FjQuery%2Fready%A4%B8%A4%E3%A4%CA%A4%AF%A4%C6onload%A5%A4%A5%D9%A5%F3%A5%C8%A4%CB%B4%D8%BF%F4%A4%F2%C4%C9%B2%C3%A4%B7%A4%BF%A4%A4&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tobysoft.net/wiki/index.php?JavaScript%2FjQuery%2Fready%A4%B8%A4%E3%A4%CA%A4%AF%A4%C6onload%A5%A4%A5%D9%A5%F3%A5%C8%A4%CB%B4%D8%BF%F4%A4%F2%C4%C9%B2%C3%A4%B7%A4%BF%A4%A4&#39;, &#39;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい &amp;#8211; TOBY SOFT wiki&#39;]);&#34; title=&#34;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい - TOBY SOFT wiki&#34;&gt;JavaScript/jQuery/readyじゃなくてonloadイベントに関数を追加したい &amp;#8211; TOBY SOFT wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>室内をいじるときのTIPS</title>
+      <link>http://1000k.github.io/2010/12/14/tips-for-build-room/</link>
+      <pubDate>Tue, 14 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/14/tips-for-build-room/</guid>
+      <description>
+
+&lt;p&gt;SketchUp で室内をいじるとき、カメラを移動するとすぐに壁にぶつかってしまい、操作しづらいです。&lt;/p&gt;
+
+&lt;p&gt;上のビデオではそんなときの対策を二つ紹介しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;断面-ツールを使う:e9f0ca86109d91329ad503edf61b0d0a&#34;&gt;[断面]ツールを使う&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[断面]ツールと[移動]ツールで室内が切れるまで断面を移動する&lt;/li&gt;
+&lt;li&gt;[ビュー] &amp;gt; [断面平面] をオフにすると元に戻る&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;ルック-アラウンド-ツールを使う:e9f0ca86109d91329ad503edf61b0d0a&#34;&gt;[ルック・アラウンド]ツールを使う&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自分の立ち位置を元に視点を回転できるので、壁にぶつかる心配がない&lt;/li&gt;
+&lt;li&gt;広い視野で見たいときは[ズーム]ツールを選択し、大きめの視野角を入力して[Enter]
+
+&lt;ul&gt;
+&lt;li&gt;デフォルトは35度。ゆがみが少ないので、外装をいじるときなど使う。&lt;/li&gt;
+&lt;li&gt;60度ぐらいだと視点が広くなるが、代わりにゆがみが生じる。内装をいじるときだけ使う。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>階段の作り方いろいろ</title>
+      <link>http://1000k.github.io/2010/12/13/how-to-draw-steps/</link>
+      <pubDate>Mon, 13 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/12/13/how-to-draw-steps/</guid>
+      <description>
+
+&lt;p&gt;SketchUp で階段を作るのは結構面倒くさいです。以下にいくつかのやり方をメモします。&lt;/p&gt;
+
+&lt;h2 id=&#34;the-subdivided-rectangles-method:3571f686719a045de95d57fb6a9c6c1b&#34;&gt;The Subdivided Rectangles method&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ベースとなる長方形を作る&lt;/li&gt;
+&lt;li&gt;長方形を1ステップぶん刻み、直線をコピーして段数ぶんの切り込みを作る&lt;/li&gt;
+&lt;li&gt;鉛直方向に直線を引き、1段ぶんの高さで刻む&lt;/li&gt;
+&lt;li&gt;[プッシュ/プルツール]で&lt;strong&gt;高い方から順に&lt;/strong&gt;ガイドを使って盛り上げる
+
+&lt;ul&gt;
+&lt;li&gt;低い方から作ると、1段ごとに「オフセットの限界」と言われてしまう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;the-copied-profile-method:3571f686719a045de95d57fb6a9c6c1b&#34;&gt;The Copied Profile method&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;直方体を作る&lt;/li&gt;
+&lt;li&gt;側面に「┌」という傾けたL字を作る&lt;/li&gt;
+&lt;li&gt;傾けたL字をコピーして、1個目の右上の点が2個目の左下の点になるようにする&lt;/li&gt;
+&lt;li&gt;「*n」(nは整数)を入力すれば、n段の階段ができる&lt;/li&gt;
+&lt;li&gt;[プッシュ/プルツール]で側面から反対面まで押して削ってやれば階段ができる
+
+&lt;ul&gt;
+&lt;li&gt;2.で作る1段目を工夫すれば、切り込みのある階段なども作成可能&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;the-treads-are-components-method:3571f686719a045de95d57fb6a9c6c1b&#34;&gt;The Treads are Components method&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;1ステップぶんの直方体を作り、コンポーネント化する&lt;/li&gt;
+&lt;li&gt;2段目の左下角が1段目の右上角に当たるようにコピーする&lt;/li&gt;
+&lt;li&gt;「*n」(nは整数)を入力すれば、n段の階段ができる&lt;/li&gt;
+&lt;li&gt;コンポーネント編集に移り、薄さを変えたり、手すりを付けたりする
+
+&lt;ul&gt;
+&lt;li&gt;全段が同時に編集できるので追跡しやすく便利&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

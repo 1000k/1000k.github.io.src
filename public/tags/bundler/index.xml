@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bundler on 1000g</title>
+    <link>http://1000k.github.io/tags/bundler/</link>
+    <description>Recent content in Bundler on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 27 Aug 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/bundler/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>bundle installが遅すぎたのでsourceを変えた</title>
+      <link>http://1000k.github.io/2013/08/27/change-source-because-bundle-install-is-too-slow/</link>
+      <pubDate>Tue, 27 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/08/27/change-source-because-bundle-install-is-too-slow/</guid>
+      <description>
+
+&lt;p&gt;Rails 4 アプリを作ろうとして &lt;code&gt;rails new&lt;/code&gt; コマンドを叩いたら、&lt;code&gt;bundle install&lt;/code&gt; のフェーズが永遠に終わらず老人になりそうでした。&lt;/p&gt;
+
+&lt;p&gt;どうやら gem リポジトリの &lt;a href=&#34;http://rubygems.org&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://rubygems.org&#39;, &#39;http://rubygems.org&#39;]);&#34; &gt;&lt;a href=&#34;http://rubygems.org&#34;&gt;http://rubygems.org&lt;/a&gt;&lt;/a&gt; のレスポンスが遅すぎるようです。&lt;/p&gt;
+
+&lt;p&gt;そこで、Rails アプリの作成時は &lt;code&gt;bundler install&lt;/code&gt; を省略し、Gemfile をいじってもっと早いリポジトリを参照するように変更したら、無事インストールできました。&lt;/p&gt;
+
+&lt;h2 id=&#34;具体的な手順:52707943b292ea793cda924d2a6b7275&#34;&gt;具体的な手順&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ rails new mojamoja --skip-bundle
+$ cd mojamoja
+$ vim Gemfile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Gemfile&lt;/code&gt; の1行目を以下のように変更する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# source &#39;http://rubygems.org&#39;
+source &amp;quot;http://bundler-api.herokuapp.com&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでインストールできるようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;2013-09-01-追加-rhel-centos-6-x-特有のバグ:52707943b292ea793cda924d2a6b7275&#34;&gt;(2013-09-01 追加) RHEL/CentOS 6.x 特有のバグ&lt;/h2&gt;
+
+&lt;p&gt;RHEL/CentOS 6.x を使っている場合、ネットワークの解決が異常に遅くなることがあります。&lt;code&gt;/etc/resolve.conf&lt;/code&gt; に以下の1行を追加すると解決するようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;options single-request-reopen
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:52707943b292ea793cda924d2a6b7275&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb&#39;, &#39;Ruby &amp;#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &amp;#8211; Qiita [キータ]&#39;]);&#34; &gt;Ruby &amp;#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &amp;#8211; Qiita [キータ]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ideaxidea.com/archives/2013/08/resolv.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.ideaxidea.com/archives/2013/08/resolv.html&#39;, &#39;Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA&#39;]);&#34; &gt;Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

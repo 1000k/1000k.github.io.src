@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javascript on 1000g</title>
+    <link>http://1000k.github.io/tags/javascript/</link>
+    <description>Recent content in Javascript on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 16 Jan 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>JavaScript で Chrome のウィンドウを閉じる方法</title>
+      <link>http://1000k.github.io/2015/01/16/close-popup-window-on-chrome/</link>
+      <pubDate>Fri, 16 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/01/16/close-popup-window-on-chrome/</guid>
+      <description>
+
+&lt;p&gt;以前リリースしたあるサービスで、「一部の入力フォームを別ウィンドウをポップアップして入力させ、終わったらリンクをクリックして閉じる」という JavaScript の処理を入れていたのですが、なぜか最近の Chrome で画面が固まってしまう不具合が発生しました。2014年の春にテストした時は問題なく動いていたのですが。&lt;/p&gt;
+
+&lt;h2 id=&#34;再現方法:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;再現方法&lt;/h2&gt;
+
+&lt;p&gt;不具合は以下の流れで発生します。確認したブラウザは 39.0.2171.99m です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;親ウィンドウにある &lt;code&gt;&amp;lt;a onClick=&amp;quot;window.open()&amp;quot;&amp;gt;&lt;/code&gt; リンクを叩き、子ウィンドウをポップアップさせる。&lt;/li&gt;
+&lt;li&gt;子ウィンドウにある &lt;code&gt;&amp;lt;a onClick=&amp;quot;window.open(&#39;about:blank&#39;,&#39;_self&#39;).close()&amp;quot;&amp;gt;&lt;/code&gt; リンクを叩く。&lt;/li&gt;
+&lt;li&gt;親・子ウィンドウ両方が固まってしまう。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ウィンドウを閉じる時に単純な &lt;code&gt;window.close()&lt;/code&gt; ではなく &lt;code&gt;window.open(&#39;about:blank&#39;,&#39;_self&#39;).close()&lt;/code&gt; を使っているのは、IE/FF/Chrome いずれのブラウザーでも綺麗に閉じるための有名な Hack だったからです。詳細は &lt;a href=&#34;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#39;, &#39;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&#39;]);&#34; &gt;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&lt;/a&gt; がわかりやすいです。&lt;/p&gt;
+
+&lt;p&gt;どうやらブラウザーのバージョンアップに伴い、このあたりの事情が変わってきてたようです。&lt;/p&gt;
+
+&lt;p&gt;今なら子ウィンドウを消す JavaScript をどう実装するべきなのかを、少し検証してみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;検証:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;検証&lt;/h2&gt;
+
+&lt;p&gt;以下の2つの HTML を用意します。&lt;/p&gt;
+
+&lt;p&gt;popup_parent.html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;Parent&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;window.open(&#39;popup_child.html&#39;, &#39;child&#39;, &#39;width=300,height=300&#39;);&amp;quot;&amp;gt;Open popup window&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;popup_child.html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;Child&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;window.open(&#39;about:blank&#39;, &#39;_self&#39;).close()&amp;quot;&amp;gt;Close window 1&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;window.close();&amp;quot;&amp;gt;Close window 2&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;検証手順は以下の通り。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;popup_parent.html にアクセスし、&lt;code&gt;Open popup window&lt;/code&gt; リンクを叩く。&lt;/li&gt;
+&lt;li&gt;子ウィンドウが開くので、&lt;code&gt;Close window 1&lt;/code&gt; (ハック版) と &lt;code&gt;Close window 2&lt;/code&gt; (単純版) の2つのリンクをそれぞれ叩き、正しく閉じられるかどうかを記録する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;検証結果は次のようになりました。「o」は閉じられた場合、「x」は閉じられなかった場合です。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;ブラウザー&lt;/th&gt;
+&lt;th&gt;Close window 1&lt;/th&gt;
+&lt;th&gt;Close window 2&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;IE 10&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Chrome 39.0.2171.99m&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;FireFox 34.0.5&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Safari 5.1.7&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Chrome だけハック版がうまく動かないという結果になりました。&lt;/p&gt;
+
+&lt;p&gt;悪さをしているのは WebKit か検証するため、一応 Safari でも実験しましたが、問題はありませんでした。今のところは Chrome だけ処理を分けるようにすれば良さそうです。ただ、Safari の WebKit は若干バージョンが古い (Safari = WebKit/534.57.2, Chrome = Webkit/537.36) ので、今後のバージョンアップでどうなるかは不明です。&lt;/p&gt;
+
+&lt;h2 id=&#34;解決策:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;解決策&lt;/h2&gt;
+
+&lt;p&gt;検証結果から、全て Close window 2 (単純版) の書き方にすれば解決するように見えますが、一応古いブラウザーとの互換性を考えて、Chrome だけ単純版に分岐するような JS にしました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;if (/Chrome/i.test(navigator.userAgent)) { window.close(); } else { window.open(&#39;about:blank&#39;, &#39;_self&#39;).close(); }&amp;quot;&amp;gt;Close window 3&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでどのブラウザーでも閉じられるようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:96680621d7ebbfce2d483f1126ea0d2a&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome&#39;, &#39;javascript - window.close and self.close do not close the window in Chrome - Stack Overflow&#39;]);&#34; &gt;javascript - window.close and self.close do not close the window in Chrome - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/12625876/how-to-detect-chrome-and-safari-browser-webkit&#39;, &#39;javascript - How to detect chrome and safari browser (webkit) - Stack Overflow&#39;]);&#34; &gt;javascript - How to detect chrome and safari browser (webkit) - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kojikoji75.hatenablog.com/entry/2013/12/15/223839&#39;, &#39;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&#39;]);&#34; &gt;JavaScriptでWindow.closeする時のブラウザ別対応まとめ - TechNote&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>残り時間をプログレスバーで表示するチュートリアル</title>
+      <link>http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/</link>
+      <pubDate>Wed, 18 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://e.ggtimer.com/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://e.ggtimer.com/&#39;, &#39;E.gg Timer&#39;]);&#34; &gt;E.gg Timer&lt;/a&gt; のようなタイマーアプリを作りたかったので、プログレスバーの作り方を調べました。タイマーそのものより、progress タグのスタイルシートをクロスブラウザ対応させるのに苦労しました。&lt;/p&gt;
+
+&lt;p&gt;今回作ったのは下の画像のような簡単なタイマーです。経過時間に合わせてプログレスバーが赤くなります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/timer.png&#34; alt=&#34;timer&#34; width=&#34;585&#34; height=&#34;81&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/tcxx9/3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/tcxx9/3/&#39;, &#39;デモはこちら。&#39;]);&#34; &gt;デモはこちら。&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;なお、IE11, Firefox26, Chrome31 で動作を確認しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;実装コード:2853c5683734ff1185ea9e66d817967b&#34;&gt;実装コード&lt;/h2&gt;
+
+&lt;h3 id=&#34;html:2853c5683734ff1185ea9e66d817967b&#34;&gt;HTML&lt;/h3&gt;
+
+&lt;p&gt;プログレスバー、時間入力欄、開始/停止ボタンがあるだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&amp;quot;progressWrapper&amp;quot;&amp;gt;
+  &amp;amp;lt;progress id=&amp;quot;bar&amp;quot; value=&amp;quot;0&amp;quot; max=&amp;quot;1000&amp;quot; min=&amp;quot;0&amp;quot;&amp;gt;&amp;amp;lt;/progress&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+
+&amp;lt;fieldset&amp;gt;
+  Time (msec): &amp;lt;input type=&amp;quot;text&amp;quot; value=&amp;quot;5000&amp;quot; id=&amp;quot;time&amp;quot; /&amp;gt;
+
+    &amp;lt;button id =&amp;quot;start&amp;quot;&amp;gt;start&amp;lt;/button&amp;gt;
+    &amp;lt;button id =&amp;quot;stop&amp;quot;&amp;gt;stop&amp;lt;/button&amp;gt;
+
+&amp;lt;/fieldset&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;javascript:2853c5683734ff1185ea9e66d817967b&#34;&gt;JavaScript&lt;/h3&gt;
+
+&lt;p&gt;jQuery 1.10.2 で試しました。経過時間に合わせて progress タグの value 要素を増やしていくだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var timer,
+  limitMs = 0,
+  restMs = 0,
+  resolutionMs = 50,    /* NOTE: Too small value does not work on IE11. */
+  maxBar;
+
+var countdown = function() {
+  restMs -= resolutionMs;
+
+  var restRate = (limitMs - restMs) / limitMs;
+  var restBarLength = maxBar * restRate
+
+  $(&#39;#bar&#39;).attr(&#39;value&#39;, restBarLength);
+
+  if (restMs &amp;amp;lt; 0) {
+    resetTimer();
+    alert(&#39;time expired&#39;);
+  }
+};
+
+var resetTimer = function() {
+  clearInterval(timer);
+  limitMs = restMs = $(&#39;#time&#39;).val();
+  $(&#39;#bar&#39;).attr(&#39;value&#39;, 0);
+};
+
+$(function() {
+  maxBar = $(&#39;#bar&#39;).attr(&#39;max&#39;);
+
+  $(&#39;#start&#39;).on(&#39;click&#39;, function() {
+    resetTimer();
+    timer = setInterval(&#39;countdown()&#39;, resolutionMs);
+  });
+
+  $(&#39;#stop&#39;).on(&#39;click&#39;, function() {
+    resetTimer();
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ひとつだけ IE11 でバグがありました。&lt;code&gt;resolutionMs&lt;/code&gt; (タイマーを更新する間隔) を10ミリ秒以下にすると、赤いバーが全く表示されなくなりました。50ミリ秒ならなんとか描画されました。&lt;/p&gt;
+
+&lt;p&gt;どうも IE11 ではバーの表示を勝手に加速度を付けて滑らかにする機能が付いているのですが、これが悪さをしているようです。デバッグしてみると value 属性は間違いなく増加しているのですが、画面には反映されませんでした。IE ユーザーはご注意ください。&lt;/p&gt;
+
+&lt;h3 id=&#34;css:2853c5683734ff1185ea9e66d817967b&#34;&gt;CSS&lt;/h3&gt;
+
+&lt;p&gt;progress 要素はブラウザ毎に属性の解釈が結構異なります。Opera は面倒なので試してません。すいません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.progressWrapper {
+  width: 100%;
+}
+
+progress {
+  /* Turn off default styling. */
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+
+  height: 10px;
+  width: 100%;
+  color: red;       /* IE */
+  background: navy; /* Firefox */
+}
+
+/* Chrome needs &#39;-webkit-progress-value&#39; and &#39;-webkit-progress-bar&#39; attributes. */
+progress::-webkit-progress-value {
+  background: red;
+}
+
+progress::-webkit-progress-bar {
+  background: navy;
+}
+
+/* Firefox needs only &#39;-moz-progress-bar&#39; attiribute. */
+progress::-moz-progress-bar {
+  background: red;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:2853c5683734ff1185ea9e66d817967b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.hongkiat.com/blog/html5-progress-bar/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.hongkiat.com/blog/html5-progress-bar/&#39;, &#39;Creating &amp; Styling Progress Bar With HTML5&#39;]);&#34; &gt;Creating &amp;amp; Styling Progress Bar With HTML5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.pori2.net/js/timer/6.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.pori2.net/js/timer/6.html&#39;, &#39;カウントダウンタイマー－JavaScript入門&#39;]);&#34; &gt;カウントダウンタイマー－JavaScript入門&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/&#39;, &#39;Cross Browser HTML5 Progress Bars In Depth&#39;]);&#34; &gt;Cross Browser HTML5 Progress Bars In Depth&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;カウントダウンに合わせて動くサルのアニメや、スピードメーターの書き方など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://css-tricks.com/html5-progress-element/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://css-tricks.com/html5-progress-element/&#39;, &#39;The HTML5 progress Element | CSS-Tricks&#39;]);&#34; &gt;The HTML5 progress Element | CSS-Tricks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar&#39;, &#39;::-moz-progress-bar - CSS | MDN&#39;]);&#34; &gt;::-moz-progress-bar - CSS | MDN&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Grunt で JS/CSS を自動ビルドする</title>
+      <link>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</guid>
+      <description>
+
+&lt;h2 id=&#34;grunt-とは:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;Grunt とは？&lt;/h2&gt;
+
+&lt;p&gt;JS/CSS のビルド自動化ツール。&lt;/p&gt;
+
+&lt;p&gt;JS のユニットテスト、ファイルの結合＆難読化＆最小化などの様々なタスクを自動で行うことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;まず、node.js と npm をインストールします。&lt;/p&gt;
+
+&lt;p&gt;やり方は以下の記事あたりを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#39;, &#39;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&#39;]);&#34; &gt;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に grunt-cli をグローバルにインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo npm install -g grunt-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、プロジェクトのトップに &lt;code&gt;package.json&lt;/code&gt; を作成します。&lt;/p&gt;
+
+&lt;p&gt;この中には、使用したい Grunt ライブラリを列挙します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;mojamoja-project&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;0.1.0&amp;quot;,
+  &amp;quot;devDependencies&amp;quot;: {
+    &amp;quot;grunt&amp;quot;: &amp;quot;~0.4.1&amp;quot;,
+    &amp;quot;grunt-contrib-sass&amp;quot;: &amp;quot;~0.3.0&amp;quot;,
+    &amp;quot;grunt-contrib-jshint&amp;quot;: &amp;quot;~0.6.3&amp;quot;,
+    &amp;quot;grunt-contrib-nodeunit&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-compass&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-concat&amp;quot;: &amp;quot;~0.1.2&amp;quot;,
+    &amp;quot;grunt-contrib-qunit&amp;quot;: &amp;quot;~0.1.1&amp;quot;,
+    &amp;quot;grunt-contrib-uglify&amp;quot;: &amp;quot;~0.2.2&amp;quot;,
+    &amp;quot;grunt-contrib-watch&amp;quot;: &amp;quot;~0.2.0&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで &lt;code&gt;npm install grunt --save-dev&lt;/code&gt; を叩くと、package.json に書かれたパッケージが一気にインストールされます。&lt;/p&gt;
+
+&lt;p&gt;以上で前準備は完了です。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;プロジェクトのルートに &lt;code&gt;Gruntfile.js&lt;/code&gt; を書いて、実行したいタスクを列挙するだけです。&lt;/p&gt;
+
+&lt;p&gt;※ grunt &amp;lt; 0.4 では &lt;code&gt;grunt.js&lt;/code&gt; というファイル名でした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports = function(grunt) {
+  grunt.initConfig({
+    pkg: grunt.file.readJSON(&#39;package.json&#39;),
+    concat: {
+      options: {
+        separator: &#39;;&#39;
+      },
+      dist: {
+        src: [
+          &#39;app/webroot/js/vendor/jquery/jquery.js&#39;,
+          &#39;app/webroot/js/vendor/jquery-mousewheel/jquery.mousewheel.js&#39;,
+          &#39;app/webroot/js/vendor/underscore/underscore.js&#39;,
+          &#39;app/webroot/js/vendor/backbone/backbone.js&#39;,
+          &#39;app/webroot/js/vendor/backbone.localStorage/backbone.localStorage.js&#39;,
+          &#39;app/webroot/js/vendor/hook/hook.js&#39;,
+          &#39;app/webroot/js/vendor/mobify-modules/carousel/src/carousel.js&#39;,
+          &#39;app/webroot/js/vendor/snap/snap.js&#39;,
+          &#39;app/webroot/js/app.js&#39;
+        ],
+        dest: &#39;app/webroot/js/merged.js&#39;
+      }
+    },
+    uglify: {
+      options: {
+        banner: &#39;/*! &amp;amp;lt;%= pkg.name %&amp;gt; &amp;amp;lt;%= grunt.template.today(&amp;quot;dd-mm-yyyy&amp;quot;) %&amp;gt; */\n&#39;
+      },
+      dist: {
+        files: {
+          &#39;app/webroot/js/merged.min.js&#39;: [&#39;&amp;amp;lt;%= concat.dist.dest %&amp;gt;&#39;]
+        }
+      }
+    },
+    jshint: {
+      files: [&#39;gruntfile.js&#39;, &#39;app/webroot/js/**/*.js&#39;],
+      options: {
+        // options here to override JSHint defaults
+        globals: {
+          jQuery: true,
+          console: true,
+          module: true,
+          document: true
+        }
+      }
+    },
+    watch: {
+      files: [&#39;&amp;amp;lt;%= jshint.files %&amp;gt;&#39;],
+      tasks: [&#39;concat&#39;, &#39;uglify&#39;]
+    }
+  });
+
+  grunt.loadNpmTasks(&#39;grunt-contrib-uglify&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-qunit&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-concat&#39;);
+
+  grunt.registerTask(&#39;test&#39;, [&#39;jshint&#39;]);
+  grunt.registerTask(&#39;default&#39;, [&#39;jshint&#39;, &#39;concat&#39;, &#39;uglify&#39;]);
+  grunt.registerTask(&#39;merge&#39;, [&#39;concat&#39;, &#39;uglify&#39;]);
+
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳しい記述方法は公式のガイドを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/configuring-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/configuring-tasks&#39;, &#39;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/creating-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/creating-tasks&#39;, &#39;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;あとは &lt;code&gt;grunt {タスク名}&lt;/code&gt; と叩くだけで、指定したタスクが動きます。&lt;/p&gt;
+
+&lt;p&gt;例えば上で定義 (&lt;code&gt;grunt.registerTask()&lt;/code&gt; )したタスクから merge を実行したければ、&lt;code&gt;grunt merge&lt;/code&gt; と叩けば OK です。。&lt;/p&gt;
+
+&lt;h2 id=&#34;変更の監視-自動タスク実行:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;変更の監視＆自動タスク実行&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;grunt watch&lt;/code&gt; を叩くことで、指定した js ファイルを監視し、変更があったら自動で指定したタスクを実行してくれます。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#39;, &#39;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&#39;]);&#34; &gt;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/getting-started&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/getting-started&#39;, &#39;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#39;, &#39;Sample Gruntfile · gruntjs/grunt Wiki&#39;]);&#34; &gt;Sample Gruntfile · gruntjs/grunt Wiki&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Gruntfile のサンプル。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/plugins/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/plugins/&#39;, &#39;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;grunt プラグインの一覧。&lt;/li&gt;
+&lt;li&gt;公式のものは &amp;#8216;Show contrib plugins first&amp;#8217; にチェックを入れれば出てくる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#39;, &#39;npm / package.json | Public Draft | Outlining and Researching for the Presentation&#39;]);&#34; &gt;npm / package.json | Public Draft | Outlining and Researching for the Presentation&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;package.json の基本。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Bower で JavaScript パッケージを管理する</title>
+      <link>http://1000k.github.io/2013/05/04/managing-js-packages-by-bower/</link>
+      <pubDate>Sat, 04 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/05/04/managing-js-packages-by-bower/</guid>
+      <description>
+
+&lt;h2 id=&#34;bower-とは:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;Bower とは？&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://bower.io/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bower.io/&#39;, &#39;BOWER: A package manager for the web&#39;]);&#34; &gt;BOWER: A package manager for the web&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Twitter 製の JavaScript パッケージ管理ライブラリ。Ruby の Gem, PHP の Composer みたいなもの。&lt;/p&gt;
+
+&lt;p&gt;プロジェクトで使用する JS ライブラリとバージョンをファイルに記述して管理できるため、バージョン管理が容易になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6 でインストールする手順です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;node.js をインストールする。
+
+&lt;ul&gt;
+&lt;li&gt;EPEL が使えれば &lt;code&gt;yum install nodejs&lt;/code&gt; で一発。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;npm をインストールする。
+
+&lt;ul&gt;
+&lt;li&gt;パッケージが公開されていないので、ソースからインストールまたは &lt;code&gt;curl http://npmjs.org/install.sh | sh&lt;/code&gt; (Fancy install) で。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;npm で bower をインストールする。
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sudo npm install -g bower&lt;/code&gt; で終わり。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;使い方:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;プロジェクトのルートに &lt;code&gt;bower.json&lt;/code&gt; を作り、パッケージ情報を記述し、&lt;code&gt;bower install&lt;/code&gt; を叩くのが基本です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# カレントディレクトリの bower.json を参照してパッケージをインストールする
+bower install
+
+# パッケージを指定してインストールする
+bower install &amp;amp;lt;package&amp;gt;
+
+# git にタグ付けされたバージョンを元にインストールする
+bower install &amp;amp;lt;package&amp;gt;#&amp;amp;lt;version&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bower.json のサンプルは下記の通り。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;wpn&amp;quot;
+  , &amp;quot;version&amp;quot;: &amp;quot;1.0.0&amp;quot;
+  , &amp;quot;main&amp;quot;: &amp;quot;app/webroot/js/main.js&amp;quot;
+  , &amp;quot;ignore&amp;quot;: [
+    &amp;quot;.jshintrc&amp;quot;
+    ,&amp;quot;**/*.txt&amp;quot;
+  ]
+  , &amp;quot;dependencies&amp;quot;: {
+    &amp;quot;backbone&amp;quot;: &amp;quot;1.0.0&amp;quot;
+    , &amp;quot;underscore&amp;quot;: &amp;quot;1.4.4&amp;quot;
+    , &amp;quot;jquery&amp;quot;: &amp;quot;&amp;amp;lt; 2.0.0&amp;quot;
+    , &amp;quot;jquery-mousewheel&amp;quot;: &amp;quot;latest&amp;quot;
+    , &amp;quot;snap&amp;quot;: &amp;quot;git://github.com/jakiestfu/Snap.js.git&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ごらんのように、Bower リポジトリに登録されているパッケージは柔軟なバージョン指定ができます。&lt;/p&gt;
+
+&lt;p&gt;登録されていないパッケージも、GitHub の URL を直接指定することで管理ができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;好きなディレクトリにコンポーネントをインストールする:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;好きなディレクトリにコンポーネントをインストールする&lt;/h2&gt;
+
+&lt;p&gt;デフォルトだと bower.json と同じ階層に components/ というディレクトリを作られてしまいます。これを変えるには、bower.json と同じ階層に &amp;lsquo;.bowerrc` を作成し、以下のように書けば OK です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;directory&amp;quot;: &amp;quot;app/webroot/js&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで &lt;code&gt;bower install&lt;/code&gt; を実行すると、コンポーネントは &lt;code&gt;app/webroot/js/&amp;lt;package&amp;gt;&lt;/code&gt; にインストールされます。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:2b0e69e44f6fba1737d988e786e216a8&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://bower.io/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://bower.io/&#39;, &#39;BOWER: A package manager for the web&#39;]);&#34; &gt;BOWER: A package manager for the web&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/bower/bower&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/bower/bower&#39;, &#39;bower/bower · GitHub&#39;]);&#34; &gt;bower/bower · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://uzulla.hateblo.jp/entry/2013/04/28/143507&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://uzulla.hateblo.jp/entry/2013/04/28/143507&#39;, &#39;bowerでつまづいた事のメモなど - uzullaがブログ&#39;]);&#34; &gt;bowerでつまづいた事のメモなど - uzullaがブログ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.mach3.jp/2013/01/bower.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.mach3.jp/2013/01/bower.html&#39;, &#39;パッケージマネージャー「Bower」が大変便利で捗りそうです | Mach3.laBlog&#39;]);&#34; &gt;パッケージマネージャー「Bower」が大変便利で捗りそうです | Mach3.laBlog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/items/ba952bdade627af99e93&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/items/ba952bdade627af99e93&#39;, &#39;なにはともあれ入れてみるぜ。バウワー。(bower) #Node.js #JavaScript #twitter - Qiita [キータ]&#39;]);&#34; &gt;なにはともあれ入れてみるぜ。バウワー。(bower) #Node.js #JavaScript #twitter - Qiita [キータ]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://net.tutsplus.com/tutorials/tools-and-tips/meet-bower-a-package-manager-for-the-web/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://net.tutsplus.com/tutorials/tools-and-tips/meet-bower-a-package-manager-for-the-web/&#39;, &#39;Meet Bower: A Package Manager For The Web | Nettuts+&#39;]);&#34; &gt;Meet Bower: A Package Manager For The Web | Nettuts+&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Safari 5.xのユーザーをJavaScriptで判別する</title>
+      <link>http://1000k.github.io/2012/07/02/how-to-detect-safari-5-x-in-javascript/</link>
+      <pubDate>Mon, 02 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/07/02/how-to-detect-safari-5-x-in-javascript/</guid>
+      <description>
+
+&lt;p&gt;Safari 5.x系のみ発生する不具合があったため、JavaScriptで個別に分岐する必要がありました。&lt;/p&gt;
+
+&lt;p&gt;UserAgentがChromeと微妙に似ていて書きにくかったので、メモを残しておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;やりたいこと:5c20e64dfc0ac35ddade7fa8fcd267b4&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;JavaScriptでSafari 5.x系のユーザーを判別する。&lt;/p&gt;
+
+&lt;h2 id=&#34;スクリプト:5c20e64dfc0ac35ddade7fa8fcd267b4&#34;&gt;スクリプト&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;window.onload = function() {
+    var ua = navigator.userAgent.toLowerCase();
+    var is_safari = ua.indexOf(&#39;safari&#39;) &amp;gt; -1 &amp;amp;#038;&amp;amp;#038; ua.indexOf(&#39;version&#39;) &amp;gt; -1;
+    var version = is_safari ? ua.match(/version\/([\d\.]+)/i)[1].substr(0,1) : null;
+
+    if (is_safari &amp;amp;#038;&amp;amp;#038; version == &#39;5&#39;) {
+        // Safari 5.xユーザー向けの処理
+        alert(&#39;You use Safari 5.x&#39;);
+    } else {
+        // それ以外のユーザー向けの処理
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:5c20e64dfc0ac35ddade7fa8fcd267b4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentstring.com/pages/useragentstring.php&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentstring.com/pages/useragentstring.php&#39;, &#39;UserAgentString.com &amp;#8211; List of User Agent Strings&#39;]);&#34; title=&#34;UserAgentString.com - List of User Agent Strings&#34;&gt;UserAgentString.com &amp;#8211; List of User Agent Strings&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;各ブラウザのUserAgent文字列の一覧。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentstring.com/pages/Safari/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentstring.com/pages/Safari/&#39;, &#39;Safari&#39;]);&#34; title=&#34;UserAgentString.com - List of Safari User Agent Strings&#34;&gt;Safari&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.useragentstring.com/pages/Chrome/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.useragentstring.com/pages/Chrome/&#39;, &#39;Chrome&#39;]);&#34; title=&#34;UserAgentString.com - List of Chrome User Agent Strings&#34;&gt;Chrome&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Safari 5系で、JavaScriptでformの値をsubmitできない不具合の対策</title>
+      <link>http://1000k.github.io/2012/06/29/safari-5-x-cannot-submit-form-values-by-javascript/</link>
+      <pubDate>Fri, 29 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/06/29/safari-5-x-cannot-submit-form-values-by-javascript/</guid>
+      <description>&lt;p&gt;Safari 5.x系では、JavaScriptで window.onload を使って自動でフォームの内容を送信（submit）しても、正しく値を渡せないバグがあります。&lt;/p&gt;
+
+&lt;p&gt;現象と対策を整理しました。&lt;/p&gt;
+
+&lt;p&gt;具体的には下記のようなコードがうまくいきません。&lt;/p&gt;
+
+&lt;p&gt;page1.php -&amp;gt; page2.php -&amp;gt; page3.php の順に、usoFormの値をJSで自動でPOSTしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;page1.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;page2.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;page3.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;lt;?php print_r($_POST); ?&amp;gt;```&lt;/p&gt;
+
+&lt;p&gt;
+  正常なブラウザなら page3.php で表示される uso の値は「801」ですが、Safari 5.xの場合「800」が表示されます。&lt;br /&gt;
+  page2でPOSTしている値が、page1のもので上書きされてしまっているようです。
+&lt;/p&gt;
+
+&lt;h2&gt;
+  原因
+&lt;/h2&gt;
+
+&lt;p&gt;
+  下記のスレッドの内容は私が遭遇したケースと全く同じでした。&lt;br /&gt;
+  どうやら原因はSafariの自動補完機能のようです。
+&lt;/p&gt;
+
+&lt;p&gt;
+  &lt;a href=&#34;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#39;, &#39;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&#39;]);&#34; title=&#34;What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow&#34;&gt;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Safari is filling in the form field using autofill behaviour. You probably have the &amp;#8220;Other forms&amp;#8221; option enabled in your preferences. Even Apple recommend you turn this feature off since it can be used for stealing private information.
+
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2&gt;
+  対策
+&lt;/h2&gt;
+
+&lt;p&gt;
+  上記のベストアンサーでは、&lt;strong&gt;formタグにautocomplete=&amp;#8221;off&amp;#8221;を指定してやれば直る&lt;/strong&gt;とアドバイスされています。&lt;br /&gt;
+  実際に試してみたところ、正しくPOSTできるようになりました。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;
+  余談（文句）
+&lt;/h2&gt;
+
+&lt;p&gt;
+  問題が確認できたバージョンは、5.0.1, 5.1.4, 5.1.5 でした。&lt;br /&gt;
+  一度直ったバグが再発しているところを見ると、Safariの開発体制ではバグを正しく管理できていないようです。&lt;br /&gt;
+  フォーム送信が失敗するなんて、ブラウザとして致命的のバグなのですが。
+&lt;/p&gt;
+
+&lt;h2&gt;
+  参考
+&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;a href=&#34;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/10546653/what-is-the-work-around-for-a-weird-javascript-form-submit-bug-in-safari-5&#39;, &#39;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&#39;]);&#34; title=&#34;What is the work around for a weird javascript form submit bug in Safari 5? - Stack Overflow&#34;&gt;What is the work around for a weird javascript form submit bug in Safari 5? &amp;#8211; Stack Overflow&lt;/a&gt;
+  &lt;/li&gt;
+
+
+  &lt;li&gt;
+    &lt;a href=&#34;http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://mac.softpedia.com/progChangelog/Safari-Changelog-25616.html&#39;, &#39;Safari 5.1.7 &amp;#8211; Changelog &amp;#8211; Softpedia&#39;]);&#34; title=&#34;Safari 5.1.7 - Changelog - Softpedia&#34;&gt;Safari 5.1.7 &amp;#8211; Changelog &amp;#8211; Softpedia&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        Safariの更新履歴一覧。
+      &lt;/li&gt;
+
+    &lt;/ul&gt;
+
+&lt;p&gt;&lt;/li&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/ul&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[JavaScript] 画像の実際のサイズを取得する (jQuery使用)</title>
+      <link>http://1000k.github.io/2010/05/16/get-image-size-using-jquery/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/get-image-size-using-jquery/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;imgタグのwidth/height要素を指定していない場合、イメージがどう表示されるかはブラウザによって異なる。
+
+&lt;ul&gt;
+&lt;li&gt;すべてのブラウザで画像オリジナルのwidth/heightを取得しようとしても、ブラウザ毎にパラメータやメソッドが異なる&lt;/li&gt;
+&lt;li&gt;jQueryを利用すると、下記コードで画像の実際のサイズを取得できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+ * 画像の実際のサイズを取得する
+ *
+ * @param  string  image  img要素
+ */
+function getActualDimension(image) {
+    var run, mem, w, h, key = &amp;quot;actual&amp;quot;;
+
+    // for Firefox, Safari, Google Chrome
+    if (&amp;quot;naturalWidth&amp;quot; in image) {
+        return {width: image.naturalWidth, height: image.naturalHeight};
+    }
+    if (&amp;quot;src&amp;quot; in image) { // HTMLImageElement
+        if (image[key] &amp;amp;#038;&amp;amp;#038; image[key].src === image.src) {return  image[key];}
+
+        if (document.uniqueID) { // for IE
+            w = $(image).css(&amp;quot;width&amp;quot;);
+            h = $(image).css(&amp;quot;height&amp;quot;);
+        } else { // for Opera and Other
+            mem = {w: image.width, h: image.height}; // keep current style
+            $(this).removeAttr(&amp;quot;width&amp;quot;).removeAttr(&amp;quot;height&amp;quot;).css({width:&amp;quot;&amp;quot;,  height:&amp;quot;&amp;quot;});    // Remove attributes in case img-element has set width  and height (for webkit browsers)
+            w = image.width;
+            h = image.height;
+            image.width  = mem.w; // restore
+            image.height = mem.h;
+        }
+        return image[key] = {width: w, height: h, src: image.src}; // bond
+    }
+
+    // HTMLCanvasElement
+    return {width: image.width, height: image.height};
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[jQuery] セレクタで「&lt;」「&gt;」が選択できない</title>
+      <link>http://1000k.github.io/2010/05/16/cannot-select-gt-and-lt-with-jquery/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/cannot-select-gt-and-lt-with-jquery/</guid>
+      <description>
+
+&lt;h1 id=&#34;症状:fef478bcfeefba53d74161fd20826e36&#34;&gt;症状&lt;/h1&gt;
+
+&lt;p&gt;JavaScriptにおいて、「&amp;lt;」「&amp;gt;」は基本的にダメ文字（使用不可）だが、jQueryのセレクタ内で使用すると選択できたりできなかったりすることがある。&lt;/p&gt;
+
+&lt;h1 id=&#34;原因:fef478bcfeefba53d74161fd20826e36&#34;&gt;原因&lt;/h1&gt;
+
+&lt;p&gt;そもそも、XHTMLの仕様では「&amp;lt;」「&amp;gt;」は属性値に使ってはいけない。&lt;/p&gt;
+
+&lt;p&gt;たまに仕様で許可されてない記号も使えるが、そうしたものが選択できるのはブラウザ依存の偶然でしかない。&lt;/p&gt;
+
+&lt;h1 id=&#34;対策:fef478bcfeefba53d74161fd20826e36&#34;&gt;対策&lt;/h1&gt;
+
+&lt;p&gt;こういう文字を使うときは、別の文字に置換でもしないとダメ。例えばDOMロード後に全角の「＜」「＞」に置換するとか。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:fef478bcfeefba53d74161fd20826e36&#34;&gt;参考&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://forum.jquery.com/topic/selector-problem-foo-and-bar-works-but-buz-doesn-t-12-4-2010&#39;, &#39;\nSelector problem: $(\&#39;#&amp;#092;&lt;foo\&#39;) and $(\&#39;#bar&amp;#092;&gt;\&amp;lsquo;) works, but $(\&amp;lsquo;#&amp;#092;&lt;buz&amp;#092;&gt;\&amp;lsquo;) doesn\&amp;rsquo;t. &amp;#8211; jQuery Forum&amp;rsquo;]);&amp;rdquo; &amp;gt;&lt;br /&gt; Selector problem: $(&amp;lsquo;#&amp;#92;&lt;foo&#39;) and $(&#39;#bar&amp;#92;&gt;&amp;rsquo;) works, but $(&amp;lsquo;#&amp;#92;&lt;buz&amp;#92;&gt;&amp;rsquo;) doesn&amp;rsquo;t. &amp;#8211; jQuery Forum&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[その他] Poderosaマクロ – telnet自動ログイン</title>
+      <link>http://1000k.github.io/2010/05/16/telnet-auto-login-macro-in-poderosa/</link>
+      <pubDate>Sun, 16 May 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/05/16/telnet-auto-login-macro-in-poderosa/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;ワンクリックでtelnetログインし、自動でID/PWを入力するマクロ
+
+&lt;ul&gt;
+&lt;li&gt;いじるファイル：　Poderosaインストールディレクトリ &amp;gt; Macro &amp;gt; AutoLogin.js&lt;/li&gt;
+&lt;li&gt;登録方法：　[ツール] &amp;gt; [マクロ] &amp;gt; [環境設定] &amp;gt; [新規]　で上記ファイルを指定&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;//AutoLogin.js
+import Poderosa;
+import Poderosa.ConnectionParam;
+import Poderosa.Terminal;
+import Poderosa.Macro;
+import Poderosa.View;
+import System.Drawing;
+import System.Threading;
+
+var vars = new Object();
+// telnetの場合
+connect(&amp;quot;ホスト名&amp;quot;, ConnectionMethod.Telnet, 23, EncodingType.UTF8, &amp;quot;ログインID&amp;quot;, &amp;quot;ログインPW&amp;quot;);
+// SSHの場合
+//connect(&amp;quot;ssh-host&amp;quot;, ConnectionMethod.SSH2, 22, EncodingType.EUC_JP, &amp;quot;ログインID&amp;quot;, &amp;quot;ログインPW&amp;quot;);
+
+function connect(host, method, port, encoding, id, password) {
+    vars.env = new Environment();
+    if (method == ConnectionMethod.Telnet) {
+        vars.param = new TelnetTerminalParam(host);
+    } else {
+        vars.param = new SSHTerminalParam(method, host, id, password);
+    }
+    vars.param.Port = port;
+    vars.param.Encoding = encoding;
+    vars.connection = vars.env.Connections.Open(vars.param);
+    if (method == ConnectionMethod.Telnet) {
+        wait(&amp;quot;login: &amp;quot;);
+        sendln(id);
+        wait(&amp;quot;Password: &amp;quot;);
+        sendln(password);
+    }
+}
+
+function sendln(s) {
+    vars.connection.TransmitLn(s);
+}
+
+function wait(s) {
+    Thread.Sleep(10);
+    var r = vars.connection.ReceiveData();
+    while(r.indexOf(s) == -1) {
+        Thread.Sleep(10);
+        r += vars.connection.ReceiveData();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

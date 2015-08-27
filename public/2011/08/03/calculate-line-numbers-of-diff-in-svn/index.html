@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> svnでdiffの行数を取得する &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2011/08/03/calculate-line-numbers-of-diff-in-svn/">svnでdiffの行数を取得する</a></h2>
+        <div class="post-content">
+          
+
+<p>どれだけコーディングしたかチェックするため、svnのdiffの行数を取得するコマンドを考えました。</p>
+
+<p>下のコマンドを叩くと、変更された行の総数が表示されます。</p>
+
+<p><strong>(2011-08-17修正) 以前のコードはdiffのヘッダ行まで取得してしまっていたので、正しい数値が得られるよう修正しました。</strong></p>
+
+<pre><code>svn diff -r {before}[:{after}] -x -b {path} | grep -E '^[+\-][[:blank:]]' | wc -l
+</code></pre>
+
+<p>例えば「チェンジセット301～310で uso.php に発生した差分の総行数」は、下のようになります。</p>
+
+<pre><code># svn diff -r 301:310 -x -b ./uso.php | grep -E '^[+\-][[:blank:]]' | wc -l
+500
+</code></pre>
+
+<p>ロジックは、</p>
+
+<ol>
+<li>空白文字の差分（インデントや空行の削除）を無視してdiffを取る</li>
+<li>差分行だけ(「+ 」「- 」どちらかから始まっている行)を取得する</li>
+<li>行数をカウントする</li>
+</ol>
+
+<p>となっています。</p>
+
+<h1 id="参考:8ae62bd64dbb38a5a9b5b7de400f164f">参考</h1>
+
+<ul>
+<li><a href="http://openlab.dino.co.jp/2007/10/23/184825129.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://openlab.dino.co.jp/2007/10/23/184825129.html', 'svn diffで-wオプションを使う — ディノオープンラボラトリ']);" title="svn diffで-wオプションを使う — ディノオープンラボラトリ">svn diffで-wオプションを使う — ディノオープンラボラトリ</a></li>
+<li><a href="http://blog.enjoitech.jp/article/71" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.enjoitech.jp/article/71', 'Linux である文字を含む行を削除したい &#8211; Enjoi Blog']);" title="Linux である文字を含む行を削除したい - Enjoi Blog">Linux である文字を含む行を削除したい &#8211; Enjoi Blog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

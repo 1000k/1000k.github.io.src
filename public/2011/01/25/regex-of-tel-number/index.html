@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> 電話番号チェックする正規表現(入力枠1個、ハイフン抜き) &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2011/01/25/regex-of-tel-number/">電話番号チェックする正規表現(入力枠1個、ハイフン抜き)</a></h2>
+        <div class="post-content">
+          
+
+<p>「電話番号 正規表現」で検索するといろいろな正規表現パターンが出てきますが、完璧なものはあまり無いようです。私が必要としていた簡単なものもなかったので、PHPで書いてみました。</p>
+
+<p>どういう条件で使えるかコメントに書いたので、よくご確認ください。総務省の電話番号ルールに従っています。</p>
+
+<pre><code>/**
+ * 電話番号が正しいか判定する
+ *
+ * - 入力枠1個、ハイフン抜きでチェックする
+ * - 0A0, 0AB, 0ABC (A,B,Cは0以外)から始まる番号だけに対応
+ *   - 「00XY-0市外局番-市内局番-加入者番号」の形式は非対応 (@seeのQ3参照)
+ * - 10桁(固定電話)と11桁(固定電話)のみ対応
+ *
+ * @param  string $tel  電話番号
+ * @return bool   判定結果 (true:正しい電話番号)
+ * @see &lt;a href=&quot;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&quot; onclick=&quot;_gaq.push(['_trackEvent', 'outbound-article', 'http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html', '電話番号に関するＱ＆Ａ']);&quot; &gt;電話番号に関するＱ＆Ａ&lt;/a&gt;
+ */
+function is_valid_tel_number($tel = &quot;&quot;) {
+    return preg_match(&quot;/^0\d{9,10}$/&quot;, str_replace(&quot;-&quot;, &quot;&quot;, $tel));
+}
+</code></pre>
+
+<p>動作チェックは書きの通りです。</p>
+
+<pre><code>&lt;?php
+/**
+ * 電話番号が正しいか判定する
+ *
+ * - 入力枠1個、ハイフン抜きでチェックする
+ * - 0A0, 0AB, 0ABC (A,B,Cは0以外)から始まる番号だけに対応
+ *   - 「00XY-0市外局番-市内局番-加入者番号」の形式は非対応 (@seeのQ3参照)
+ * - 10桁(固定電話)と11桁(固定電話)のみ対応
+ *
+ * @param  string $tel  電話番号
+ * @return bool   判定結果 (true:正しい電話番号)
+ * @see &lt;a href=&quot;http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html&quot; onclick=&quot;_gaq.push(['_trackEvent', 'outbound-article', 'http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html', '電話番号に関するＱ＆Ａ']);&quot; &gt;電話番号に関するＱ＆Ａ&amp;lt;/a&gt;
+ */
+function is_valid_tel_number($tel = &quot;&quot;) {
+    return preg_match(&quot;/^0\d{9,10}$/&quot;, str_replace(&quot;-&quot;, &quot;&quot;, $tel));
+}
+
+$tels = array(
+    // NGパターン
+    &quot;0&quot;,
+    &quot;1-1-1-1&quot;,
+    &quot;uhouho&quot;,
+    &quot;9999999999&quot;,       // 0から始まってない
+    &quot;03-333-333&quot;,       // ケタ不足
+    &quot;090-9999-999999&quot;,  // ケタ多すぎ
+    &quot;012301230123&quot;,     // ケタ多すぎ
+    // OKパターン
+    &quot;03-3200-2222&quot;,     // 市外局番1桁: 東京など
+    &quot;043-000-0000&quot;,     // 市外局番2桁: 千葉
+    &quot;0166-00-0000&quot;,     // 市外局番3桁: 旭川
+    &quot;09913-0-0000&quot;,     // 市外局番4桁: 硫黄島
+    &quot;090-0000-0000&quot;,    // 携帯電話
+    &quot;050-0000-0000&quot;,    // 携帯電話
+    &quot;080-0000-0000&quot;,    // 携帯電話
+);
+
+foreach ($tels as $key =&gt; $tel) {
+    echo &quot;{$key}: {$tel} ... &quot;;
+    echo is_valid_tel_number($tel) ? &quot;OK&quot; : &quot;NG&quot;;
+    echo &quot;\n&quot;;
+}
+
+ /** End of file */
+</code></pre>
+
+<p>出力結果</p>
+
+<pre><code>$ php tel_check.php
+0: 0 ... NG
+1: 1-1-1-1 ... NG
+2: uhouho ... NG
+3: 9999999999 ... NG
+4: 03-333-333 ... NG
+5: 090-9999-999999 ... NG
+6: 012301230123 ... NG
+7: 03-3200-2222 ... OK
+8: 043-000-0000 ... OK
+9: 0166-00-0000 ... OK
+10: 09913-0-0000 ... OK
+11: 090-0000-0000 ... OK
+12: 050-0000-0000 ... OK
+13: 080-0000-0000 ... OK
+</code></pre>
+
+<h2 id="参考:2daffd78901abd39a0325093e2a569a5">参考</h2>
+
+<ul>
+<li><a href="http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a-2001aug.html', '電話番号に関するＱ＆Ａ']);" title="電話番号に関するＱ＆Ａ">電話番号に関するＱ＆Ａ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

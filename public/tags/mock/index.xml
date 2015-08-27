@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mock on 1000g</title>
+    <link>http://1000k.github.io/tags/mock/</link>
+    <description>Recent content in Mock on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 04 Sep 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/mock/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>vfsStreamをインストールする</title>
+      <link>http://1000k.github.io/2012/09/04/installing-vfsstream/</link>
+      <pubDate>Tue, 04 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/09/04/installing-vfsstream/</guid>
+      <description>
+
+&lt;p&gt;PHPUnit のマニュアルに出てくる仮想ファイルシステムの vfsStream ですが、&lt;a href=&#34;http://www.phpunit.de/manual/3.6/ja/test-doubles.html#test-doubles.mocking-the-filesystem&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.phpunit.de/manual/3.6/ja/test-doubles.html#test-doubles.mocking-the-filesystem&#39;, &#39;公式マニュアル&#39;]);&#34; title=&#34;第10章 テストダブル&#34;&gt;公式マニュアル&lt;/a&gt;に載っている方法では既にPEARチャンネルが消えているため、インストールできません。&lt;/p&gt;
+
+&lt;p&gt;以下に正しいインストール方法をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;php-5-2-の場合:95f81ffdb8fe1ed455aec73bf72b588a&#34;&gt;PHP &amp;lt; 5.2 の場合&lt;/h2&gt;
+
+&lt;p&gt;以下のコマンドで vfsStream &amp;lt; 1.0 をインストールできます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pear channel-discover pear.bovigo.org
+$ pear install bovigo/vfsStream-beta
+
+downloading vfsStream-0.12.0.tgz ...
+Starting to download vfsStream-0.12.0.tgz (459,376 bytes)
+.........done: 459,376 bytes
+install ok: channel://pear.bovigo.org/vfsStream-0.12.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;php-5-3-の場合:95f81ffdb8fe1ed455aec73bf72b588a&#34;&gt;PHP &amp;gt;= 5.3 の場合&lt;/h2&gt;
+
+&lt;p&gt;vfsStream &amp;gt;= 1.0 を &lt;a href=&#34;http://getcomposer.org/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://getcomposer.org/&#39;, &#39;Composer&#39;]);&#34; &gt;Composer&lt;/a&gt; でインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;mikey179/vfsStream&amp;quot;: &amp;quot;v1.1.0&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用可能なバージョンは &lt;a href=&#34;https://packagist.org/packages/mikey179/vfsStream&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://packagist.org/packages/mikey179/vfsStream&#39;, &#39;mikey179/vfsStream &amp;#8211; Packagist&#39;]);&#34; &gt;mikey179/vfsStream &amp;#8211; Packagist&lt;/a&gt; を参照。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:95f81ffdb8fe1ed455aec73bf72b588a&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mikey179/vfsStream/wiki/Install&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mikey179/vfsStream/wiki/Install&#39;, &#39;Download and install vfsStream · mikey179/vfsStream Wiki&#39;]);&#34; title=&#34;Download and install vfsStream · mikey179/vfsStream Wiki&#34;&gt;Download and install vfsStream · mikey179/vfsStream Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

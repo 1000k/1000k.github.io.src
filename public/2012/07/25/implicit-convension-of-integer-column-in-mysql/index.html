@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> MySQLのINTEGER型カラムに0を入れると予期しないWHERE句にヒットする &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2012/07/25/implicit-convension-of-integer-column-in-mysql/">MySQLのINTEGER型カラムに0を入れると予期しないWHERE句にヒットする</a></h2>
+        <div class="post-content">
+          
+
+<p><strong>「MySQLの暗黙の型変換には気をつけろ！」</strong>というお話です。</p>
+
+<p>下記のように、INTEGER型のカラムと、TEXT型のカラムを持つ簡単なテーブルがある場合を考えます。</p>
+
+<pre><code>+-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| id    | int(11) | YES  |     | NULL    |       |
+| name  | text    | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+</code></pre>
+
+<p>入力したレコードは下記の通り。</p>
+
+<pre><code>mysql&gt; INSERT INTO users VALUES(0, &quot;name0&quot;);
+mysql&gt; INSERT INTO users VALUES(0, &quot;name1&quot;);
+
++------+-------+
+| id   | name  |
++------+-------+
+|    0 | name0 |
+|    1 | name1 |
++------+-------+
+</code></pre>
+
+<p>ここで、下記のようなクエリを投げてみます。</p>
+
+<pre><code>mysql&gt; SELECT * FROM users WHERE id = 'mojamoja';
+</code></pre>
+
+<p>普通に考えれば、何もヒットするはずはありません。</p>
+
+<p>ところが結果は下記のようになります。</p>
+
+<pre><code>+------+-------+
+| id   | name  |
++------+-------+
+|    0 | name0 |
++------+-------+
+
+1 row in set, 1 warning (0.00 sec)
+</code></pre>
+
+<p>なぜか「id = 0」のカラムにヒットします。</p>
+
+<p>絶対ヒットしてほしくないのですが。</p>
+
+<p>よく見ると、「1 warning」と書いてあります。</p>
+
+<p>SHOW WARNINGSコマンドで確かめてみましょう。</p>
+
+<pre><code>mysql&gt; SHOW WARNINGS;
++---------+------+--------------------------------------------+
+| Level   | Code | Message                                    |
++---------+------+--------------------------------------------+
+| Warning | 1292 | Truncated incorrect DOUBLE value: 'uhouho' |
++---------+------+--------------------------------------------+
+1 row in set (0.00 sec)
+</code></pre>
+
+<p>「不正なDOUBLE型の値&#8217;uhouho&#8217;を切り捨てました」と書いてあります。どうやら、MySQLの_暗黙の型変換_が悪さをしているようです。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換']);" title="MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換">MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換</a> に淡々と箇条書きされていることを引用します。</p>
+
+<blockquote>
+<ul>
+<li>比較の演算の両方の引数がストリングの場合、それらはストリングとして比較されます。</li>
+<li>両方の引数が整数の場合、それらは整数として比較されます。</li>
+<li>&#8230; 中略 &#8230;</li>
+<li>他のすべてのケースでは、引数は浮動少数点 ( 実 ) 数として比較されます。</li>
+</ul>
+</blockquote>
+
+<pre><code>mysql&gt; SELECT 1 &gt; '6x';
+        -&gt; 0
+mysql&gt; SELECT 7 &gt; '6x';
+        -&gt; 1
+mysql&gt; SELECT 0 &gt; 'x6';
+        -&gt; 0
+mysql&gt; SELECT 0 = 'x6';
+        -&gt; 1                -- 文字列「'x6'」が実数「0」に変換されてしまっている
+</code></pre>
+
+<p>この被害に遭いたくなければ、まずは<strong>カラムの型と違う型をWHERE句に指定しない</strong>ようにしましょう。</p>
+
+<p>そのほかの対策としては、MySQLのSQLモードを設定することで、型チェックを厳格にすることもできるようです（未検証）。</p>
+
+<h2 id="参考:6f5857c1e488bfc7db27046670c471b9">参考</h2>
+
+<ul>
+<li><a href="http://d.hatena.ne.jp/hnw/20120405" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/hnw/20120405', 'MySQLの文字列型から数値型への自動型変換が意味不明すぎる &#8211; hnwの日記']);" title="MySQLの文字列型から数値型への自動型変換が意味不明すぎる - hnwの日記">MySQLの文字列型から数値型への自動型変換が意味不明すぎる &#8211; hnwの日記</a>
+
+<ul>
+<li>文字列が浮動小数点に切り替えられる問題を詳しく解説。</li>
+</ul></li>
+<li><a href="http://www.tokumaru.org/d/20090924.html#p01" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.tokumaru.org/d/20090924.html#p01', 'undefined &#8211; 徳丸浩の日記(2009-09-24)']);" title="undefined - 徳丸浩の日記(2009-09-24)">undefined &#8211; 徳丸浩の日記(2009-09-24)</a>
+
+<ul>
+<li>SQLインジェクション対策時にはまりやすいことの説明。値を文字列にキャストしているときに遭遇しうる不具合について解説。</li>
+</ul></li>
+<li><a href="http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/server-sql-mode.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード']);" title="MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード">MySQL :: MySQL 5.1 リファレンスマニュアル :: 4.2.6 SQL モード</a>
+
+<ul>
+<li>値チェックのモード。不正な日付や0除算などのチェックを厳格にできる。</li>
+</ul></li>
+<li><a href="http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/type-conversion.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換']);" title="MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換">MySQL :: MySQL 5.1 リファレンスマニュアル :: 11.1.2 式評価でのタイプ変換</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

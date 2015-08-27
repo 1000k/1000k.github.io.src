@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> 残り時間をプログレスバーで表示するチュートリアル &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/12/18/display-remaining-time-by-progress-bar/">残り時間をプログレスバーで表示するチュートリアル</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="http://e.ggtimer.com/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://e.ggtimer.com/', 'E.gg Timer']);" >E.gg Timer</a> のようなタイマーアプリを作りたかったので、プログレスバーの作り方を調べました。タイマーそのものより、progress タグのスタイルシートをクロスブラウザ対応させるのに苦労しました。</p>
+
+<p>今回作ったのは下の画像のような簡単なタイマーです。経過時間に合わせてプログレスバーが赤くなります。</p>
+
+<p><img src="http://blog.1000k.net/wp-content/uploads/timer.png" alt="timer" width="585" height="81" /></p>
+
+<p><a href="http://jsfiddle.net/tcxx9/3/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jsfiddle.net/tcxx9/3/', 'デモはこちら。']);" >デモはこちら。</a></p>
+
+<p>なお、IE11, Firefox26, Chrome31 で動作を確認しています。</p>
+
+<h2 id="実装コード:2853c5683734ff1185ea9e66d817967b">実装コード</h2>
+
+<h3 id="html:2853c5683734ff1185ea9e66d817967b">HTML</h3>
+
+<p>プログレスバー、時間入力欄、開始/停止ボタンがあるだけです。</p>
+
+<pre><code>&lt;div class=&quot;progressWrapper&quot;&gt;
+  &amp;lt;progress id=&quot;bar&quot; value=&quot;0&quot; max=&quot;1000&quot; min=&quot;0&quot;&gt;&amp;lt;/progress&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;fieldset&gt;
+  Time (msec): &lt;input type=&quot;text&quot; value=&quot;5000&quot; id=&quot;time&quot; /&gt;
+
+    &lt;button id =&quot;start&quot;&gt;start&lt;/button&gt;
+    &lt;button id =&quot;stop&quot;&gt;stop&lt;/button&gt;
+
+&lt;/fieldset&gt;
+</code></pre>
+
+<h3 id="javascript:2853c5683734ff1185ea9e66d817967b">JavaScript</h3>
+
+<p>jQuery 1.10.2 で試しました。経過時間に合わせて progress タグの value 要素を増やしていくだけです。</p>
+
+<pre><code>var timer,
+  limitMs = 0,
+  restMs = 0,
+  resolutionMs = 50,    /* NOTE: Too small value does not work on IE11. */
+  maxBar;
+
+var countdown = function() {
+  restMs -= resolutionMs;
+
+  var restRate = (limitMs - restMs) / limitMs;
+  var restBarLength = maxBar * restRate
+
+  $('#bar').attr('value', restBarLength);
+
+  if (restMs &amp;lt; 0) {
+    resetTimer();
+    alert('time expired');
+  }
+};
+
+var resetTimer = function() {
+  clearInterval(timer);
+  limitMs = restMs = $('#time').val();
+  $('#bar').attr('value', 0);
+};
+
+$(function() {
+  maxBar = $('#bar').attr('max');
+
+  $('#start').on('click', function() {
+    resetTimer();
+    timer = setInterval('countdown()', resolutionMs);
+  });
+
+  $('#stop').on('click', function() {
+    resetTimer();
+  });
+});
+</code></pre>
+
+<p>ひとつだけ IE11 でバグがありました。<code>resolutionMs</code> (タイマーを更新する間隔) を10ミリ秒以下にすると、赤いバーが全く表示されなくなりました。50ミリ秒ならなんとか描画されました。</p>
+
+<p>どうも IE11 ではバーの表示を勝手に加速度を付けて滑らかにする機能が付いているのですが、これが悪さをしているようです。デバッグしてみると value 属性は間違いなく増加しているのですが、画面には反映されませんでした。IE ユーザーはご注意ください。</p>
+
+<h3 id="css:2853c5683734ff1185ea9e66d817967b">CSS</h3>
+
+<p>progress 要素はブラウザ毎に属性の解釈が結構異なります。Opera は面倒なので試してません。すいません。</p>
+
+<pre><code>.progressWrapper {
+  width: 100%;
+}
+
+progress {
+  /* Turn off default styling. */
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+
+  height: 10px;
+  width: 100%;
+  color: red;       /* IE */
+  background: navy; /* Firefox */
+}
+
+/* Chrome needs '-webkit-progress-value' and '-webkit-progress-bar' attributes. */
+progress::-webkit-progress-value {
+  background: red;
+}
+
+progress::-webkit-progress-bar {
+  background: navy;
+}
+
+/* Firefox needs only '-moz-progress-bar' attiribute. */
+progress::-moz-progress-bar {
+  background: red;
+}
+</code></pre>
+
+<h2 id="参考:2853c5683734ff1185ea9e66d817967b">参考</h2>
+
+<ul>
+<li><a href="http://www.hongkiat.com/blog/html5-progress-bar/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.hongkiat.com/blog/html5-progress-bar/', 'Creating & Styling Progress Bar With HTML5']);" >Creating &amp; Styling Progress Bar With HTML5</a></li>
+<li><a href="http://www.pori2.net/js/timer/6.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.pori2.net/js/timer/6.html', 'カウントダウンタイマー－JavaScript入門']);" >カウントダウンタイマー－JavaScript入門</a></li>
+<li><a href="http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.useragentman.com/blog/2012/01/03/cross-browser-html5-progress-bars-in-depth/', 'Cross Browser HTML5 Progress Bars In Depth']);" >Cross Browser HTML5 Progress Bars In Depth</a>
+
+<ul>
+<li>カウントダウンに合わせて動くサルのアニメや、スピードメーターの書き方など。</li>
+</ul></li>
+<li><a href="http://css-tricks.com/html5-progress-element/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://css-tricks.com/html5-progress-element/', 'The HTML5 progress Element | CSS-Tricks']);" >The HTML5 progress Element | CSS-Tricks</a></li>
+<li><a href="https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://developer.mozilla.org/ja/docs/Web/CSS/::-moz-progress-bar', '::-moz-progress-bar - CSS | MDN']);" >::-moz-progress-bar - CSS | MDN</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

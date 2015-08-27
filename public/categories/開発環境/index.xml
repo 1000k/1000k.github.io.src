@@ -1,0 +1,1646 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>開発環境 on 1000g</title>
+    <link>http://1000k.github.io/categories/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/</link>
+    <description>Recent content in 開発環境 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 11 Mar 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>tmuxはじめました</title>
+      <link>http://1000k.github.io/2015/03/11/introducing-to-tmux/</link>
+      <pubDate>Wed, 11 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/03/11/introducing-to-tmux/</guid>
+      <description>
+
+&lt;p&gt;とあるきっかけで開発効率強化ウィークに入りました。まずはターミナルをもっと効率的にすべく、tmux を習得することにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;tumxとは:a506571e48bbc5459d921757c1950894&#34;&gt;tumxとは？&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ターミナルマルチプレクサ (端末多重化ソフトウェア, 仮想端末マネージャー) のひとつ
+
+&lt;ul&gt;
+&lt;li&gt;ほかには GNU screen が有名&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;読み方は &amp;#8220;ティーマックス&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;できること:a506571e48bbc5459d921757c1950894&#34;&gt;できること&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1つの端末で複数の仮想端末を起動できる&lt;/li&gt;
+&lt;li&gt;仮想端末の画面を自由に分割・統合できる&lt;/li&gt;
+&lt;li&gt;マウスを使わずキーボードだけでコピペできる&lt;/li&gt;
+&lt;li&gt;デタッチ(切り離し)とアタッチ(接続)により、ネットワークが切れても同じセッションを再開できる&lt;/li&gt;
+&lt;li&gt;ステータスバーなどでターミナルの情報をリッチにできる
+
+&lt;ul&gt;
+&lt;li&gt;現在時刻、Wi-Fi接続強度、バッテリー残量なども表示できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;設定ファイルで高度にカスタマイズできる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;tmuxの構成:a506571e48bbc5459d921757c1950894&#34;&gt;tmuxの構成&lt;/h3&gt;
+
+&lt;p&gt;tmuxはサーバー/クライアント構成を取る。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tmuxサーバー(セッション)
+
+&lt;ul&gt;
+&lt;li&gt;tmux起動時に生成される&lt;/li&gt;
+&lt;li&gt;セッションを管理するプロセス&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;tmuxクライアント(pty; 仮想端末)
+
+&lt;ul&gt;
+&lt;li&gt;tmuxセッションへ接続(アタッチ)しているプロセス(pty)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;画面の内包関係:a506571e48bbc5459d921757c1950894&#34;&gt;画面の内包関係&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;セッション &amp;gt; ウィンドウ &amp;gt; ペイン&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;セッション: ウィンドウの集まり。&lt;/li&gt;
+&lt;li&gt;ウィンドウ: ペインを管理する領域。タブのイメージ。&lt;/li&gt;
+&lt;li&gt;ペイン: ウィンドウを分割した領域。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール:a506571e48bbc5459d921757c1950894&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;yum ユーザーは EPEL リポジトリからインストールが可能。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo yum install -y tmux
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;チュートリアル:a506571e48bbc5459d921757c1950894&#34;&gt;チュートリアル&lt;/h2&gt;
+
+&lt;h3 id=&#34;起動:a506571e48bbc5459d921757c1950894&#34;&gt;起動&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;tmux&lt;/code&gt; または &lt;code&gt;tmux new-session&lt;/code&gt; で新規セッションを起動すると、新しい仮想端末が開く。&lt;/p&gt;
+
+&lt;h3 id=&#34;ペインの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;C-b %&lt;/code&gt; でペインを分割し、&lt;code&gt;C-b n&lt;/code&gt; で次のウィンドウに移動します。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;C-b ?&lt;/code&gt; でヘルプが開くので、片方のペインにヘルプを表示した状態で、もう片方でいろいろ実験してみると理解が進みます。&lt;/p&gt;
+
+&lt;h3 id=&#34;デタッチ:a506571e48bbc5459d921757c1950894&#34;&gt;デタッチ&lt;/h3&gt;
+
+&lt;p&gt;仮想端末上で &lt;code&gt;C-b d&lt;/code&gt; で、端末がセッションからデタッチされます。&lt;/p&gt;
+
+&lt;p&gt;デタッチ状態ではセッションは残っているので、再度 &lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; と入力すれば、最後の画面から再開できます。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本操作:a506571e48bbc5459d921757c1950894&#34;&gt;基本操作&lt;/h2&gt;
+
+&lt;h3 id=&#34;セッションの操作:a506571e48bbc5459d921757c1950894&#34;&gt;セッションの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;セッションの作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux&lt;/code&gt; or &lt;code&gt;tmux new-session&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-sessions&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;接続されているクライアントの確認&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux list-client&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションのアタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux attach -t セッション番号&lt;/code&gt; or &lt;code&gt;tmux a&lt;/code&gt; (&lt;code&gt;-d&lt;/code&gt; を指定すると、そのセッションに接続しているほかのクライアントはデタッチされる)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-session [-t セッション番号]&lt;/code&gt; (引数を指定しなければ直近のセッションが削除される)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;全セッションの削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-server&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ウィンドウの操作:a506571e48bbc5459d921757c1950894&#34;&gt;ウィンドウの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ヘルプ表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ?&lt;/code&gt; (閉じるには &lt;code&gt;q&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ作成&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b c&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ削除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;amp;&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ名変更&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ,&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ウィンドウ一覧表示/移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b w&lt;/code&gt; (カーソルキーで選択、[Enter] で表示)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;前のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b p&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;次のウィンドウに移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b n&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b l&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したウィンドウへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ウィンドウ番号&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;デタッチ&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b d&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ペインの操作-1:a506571e48bbc5459d921757c1950894&#34;&gt;ペインの操作&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;operation&lt;/th&gt;
+&lt;th&gt;command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ペイン番号表示&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q&lt;/code&gt; or &lt;code&gt;C-b :display-panes&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;指定したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b q ペイン番号&lt;/code&gt; (インジケーターが表示されている間に番号を入力する)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;最後に操作したペインへ移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b ;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (水平方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;quot;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割 (垂直方向)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b %&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン分割解除&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b !&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン強制終了&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b x&lt;/code&gt; (ステータスバーに確認が出るので &lt;code&gt;y&lt;/code&gt; で削除)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン間移動&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b o&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ペイン入れ替え&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b {&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;カスタマイズ:a506571e48bbc5459d921757c1950894&#34;&gt;カスタマイズ&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;~/.tmux.conf&lt;/code&gt; にカスタマイズ設定を書き込むことができます。&lt;/p&gt;
+
+&lt;p&gt;yum でインストールした場合は &lt;code&gt;/usr/share/doc/tmux-1.6/examples/&lt;/code&gt; 配下にサンプルファイルがあります。vimmer は &lt;a href=&#34;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf&#39;, &#39;vim-keys.conf&#39;]);&#34; &gt;vim-keys.conf&lt;/a&gt; を設定するとペイン操作が楽になるかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:a506571e48bbc5459d921757c1950894&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&amp;sec=1&#39;, &#39;OpenBSD manual pages&#39;]);&#34; &gt;OpenBSD manual pages&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;公式マニュアル。英語。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html&#39;, &#39;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&#39;]);&#34; &gt;tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &amp;#8211; 完熟トマト&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;概念図やスクリーンショット満載でわかりやすいです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://room6933.com/mymemo/tmux/tmux-basic.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://room6933.com/mymemo/tmux/tmux-basic.html&#39;, &#39;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&#39;]);&#34; &gt;tmux基本のコマンド — nato&amp;#8217;s memo 1.0 documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc&#39;, &#39;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&#39;]);&#34; &gt;Vim &amp;#8211; ターミナルマルチプレクサ tmux をカスタマイズする &amp;#8211; Qiita&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使えるカスタマイズの例。zsh と連携して、ログイン時にいきなり tmux セッションにアタッチする方法など。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Chef Solo ではなく Chef Client Local Mode を使おう</title>
+      <link>http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/</link>
+      <pubDate>Fri, 16 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2015/01/16/reasons-for-using-chef-client-local-mode-instead-of-chef-solo/</guid>
+      <description>
+
+&lt;p&gt;2014/06/24 に Opscode 公式ブログで &lt;a href=&#34;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#39;, &#39;From Solo to Zero: Migrating to Chef Client Local Mode&#39;]);&#34; &gt;From Solo to Zero: Migrating to Chef Client Local Mode&lt;/a&gt; という記事が公開されました。記事を要約すると「Chef Solo はオワコンだから Chef Client Local Mode を使え」ということのようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;chef-client-local-mode-旧-chef-zero-って:519ef52691307b5f7476688034bf2c1d&#34;&gt;Chef Client Local Mode (旧 Chef Zero) って？&lt;/h2&gt;
+
+&lt;p&gt;Chef Client Local Mode (旧 Chef Zero) は Chef Solo の全ての機能を備えており、Chef Server に移行する際にも楽です。Chef Client 11.8.0 から採用されました。実行するには &lt;code&gt;chef-client&lt;/code&gt; に &lt;code&gt;--local-mode&lt;/code&gt; または &lt;code&gt;-z&lt;/code&gt; オプションを付けます。&lt;/p&gt;
+
+&lt;p&gt;Local Mode ではローカルのファイルシステムから揮発性の Chef Server を作り、&lt;/p&gt;
+
+&lt;p&gt;Server-Client 構成と同じオペレーションが行われます。つまり Chef Server が無ければできなかった高度な機能を、サーバーレスで気軽に行うことができます。&lt;/p&gt;
+
+&lt;p&gt;Chef Server のフル機能を、Chef Solo 同様の気軽さで使えるのが、Chef Client Local Mode と言っていいでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;chef-solo-から-chef-client-local-mode-に移行するべき理由:519ef52691307b5f7476688034bf2c1d&#34;&gt;Chef Solo から Chef Client Local mode に移行するべき理由&lt;/h2&gt;
+
+&lt;p&gt;1&amp;#46; Local Mode なら Server-Client で使える全ての機能 &amp;#8212; environments, roles, (encrypted) data bags &amp;#8212; が使える。ノードやレシピの検索機能も使える。&lt;/p&gt;
+
+&lt;p&gt;2&amp;#46; 特別なツールや knife プラグインは必要無い。&lt;/p&gt;
+
+&lt;p&gt;3&amp;#46; レシピ実行環境が Solo か Server かの分岐を書く必要が無くなる。例えば以下のようなコード。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if Chef::Config[:solo]
+    # do something
+else
+    # do something else
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4&amp;#46; &lt;code&gt;chef_zero&lt;/code&gt; を Test Kitchen の provisioner に使う際、 &amp;#8220;fixture node objects&amp;#8221; をテストデータとして使える。&lt;/p&gt;
+
+&lt;p&gt;5&amp;#46; 後に Chef Server 構成を使いたくなった時にすんなり移行できる。&lt;/p&gt;
+
+&lt;p&gt;今すぐ Chef Solo をお払い箱にする必要はありませんが、公式に deprecated 扱いされているので、今後は Solo よりも Local Mode を使うことをお薦めします。これから Chef を始める人は、chef-apply か local mode を使うといいでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;vagrant-で使う時はどうする:519ef52691307b5f7476688034bf2c1d&#34;&gt;Vagrant で使う時はどうする？&lt;/h2&gt;
+
+&lt;p&gt;Vagrant 1.7.0 より、Chef Client Local mode が使えるようになりました。単純に provisioner に &lt;code&gt;chef_zero&lt;/code&gt; を指定するだけで動作します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.vagrantup.com/v2/provisioning/chef_zero.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://docs.vagrantup.com/v2/provisioning/chef_zero.html&#39;, &#39;Chef Zero &amp;#8211; Provisioning &amp;#8211; Vagrant Documentation&#39;]);&#34; &gt;Chef Zero &amp;#8211; Provisioning &amp;#8211; Vagrant Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;Vagrant.configure(&amp;quot;2&amp;quot;) do |config|
+  config.vm.provision &amp;quot;chef_zero&amp;quot; do |chef|
+    # Specify the local paths where Chef data is stored
+    chef.cookbooks_path = &amp;quot;cookbooks&amp;quot;
+    chef.roles_path = &amp;quot;roles&amp;quot;
+    chef.nodes_path = &amp;quot;nodes&amp;quot;
+
+    # Add a recipe
+    chef.add_recipe &amp;quot;apache&amp;quot;
+
+    # Or maybe a role
+    chef.add_role &amp;quot;web&amp;quot;
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:519ef52691307b5f7476688034bf2c1d&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.getchef.com/blog/2014/06/24/from-solo-to-zero-migrating-to-chef-client-local-mode/&#39;, &#39;From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog&#39;]);&#34; &gt;From Solo to Zero: Migrating to Chef Client Local Mode | Chef Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/YukihikoSawanobori/chef-2014&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/YukihikoSawanobori/chef-2014&#39;, &#39;2014年のChefとInfrastructure as code&#39;]);&#34; &gt;2014年のChefとInfrastructure as code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://docs.opscode.com/ctl_chef_client.html#run-in-local-mode&#39;, &#39;chef-client (executable) — Chef Docs # Run in Local Mode&#39;]);&#34; &gt;chef-client (executable) — Chef Docs # Run in Local Mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.opscode.com/ctl_chef_solo.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://docs.opscode.com/ctl_chef_solo.html&#39;, &#39;chef-solo (executable) — Chef Docs&#39;]);&#34; &gt;chef-solo (executable) — Chef Docs&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一番上に warning で「&lt;code&gt;--local-mode&lt;/code&gt; を検討しなよ」と書いてある。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vagrant 1.6.x にアップデートしたら動かなくなった</title>
+      <link>http://1000k.github.io/2014/07/03/vagrant-doesnt-work-after-updating-1-6-x/</link>
+      <pubDate>Thu, 03 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/07/03/vagrant-doesnt-work-after-updating-1-6-x/</guid>
+      <description>&lt;p&gt;Windows 環境で Docker が使いたくて Vagrant を 1.5.1 から 1.6.3 にアップグレードしたら、&lt;code&gt;vagrant up&lt;/code&gt; するたびにエラーが出るようになってしましました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ vagrant up
+Bringing machine &#39;myapp&#39; up with &#39;virtualbox&#39; provider...
+==&amp;gt; myapp: Box &#39;myapp&#39; could not be found. Attempting to find and
+install...
+    myapp: Box Provider: virtualbox
+    myapp: Box Version: &amp;gt;= 0
+==&amp;gt; myapp: Adding box &#39;myapp&#39; (v0) for provider: virtualbox
+    myapp: Downloading: file://C:/static/boxes/CentOS-6.3-x86_64-v2013010
+1.box
+    myapp: Progress: 8% (Rate: 201M/s, Estimated time remaining: 0:00:02)
+    myapp: Progress: 53% (Rate: 203M/s, Estimated time remaining: 0:00:01
+    myapp: Progress: 56% (Rate: 108M/s, Estimated time remaining: 0:00:01
+    myapp: Progress: 76% (Rate: 103M/s, Estimated time remaining: 0:00:01
+    myapp: Progress: 89% (Rate: 91.7M/s, Estimated time remaining: --:--:
+    myapp: Progress: 100% (Rate: 85.8M/s, Estimated time remaining: --:--
+    myapp:
+The box failed to unpackage properly. Please verify that the box
+file you&#39;re trying to add is not corrupted and try again. The
+output from attempting to unpackage (if any):
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GitHub の issue レポートにワークアラウンドが見つかりました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/mitchellh/vagrant/issues/3674&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/mitchellh/vagrant/issues/3674&#39;, &#39;The executable &amp;#8216;bsdtar&amp;#8217; Vagrant is trying to run was not found in the %PATH% variable · Issue #3674 · mitchellh/vagrant&#39;]);&#34; &gt;The executable &amp;#8216;bsdtar&amp;#8217; Vagrant is trying to run was not found in the %PATH% variable · Issue #3674 · mitchellh/vagrant&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これによると、古いバージョンが入った Windows に 1.6.x をインストールすると、bsdtar (Vagrant Box を解凍するツール？) がなぜかインストールされないそうです。実際に &lt;code&gt;C:\HashiCorp\Vagrant\embedded\gnuwin32\bin&lt;/code&gt; を見てみたところ、&lt;code&gt;bsdtar.exe&lt;/code&gt; は見つからず、&lt;code&gt;libarchive.dll&lt;/code&gt; というファイル1つしかありませんでした。&lt;/p&gt;
+
+&lt;p&gt;そんなわけで以下の手順を行ったところ、無事起動するようになりました。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;古い Vagrant をアンインストールする。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;c:\HashiCorp\&lt;/code&gt; を削除する。&lt;/li&gt;
+&lt;li&gt;再度インストーラーで Vagrant 1.6.3 をインストールする。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;なおスレッドの書き込みによると、コントロールパネルの「プログラムと機能」から「修復」を選んでも直るらしいです。(未検証)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Jenkins で Git リポジトリの ID と PW をセキュアに保存する方法</title>
+      <link>http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/</link>
+      <pubDate>Mon, 28 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/28/how-to-save-id-and-pw-of-git-repository-in-jenkins/</guid>
+      <description>
+
+&lt;p&gt;Jenkins から https 接続で認証付きの Git リポジトリを参照する場合、以下のように URL に直接ユーザー名とパスワードを書く必要がありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://{USERNAME}:{PASSWORD}@foo.com/git/bar.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然 Jenkins の設定ファイルにパスワードがそのまま書かれてしまいます。個人開発ならいいですが、チーム開発では危険すぎます。これをセキュアにしようとすると、.netrc を使ったりするややこしい手順が必要でした。&lt;/p&gt;
+
+&lt;p&gt;ところが、2013年10月22日にリリースされた Git Plugin 2.0 から、Credential Plugin と連携して暗号化したパスワードを保存できるようになったため、大幅に設定が楽になりました。&lt;/p&gt;
+
+&lt;p&gt;以下にそのやり方をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;リポジトリの URL は &lt;code&gt;https://foo.com/git/bar.git&lt;/code&gt; とします。&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Jenkins の管理 &amp;gt; Credentials &amp;gt; Add domain&amp;#8221; をクリックし、Git リポジトリのドメインを入力します。&lt;/p&gt;
+
+&lt;p&gt;Specification の URI スキーマには &lt;code&gt;https&lt;/code&gt; を選択します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_1-300x163.png&#34; alt=&#34;jenkins_secure_credientials_1&#34; width=&#34;300&#34; height=&#34;163&#34; class=&#34;alignnone size-medium wp-image-1641&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;続いて、&amp;#8221;Add Credentials&amp;#8221; をクリックし、認証情報入力画面を出します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_2-300x71.png&#34; alt=&#34;jenkins_secure_credientials_2&#34; width=&#34;300&#34; height=&#34;71&#34; class=&#34;alignnone size-medium wp-image-1642&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Kind&amp;#8221; は &lt;code&gt;ユーザー名とパスワード&lt;/code&gt; を、&amp;#8221;ユーザー名&amp;#8221; には https 認証のユーザー名を入力します。完了したら &amp;#8220;OK&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_3-300x139.png&#34; alt=&#34;jenkins_secure_credientials_3&#34; width=&#34;300&#34; height=&#34;139&#34; class=&#34;alignnone size-medium wp-image-1643&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これで一旦、認証鍵一覧画面に戻されます。引き続き、いま入力したユーザー名をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_4-300x136.png&#34; alt=&#34;jenkins_secure_credientials_4&#34; width=&#34;300&#34; height=&#34;136&#34; class=&#34;alignnone size-medium wp-image-1644&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;Update&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_5-300x137.png&#34; alt=&#34;jenkins_secure_credientials_5&#34; width=&#34;300&#34; height=&#34;137&#34; class=&#34;alignnone size-medium wp-image-1645&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8220;パスワード&amp;#8221; 欄に認証パスワードを入力し、&amp;#8221;Save&amp;#8221; をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_6-300x134.png&#34; alt=&#34;jenkins_secure_credientials_6&#34; width=&#34;300&#34; height=&#34;134&#34; class=&#34;alignnone size-medium wp-image-1646&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;以上で foo.com のリポジトリの認証情報が設定できました。&lt;/p&gt;
+
+&lt;p&gt;あとはプロジェクトの設定画面を開き、&amp;#8221;ソースコード管理システム &amp;gt; Git&amp;#8221; の &amp;#8220;Repository URL&amp;#8221; に &lt;code&gt;https://foo.com/git/bar.git&lt;/code&gt; を、&amp;#8221;Credentials&amp;#8221; に先ほど入力した ID/PW のペアを選択すれば OKです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_7-300x242.png&#34; alt=&#34;jenkins_secure_credientials_7&#34; width=&#34;300&#34; height=&#34;242&#34; class=&#34;alignnone size-medium wp-image-1647&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これでプロジェクトをビルド可能になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;git-1-7-1-では認証が通らない:094599a56af5c07d8e54136f1f310fd1&#34;&gt;Git 1.7.1 では認証が通らない？&lt;/h2&gt;
+
+&lt;p&gt;CentOS 6.3 で、EPEL リポジトリから Git をインストールすると 1.7.1 が入りますが、これだとうまく認証が通りませんでした。プロジェクトの設定画面で &amp;#8220;Repository URL&amp;#8221; と &amp;#8220;Credential&amp;#8221; を入力しても、 &lt;code&gt;Error performing command: ls-remote -h&lt;/code&gt; というエラーが出て進めませんでした。&lt;/p&gt;
+
+&lt;p&gt;仕方ないので手動でソースから Git 1.8.4.1 をインストールしたら、無事エラーが出なくなりました。&lt;/p&gt;
+
+&lt;p&gt;Git のソースインストール方法手順は以下。いつもの Configure -&amp;gt; make -&amp;gt; make install です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /usr/local/src
+wget https://git-core.googlecode.com/files/git-1.8.4.1.tar.gz
+tar zxvf git-1.8.4.1.tar.gz
+cd git-1.8.4.1
+./configure
+make
+make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、この場合 Git のバイナリが &lt;code&gt;/usr/local/bin&lt;/code&gt; 配下にインストールされるので、&amp;#8221;Jenkins の管理 &amp;gt; システム設定 &amp;gt; Git &amp;gt; Path to Git executable&amp;#8221; に &lt;code&gt;/usr/local/bin/git&lt;/code&gt; と入力する必要があります。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/jenkins_secure_credientials_81-255x300.png&#34; alt=&#34;jenkins_secure_credientials_8&#34; width=&#34;255&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-1649&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:094599a56af5c07d8e54136f1f310fd1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin&#39;, &#39;Git Plugin &amp;#8211; Jenkins &amp;#8211; Jenkins Wiki&#39;]);&#34; &gt;Git Plugin &amp;#8211; Jenkins &amp;#8211; Jenkins Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/naonya3/items/54c8e3436212ad6686b3&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/naonya3/items/54c8e3436212ad6686b3&#39;, &#39;CentOS6.3にgitをソースコードから入れる &amp;#8211; Qiita [キータ]&#39;]);&#34; &gt;CentOS6.3にgitをソースコードから入れる &amp;#8211; Qiita [キータ]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Grunt で JS/CSS を自動ビルドする</title>
+      <link>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/19/automate-build-js-and-css-with-grunt/</guid>
+      <description>
+
+&lt;h2 id=&#34;grunt-とは:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;Grunt とは？&lt;/h2&gt;
+
+&lt;p&gt;JS/CSS のビルド自動化ツール。&lt;/p&gt;
+
+&lt;p&gt;JS のユニットテスト、ファイルの結合＆難読化＆最小化などの様々なタスクを自動で行うことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;まず、node.js と npm をインストールします。&lt;/p&gt;
+
+&lt;p&gt;やり方は以下の記事あたりを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://havelog.ayumusato.com/develop/javascript/e210-install_nodejs_and_npm.html&#39;, &#39;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&#39;]);&#34; &gt;node.jsとnpmのインストールをしたメモ（CentOS さくらのVPS） ::ハブろぐ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に grunt-cli をグローバルにインストールします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo npm install -g grunt-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、プロジェクトのトップに &lt;code&gt;package.json&lt;/code&gt; を作成します。&lt;/p&gt;
+
+&lt;p&gt;この中には、使用したい Grunt ライブラリを列挙します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;mojamoja-project&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;0.1.0&amp;quot;,
+  &amp;quot;devDependencies&amp;quot;: {
+    &amp;quot;grunt&amp;quot;: &amp;quot;~0.4.1&amp;quot;,
+    &amp;quot;grunt-contrib-sass&amp;quot;: &amp;quot;~0.3.0&amp;quot;,
+    &amp;quot;grunt-contrib-jshint&amp;quot;: &amp;quot;~0.6.3&amp;quot;,
+    &amp;quot;grunt-contrib-nodeunit&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-compass&amp;quot;: &amp;quot;~0.2.0&amp;quot;,
+    &amp;quot;grunt-contrib-concat&amp;quot;: &amp;quot;~0.1.2&amp;quot;,
+    &amp;quot;grunt-contrib-qunit&amp;quot;: &amp;quot;~0.1.1&amp;quot;,
+    &amp;quot;grunt-contrib-uglify&amp;quot;: &amp;quot;~0.2.2&amp;quot;,
+    &amp;quot;grunt-contrib-watch&amp;quot;: &amp;quot;~0.2.0&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで &lt;code&gt;npm install grunt --save-dev&lt;/code&gt; を叩くと、package.json に書かれたパッケージが一気にインストールされます。&lt;/p&gt;
+
+&lt;p&gt;以上で前準備は完了です。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;プロジェクトのルートに &lt;code&gt;Gruntfile.js&lt;/code&gt; を書いて、実行したいタスクを列挙するだけです。&lt;/p&gt;
+
+&lt;p&gt;※ grunt &amp;lt; 0.4 では &lt;code&gt;grunt.js&lt;/code&gt; というファイル名でした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports = function(grunt) {
+  grunt.initConfig({
+    pkg: grunt.file.readJSON(&#39;package.json&#39;),
+    concat: {
+      options: {
+        separator: &#39;;&#39;
+      },
+      dist: {
+        src: [
+          &#39;app/webroot/js/vendor/jquery/jquery.js&#39;,
+          &#39;app/webroot/js/vendor/jquery-mousewheel/jquery.mousewheel.js&#39;,
+          &#39;app/webroot/js/vendor/underscore/underscore.js&#39;,
+          &#39;app/webroot/js/vendor/backbone/backbone.js&#39;,
+          &#39;app/webroot/js/vendor/backbone.localStorage/backbone.localStorage.js&#39;,
+          &#39;app/webroot/js/vendor/hook/hook.js&#39;,
+          &#39;app/webroot/js/vendor/mobify-modules/carousel/src/carousel.js&#39;,
+          &#39;app/webroot/js/vendor/snap/snap.js&#39;,
+          &#39;app/webroot/js/app.js&#39;
+        ],
+        dest: &#39;app/webroot/js/merged.js&#39;
+      }
+    },
+    uglify: {
+      options: {
+        banner: &#39;/*! &amp;amp;lt;%= pkg.name %&amp;gt; &amp;amp;lt;%= grunt.template.today(&amp;quot;dd-mm-yyyy&amp;quot;) %&amp;gt; */\n&#39;
+      },
+      dist: {
+        files: {
+          &#39;app/webroot/js/merged.min.js&#39;: [&#39;&amp;amp;lt;%= concat.dist.dest %&amp;gt;&#39;]
+        }
+      }
+    },
+    jshint: {
+      files: [&#39;gruntfile.js&#39;, &#39;app/webroot/js/**/*.js&#39;],
+      options: {
+        // options here to override JSHint defaults
+        globals: {
+          jQuery: true,
+          console: true,
+          module: true,
+          document: true
+        }
+      }
+    },
+    watch: {
+      files: [&#39;&amp;amp;lt;%= jshint.files %&amp;gt;&#39;],
+      tasks: [&#39;concat&#39;, &#39;uglify&#39;]
+    }
+  });
+
+  grunt.loadNpmTasks(&#39;grunt-contrib-uglify&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-qunit&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
+  grunt.loadNpmTasks(&#39;grunt-contrib-concat&#39;);
+
+  grunt.registerTask(&#39;test&#39;, [&#39;jshint&#39;]);
+  grunt.registerTask(&#39;default&#39;, [&#39;jshint&#39;, &#39;concat&#39;, &#39;uglify&#39;]);
+  grunt.registerTask(&#39;merge&#39;, [&#39;concat&#39;, &#39;uglify&#39;]);
+
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳しい記述方法は公式のガイドを参考に。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/configuring-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/configuring-tasks&#39;, &#39;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Configuring tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/creating-tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/creating-tasks&#39;, &#39;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Creating tasks &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;あとは &lt;code&gt;grunt {タスク名}&lt;/code&gt; と叩くだけで、指定したタスクが動きます。&lt;/p&gt;
+
+&lt;p&gt;例えば上で定義 (&lt;code&gt;grunt.registerTask()&lt;/code&gt; )したタスクから merge を実行したければ、&lt;code&gt;grunt merge&lt;/code&gt; と叩けば OK です。。&lt;/p&gt;
+
+&lt;h2 id=&#34;変更の監視-自動タスク実行:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;変更の監視＆自動タスク実行&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;grunt watch&lt;/code&gt; を叩くことで、指定した js ファイルを監視し、変更があったら自動で指定したタスクを実行してくれます。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:31d9c632b09e89723d113ebbe8ae7aa4&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://hamalog.tumblr.com/post/18137176043/grunt-js-css&#39;, &#39;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&#39;]);&#34; &gt;gruntで快適JS/CSSビルド生活 &amp;#8211; Takazudo hamalog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/getting-started&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/getting-started&#39;, &#39;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Getting started &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt/wiki/Sample-Gruntfile&#39;, &#39;Sample Gruntfile · gruntjs/grunt Wiki&#39;]);&#34; &gt;Sample Gruntfile · gruntjs/grunt Wiki&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Gruntfile のサンプル。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gruntjs.com/plugins/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gruntjs.com/plugins/&#39;, &#39;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&#39;]);&#34; &gt;Plugins &amp;#8211; Grunt: The JavaScript Task Runner&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;grunt プラグインの一覧。&lt;/li&gt;
+&lt;li&gt;公式のものは &amp;#8216;Show contrib plugins first&amp;#8217; にチェックを入れれば出てくる。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://publicdraft.studiomohawk.com/2012/12/16/npm-and-package.json/&#39;, &#39;npm / package.json | Public Draft | Outlining and Researching for the Presentation&#39;]);&#34; &gt;npm / package.json | Public Draft | Outlining and Researching for the Presentation&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;package.json の基本。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git の submodule を最新にする方法</title>
+      <link>http://1000k.github.io/2013/10/19/command-to-update-git-submodule/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/19/command-to-update-git-submodule/</guid>
+      <description>
+
+&lt;p&gt;「そんなの &lt;code&gt;git submodule update&lt;/code&gt; で一発だろ」と思っていましたが、全然違いました。このコマンドをいくら叩いても、標準出力には何も表示されず、submodule はちっとも更新されません。&lt;/p&gt;
+
+&lt;p&gt;submodule を最新の状態にするコマンドは &lt;code&gt;git submodule foreach git pull origin master&lt;/code&gt; です。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:e45e994ba8135917364d3e9a430429e3&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/5828324/update-git-submodule&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/5828324/update-git-submodule&#39;, &#39;Update git submodule &amp;#8211; Stack Overflow&#39;]);&#34; &gt;Update git submodule &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>grunt watch が遅い時の改善方法</title>
+      <link>http://1000k.github.io/2013/10/20/speed-up-grunt-watch/</link>
+      <pubDate>Sat, 19 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/10/20/speed-up-grunt-watch/</guid>
+      <description>
+
+&lt;p&gt;Grunt を使うからには &lt;a href=&#34;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#39;, &#39;grunt-contrib-watch&#39;]);&#34; &gt;grunt-contrib-watch&lt;/a&gt; でファイルの変更を監視して自動ビルドしたいのですが、どうも遅い。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grunt watch
+
+Running &amp;quot;watch&amp;quot; task
+Waiting...OK
+&amp;gt;&amp;gt; File &amp;quot;src/sass/screen.scss&amp;quot; changed.
+
+Running &amp;quot;compass:dist&amp;quot; (compass) task
+overwrite app/css/screen.css (0.333s)
+Compilation took 0.342s
+
+Running &amp;quot;cssmin:add_banner&amp;quot; (cssmin) task
+File app/css/screen.min.css created.
+
+Running &amp;quot;cssmin:minify&amp;quot; (cssmin) task
+File app/css/app.min.css created.
+File app/css/screen.min.css created.
+
+Done, without errors.
+Completed in 12.602s at Sat Oct 19 2013 16:26:32 GMT+0000 (UTC) - Waiting...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;タスクの実行自体は1秒もかかっていないのに、全体では12秒ほどかかっていました。&lt;/p&gt;
+
+&lt;p&gt;Gruntfile の設定を見直すことで改善できたので、そのやり方をメモしておきます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;grunt watch&lt;/code&gt; のボトルネックは、ファイルの変更を検知後にタスクプロセスを子プロセスとしてスポーンさせる部分にあるようです。&lt;/p&gt;
+
+&lt;p&gt;したがって、子プロセスとしてタスクを起動するオプションを無効にすることで回避できます。&lt;/p&gt;
+
+&lt;p&gt;以下のように、Gruntfile.js 内で &lt;code&gt;spawn: false&lt;/code&gt; を指定してやれば OK です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports = function(grunt) {
+  grunt.initConfig({
+    // ...
+    watch: {
+      options: {
+        spawn: false
+      },
+      css: {
+        files: [&#39;src/sass/*.scss&#39;],
+        tasks: [&#39;compass&#39;, &#39;cssmin&#39;]
+      }
+    }
+  });
+  // ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで大幅にスピードが改善されました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grunt watch
+
+Running &amp;quot;watch&amp;quot; task
+Waiting...OK
+&amp;gt;&amp;gt; File &amp;quot;src/sass/screen.scss&amp;quot; changed.
+
+
+Running &amp;quot;compass:dist&amp;quot; (compass) task
+identical app/css/screen.css (0.319s)
+Compilation took 0.328s
+
+Running &amp;quot;cssmin:add_banner&amp;quot; (cssmin) task
+File app/css/screen.min.css created.
+
+Running &amp;quot;cssmin:minify&amp;quot; (cssmin) task
+File app/css/app.min.css created.
+File app/css/screen.min.css created.
+
+Running &amp;quot;watch&amp;quot; task
+Completed in 0.712s at Sat Oct 19 2013 16:27:58 GMT+0000 (UTC) - Waiting...
+OK
+&amp;gt;&amp;gt; File &amp;quot;src/sass/screen.scss&amp;quot; changed.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;12秒が0.7秒に。イェーイ！&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:bcbef8a25879c17668c0f2da3a272309&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt-contrib-watch/issues/69&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt-contrib-watch/issues/69&#39;, &#39;Why Watch is so slow compared to Regarde · Issue #69 · gruntjs/grunt-contrib-watch&#39;]);&#34; &gt;Why Watch is so slow compared to Regarde · Issue #69 · gruntjs/grunt-contrib-watch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/gruntjs/grunt-contrib-watch#optionsnospawn&#39;, &#39;gruntjs/grunt-contrib-watch#optionsnospawn&#39;]);&#34; &gt;gruntjs/grunt-contrib-watch#optionsnospawn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS&#43;Rails4&#43;Ruby2.0の環境を構築するレシピ</title>
+      <link>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</link>
+      <pubDate>Tue, 27 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/08/27/recipe-for-construct-centos-rails4-ruby2/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/1000k/rails_sandbox&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox&#39;, &#39;1000k/rails_sandbox&#39;]);&#34; &gt;1000k/rails_sandbox&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Vagrant を使って以下の環境を速攻で構築するレシピを作りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 6.4&lt;/li&gt;
+&lt;li&gt;Ruby 2.0.0&lt;/li&gt;
+&lt;li&gt;Ruby on Rails 4.0.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使い方は &lt;a href=&#34;https://github.com/1000k/rails_sandbox/blob/master/README.md&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;https://github.com/1000k/rails_sandbox/blob/master/README.md&#39;, &#39;README&#39;]);&#34; &gt;README&lt;/a&gt; に書いてある通り、vagrant-berkshelf プラグインをインストールして &lt;code&gt;vagrant up&lt;/code&gt; するだけです。&lt;/p&gt;
+
+&lt;p&gt;最近ようやく第2言語として Ruby が使えるようになってきたので、ここいらで Rails を使いこなせるようになりたいです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git ワークフロー</title>
+      <link>http://1000k.github.io/2013/04/14/git-workflow/</link>
+      <pubDate>Sun, 14 Apr 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/04/14/git-workflow/</guid>
+      <description>
+
+&lt;p&gt;実際のプロジェクトを git で運用する時のよくある流れをまとめました。&lt;/p&gt;
+
+&lt;h2 id=&#34;前準備:c200c94cf5af25837ca230fae46d8045&#34;&gt;前準備&lt;/h2&gt;
+
+&lt;h3 id=&#34;git-push-コマンドのデフォルトの挙動を変更する:c200c94cf5af25837ca230fae46d8045&#34;&gt;git push コマンドのデフォルトの挙動を変更する&lt;/h3&gt;
+
+&lt;p&gt;git push コマンドのデフォルトの挙動では、引数を指定しないとローカルにある全てのブランチを push してしまいます。そのため、リモートとローカルに同名のブランチがある場合、リモートブランチを同名のローカルブランチで意図せず上書きしてしまう危険があります。&lt;/p&gt;
+
+&lt;p&gt;そこで、引数なしの git push を実行した時は、現在編集中のブランチのみ push するようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git config  --global push.default current
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;新しいブランチを作成して作業する:c200c94cf5af25837ca230fae46d8045&#34;&gt;新しいブランチを作成して作業する&lt;/h2&gt;
+
+&lt;p&gt;以下の流れを行う時のコマンドです。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;mojamoja リポジトリに新しいブランチを作成する&lt;/li&gt;
+&lt;li&gt;変更をリモートに push する&lt;/li&gt;
+&lt;li&gt;変更点を master ブランチにマージする&lt;/li&gt;
+&lt;li&gt;変更したバージョンをタグにする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;# mojamoja リポジトリをローカルに clone する
+$ git clone git@bitbucket.org:1000k/mojamoja
+$ cd mojamoja
+
+# 現在ローカルにあるブランチを確認する
+$ git branch -l
+
+# 作業用ブランチ (例として &#39;feature-branch&#39; という名前) を作成する
+$ git branch feature-branch
+
+# 作業用ブランチに切り替える
+$ git checkout feature-branch
+
+# 編集
+$ vim ...
+$ vim ...
+
+# 変更のあったファイルを確認する
+$ git status
+
+# 変更したファイルを全てコミット対象に入れる
+# 個別に登録したい場合は &amp;quot;git add {ファイルパス}&amp;quot;
+$ git add -A
+
+$ git commit -m &amp;quot;Foo クラスを作成。&amp;quot;
+
+# 変更したファイルをリモートにプッシュする
+$ git push
+
+# master ブランチにマージする
+$ git checkout master
+$ git merge feature-branch
+$ git push
+
+# 既存のタグを確認
+$ git tag -l
+
+# ローカルにタグを作成する
+$ git tag 0.0.1 -m &amp;quot;First tag&amp;quot;
+
+# リモートに push する
+$ git push --tags
+
+# 使わなくなったローカルブランチを削除する
+$ git branch -d feature-branch
+
+# 使わなくなったリモートブランチを削除する
+# ブランチ名の前に &amp;quot;:&amp;quot; を付け忘れると動かないので注意
+$ git push origin :feature-branch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ローカルをリモートの状態に合わせる:c200c94cf5af25837ca230fae46d8045&#34;&gt;ローカルをリモートの状態に合わせる&lt;/h2&gt;
+
+&lt;p&gt;異なるマシンから同じリモートブランチに変更を加えると、それぞれのマシン間で差異が出てしまいます。以下の手順で、ローカルのブランチをリモートにあるブランチと同期させることが可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# リモートの最新のデータを取得する
+$ git fetch origin master
+
+# ローカルのバージョンの向き先を最新に変える
+$ git reset --hard FETCH_HEAD
+
+# ローカルの管理外ファイルを消す
+$ git clean -df
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでリモートとローカルでファイルの中身が同一になりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;リモートブランチをローカルで編集する:c200c94cf5af25837ca230fae46d8045&#34;&gt;リモートブランチをローカルで編集する&lt;/h2&gt;
+
+&lt;p&gt;リモートにのみ 0.2.0 ブランチがあり、ローカルにはまだ無い場合、以下のコマンドでローカルにコピーすることができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ローカルにあるブランチの一覧を確認する
+$ git branch -r
+
+# ローカルの 0.2.0 ブランチにリモートの 0.2.0 をチェックアウトする
+$ git checkout -b 0.2.0 origin/0.2.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;間違ったコミットを取り消す:c200c94cf5af25837ca230fae46d8045&#34;&gt;間違ったコミットを取り消す&lt;/h2&gt;
+
+&lt;p&gt;2つの考え方があるので注意。&lt;/p&gt;
+
+&lt;p&gt;ここは git の内部構造を理解していないと飲み込めないかもしれません。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.slideshare.net/matsukaz/git-17499005&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/matsukaz/git-17499005&#39;, &#39;いつやるの？Git入門&#39;]);&#34; &gt;いつやるの？Git入門&lt;/a&gt; が簡潔に内部構造を説明しているので、目を通すことをオススメします。&lt;/p&gt;
+
+&lt;h3 id=&#34;commit-8211-amend:c200c94cf5af25837ca230fae46d8045&#34;&gt;commit &amp;#8211;amend&lt;/h3&gt;
+
+&lt;p&gt;後から前回のコミットに追加して変更をするやり方です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# わざと間違ったコミットをする
+$ git commit -m &amp;quot;Failure commit&amp;quot;
+
+# これまでのコミットの一覧を確認する
+$ git log
+
+# さっきコミットし忘れたファイルをステージングする
+$ git add foo.php
+
+# 先ほどコミットした部分と合わせて新たなコミットを行う
+git commit --amend -m &amp;quot;Successful commit&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これにより、1回目の間違ったコミットは無効化され、2回目のコミットが利用されます。&lt;/p&gt;
+
+&lt;h3 id=&#34;git-reset:c200c94cf5af25837ca230fae46d8045&#34;&gt;git reset&lt;/h3&gt;
+
+&lt;p&gt;前回のコミットそのものを取り消す (無かったことにする) コマンドです。&lt;/p&gt;
+
+&lt;p&gt;コミットしたファイルを残すか消すかで、オプションの値を変える必要があります。&lt;/p&gt;
+
+&lt;p&gt;コミットだけを取り消して、変更したファイルはそのままで、1つ手前の状態に戻すには、&lt;code&gt;--soft&lt;/code&gt; オプションを付けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset --soft HEAD^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コミットを取り消し、ワークディレクトリの中身も1つ前の状態に置き換える (= 変更も全て元に戻る) には、&lt;code&gt;--hard&lt;/code&gt; オプションを付けます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset --hard HEAD^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:c200c94cf5af25837ca230fae46d8045&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/nayutaya/20090519/1242701594&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/nayutaya/20090519/1242701594&#39;, &#39;gitのリモートブランチを使って作業を行う流れのメモ &amp;#8211; 那由多屋 開発日誌&#39;]);&#34; &gt;gitのリモートブランチを使って作業を行う流れのメモ &amp;#8211; 那由多屋 開発日誌&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/948354/git-push-current-branch&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/948354/git-push-current-branch&#39;, &#39;git push current branch &amp;#8211; Stack Overflow&#39;]);&#34; &gt;git push current branch &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://transitive.info/article/git/command/tag/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://transitive.info/article/git/command/tag/&#39;, &#39;transitive.info &amp;#8211; git tag 使い方&#39;]);&#34; &gt;transitive.info &amp;#8211; git tag 使い方&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/items/e082d64f3f8b424e9b7d&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://qiita.com/items/e082d64f3f8b424e9b7d&#39;, &#39;fetch と pullの違い #git &amp;#8211; Qiita&#39;]);&#34; &gt;fetch と pullの違い #git &amp;#8211; Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dqn.sakusakutto.jp/2012/11/git_pull.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://dqn.sakusakutto.jp/2012/11/git_pull.html&#39;, &#39;Git pullを使うべきでない３つの理由 &amp;#8211; DQNEO起業日記&#39;]);&#34; &gt;Git pullを使うべきでない３つの理由 &amp;#8211; DQNEO起業日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/mrgoofy33/20100910/1284069468&#39;, &#39;git commitをやり直しする＆取り消しする(「get commit &amp;#8211;amend」と「git reset」) &amp;#8211; hogehoge foobar Blog Style5&#39;]);&#34; &gt;git commitをやり直しする＆取り消しする(「get commit &amp;#8211;amend」と「git reset」) &amp;#8211; hogehoge foobar Blog Style5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/matsukaz/git-17499005&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.slideshare.net/matsukaz/git-17499005&#39;, &#39;いつやるの？Git入門&#39;]);&#34; &gt;いつやるの？Git入門&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git clone した後 git sudmobule init が失敗するときの対処方法</title>
+      <link>http://1000k.github.io/2013/03/27/what-to-do-if-git-sudmobule-init-fails-after-git-clone/</link>
+      <pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/27/what-to-do-if-git-sudmobule-init-fails-after-git-clone/</guid>
+      <description>
+
+&lt;p&gt;submodule を含むリポジトリを clone した直後は、ディレクトリは存在しますが実ファイルが存在しません。以下のコマンドで初期化する必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git clone git://mojamoja/uso.git
+$ cd uso/
+$ git submodule init
+$ git submodule update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで実ファイルがローカルにダウンロードされます。&lt;/p&gt;
+
+&lt;p&gt;&amp;#8230;らしいですが、うまくいきませんでした。&lt;/p&gt;
+
+&lt;p&gt;私の場合、&amp;#8221;git submodule init&amp;#8221; を叩いたら以下のエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;No submodule mapping found in .gitmodules for path &#39;chef-repo/cookbooks/ant&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;原因はプロジェクト内の .gitmodules にありました。&lt;/p&gt;
+
+&lt;p&gt;Windows で &amp;#8220;git submodule add&amp;#8221; した時に一部の path が &amp;#8220;&amp;#92;&amp;#8221; という表記になっており、これを git がうまく解釈できなかった模様。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[submodule &amp;quot;chef-repo\\cookbooks\\java&amp;quot;]
+     path = chef-repo\\cookbooks\\java
+     url = git://github.com/opscode-cookbooks/java.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;#8220;&amp;#92;&amp;#8221; を &amp;#8220;/&amp;#8221; に置換してやればOKです。&lt;code&gt;
+ [submodule &amp;quot;chef-repo/cookbooks/ava&amp;quot;] path = chef-repo/cookbooks/java url = git://github.com/opscode-cookbooks/java.git&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;これで &amp;#8220;git sudmoule init&amp;#8221; が成功するようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:4471c99086089d3b3bb5481282090f4e&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://edspencer.net/2008/04/git-clone-vs-git-submodule.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://edspencer.net/2008/04/git-clone-vs-git-submodule.html&#39;, &#39;Git clone vs Git submodule : Ed Spencer&#39;]);&#34; &gt;Git clone vs Git submodule : Ed Spencer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VM の共有フォルダ内の 静的ファイルが正しくロードできないときの対処方法</title>
+      <link>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</link>
+      <pubDate>Wed, 20 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/03/20/workaround-when-static-file-in-shared-folder-can-not-be-loaded-correctly/</guid>
+      <description>
+
+&lt;p&gt;以下の環境でPHPアプリの開発を行っていたところ、静的コンテンツが正しく反映されない現象に陥りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Oracle VirtualBox で CentOS 6.3 VM を起動&lt;/li&gt;
+&lt;li&gt;ホストOSは Windows 7&lt;/li&gt;
+&lt;li&gt;ホストOS側の &amp;#8220;c:\www\app&amp;#8221; を VM 側の &amp;#8220;/www&amp;#8221; に共有フォルダとしてマウント&lt;/li&gt;
+&lt;li&gt;VM上は Apache 2.2 を稼働させ、PHP アプリサーバーとして利用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この状態でホストOS側で JavaScript などの静的コンテンツを編集し、ブラウザからアプリにアクセスすると、以下のようなエラーが出ました。&lt;/p&gt;
+
+&lt;p&gt;Chrome&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Uncaught SyntaxError: Unexpected end of input
+または
+Uncaught SyntaxError: Unexpected token ILLEGAL
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Firefox&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SyntaxError: unterminated string literal
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ブラウザのデバッグツールで問題のファイルを見ると、なぜか途中でコンテンツが切れていたり、末尾に謎の文字列（Chromeだと「?」で表示される）が追加されていました。&lt;/p&gt;
+
+&lt;p&gt;ただ改行を追加するだけでもこの現象が発生します。&lt;/p&gt;
+
+&lt;p&gt;原因は Apache の &lt;em&gt;EnableSendfile&lt;/em&gt; ディレクティブでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;原因:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablesendfile&#39;, &#39;EnableSendfile ディレクティブ&#39;]);&#34; &gt;EnableSendfile ディレクティブ&lt;/a&gt; の説明には以下のように書いてあります。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;このディレクティブはクライアントにファイルの内容を送るときに httpd がカーネルの sendfile サポートを使うかどうかを制御します。デフォルトでは、 例えば静的なファイルの配送のように、リクエストの処理にファイルの 途中のデータのアクセスを必要としないときには、Apache は OS が サポートしていればファイルを読み込むことなく sendfile を使って ファイルの内容を送ります。&lt;/p&gt;
+
+&lt;p&gt;ネットワークマウントされた DocumentRoot (例えば NFS や SMB) では、カーネルは自身のキャッシュを使ってネットワークからのファイルを 送ることができないことがあります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;つまり、VirtualBox で共有フォルダが NFS としてマウントされていると、ホストOSで行った変更が正しく反映されないことがあるようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;直し方:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;直し方&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;/etc/httpd/conf/httpd.conf&lt;/em&gt; に以下の1行を追加して、Apache を再起動すればOKです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、ホストOSで変更したファイルが、ゲストOS側のキャッシュを介することなく、正しく反映されるようになります。&lt;/p&gt;
+
+&lt;p&gt;Vagrant + Chef で環境構築が楽にできるようになったから喜んで使っていたら、こんな罠があるとは。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足-enablemmap-ディレクティブ:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;補足: EnableMMAP ディレクティブ&lt;/h2&gt;
+
+&lt;p&gt;私はまだ遭遇していないのですが、&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;EnableMMAP ディレクティブ&#39;]);&#34; &gt;&lt;em&gt;EnableMMAP&lt;/em&gt; ディレクティブ&lt;/a&gt;も Apache をクラッシュさせる危険があるので、Offにしておいた方が良いそうです。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;NFS マウントされた DocumentRoot では、httpd がメモリマップしている間にファイルが削除されたり 短くなったりしたときに起こるセグメンテーションフォールトのために httpd がクラッシュする可能性があります。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;結局、httpd.conf に以下の2行を書いておけば不具合は避けられるでしょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;EnableSendfile Off
+EnableMMAP Off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:b37b64915a4bf2c4cb4c44aab2bf62d1&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.flup.jp/2009/04/06/problem_of_using_shared_folder_to_document_root/&#39;, &#39;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&#39;]);&#34; &gt;DocumentRootに共有フォルダを使った場合の問題 &amp;#8211; フリップフラップ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tipshare.info/view/4f3481ee4b21227814000001&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tipshare.info/view/4f3481ee4b21227814000001&#39;, &#39;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&#39;]);&#34; &gt;Virtualbox上のApacheでホストマシンと共有している静的ファイル（CSSなど）の更新が検知されない問題を解決する方法 | tipshare.info&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://httpd.apache.org/docs/2.2/ja/mod/core.html#enablemmap&#39;, &#39;core &amp;#8211; Apache HTTP サーバ&#39;]);&#34; &gt;core &amp;#8211; Apache HTTP サーバ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Jenkinsを触ると出てくる用語の解説</title>
+      <link>http://1000k.github.io/2012/09/25/glossary-of-terms-in-jenkins/</link>
+      <pubDate>Tue, 25 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/09/25/glossary-of-terms-in-jenkins/</guid>
+      <description>
+
+&lt;p&gt;Jenkinsは元々Javaのビルドを自動化するツールだったため、Javaの知識が無いと理解しづらい部分があります。&lt;/p&gt;
+
+&lt;p&gt;以下、必要になる知識を簡単にまとめておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;ビルド:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;ビルド&lt;/h2&gt;
+
+&lt;p&gt;Java は PHP や ruby と異なり、ソースのままでは実行できません。実行前に必ず_コンパイル_を行い、実行可能形式（JARファイル）に変換する必要があります。&lt;/p&gt;
+
+&lt;p&gt;実行可能形式を作成するための一連の流れを_ビルド_と呼びます。ビルドでは主に以下の作業を行います。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ソースの文法解析&lt;/li&gt;
+&lt;li&gt;テストの実行&lt;/li&gt;
+&lt;li&gt;ドキュメントの作成（Javadocなど）&lt;/li&gt;
+&lt;li&gt;コンパイル (実行可能ファイルの作成)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これらすべてのコマンドを手動で打つのは困難です。そのため、自動でビルドを行うビルドツールが存在します。代表的なものとして make, Ant, Maven などがあります。（後述）&lt;/p&gt;
+
+&lt;p&gt;PHP等のスクリプト言語ではコンパイルは不要ですが、コンパイル以外のプロセスはJavaと共通のため、「ソースが実行可能な状態にする」という意味でビルドという用語をそのまま使っているようです。&lt;/p&gt;
+
+&lt;p&gt;参考:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nitoyon.com/vc/tutorial/project/build_detail.htm&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.nitoyon.com/vc/tutorial/project/build_detail.htm&#39;, &#39;ビルドは何をしている？ [VC++の使い方]&#39;]);&#34; &gt;ビルドは何をしている？ [VC++の使い方]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%89_(%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2)&#39;, &#39;ビルド (ソフトウェア) &amp;#8211; Wikipedia&#39;]);&#34; &gt;ビルド (ソフトウェア) &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;デプロイ:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;デプロイ&lt;/h2&gt;
+
+&lt;p&gt;作成したコードを利用可能にすること。「本番反映」とも言い換えられます。&lt;/p&gt;
+
+&lt;p&gt;Java ではビルドで作成したJARファイルやWARファイルをWebサーバー（Apache Tomcatなど）に読み込ませ、再起動することで利用可能になります。&lt;/p&gt;
+
+&lt;p&gt;PHP や Ruby などのスクリプト言語なら、動作中のWebサーバーにソースコードを配置するだけです。&lt;/p&gt;
+
+&lt;h2 id=&#34;ant:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;Ant&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ビルドツール。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/Make&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/Make&#39;, &#39;GNU make&#39;]);&#34; title=&#34;make - Wikipedia&#34;&gt;GNU make&lt;/a&gt; の代替。&lt;/li&gt;
+&lt;li&gt;ビルドファイル（build.xml）にビルドルールを書くことで、ビルドを自動化できます。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;参考:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/Apache_Ant&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/Apache_Ant&#39;, &#39;Apache Ant &amp;#8211; Wikipedia&#39;]);&#34; &gt;Apache Ant &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;maven:6c203f2a9b1efd0cf98a463f085d4cf8&#34;&gt;Maven&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プロジェクト管理ツール。&lt;/li&gt;
+&lt;li&gt;Apache Ant の機能を内包しており、単にビルドツールとしても利用可能です。&lt;/li&gt;
+&lt;li&gt;コンパイル、テスト、Javadoc生成、テストレポート生成、デプロイなど、様々な機能が用意されています。&lt;/li&gt;
+&lt;li&gt;Ant では build.xml に細かい指示を記述する必要があったが、Maven では指示をコマンドラインに記述するだけで良い。&lt;/li&gt;
+&lt;li&gt;Jenkins は Ant/Maven どちらも利用可能です。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;参考:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.techscore.com/tech/Java/ApacheJakarta/Maven/2/&#39;, &#39;2. Maven 入門 | TECHSCORE(テックスコア)&#39;]);&#34; &gt;2. Maven 入門 | TECHSCORE(テックスコア)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/Apache_Maven&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://ja.wikipedia.org/wiki/Apache_Maven&#39;, &#39;Apache Maven &amp;#8211; Wikipedia&#39;]);&#34; &gt;Apache Maven &amp;#8211; Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/nsas454/20101013/1287328377&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/nsas454/20101013/1287328377&#39;, &#39;Apache MavenとAntの違いについて調べてみた &amp;#8211; Shuichi’Tec&#39;]);&#34; &gt;Apache MavenとAntの違いについて調べてみた &amp;#8211; Shuichi’Tec&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>XAMPPでBASIC認証を有効にする</title>
+      <link>http://1000k.github.io/2012/07/08/enable-basic-auth-in-xampp/</link>
+      <pubDate>Sun, 08 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/07/08/enable-basic-auth-in-xampp/</guid>
+      <description>
+
+&lt;p&gt;小一時間はまったのでメモ。&lt;/p&gt;
+
+&lt;p&gt;XAMPPPのApacheにBASIC認証をかけたのですが、何度やってもエラーログに下記のように「認証に失敗しました」というエラーが出ました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Sun Jul 08 16:51:31 2012] [error] [client ::1] user uso: authentication failure for &amp;quot;/mojamoja.php&amp;quot;: Password Mismatch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「htpasswd 生成」などでググって出てくるようなツールで作ったパスワードではなぜかダメで、Apache付属の_htpasswd_を使わねばならないようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd c:\xampp\apache\bin
+htpasswd.exe -bc {パスワード生成先のパス} {ID} {パスワード}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうして作成した .htpasswd なら正しく認証できました。&lt;/p&gt;
+
+&lt;p&gt;原因が今ひとつわからないですが、パスワードの暗号化方式がMD5でないといけないのかもしれません。&lt;/p&gt;
+
+&lt;p&gt;（上記のコマンドで生成されるパスワードはMD5）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:cf50432cf2a4769fc0daace11f9afc31&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://d.hatena.ne.jp/ise_daisuke/20080412/1207978885&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/ise_daisuke/20080412/1207978885&#39;, &#39;xamppでローカルでBasic認証 &amp;#8211; 絶対に読んではいけない日記&#39;]);&#34; &gt;xamppでローカルでBasic認証 &amp;#8211; 絶対に読んではいけない日記&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CloudCore VPS初期設定</title>
+      <link>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</link>
+      <pubDate>Sun, 15 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/15/initial-settings-in-cloudcore-vps/</guid>
+      <description>
+
+&lt;p&gt;高スペック＆安価＆国産で話題のCloudCore VPSをレンタルしてみました。&lt;/p&gt;
+
+&lt;p&gt;ざっとスペックを確認すると、以下のようになりました。これで月980円はたしかにお得です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# cat /etc/redhat-release
+CentOS release 5.6 (Final)
+
+# df -h
+Filesystem          サイズ  使用  残り 使用% マウント位置
+/dev/vda1              97G  5.0G   87G   6% /
+tmpfs                1003M     0 1003M   0% /dev/shm
+
+# cat /proc/cpuinfo
+processor       : 0
+vendor_id       : AuthenticAMD
+cpu family      : 16
+model           : 2
+model name      : AMD Phenom(tm) 9550 Quad-Core Processor
+stepping        : 3
+cpu MHz         : 2199.998
+cache size      : 512 KB
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 5
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1gb lm up pni cx16 popcnt lahf_lm cmp_legacy svm cr8_legacy altmovcr8 abm sse4a misalignsse
+bogomips        : 4399.99
+TLB size        : 1024 4K pages
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 40 bits physical, 48 bits virtual
+power management:
+
+# cat /proc/meminfo
+MemTotal:      2053764 kB
+MemFree:       1859380 kB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今後利用するかもしれないので、初期設定メモを残しておきます。&lt;/p&gt;
+
+&lt;h1 id=&#34;よく使うパッケージのインストール:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;よく使うパッケージのインストール&lt;/h1&gt;
+
+&lt;p&gt;CentOS最小構成でインストールされているらしく、よく使うパッケージが全然入っていません。入れておきましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum -y install sudo vim-enhanced iptables vsftpd bzip2 gcc gcc-c++ make automake mlocate
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;導入しているパッケージの説明は下記の通り。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;パッケージ名&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;sudo&lt;/td&gt;
+&lt;td&gt;sudoコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vim-enhanced&lt;/td&gt;
+&lt;td&gt;標準で入っているviの高機能版&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;iptables&lt;/td&gt;
+&lt;td&gt;ファイアーウォール&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vsftpd&lt;/td&gt;
+&lt;td&gt;FTPデーモン&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;bzip2&lt;/td&gt;
+&lt;td&gt;bzip2圧縮・解凍&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;gcc, gcc-c++&lt;/td&gt;
+&lt;td&gt;コンパイル時に必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;make, automake&lt;/td&gt;
+&lt;td&gt;ソースからインストールする時必要&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mlocate&lt;/td&gt;
+&lt;td&gt;locate &amp;amp; updatedbコマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;vixie-cron&lt;/td&gt;
+&lt;td&gt;crontabコマンド &amp;amp; cronデーモン&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;crondは起動し、自動起動をオンにしておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/crond start
+# chkconfig crond on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、インストール済みのパッケージを更新しましょう。&lt;/p&gt;
+
+&lt;p&gt;私の場合100パッケージ(129MB)ありました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum update
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;作業用ユーザー追加:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;作業用ユーザー追加&lt;/h1&gt;
+
+&lt;p&gt;rootでの作業はリスク上よろしくないので、作業用ユーザーを追加します。&lt;/p&gt;
+
+&lt;p&gt;wheelグループに追加することで、su権限が得られます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# useradd mojamoja
+# usermod -G wheel mojamoja
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;wheelグループのユーザーがsudoを実行できるよう設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# visudo
+
+----
+## Allows people in group wheel to run all commands
+%wheel  ALL=(ALL)       ALL
+↑この行のコメントアウトを外す。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;sshポートの変更:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;sshポートの変更&lt;/h1&gt;
+
+&lt;p&gt;sshポートデフォルトの22番ではポートスキャンの標的になりやすいので、変更します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#vim /etc/ssh/sshd_config
+
+以下の行を変更。
+
+#port 22
+port 10022
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sshデーモンを再起動して変更を反映します。&lt;/p&gt;
+
+&lt;p&gt;これで22番ポートではsshログインできなくなっています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/init.d/sshd restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;不要なデーモンの停止:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;不要なデーモンの停止&lt;/h1&gt;
+
+&lt;p&gt;初期状態では4つのデーモンしか自動起動設定になっておらず、特に停止するようなデーモンはありません。&lt;/p&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;ファイアーウォールの構築:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;ファイアーウォールの構築&lt;/h1&gt;
+
+&lt;p&gt;ssh(10022), FTP, HTTPで接続できるようポートを開放してやります。&lt;/p&gt;
+
+&lt;p&gt;下記シェルファイルを作成し、実行してください。&lt;/p&gt;
+
+&lt;p&gt;※コンソールから1行ずつ打つと、「/sbin/iptables -P INPUT DROP」設定直後にコンソールが操作不能になります。&lt;/p&gt;
+
+&lt;p&gt;その場合、コントロールパネルから再起動することで再度ログイン可能になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+/sbin/iptables -F
+/sbin/iptables -X
+
+/sbin/iptables -P INPUT DROP
+/sbin/iptables -P OUTPUT ACCEPT
+/sbin/iptables -P FORWARD DROP
+
+/sbin/iptables -A INPUT -i lo -j ACCEPT
+/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+
+/sbin/iptables -A INPUT -s 10.0.0.0/8 -j DROP
+/sbin/iptables -A INPUT -s 172.16.0.0/12 -j DROP
+/sbin/iptables -A INPUT -s 192.168.0.0/16 -j DROP
+
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+/sbin/iptables -A INPUT -p tcp --dport 10022 -j ACCEPT
+/sbin/iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+/sbin/iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+/etc/rc.d/init.d/iptables save
+
+/sbin/service iptables restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chmod +x set_iptables.sh
+# ./set_iptables.sh
+ファイアウォールのルールを /etc/sysconfig/iptables に保存中[  OK  ]
+ファイアウォールルールを適用中:                            [  OK  ]
+チェインポリシーを ACCEPT に設定中filter                   [  OK  ]
+iptables モジュールを取り外し中                            [  OK  ]
+iptables ファイアウォールルールを適用中:                   [  OK  ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;無事設定できたら、サーバー起動時にサービスが開始するよう設定します。設定が間違ったままこれをonにすると、コントロールパネルから再起動してもログイン不能になるので注意してください。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chkconfig iptables on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;ftpを接続可能にする:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;FTPを接続可能にする&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;/etc/vsftpd/vsftpd.conf&lt;/strong&gt; を以下のように設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;以下の既存の行を修正する。
+
+# 匿名ユーザーのログインを禁止
+anonymous_enable=NO
+
+# asciiモードでファイルを転送可能にする
+ascii_upload_enable=YES
+ascii_download_enable=YES
+
+以下の行を追加。
+
+# ファイル所有者を数字ではなくユーザー名で表示する
+text_userdb_names=YES
+
+# ファイルの上書き時間が日本時間になる
+use_localtime=YES
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定が終わったら起動し、自動起動もオンにしましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /etc/rc.d/init.d/vsftpd start
+vsftpd 用の vsftpd を起動中:                               [  OK  ]
+# chkconfig vsftpd on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FTPクライアントで10022番ポートにSFTP接続可能になっていることを確認してください。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考:7a522374c61fbafc7888cdbb99c2c3ca&#34;&gt;参考&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tanaka.sakura.ad.jp/archives/001065.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://tanaka.sakura.ad.jp/archives/001065.html&#39;, &#39;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&#39;]);&#34; &gt;CentOSをサーバーとして活用するための基本的な設定 &amp;#8211; さくらインターネット創業日記&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;さくらの社長による、自社のVPSの初期設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/a__z/20071011&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/a__z/20071011&#39;, &#39;CentOS:sudo を設定する &amp;#8211; 日々のメモ&#39;]);&#34; &gt;CentOS:sudo を設定する &amp;#8211; 日々のメモ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://weble.org/2011/05/16/sakura-vps-and-centos&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://weble.org/2011/05/16/sakura-vps-and-centos&#39;, &#39;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&#39;]);&#34; &gt;はじめてのさくら VPS + CentOS の初期設定からチューニングなどの作業まとめ | ウェブル&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;LAMP環境の構築手順も&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://akabeko.sakura.ne.jp/blog/2010/09/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps-%E3%82%92%E4%BD%BF%E3%81%84%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B-3/&#39;, &#39;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&#39;]);&#34; &gt;さくらのVPS を使いはじめる 3 – iptables を設定する | アカベコマイリ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.searchman.info/linux/1070.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.searchman.info/linux/1070.html&#39;, &#39;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&#39;]);&#34; &gt;クライアントＰＣから、ＬINUXサーバー(Fedora9)にFTPで接続する。&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vsftpdの設定方法&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sakura.off-soft.net/blog/cloudcore_vps_centos_first_setup.html&#39;, &#39;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&#39;]);&#34; &gt;評判のCloudCore VPSを使うときに最初にやっておきたいこと(CentOS編) | レンタルサーバー・自宅サーバー設定・構築のヒント&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cloudcore.jp/vps/spec/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.cloudcore.jp/vps/spec/&#39;, &#39;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&#39;]);&#34; &gt;スペック｜CloudCore VPS｜KDDIウェブコミュニケーションズ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Windows 7上にAndroid開発環境を構築する</title>
+      <link>http://1000k.github.io/2012/01/09/set-up-android-development-environment-on-windows7/</link>
+      <pubDate>Mon, 09 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2012/01/09/set-up-android-development-environment-on-windows7/</guid>
+      <description>
+
+&lt;p&gt;「Androidは簡単に開発が可能ですよ！」と言われてる割に導入がかなり面倒でした。&lt;/p&gt;
+
+&lt;p&gt;必要なパッケージとインストールからエミュレーターの起動まで、やり方をメモしておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順:13bda493a2eaedf1be0894608e95258e&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-必要ファイルのダウンロード:13bda493a2eaedf1be0894608e95258e&#34;&gt;1. 必要ファイルのダウンロード&lt;/h3&gt;
+
+&lt;p&gt;Windows 7 64bitの場合、下記アプリをダウンロードしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Eclipse 3.7 (Indigo) Java Developer Edition
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.eclipse.org/downloads/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.eclipse.org/downloads/&#39;, &#39;Eclipse Downloads&#39;]);&#34; &gt;Eclipse Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Eclips IDE for Java Developers&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Java 6 JDK
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oracle.com/technetwork/java/javase/downloads/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.oracle.com/technetwork/java/javase/downloads/index.html&#39;, &#39;Java SE Downloads&#39;]);&#34; &gt;Java SE Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;JREではなくJDK！&lt;/li&gt;
+&lt;li&gt;執筆時バージョンは Java SE 6 Update 30&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Android SDK
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://developer.android.com/sdk/index.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://developer.android.com/sdk/index.html&#39;, &#39;Android SDK | Android Developers&#39;]);&#34; &gt;Android SDK | Android Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;installer_r16-windows.exe (Recommended)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;2-java-6-jdkの設定:13bda493a2eaedf1be0894608e95258e&#34;&gt;2. Java 6 JDKの設定&lt;/h3&gt;
+
+&lt;p&gt;インストールしたファイルを実行して、画面に従うだけです。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-android-sdkの設定:13bda493a2eaedf1be0894608e95258e&#34;&gt;3. Android SDKの設定&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ダウンロードしたファイルを解凍orインストーラー実行&lt;/li&gt;
+&lt;li&gt;Android SDKのインストールが完了後、Managerが起動するので、使いたいAPIにチェックして[Install * Packages]
+
+&lt;ul&gt;
+&lt;li&gt;2.1を選べば97%のAndroidユーザーをカバーできるらしいので、チェック&lt;/li&gt;
+&lt;li&gt;必要に応じて別のバージョンもインストールする&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;4-eclipseの設定:13bda493a2eaedf1be0894608e95258e&#34;&gt;4. Eclipseの設定&lt;/h3&gt;
+
+&lt;h4 id=&#34;android-developer-tools-adt-のインストール:13bda493a2eaedf1be0894608e95258e&#34;&gt;Android Developer Tools (ADT)のインストール&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ダウンロードしたファイルを解凍し、eclipse.exeを実行&lt;/li&gt;
+&lt;li&gt;Eclipseを起動し、[Help] &amp;#8211; [Install software]&lt;/li&gt;
+&lt;li&gt;[Work with:]の隣にある[Add]をクリック。完了したら[OK]
+
+&lt;ul&gt;
+&lt;li&gt;Name: Android Plugin&lt;/li&gt;
+&lt;li&gt;Location: &lt;a href=&#34;http://dl-ssl.google.com/android/eclipse/&#34;&gt;http://dl-ssl.google.com/android/eclipse/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;「https」を指定すると途中でエラーが出て止まる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;[Work with:]に今入力した項目を選択。数十秒「Pending&amp;#8230;」が表示された後、[Developer Tools]が出てきたらチェックを付けて[Next]&lt;/li&gt;
+&lt;li&gt;インストールされるパッケージ一覧が出るので、[Finish]&lt;/li&gt;
+&lt;li&gt;途中「Security Warning」が出るが、[OK]&lt;/li&gt;
+&lt;li&gt;長時間インストール完了を待ち、完了したら[Restart Now]&lt;/li&gt;
+&lt;li&gt;Eclipse再起動後、「Welcome to Android Development」が表示されるので、[Use existing SDKs]にチェック&lt;/li&gt;
+&lt;li&gt;SDKのインストール先を指定して[Next]
+
+&lt;ul&gt;
+&lt;li&gt;デフォルトなら &amp;#8220;C:\Program Files (x86)\Android\android-sdk&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;統計データをGoogleに送るかどうか選択して[Finish]&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;avdの作成:13bda493a2eaedf1be0894608e95258e&#34;&gt;AVDの作成&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[Window] &amp;#8211; [AVD Manager]&lt;/li&gt;
+&lt;li&gt;[New]&lt;/li&gt;
+&lt;li&gt;下記項目を入力して[Create AVD]
+
+&lt;ul&gt;
+&lt;li&gt;[Name]: 機器名。好きな名前でOK&lt;/li&gt;
+&lt;li&gt;[Target]: Androidのバージョン&lt;/li&gt;
+&lt;li&gt;[SD Card]: エミュレータが使用するSDカード容量。32MBもあれば十分&lt;/li&gt;
+&lt;li&gt;[Skin]: 画面解像度&lt;/li&gt;
+&lt;li&gt;[Hardware]: エミュレータのハード。GPSなど、開発しようとするアプリに合わせて選択&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;[Start]をクリックして、エミュレータが起動したらOK
+
+&lt;ul&gt;
+&lt;li&gt;日本語化したい場合&lt;/li&gt;
+&lt;li&gt;起動後にホーム画面でメニューボタンクリック&lt;/li&gt;
+&lt;li&gt;[Settings] &amp;gt; [Language &amp;amp; keyboard]&lt;/li&gt;
+&lt;li&gt;[Select locale］から日本語を選択&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;設定は以上で完了です。&lt;/p&gt;
+
+&lt;h3 id=&#34;5-サンプルアプリのビルド:13bda493a2eaedf1be0894608e95258e&#34;&gt;5. サンプルアプリのビルド&lt;/h3&gt;
+
+&lt;p&gt;ここまででビルド可能になっているので、試してみましょう。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;[File] &amp;#8211; [New] &amp;#8211; [Other&amp;#8230;]&lt;/li&gt;
+&lt;li&gt;Android Project を選択して[Next]&lt;/li&gt;
+&lt;li&gt;以下のように設定して[Next]
+
+&lt;ul&gt;
+&lt;li&gt;Project Name: SampleApp&lt;/li&gt;
+&lt;li&gt;&amp;#8220;Create projects from existing source&amp;#8221;にチェック&lt;/li&gt;
+&lt;li&gt;Location: &amp;#8220;C:\Program Files (x86)\Android\android-sdk\samples\android-7\SkeletonApp&amp;#8221;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Build Targetは&amp;#8221;Android 2.1&amp;#8243;にチェックして[Next]&lt;/li&gt;
+&lt;li&gt;Minumum SDKを&amp;#8221;7&amp;#8243;にして[Finish]&lt;/li&gt;
+&lt;li&gt;[Run] &amp;#8211; [Run Configurations&amp;#8230;]&lt;/li&gt;
+&lt;li&gt;[New launch configuration]アイコンをクリック&lt;/li&gt;
+&lt;li&gt;[Project:]に&amp;#8221;SampleApp&amp;#8221;を指定して[Run]&lt;/li&gt;
+&lt;li&gt;エミュレーター上に&amp;#8221;Hello there, you Activity!&amp;#8221;と表示されれば成功&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/android_tutorial.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/android_tutorial.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/android_tutorial-300x293.png&#34; alt=&#34;&#34; title=&#34;ビルド完了&#34; width=&#34;300&#34; height=&#34;293&#34; class=&#34;alignnone size-medium wp-image-937&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;なお、ビルドされたアプリはbinディレクトリの下に「SampleApp.apk」という名前で入っています。これをAndroidに転送すれば実機で実行できます。&lt;/p&gt;
+
+&lt;p&gt;（ただし「提供元不明のアプリ」を使用可能にしておくこと）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:13bda493a2eaedf1be0894608e95258e&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gihyo.jp/dev/serial/01/androidapp/0002&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gihyo.jp/dev/serial/01/androidapp/0002&#39;, &#39;世界を目指せ！Androidアプリ開発入門：第2回　Androidアプリ開発のための環境構築｜gihyo.jp … 技術評論社&#39;]);&#34; &gt;世界を目指せ！Androidアプリ開発入門：第2回　Androidアプリ開発のための環境構築｜gihyo.jp … 技術評論社&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2010年の記事なので少し古い部分もありますが、基本的に最新バージョンで読み替えればOK&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gihyo.jp/dev/serial/01/androidapp/0003&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://gihyo.jp/dev/serial/01/androidapp/0003&#39;, &#39;世界を目指せ！Androidアプリ開発入門：第3回　Android SDKでサンプルアプリを使ってみる｜gihyo.jp … 技術評論社&#39;]);&#34; &gt;世界を目指せ！Androidアプリ開発入門：第3回　Android SDKでサンプルアプリを使ってみる｜gihyo.jp … 技術評論社&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sky.geocities.jp/izeefss/develop/android/env_eclipse.html&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://sky.geocities.jp/izeefss/develop/android/env_eclipse.html&#39;, &#39;Android開発環境の構築 Eclipse編&#39;]);&#34; &gt;Android開発環境の構築 Eclipse編&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

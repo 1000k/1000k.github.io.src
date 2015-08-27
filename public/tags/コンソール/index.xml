@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>コンソール on 1000g</title>
+    <link>http://1000k.github.io/tags/%E3%82%B3%E3%83%B3%E3%82%BD%E3%83%BC%E3%83%AB/</link>
+    <description>Recent content in コンソール on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 06 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E3%82%B3%E3%83%B3%E3%82%BD%E3%83%BC%E3%83%AB/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CakePHPでコンソールアプリを作るときの基本</title>
+      <link>http://1000k.github.io/2010/07/06/basics-for-building-console-app-in-cakephp/</link>
+      <pubDate>Tue, 06 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2010/07/06/basics-for-building-console-app-in-cakephp/</guid>
+      <description>
+
+&lt;p&gt;コンソールアプリケーションの保存先: /app/vendors/shell&lt;/p&gt;
+
+&lt;p&gt;基本的な構造&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// /app/vendors/shell/uso.php
+&amp;lt;?php
+class UsoShell extends Shell {
+    // モデルを使う場合、配列$usesで指定する
+    var $uses = array(&amp;quot;Post&amp;quot;);
+
+    function main() {
+        // ここに命令を記述する
+        // ...
+
+        // 標準出力 (自動改行する)
+        $this-&amp;gt;out(&#39;hige&#39;);
+
+        // 標準出力 (自動改行しない)
+        $this-&amp;gt;out(&#39;moja&#39;, false);
+
+        // 標準エラー出力
+        $this-&amp;gt;err(&#39;bosa&#39;);
+
+        // 区切り線
+        $this-&amp;gt;hr();
+
+        // 異常終了させる
+        $this-&amp;gt;error(&amp;quot;異常発見&amp;quot;, &amp;quot;異常終了します&amp;quot;);
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /app
+../cake/console/cake uso
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力結果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ../cake/console/cake uso
+
+
+Welcome to CakePHP v1.3.2 Console
+---------------------------------------------------------------
+App : uso
+Path: c:\xampp\htdocs\cake\app
+---------------------------------------------------------------
+hige
+mojabosa
+---------------------------------------------------------------
+Error: 異常発見
+異常終了します
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;参考:bdb7996c2533e0f70688b6e9484f46be&#34;&gt;参考&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/brtRiver/20090427/1240802118&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://d.hatena.ne.jp/brtRiver/20090427/1240802118&#39;, &#39;CakePHPコンソールのシェルを作るときのメモ &amp;#8211; ぷぎがぽぎ&#39;]);&#34; title=&#34;CakePHPコンソールのシェルを作るときのメモ - ぷぎがぽぎ&#34;&gt;CakePHPコンソールのシェルを作るときのメモ &amp;#8211; ぷぎがぽぎ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://book.cakephp.org/ja/view/110/Creating-Shells-Tasks&#39;, &#39;シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#39;]);&#34; title=&#34;シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&#34;&gt;シェルやタスクを作成する :: CakePHP コンソール :: CakePHPによる開発 :: マニュアル :: 1.2コレクション :: The Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

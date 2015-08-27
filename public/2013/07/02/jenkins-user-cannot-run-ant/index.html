@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> jenkins ユーザーが ant を実行できないときの対処法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/07/02/jenkins-user-cannot-run-ant/">jenkins ユーザーが ant を実行できないときの対処法</a></h2>
+        <div class="post-content">
+          
+
+<p>CentOS 6.3 にて、<a href="http://jenkins-php.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jenkins-php.org/', 'Template for Jenkins Jobs for PHP Projects']);" >Template for Jenkins Jobs for PHP Projects</a> にある ant タスク (build.xml) 通りに PHPUnit タスクを実行しようとしたら、エラーが出てしまいました。</p>
+
+<p>かなり長時間ハマったのでメモを残しておきます。</p>
+
+<h2 id="症状:135291858de89f6329950b22fca515d3">症状</h2>
+
+<p>CentOS 6.3 にて、<a href="http://jenkins-php.org/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jenkins-php.org/', 'Template for Jenkins Jobs for PHP Projects']);" >Template for Jenkins Jobs for PHP Projects</a> にある以下のタスクを実行するとエラーが出ました。<code>
+ &lt;target name=&quot;phpunit&quot; description=&quot;Run unit tests using PHPUnit and generates junit.xml and clover.xml&quot;&gt; &lt;exec executable=&quot;phpunit&quot; failonerror=&quot;true&quot;/&gt; &lt;/target&gt;</code></p>
+
+<p>エラーメッセージ:<code>
+ # sudo -u jenkins ant ... phpunit: BUILD FAILED /var/lib/jenkins/jobs/mojamoja-unit-testing/workspace/build.xml:22: Execute failed: java.io.IOException: Cannot run program &quot;phpunit&quot;: error=2, No such file or directory Total time: 0 seconds</code></p>
+
+<h2 id="原因:135291858de89f6329950b22fca515d3">原因</h2>
+
+<p>どうやら phpunit へのパスが通っていないようです。</p>
+
+<p>phpunit の実体は <code>/usr/local/bin/phpunit</code> なのですが、jenkins ユーザーがこの PATH を参照できていない模様。</p>
+
+<h2 id="試行錯誤:135291858de89f6329950b22fca515d3">試行錯誤</h2>
+
+<p>まず、jenkins ユーザーの <code>~/.bash_profile</code> と <code>~/.bashrc</code> を以下の内容で作成してもダメでした。PATH は反映されません。</p>
+
+<pre><code>
+export PATH=$PATH:/usr/local/bin
+</code></pre>
+
+<p>また、下記のように ant タスク内で PATH を変更するシェルを走らせてもダメでした。</p>
+
+<pre><code>&amp;lt;target name=&quot;setenv&quot;&gt;
+   &amp;lt;exec executable=&quot;/bin/sh&quot;&gt;
+     &amp;lt;arg line=&quot;./setenv.sh&quot;/&gt;
+   &amp;lt;/exec&gt;
+ &amp;lt;/target&gt;
+
+ &amp;lt;target name=&quot;env&quot;&gt;&amp;lt;exec executable=&quot;env&quot; /&gt;&amp;lt;/target&gt;
+</code></pre>
+
+<p>setenv.sh の中身は下記。</p>
+
+<pre><code>#!/bin/sh
+export PATH=${PATH}:/usr/local/bin
+echo $PATH
+</code></pre>
+
+<p>これで ant を実行すると、<code>setenv</code> タスクの時点では PATH は変更されていますが、次に実行される <code>env</code> タスクで元に戻ってしまっています。まるで setenv と env が別々のプロセスで動いているように見えます。</p>
+
+<pre><code>Buildfile: build.xml
+
+setenv:
+     [exec] /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+
+env:
+     [exec] HOSTNAME=mojamoja
+     [exec] SHELL=/bin/bash
+     [exec] TERM=xterm
+     [exec] HISTSIZE=1000
+     [exec] USER=jenkins
+     ...
+     [exec] PATH=/sbin:/bin:/usr/sbin:/usr/bin      &amp;lt;- /usr/local/bin が追加されていない
+</code></pre>
+
+<p>とういわけで、setenv で環境変数をセットする方法はボツでした。</p>
+
+<h2 id="解決方法:135291858de89f6329950b22fca515d3">解決方法</h2>
+
+<h3 id="1-jenkins-のグローバルプロパティを設定する:135291858de89f6329950b22fca515d3">1. Jenkins のグローバルプロパティを設定する</h3>
+
+<p>Jenkins から環境変数を上書きすることで、PATH を追加することができます。</p>
+
+<p><code>Jenkinsの管理 &gt; システムの設定 &gt; グローバルプロパティ &gt; 環境変数</code> にて、以下のように設定します。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/jenkins_global_property.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/jenkins_global_property-300x191.png" alt="Jenkins グローバルプロパティ" width="300" height="191" class="alignnone size-medium wp-image-1507" /></a></p>
+
+<ul>
+<li>キー: <code>PATH</code></li>
+<li>値: <code>${PATH}:/usr/local/bin</code></li>
+</ul>
+
+<p>ただし、この方法だと Jenkins から Ant を実行した時しか PATH は上書きされません。</p>
+
+<h3 id="2-sudoers-の-secure-path-を無効にする:135291858de89f6329950b22fca515d3">2. sudoers の secure_path を無効にする</h3>
+
+<p>Fedora 系では sudo ユーザー向けの PATH が <code>/sbin:/bin:/usr/sbin:/usr/bin</code> のみに制限されているので、これを外してやります。</p>
+
+<p><code>visudo</code> コマンドを実行して、以下のように書き直します。<code>
+ # secure\_path をコメントアウト # Defaults secure\_path = /sbin:/bin:/usr/sbin:/usr/bin # env\_keep に PATH を追加 Defaults env\_keep += &quot;PATH&quot;</code></p>
+
+<p>これで secure_path の縛りが解除されました。</p>
+
+<p>sudoers の環境変数は `sudo -l` で確認できます。<code>
+ # sudo -l Matching Defaults entries for root on this host: !visiblepw, always\_set\_home, env\_reset, env\_keep=&quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS\_COLORS&quot;, env\_keep+=&quot;MAIL PS1 PS2 QTDIR USERNAME LANG LC\_ADDRESS LC\_CTYPE&quot;, env\_keep+=&quot;LC\_COLLATE LC\_IDENTIFICATION LC\_MEASUREMENT LC\_MESSAGES&quot;, env\_keep+=&quot;LC\_MONETARY LC\_NAME LC\_NUMERIC LC\_PAPER LC\_TELEPHONE&quot;, env\_keep+=&quot;LC\_TIME LC\_ALL LANGUAGE LINGUAS \_XKB\_CHARSET XAUTHORITY&quot;, env_keep+=PATH User root may run the following commands on this host: (ALL) ALL</code></p>
+
+<h2 id="参考:135291858de89f6329950b22fca515d3">参考</h2>
+
+<ul>
+<li><a href="http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://deginzabi163.wordpress.com/2011/04/23/%E8%A6%9A%E6%9B%B8fedora-14%E3%81%AEsudo%E3%81%8Cpath%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%82%92%E6%BD%B0%E3%81%99%E3%81%AE%E3%81%8C%E9%AC%B1%E9%99%B6%E3%81%97%E3%81%84%EF%BC%86%E5%AF%BE%E7%AD%96/', '[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163\'s Blog']);" >[覚書]Fedora 14のsudoでPATHがアレで鬱陶しい＆対策 | Deginzabi163&rsquo;s Blog</a></li>
+<li><a href="http://fishrimper.blogspot.jp/2012/12/sudo-path.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://fishrimper.blogspot.jp/2012/12/sudo-path.html', 'IT とかその他もろもろ: sudo した時の PATH']);" >IT とかその他もろもろ: sudo した時の PATH</a></li>
+<li><a href="http://superuser.com/questions/98686/passing-path-through-sudo" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://superuser.com/questions/98686/passing-path-through-sudo', 'linux - Passing PATH through sudo - Super User']);" >linux - Passing PATH through sudo - Super User</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>考察 on 1000g</title>
+    <link>http://1000k.github.io/tags/%E8%80%83%E5%AF%9F/</link>
+    <description>Recent content in 考察 on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 25 Jan 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/tags/%E8%80%83%E5%AF%9F/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>手に負えないシステムをどうにかするシナリオ</title>
+      <link>http://1000k.github.io/2014/01/25/way-to-handle-system-which-more-than-you-can-handle/</link>
+      <pubDate>Sat, 25 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2014/01/25/way-to-handle-system-which-more-than-you-can-handle/</guid>
+      <description>
+
+&lt;p&gt;システムは時間の経過と共に複雑化します。常にシンプルさを保つ仕組みが無ければ変更の容易性は減少し、最終的には変更不能に陥ります。&lt;/p&gt;
+
+&lt;p&gt;この記事では、システムが複雑になる原因と、その対処シナリオを考察します。&lt;/p&gt;
+
+&lt;h2 id=&#34;時間と複雑性の関係:194584669bba4a67d0a447ada7873d53&#34;&gt;時間と複雑性の関係&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/complexity_by_time.png&#34; alt=&#34;複雑性と時間&#34; width=&#34;640&#34; height=&#34;480&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上はよく見かける時間と複雑性のモデルです。初回リリース時点では低かった複雑性も、その後の度重なる変更を経て、指数関数的に複雑性が上昇します。下げる努力をしなければ、1回の変更に要する労力は増え続け、最終的には変更不能に陥ります。&lt;/p&gt;
+
+&lt;p&gt;「運用しやすく作る」という原則は、システム開発に関わる人なら全員知っています。しかし、それを実現するためのマインドセットやプラクティスを実践している人は極めて少ないように感じます。&lt;/p&gt;
+
+&lt;h2 id=&#34;放っておけば複雑性は増加する:194584669bba4a67d0a447ada7873d53&#34;&gt;放っておけば複雑性は増加する&lt;/h2&gt;
+
+&lt;p&gt;システムを作ったまま完全に放置すれば複雑性は上昇しないかもしれませんが、現実にはそんなケースはありえないでしょう。次のような変更は必ず起きます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ミドルウェアのバージョンアップ&lt;/li&gt;
+&lt;li&gt;インフラの変更 (ネットワーク構成、クラウド化等)&lt;/li&gt;
+&lt;li&gt;連携先システムの仕様変更&lt;/li&gt;
+&lt;li&gt;バグの発見による修正&lt;/li&gt;
+&lt;li&gt;組織内ルールの変更 (セキュリティポリシーや運用ルール等)&lt;/li&gt;
+&lt;li&gt;機能追加要望&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;常に複雑性を低く保ち、変更可能な状態にしておかなければ、こうしたイベントが起きるたびに大きなコストと苦痛が生じます。&lt;/p&gt;
+
+&lt;h2 id=&#34;どうにかする-のパターン:194584669bba4a67d0a447ada7873d53&#34;&gt;「どうにかする」のパターン&lt;/h2&gt;
+
+&lt;p&gt;手に負えないシステムの面倒を見ることになってしまったらどうすればいいでしょうか？ここでは以下の4つシナリオを考えてみます。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;耐え続ける&lt;/li&gt;
+&lt;li&gt;捨てる&lt;/li&gt;
+&lt;li&gt;変更可能になるよう直す&lt;/li&gt;
+&lt;li&gt;逃げる&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;耐え続ける:194584669bba4a67d0a447ada7873d53&#34;&gt;耐え続ける&lt;/h3&gt;
+
+&lt;p&gt;どんな変更イベントが発生しても力づくで何とかすることです。あなたが無限の体力と折れない心の持ち主ならば、このシナリオが有効でしょう。&lt;/p&gt;
+
+&lt;p&gt;リスクとしては、このパターンだと変更を重ねるごとに苦痛が増え続けます。また、レガシーなままのシステムをレガシーな技術で運用し続けることは、あなたの技術レベルを向上させません。市場価値は相対的に下がっていくでしょう。&lt;/p&gt;
+
+&lt;p&gt;…避けた方がいいでしょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;捨てる:194584669bba4a67d0a447ada7873d53&#34;&gt;捨てる&lt;/h3&gt;
+
+&lt;p&gt;システムを捨てて、コスト発生源を根本から排除するシナリオです。以下のような場合に有効です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;システムを誰も使っていない (連携先が無い)&lt;/li&gt;
+&lt;li&gt;関係者の許可が得られる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;まずい組織はこのアクションが全くとれません。KPI や ROI を評価すれば判断できるかもしれませんが、典型的なサイロ型組織 (経営/企画/運用/開発がそれぞれ分割されている) では複数部署にコスト分配などを行い、全体的なコストが見えづらくなっています。また、そのような組織では意思の決定自体が非常に難しいため、対処されないままになっていることが多いです。&lt;/p&gt;
+
+&lt;p&gt;逆に言えば、廃棄するのに十分な根拠を用意でき、関係者全員と調整が可能ならば、このシナリオは非常に有効でしょう。これを可能にするためには日頃から以下のアクションを行っておく必要があります。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;マトリクス (利益、コスト、リスクなど) を可視化する&lt;/li&gt;
+&lt;li&gt;定期的にマトリクスを評価する&lt;/li&gt;
+&lt;li&gt;関係者を把握し、説得可能な状態にする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;(悪魔のささやき: わざと深刻な障害を発生させ、関係者全員に「このシステムは手に負えない」という印象を与えられたら…？おっと！)&lt;/p&gt;
+
+&lt;h3 id=&#34;変更可能になるよう直す:194584669bba4a67d0a447ada7873d53&#34;&gt;変更可能になるよう直す&lt;/h3&gt;
+
+&lt;p&gt;複雑性を下げ、少ないコストで変更可能な状態にするシナリオ。具体的には以下のアクションを行います。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自動テストを導入する&lt;/li&gt;
+&lt;li&gt;環境構築を自動化する&lt;/li&gt;
+&lt;li&gt;不要なコンポーネントを削除してスリム化する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これについては私自身も経験があるので、別の記事で詳しく書く予定です。また、『&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4798116831&amp;linkCode=as2&amp;tag=1000k-22&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://www.amazon.co.jp/gp/product/4798116831/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4798116831&amp;linkCode=as2&amp;tag=1000k-22&#39;, &#39;レガシーコード改善ガイド&#39;]);&#34; &gt;レガシーコード改善ガイド&lt;/a&gt;』が素晴らしいアイディアを与えてくれるでしょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;逃げる:194584669bba4a67d0a447ada7873d53&#34;&gt;逃げる&lt;/h3&gt;
+
+&lt;p&gt;巨大すぎて変更できず、協力者も得られず、考えうるアクションが全てダメだとわかれば、このシナリオが唯一の救いとなるでしょう。転職や部署変更で逃げましょう。&lt;/p&gt;
+
+&lt;p&gt;私は過去に「耐え続ける」シナリオを採り続けてボロボロになった人を何人も見ています。組織に労働力を売っても、人生まで売り飛ばす必要はありません。ダメだとわかったら次に行きましょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:194584669bba4a67d0a447ada7873d53&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;アジャイルやリーンの手法を実践できていれば、複雑性に対処しやすいシステムを作れているでしょう。現状がそうでないならば、上述したアクションによって改善を行うといいでしょう。&lt;/p&gt;
+
+&lt;p&gt;価値の無いシステムと関わり続けて市場価値を失い続けるのは賢明ではありません。命を大切に。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

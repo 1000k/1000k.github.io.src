@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Css on 1000g</title>
+    <link>http://1000k.github.io/categories/css/</link>
+    <description>Recent content in Css on 1000g</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 17 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://1000k.github.io/categories/css/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ヘッダーとフッターを固定しつつ高さ100% の Google Maps を描画する方法</title>
+      <link>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</link>
+      <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/893s2/2/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/893s2/2/&#39;, &#39;このデモ&#39;]);&#34; &gt;このデモ&lt;/a&gt;を見れば、何をやりたいかすぐ把握できると思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_1.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_1.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_1-300x225.png&#34; alt=&#34;map_1&#34; width=&#34;300&#34; height=&#34;225&#34; class=&#34;alignnone size-medium wp-image-1683&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.1000k.net/wp-content/uploads/map_2.png&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://blog.1000k.net/wp-content/uploads/map_2.png&#39;, &#39;&#39;]);&#34; &gt;&lt;img src=&#34;http://blog.1000k.net/wp-content/uploads/map_2-190x300.png&#34; alt=&#34;map_2&#34; width=&#34;190&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-1684&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ウィンドウの幅や高さを変えても、ヘッダーとフッターは常に同じ高さのままで、マップの部分はウィンドウサイズに合うように伸縮しています。&lt;/p&gt;
+
+&lt;p&gt;以下、このようなコードの実装方法を書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード:58e354fc35f3ca4266379278104f5f1b&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;まずはお決まりの Google Maps 呼び出しコードと、HTML の構造です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+
+
+
+
+
+
+&amp;lt;div id=&amp;quot;container&amp;quot;&amp;gt;
+  &amp;amp;lt;header&amp;gt;header&amp;amp;lt;/header&amp;gt;
+
+
+
+  &amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;map_canvas&amp;quot; style=&amp;quot;width: 100%; height: 100%;&amp;quot;&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+  &amp;lt;/div&amp;gt;
+
+      &amp;amp;lt;footer&amp;gt;This footer is absolutely positioned&amp;amp;lt;/footer&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+&amp;lt;!-- /#container --&amp;gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これについては説明は不要でしょう。ページ全体を覆う &lt;code&gt;#container&lt;/code&gt; の中に、ヘッダーとコンテンツとフッターがあります。&lt;/p&gt;
+
+&lt;p&gt;次に、ポイントとなる CSS は以下のとおりです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;html,body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* needed for container min-height */
+  background: #300;
+}
+
+#container {
+  background: #ccc;
+  height: 100%;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  /*height:auto !important;  real browsers */
+  height:100%; /* IE6: treaded as min-height*/
+
+  min-height:100%; /* real browsers */
+}
+
+header {
+  height: 108px;
+  position: relative;
+  background: #0ff;
+}
+
+#content{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  margin-top: 108px;    /* header&#39;s height */
+  width: 100%;
+}
+
+footer {
+  position: absolute;
+  clear: both;
+  width: 100%;
+  height: 40px;
+  bottom: 0;        /* stick to bottom */
+  background: #ff0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;全体を覆う &lt;code&gt;#container&lt;/code&gt; には &lt;code&gt;min-height: 100%;&lt;/code&gt; を指定し、ブラウザの高さいっぱいに描画するようにしています。また、&lt;code&gt;position: relative;&lt;/code&gt; を指定することで、その内部で自由に要素を配置できるようにしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;header&lt;/code&gt; に関しては特にコメントは不要ですね。ただ高さを指定しているだけです。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;#content&lt;/code&gt; にはいくつか工夫があります。まず、&lt;code&gt;position: absolute; top: 0; bottom: 0;&lt;/code&gt; によって、要素の高さを 100% にしています。次に、&lt;code&gt;margin-top: 108px;&lt;/code&gt; というように header と同じ高さでマージンを作ることで、ヘッダーとマップを隙間なく描画しています。&lt;/p&gt;
+
+&lt;p&gt;最後に &lt;code&gt;footer&lt;/code&gt; ですが、&lt;code&gt;position: absolute; bottom: 0;&lt;/code&gt; によって、常に &lt;code&gt;#container&lt;/code&gt; の最下部に貼り付くようにしています。&lt;/p&gt;
+
+&lt;p&gt;実現したいことはシンプルですが、実装するのに結構工夫が必要だったのでメモしておきました。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:58e354fc35f3ca4266379278104f5f1b&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map&#39;, &#39;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&#39;]);&#34; &gt;html &amp;#8211; 100% height with fixed footer and embedded Google Map &amp;#8211; Stack Overflow&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;今回のデモは、この Q&amp;amp;A に書かれているコードをシンプルにしただけです。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CSS3でスクロールしても背景のグラデーションは固定したままにする方法</title>
+      <link>http://1000k.github.io/2011/02/24/fix-background-gradient-by-css3/</link>
+      <pubDate>Thu, 24 Feb 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://1000k.github.io/2011/02/24/fix-background-gradient-by-css3/</guid>
+      <description>
+
+&lt;p&gt;縦長のページをスクロールしても、背景のグラデーションは固定したままにする方法です。&lt;/p&gt;
+
+&lt;p&gt;実行サンプルは下記 URL で確認できます。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://jsfiddle.net/SWMME/1/&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://jsfiddle.net/SWMME/1/&#39;, &#39;Fixed Gradient Background &amp;#8211; jsFiddle&#39;]);&#34; &gt;Fixed Gradient Background &amp;#8211; jsFiddle&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;html:b37f2ac83cd0af6aaa66faa99f2f63dc&#34;&gt;HTML&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div id=&amp;quot;container&amp;quot;&amp;gt;
+  &amp;lt;h1&amp;gt;
+    Fixed Gradient Background
+  &amp;lt;/h1&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;css:b37f2ac83cd0af6aaa66faa99f2f63dc&#34;&gt;CSS&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;h1 { color: #fff; }
+
+#container {
+    height: 2000px;
+    background: #202a2e;
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, rgb(34,39,45)),
+        color-stop(1, rgb(11,63,61))
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(34,39,45) 0%,
+        rgb(11,63,61) 100%
+    );
+    background-attachment: fixed !important;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考:b37f2ac83cd0af6aaa66faa99f2f63dc&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/5024143/filter-gradient-and-background-fixed&#34; onclick=&#34;_gaq.push([&#39;_trackEvent&#39;, &#39;outbound-article&#39;, &#39;http://stackoverflow.com/questions/5024143/filter-gradient-and-background-fixed&#39;, &#39;css &amp;#8211; filter: gradient and background: fixed &amp;#8211; Stack Overflow&#39;]);&#34; &gt;css &amp;#8211; filter: gradient and background: fixed &amp;#8211; Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

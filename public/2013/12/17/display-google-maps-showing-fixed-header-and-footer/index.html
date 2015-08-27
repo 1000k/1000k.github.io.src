@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> ヘッダーとフッターを固定しつつ高さ100% の Google Maps を描画する方法 &middot; 1000g </title>
+
+
+<link rel="stylesheet" href="http://1000k.github.io//css/slim.css">
+<link rel="stylesheet" href="http://1000k.github.io//css/highlight.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="1000g" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://1000k.github.io/">1000g</a></h1>
+  <p class="site-tagline">Tech blog</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/1000k">Github</a></li> 
+      <li><a href="https://twitter.com/1000kei">Twitter</a></li> 
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="post">
+        <h2 class="post-title"><a href="http://1000k.github.io/2013/12/17/display-google-maps-showing-fixed-header-and-footer/">ヘッダーとフッターを固定しつつ高さ100% の Google Maps を描画する方法</a></h2>
+        <div class="post-content">
+          
+
+<p><a href="http://jsfiddle.net/893s2/2/" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://jsfiddle.net/893s2/2/', 'このデモ']);" >このデモ</a>を見れば、何をやりたいかすぐ把握できると思います。</p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/map_1.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/map_1.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/map_1-300x225.png" alt="map_1" width="300" height="225" class="alignnone size-medium wp-image-1683" /></a></p>
+
+<p><a href="http://blog.1000k.net/wp-content/uploads/map_2.png" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://blog.1000k.net/wp-content/uploads/map_2.png', '']);" ><img src="http://blog.1000k.net/wp-content/uploads/map_2-190x300.png" alt="map_2" width="190" height="300" class="alignnone size-medium wp-image-1684" /></a></p>
+
+<p>ウィンドウの幅や高さを変えても、ヘッダーとフッターは常に同じ高さのままで、マップの部分はウィンドウサイズに合うように伸縮しています。</p>
+
+<p>以下、このようなコードの実装方法を書きます。</p>
+
+<h2 id="コード:58e354fc35f3ca4266379278104f5f1b">コード</h2>
+
+<p>まずはお決まりの Google Maps 呼び出しコードと、HTML の構造です。</p>
+
+<pre><code>
+
+
+
+
+
+
+&lt;div id=&quot;container&quot;&gt;
+  &amp;lt;header&gt;header&amp;lt;/header&gt;
+
+
+
+  &lt;div id=&quot;content&quot;&gt;
+    &lt;div id=&quot;map_canvas&quot; style=&quot;width: 100%; height: 100%;&quot;&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+      &amp;lt;footer&gt;This footer is absolutely positioned&amp;lt;/footer&gt;
+
+&lt;/div&gt;
+
+&lt;!-- /#container --&gt;
+
+
+</code></pre>
+
+<p>これについては説明は不要でしょう。ページ全体を覆う <code>#container</code> の中に、ヘッダーとコンテンツとフッターがあります。</p>
+
+<p>次に、ポイントとなる CSS は以下のとおりです。</p>
+
+<pre><code>html,body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* needed for container min-height */
+  background: #300;
+}
+
+#container {
+  background: #ccc;
+  height: 100%;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  /*height:auto !important;  real browsers */
+  height:100%; /* IE6: treaded as min-height*/
+
+  min-height:100%; /* real browsers */
+}
+
+header {
+  height: 108px;
+  position: relative;
+  background: #0ff;
+}
+
+#content{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  margin-top: 108px;    /* header's height */
+  width: 100%;
+}
+
+footer {
+  position: absolute;
+  clear: both;
+  width: 100%;
+  height: 40px;
+  bottom: 0;        /* stick to bottom */
+  background: #ff0;
+}
+</code></pre>
+
+<p>全体を覆う <code>#container</code> には <code>min-height: 100%;</code> を指定し、ブラウザの高さいっぱいに描画するようにしています。また、<code>position: relative;</code> を指定することで、その内部で自由に要素を配置できるようにしています。</p>
+
+<p><code>header</code> に関しては特にコメントは不要ですね。ただ高さを指定しているだけです。</p>
+
+<p><code>#content</code> にはいくつか工夫があります。まず、<code>position: absolute; top: 0; bottom: 0;</code> によって、要素の高さを 100% にしています。次に、<code>margin-top: 108px;</code> というように header と同じ高さでマージンを作ることで、ヘッダーとマップを隙間なく描画しています。</p>
+
+<p>最後に <code>footer</code> ですが、<code>position: absolute; bottom: 0;</code> によって、常に <code>#container</code> の最下部に貼り付くようにしています。</p>
+
+<p>実現したいことはシンプルですが、実装するのに結構工夫が必要だったのでメモしておきました。</p>
+
+<h2 id="参考:58e354fc35f3ca4266379278104f5f1b">参考</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://stackoverflow.com/questions/2821596/100-height-with-fixed-footer-and-embedded-google-map', 'html &#8211; 100% height with fixed footer and embedded Google Map &#8211; Stack Overflow']);" >html &#8211; 100% height with fixed footer and embedded Google Map &#8211; Stack Overflow</a>
+
+<ul>
+<li>今回のデモは、この Q&amp;A に書かれているコードをシンプルにしただけです。</li>
+</ul></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+</div>
+
+  </div>
+  <script src="http://1000k.github.io//js/slim.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46659459-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>
