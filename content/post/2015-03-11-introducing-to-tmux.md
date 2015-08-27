@@ -120,14 +120,14 @@ sudo yum install -y tmux
 
 `~/.tmux.conf` にカスタマイズ設定を書き込むことができます。
 
-yum でインストールした場合は `/usr/share/doc/tmux-1.6/examples/` 配下にサンプルファイルがあります。vimmer は <a href="https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf', 'vim-keys.conf']);" >vim-keys.conf</a> を設定するとペイン操作が楽になるかもしれません。
+yum でインストールした場合は `/usr/share/doc/tmux-1.6/examples/` 配下にサンプルファイルがあります。vimmer は [vim-keys.conf](https://github.com/jordansissel/tmux/blob/master/trunk/examples/vim-keys.conf) を設定するとペイン操作が楽になるかもしれません。
 
 ## 参考
 
-  * <a href="http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&sec=1" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&sec=1', 'OpenBSD manual pages']);" >OpenBSD manual pages</a>
+  * [OpenBSD manual pages](http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/tmux.1?query=tmux&sec=1)
       * 公式マニュアル。英語。
-  * <a href="http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html', 'tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &#8211; 完熟トマト']);" >tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &#8211; 完熟トマト</a>
+  * [tmuxを使い始めたので基本的な機能の使い方とかを整理してみた &#8211; 完熟トマト](http://kanjuku-tomato.blogspot.jp/2014/02/tmux.html)
       * 概念図やスクリーンショット満載でわかりやすいです。
-  * <a href="http://room6933.com/mymemo/tmux/tmux-basic.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://room6933.com/mymemo/tmux/tmux-basic.html', 'tmux基本のコマンド — nato&#8217;s memo 1.0 documentation']);" >tmux基本のコマンド — nato&#8217;s memo 1.0 documentation</a>
-  * <a href="http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc', 'Vim &#8211; ターミナルマルチプレクサ tmux をカスタマイズする &#8211; Qiita']);" >Vim &#8211; ターミナルマルチプレクサ tmux をカスタマイズする &#8211; Qiita</a>
+  * [tmux基本のコマンド — nato&#8217;s memo 1.0 documentation](http://room6933.com/mymemo/tmux/tmux-basic.html)
+  * [Vim &#8211; ターミナルマルチプレクサ tmux をカスタマイズする &#8211; Qiita](http://qiita.com/b4b4r07/items/01359e8a3066d1c37edc)
       * 使えるカスタマイズの例。zsh と連携して、ログイン時にいきなり tmux セッションにアタッチする方法など。
