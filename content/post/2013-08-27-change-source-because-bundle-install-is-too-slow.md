@@ -1,0 +1,56 @@
+---
+title: bundle installが遅すぎたのでsourceを変えた
+author: 1000k
+layout: post
+date: 2013-08-27
+url: /2013/08/27/change-source-because-bundle-install-is-too-slow/
+categories:
+  - Ruby on Rails
+tags:
+  - Bundler
+  - Ruby on Rails
+  - トラブルシューティング
+---
+Rails 4 アプリを作ろうとして `rails new` コマンドを叩いたら、`bundle install` のフェーズが永遠に終わらず老人になりそうでした。
+
+どうやら gem リポジトリの <a href="http://rubygems.org" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://rubygems.org', 'http://rubygems.org']);" >http://rubygems.org</a> のレスポンスが遅すぎるようです。
+
+そこで、Rails アプリの作成時は `bundler install` を省略し、Gemfile をいじってもっと早いリポジトリを参照するように変更したら、無事インストールできました。
+
+## 具体的な手順
+
+```
+$ rails new mojamoja --skip-bundle
+$ cd mojamoja
+$ vim Gemfile
+```
+
+
+`Gemfile` の1行目を以下のように変更する。
+
+```
+# source 'http://rubygems.org'
+source "http://bundler-api.herokuapp.com"
+```
+
+
+これでインストールできるようになります。
+
+```
+$ bundle install
+```
+
+
+## (2013-09-01 追加) RHEL/CentOS 6.x 特有のバグ
+
+RHEL/CentOS 6.x を使っている場合、ネットワークの解決が異常に遅くなることがあります。`/etc/resolve.conf` に以下の1行を追加すると解決するようです。
+
+```
+options single-request-reopen
+```
+
+
+## 参考
+
+  * <a href="http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://qiita.com/quattro_4/items/fcc2ff8b04c43229a2fb', 'Ruby &#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &#8211; Qiita [キータ]']);" >Ruby &#8211; bundlerが遅い(Error Bundler::HTTPError)のを解決 &#8211; Qiita [キータ]</a>
+  * <a href="http://www.ideaxidea.com/archives/2013/08/resolv.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://www.ideaxidea.com/archives/2013/08/resolv.html', 'Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA']);" >Vagrant+VirtualBox（CentOS6）で「gem install rails」がすっごい遅い時の対処法 | IDEA*IDEA</a>

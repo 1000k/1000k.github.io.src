@@ -1,0 +1,14 @@
+baseurl = "http://1000k.github.io/"
+languageCode = "ja"
+title = "1000g"
+author = "SENDA Keijiro"
+theme = "slim"
+
+[params]
+  Subtitle = "Tech blog"
+  GithubID = "1000k"
+  TwitterID = "1000kei"
+  AnalyticsID = "UA-46659459-2"
+  Summary = false  # takes true or false
+  Content = false  # takes true or false
+  # if both are set to true, summary is shown.

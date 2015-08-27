@@ -1,0 +1,79 @@
+---
+title: mysqlslap で MySQL の負荷テストをする方法
+author: 1000k
+layout: post
+date: 2014-05-13
+url: /2014/05/13/load-test-with-mysqlslap/
+categories:
+  - MySQL
+tags:
+  - MySQL
+  - ベンチマーク
+---
+mysqlslap は MySQL の負荷テストに使えるツールです。MySQL >= 5.1.4 からはデフォルトで提供されています。
+
+テスト中は `mysqlslap` という DB を自動で作って、そこにクエリを投げまくります。
+
+以下に基本的な使い方をメモしておきます。
+
+<!--more-->
+
+## 使い方
+
+`mysqlslap -?` で詳しいヘルプが見られます。典型的な例は下記。
+
+```
+mysqlslap \
+  --no-defaults \
+  --concurrency=50 \
+  --iterations=1 \
+  --number-int-cols=2 \
+  --number-char-cols=3 \
+  --engine=innodb \
+  --auto-generate-sql \
+  --auto-generate-sql-add-autoincrement \
+  --auto-generate-sql-load-type=key \
+  --auto-generate-sql-write-number=1000 \
+  --number-of-queries=100000 \
+  --host=localhost \
+  --port=3306 \
+  --user=root \
+  --csv=/tmp/bench_result.csv
+```
+
+
+| パラメータ                               | 意味                                                         |
+| ----------------------------------- | ---------------------------------------------------------- |
+| no-defaults                         | my.cnf に書かれたデフォルト値を無視する。このオプションは先頭に付ける必要がある                |
+| concurrency                         | 同時に接続してくるクライアントの数                                          |
+| iterations                          | テストの試行回数                                                   |
+| number-int-cols                     | テストテーブルに作る INT 型カラムの数                                      |
+| number-char-cols                    | テストテーブルに作る VARCHAR 型カラムの数                                  |
+| engine                              | 使用する DB エンジン                                               |
+| auto-generate-sql                   | テストで使用する SQL 文を自動で生成する                                     |
+| auto-generate-sql-add-autoincrement | 自動で作ったテーブルに AUTO_INCREMENT カラムを追加する                        |
+| auto-generate-sql-load-type         | クエリのタイプ。`[mixed|update|write|key|read]`から選ぶ。デフォルトは `mixed` |
+| auto-generate-sql-write-number      | スレッド毎の INSERT 文の発行数。デフォルトは 100                             |
+| number-of-queries                   | 各クライアントが投げるクエリの上限数。正確にこの値にはならない                            |
+| host                                | ホスト                                                        |
+| port                                | ポート番号                                                      |
+| user                                | ベンチマークを実行するユーザー。DB 作成権限が無いユーザーを指定するとテストできないので注意！           |
+| csv                                 | 結果を CSV 形式で取得したい時は、ここに出力先のパスを書く                            |
+
+結果は以下のように出力されます。
+
+```
+Benchmark
+        Running for engine innodb
+        Average number of seconds to run all queries: 16.086 seconds
+        Minimum number of seconds to run all queries: 16.086 seconds
+        Maximum number of seconds to run all queries: 16.086 seconds
+        Number of clients running queries: 50
+        Average number of queries per client: 2000
+```
+
+
+## 参考
+
+  * <a href="http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://dev.mysql.com/doc/refman/5.1/ja/mysqlslap.html', 'MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション']);" >MySQL :: MySQL 5.1 リファレンスマニュアル :: 7.15 mysqlslap — クライアント負荷エミュレーション</a>
+  * <a href="http://d.hatena.ne.jp/tetsuyai/20110209/1297253834" onclick="_gaq.push(['_trackEvent', 'outbound-article', 'http://d.hatena.ne.jp/tetsuyai/20110209/1297253834', 'MySQL標準 負荷測定ツール mysqlslap &#8211; 祈れ、そして働け ～ Ora et labora']);" >MySQL標準 負荷測定ツール mysqlslap &#8211; 祈れ、そして働け ～ Ora et labora</a>
