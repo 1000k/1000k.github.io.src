@@ -2,7 +2,7 @@ baseurl = "http://1000k.github.io/"
 languageCode = "ja"
 title = "1000g"
 author = "SENDA Keijiro"
-theme = "slim"
+theme = "slim_custom"
 
 [params]
   Subtitle = "Tech blog"

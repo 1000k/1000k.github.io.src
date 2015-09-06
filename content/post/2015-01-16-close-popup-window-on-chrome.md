@@ -46,7 +46,7 @@ popup_parent.html
 
 popup_child.html
 
-```
+```html
 <html lang="en">
 <head>
     <title>Child</title>
