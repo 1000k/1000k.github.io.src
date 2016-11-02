@@ -3,6 +3,7 @@ title: ABOUT
 author: 1000k
 layout: page
 date: 2010-05-16
+menu: main
 ---
 
 {{< img src="/img/DSC_9070-300x300.jpg" title="千田啓次郎" >}}

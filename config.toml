@@ -1,14 +1,38 @@
 baseurl = "http://1000k.github.io/"
 languageCode = "ja"
 title = "1000g"
-author = "SENDA Keijiro"
-theme = "slim_custom"
+theme = "hugo-steam-theme"
+disqusShortname = "1000k"
+paginate = 10
 
 [params]
-  Subtitle = "Tech blog"
-  GithubID = "1000k"
-  TwitterID = "1000kei"
-  AnalyticsID = "UA-46659459-2"
-  Summary = false  # takes true or false
-  Content = false  # takes true or false
-  # if both are set to true, summary is shown.
+	title = "1000g"
+	subtitle = "Development knowledge"
+	copyright = "Released under the MIT license."
+
+	# You can choose between green, orange, red and blue.
+	themeColor = "green"
+	# Enable Google Analytics be inserting your tracking code
+	googleAnalytics = "UA-46659459-2"
+
+	# To provide some metadata for search engines and the about section in the footer
+	# feel free to add a few information about you and your website.
+	name = "SENDA Keijiro"
+	bio = "Programming, scrum, DevOps,..."
+	description = "Programming knowledge"
+	location = "" # optional
+	twitter = "1000kei" # optional
+	github = "1000k" # optional
+ 	gitlab = "" # optional
+
+	# Enable a comment system
+	# You can choose between Disqus or Google Plus by setting comments
+	# to disqus or googleplus. For using Disqus you need to enter your
+	# shortname in disqusShortname at the top of the configs.
+	comments = "disqus"
+
+	# Customize or translate the strings
+	keepReadingStr = "Keep reading"
+	backtotopStr = "Back to top"
+	shareStr = "Share"
+	pageNotFoundTitle = "404 - Page not found"
